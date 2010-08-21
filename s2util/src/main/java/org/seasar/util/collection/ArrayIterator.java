@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -22,36 +22,44 @@ import java.util.NoSuchElementException;
  * 配列を{@link Iterator}にするAdaptorです。
  * 
  * @author shot
+ * @param <T>
+ *            配列の要素の型
  */
-public class ArrayIterator implements Iterator {
+public class ArrayIterator<T> implements Iterator<T> {
 
-    private Object[] items_;
+    /** イテレートする要素の配列 */
+    protected final T[] items;
 
-    private int index_ = 0;
+    /** 現在参照している要素のインデックス */
+    protected int index = 0;
 
     /**
      * {@link ArrayIterator}を作成します。
      * 
      * @param items
+     *            イテレートする要素の配列
      */
-    public ArrayIterator(Object items[]) {
-        items_ = items;
+    public ArrayIterator(final T... items) {
+        this.items = items;
     }
 
+    @Override
     public boolean hasNext() {
-        return index_ < items_.length;
+        return index < items.length;
     }
 
-    public Object next() {
+    @Override
+    public T next() {
         try {
-            Object o = items_[index_];
-            index_++;
+            final T o = items[index];
+            index++;
             return o;
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoSuchElementException("index=" + index_);
+        } catch (final IndexOutOfBoundsException e) {
+            throw new NoSuchElementException("index=" + index);
         }
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("remove");
     }
