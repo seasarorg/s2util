@@ -22,6 +22,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import junit.framework.TestCase;
 
+import org.seasar.util.io.ResourceUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

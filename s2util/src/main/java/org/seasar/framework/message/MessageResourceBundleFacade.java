@@ -23,11 +23,11 @@ import java.util.Properties;
 
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.util.AssertionUtil;
-import org.seasar.framework.util.FileInputStreamUtil;
 import org.seasar.framework.util.InputStreamUtil;
 import org.seasar.framework.util.PropertiesUtil;
-import org.seasar.framework.util.ResourceUtil;
 import org.seasar.framework.util.URLUtil;
+import org.seasar.util.io.FileInputStreamUtil;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * {@link MessageResourceBundle}をキャッシュするクラスです。

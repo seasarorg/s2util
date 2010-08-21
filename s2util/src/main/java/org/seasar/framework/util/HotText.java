@@ -18,6 +18,7 @@ package org.seasar.framework.util;
 import java.io.File;
 
 import org.seasar.framework.exception.EmptyRuntimeException;
+import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.io.TextUtil;
 
 /**

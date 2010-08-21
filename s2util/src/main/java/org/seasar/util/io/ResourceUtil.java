@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,9 @@ import java.util.Properties;
 
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.exception.ResourceNotFoundRuntimeException;
+import org.seasar.framework.util.InputStreamUtil;
+import org.seasar.framework.util.JarFileUtil;
+import org.seasar.framework.util.URLUtil;
 
 /**
  * リソース用のユーティリティクラスです。

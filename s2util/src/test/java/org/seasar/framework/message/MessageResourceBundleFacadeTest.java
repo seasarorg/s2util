@@ -23,7 +23,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
-import org.seasar.framework.util.ResourceUtil;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * @author shot

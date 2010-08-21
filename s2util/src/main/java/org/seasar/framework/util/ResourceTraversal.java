@@ -25,6 +25,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.seasar.util.io.FileInputStreamUtil;
+
 /**
  * リソースをトラバースするためのクラスです。
  * <p>

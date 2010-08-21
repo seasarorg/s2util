@@ -18,6 +18,8 @@ package org.seasar.framework.util;
 import java.io.File;
 import java.util.Date;
 
+import org.seasar.util.io.ResourceUtil;
+
 import junit.framework.TestCase;
 
 /**

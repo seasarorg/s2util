@@ -23,6 +23,7 @@ import java.util.zip.ZipInputStream;
 import junit.framework.TestCase;
 
 import org.seasar.framework.util.ClassTraversal.ClassHandler;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * @author taedium

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 
 import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * Mimeタイプ用のユーティリティクラスです。

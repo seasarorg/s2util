@@ -17,6 +17,7 @@ package org.seasar.framework.util;
 
 import java.io.File;
 
+import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.io.TextUtil;
 
 import junit.framework.TestCase;

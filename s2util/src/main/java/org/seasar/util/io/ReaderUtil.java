@@ -13,42 +13,54 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
 
 import org.seasar.framework.exception.IORuntimeException;
 
 /**
- * {@link FileInputStream}用のユーティリティクラスです。
+ * {@link Reader}用のユーティリティクラスです。
  * 
  * @author higa
  * 
  */
-public class FileInputStreamUtil {
+public class ReaderUtil {
+
+    private static final int BUF_SIZE = 8192;
 
     /**
      * インスタンスを構築します。
      */
-    protected FileInputStreamUtil() {
+    protected ReaderUtil() {
     }
 
     /**
-     * {@link FileInputStream}を作成します。
+     * テキストを読み込みます。
      * 
-     * @param file
-     * @return {@link FileInputStream}
+     * @param reader
+     * @return テキスト
      * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
-     * @see FileInputStream#FileInputStream(File)
      */
-    public static FileInputStream create(File file) throws IORuntimeException {
+    public static String readText(Reader reader) throws IORuntimeException {
+        BufferedReader in = new BufferedReader(reader);
+        StringBuilder out = new StringBuilder(100);
         try {
-            return new FileInputStream(file);
+            try {
+                char[] buf = new char[BUF_SIZE];
+                int n;
+                while ((n = in.read(buf)) >= 0) {
+                    out.append(buf, 0, n);
+                }
+            } finally {
+                in.close();
+            }
         } catch (IOException e) {
             throw new IORuntimeException(e);
         }
+        return out.toString();
     }
+
 }

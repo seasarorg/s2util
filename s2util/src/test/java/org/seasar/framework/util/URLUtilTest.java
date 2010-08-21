@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.seasar.util.io.ResourceUtil;
+
 import junit.framework.TestCase;
 
 /**

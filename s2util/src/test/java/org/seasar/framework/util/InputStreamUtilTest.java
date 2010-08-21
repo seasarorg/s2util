@@ -17,6 +17,8 @@ package org.seasar.framework.util;
 
 import java.io.InputStream;
 
+import org.seasar.util.io.ResourceUtil;
+
 import junit.framework.TestCase;
 
 /**

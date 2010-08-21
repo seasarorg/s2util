@@ -24,6 +24,7 @@ import java.util.zip.ZipInputStream;
 import junit.framework.TestCase;
 
 import org.seasar.framework.util.ResourceTraversal.ResourceHandler;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * @author taedium

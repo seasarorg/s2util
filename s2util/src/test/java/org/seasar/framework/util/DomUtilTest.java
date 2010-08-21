@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 
 import junit.framework.TestCase;
 
+import org.seasar.util.io.ResourceUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

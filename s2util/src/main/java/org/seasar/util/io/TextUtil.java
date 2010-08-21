@@ -19,10 +19,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.seasar.framework.util.FileInputStreamUtil;
-import org.seasar.framework.util.InputStreamReaderUtil;
-import org.seasar.framework.util.ReaderUtil;
-import org.seasar.framework.util.ResourceUtil;
 
 /**
  * テキスト用のユーティリティクラスです。
