@@ -45,7 +45,6 @@ import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.PropertyNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.framework.exception.EmptyRuntimeException;
-import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.CaseInsensitiveMap;
 import org.seasar.framework.util.ClassPoolUtil;
 import org.seasar.framework.util.ClassUtil;
@@ -59,6 +58,7 @@ import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ShortConversionUtil;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.util.collection.ArrayMap;
+import org.seasar.util.log.Logger;
 
 /**
  * {@link BeanDesc}の実装クラスです。

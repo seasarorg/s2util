@@ -13,71 +13,108 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.log;
+package org.seasar.util.log;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.seasar.util.log.Logger.*;
 
 /**
  * @author higa
- *
+ * 
  */
-public class LoggerTest extends TestCase {
+public class LoggerTest {
 
-    private Logger _logger = Logger.getLogger(getClass());
+    private Logger logger = Logger.getLogger(getClass());
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetLogger() throws Exception {
-        assertSame("1", Logger.getLogger(getClass()), Logger
-                .getLogger(getClass()));
+        assertThat(
+            Logger.getLogger(getClass()),
+            is(sameInstance(Logger.getLogger(getClass()))));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testDebug() throws Exception {
-        _logger.debug("debug");
+        logger.debug("debug");
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testInfo() throws Exception {
-        _logger.info("info");
+        logger.info("info");
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testWarn() throws Exception {
-        _logger.warn("warn");
+        logger.warn("warn");
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testError() throws Exception {
-        _logger.error("error");
+        logger.error("error");
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testFatal() throws Exception {
-        _logger.fatal("fatal");
+        logger.fatal("fatal");
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testLog() throws Exception {
-        _logger.log("ISSR0001", null);
+        logger.log("ILOGTEST0001");
     }
 
     /**
      * @throws Exception
      */
+    @Test
+    public void testLogWithArgs() throws Exception {
+        logger.log("ILOGTEST0002", "x", "y");
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testLogWithException() throws Exception {
+        logger.log(format("ILOGTEST0001"), new Exception());
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testLogWithArgsAndException() throws Exception {
+        logger.log(format("ILOGTEST0002", "1", "2"), new Exception());
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testPerformance() throws Exception {
         final int num = 100;
         long start = System.currentTimeMillis();
@@ -87,7 +124,7 @@ public class LoggerTest extends TestCase {
         long sysout = System.currentTimeMillis() - start;
         start = System.currentTimeMillis();
         for (int i = 0; i < num; i++) {
-            _logger.fatal("test" + i);
+            logger.fatal("test" + i);
         }
         long logger = System.currentTimeMillis() - start;
         System.out.println("System.out:" + sysout);
