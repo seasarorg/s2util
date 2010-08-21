@@ -18,6 +18,8 @@ package org.seasar.framework.util;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.seasar.util.collection.ArrayMap;
+
 /**
  * キーで大文字小文字を気にしない {@link ArrayMap}です。
  * 

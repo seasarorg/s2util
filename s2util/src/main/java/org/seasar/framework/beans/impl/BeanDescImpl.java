@@ -46,7 +46,6 @@ import org.seasar.framework.beans.PropertyNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.framework.exception.EmptyRuntimeException;
 import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.ArrayMap;
 import org.seasar.framework.util.CaseInsensitiveMap;
 import org.seasar.framework.util.ClassPoolUtil;
 import org.seasar.framework.util.ClassUtil;
@@ -59,6 +58,7 @@ import org.seasar.framework.util.LongConversionUtil;
 import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ShortConversionUtil;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.util.collection.ArrayMap;
 
 /**
  * {@link BeanDesc}の実装クラスです。
@@ -147,7 +147,7 @@ public class BeanDescImpl implements BeanDesc {
      * @see org.seasar.framework.beans.BeanDesc#getPropertyDesc(int)
      */
     public PropertyDesc getPropertyDesc(int index) {
-        return (PropertyDesc) propertyDescCache.get(index);
+        return (PropertyDesc) propertyDescCache.getAt(index);
     }
 
     /**
@@ -179,7 +179,7 @@ public class BeanDescImpl implements BeanDesc {
      * @see org.seasar.framework.beans.BeanDesc#getField(int)
      */
     public Field getField(int index) {
-        return (Field) fieldCache.get(index);
+        return (Field) fieldCache.getAt(index);
     }
 
     /**
@@ -698,8 +698,8 @@ public class BeanDescImpl implements BeanDesc {
             list.add(method);
         }
         for (int i = 0; i < methodListMap.size(); ++i) {
-            List methodList = (List) methodListMap.get(i);
-            methodsCache.put(methodListMap.getKey(i), methodList
+            List methodList = (List) methodListMap.getAt(i);
+            methodsCache.put(methodListMap.getKeyAt(i), methodList
                     .toArray(new Method[methodList.size()]));
         }
     }

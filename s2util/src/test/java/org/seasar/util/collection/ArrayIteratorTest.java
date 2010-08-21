@@ -57,11 +57,11 @@ public class ArrayIteratorTest {
     @Test
     public void testHasNext() {
         ArrayIterator<String> itr = new ArrayIterator<String>("A", "B");
-        assertTrue(itr.hasNext());
+        assertThat(itr.hasNext(), is(true));
         itr.next();
-        assertTrue(itr.hasNext());
+        assertThat(itr.hasNext(), is(true));
         itr.next();
-        assertFalse(itr.hasNext());
+        assertThat(itr.hasNext(), is(not(true)));
     }
 
     /**
