@@ -33,13 +33,7 @@ import org.seasar.framework.util.URLUtil;
  * @author higa
  * 
  */
-public class ResourceUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ResourceUtil() {
-    }
+public abstract class ResourceUtil {
 
     /**
      * リソースパスを返します。
@@ -65,7 +59,7 @@ public class ResourceUtil {
      * @param clazz
      * @return リソースパス
      */
-    public static String getResourcePath(Class clazz) {
+    public static String getResourcePath(Class<?> clazz) {
         return clazz.getName().replace('.', '/') + ".class";
     }
 
@@ -100,13 +94,13 @@ public class ResourceUtil {
      */
     public static URL getResource(String path, String extension)
             throws ResourceNotFoundRuntimeException {
-
         URL url = getResourceNoException(path, extension);
         if (url != null) {
             return url;
         }
-        throw new ResourceNotFoundRuntimeException(getResourcePath(path,
-                extension));
+        throw new ResourceNotFoundRuntimeException(getResourcePath(
+            path,
+            extension));
     }
 
     /**
@@ -129,8 +123,9 @@ public class ResourceUtil {
      * @see #getResourceNoException(String, String, ClassLoader)
      */
     public static URL getResourceNoException(String path, String extension) {
-        return getResourceNoException(path, extension, Thread.currentThread()
-                .getContextClassLoader());
+        return getResourceNoException(path, extension, Thread
+            .currentThread()
+            .getContextClassLoader());
     }
 
     /**
@@ -275,7 +270,7 @@ public class ResourceUtil {
      * @return ルートディレクトリ
      * @see #getBuildDir(String)
      */
-    public static File getBuildDir(Class clazz) {
+    public static File getBuildDir(Class<?> clazz) {
         return getBuildDir(getResourcePath(clazz));
     }
 
@@ -365,7 +360,7 @@ public class ResourceUtil {
      * @return ファイル
      * @see #getResourceAsFileNoException(String)
      */
-    public static File getResourceAsFileNoException(Class clazz) {
+    public static File getResourceAsFileNoException(Class<?> clazz) {
         return getResourceAsFileNoException(getResourcePath(clazz));
     }
 
@@ -391,12 +386,12 @@ public class ResourceUtil {
      * @param clazz
      * @return 変換された結果
      */
-    public static String convertPath(String path, Class clazz) {
+    public static String convertPath(String path, Class<?> clazz) {
         if (isExist(path)) {
             return path;
         }
-        String prefix = clazz.getName().replace('.', '/').replaceFirst(
-                "/[^/]+$", "");
+        String prefix =
+            clazz.getName().replace('.', '/').replaceFirst("/[^/]+$", "");
         String extendedPath = prefix + "/" + path;
         if (ResourceUtil.getResourceNoException(extendedPath) != null) {
             return extendedPath;
