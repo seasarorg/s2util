@@ -22,9 +22,9 @@ import java.util.Map;
 
 import org.seasar.framework.exception.ResourceNotFoundRuntimeException;
 import org.seasar.framework.util.AssertionUtil;
-import org.seasar.framework.util.Disposable;
-import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.ResourceUtil;
+import org.seasar.util.Disposable;
+import org.seasar.util.DisposableUtil;
 
 /**
  * {@link MessageResourceBundle}を取得するためのクラスです。

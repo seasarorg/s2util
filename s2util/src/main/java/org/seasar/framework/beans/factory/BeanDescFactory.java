@@ -19,9 +19,9 @@ import java.util.Map;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.impl.BeanDescImpl;
-import org.seasar.framework.util.Disposable;
-import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.MapUtil;
+import org.seasar.util.Disposable;
+import org.seasar.util.DisposableUtil;
 
 /**
  * {@link BeanDesc}を生成するクラスです。

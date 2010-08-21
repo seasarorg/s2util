@@ -25,6 +25,8 @@ import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
 import org.seasar.framework.exception.NotFoundRuntimeException;
+import org.seasar.util.Disposable;
+import org.seasar.util.DisposableUtil;
 
 /**
  * ClassPool用のユーティリティクラスです。
