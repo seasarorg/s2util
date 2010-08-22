@@ -97,8 +97,10 @@ public class ResourceTraversalTest {
                     System.out.println(path);
                     assertThat(path, is(notNullValue()));
                     assertThat(
+                        path,
                         path.startsWith("junit")
                             || path.startsWith("org/junit")
+                            || path.startsWith("org/hamcrest")
                             || path.startsWith("META-INF/")
                             || path.equals("LICENSE.txt"),
                         is(true));
@@ -164,8 +166,10 @@ public class ResourceTraversalTest {
                         }
                         assertThat(path, is(notNullValue()));
                         assertThat(
+                            path,
                             path.startsWith("junit")
                                 || path.startsWith("org/junit")
+                                || path.startsWith("org/hamcrest")
                                 || path.startsWith("META-INF/")
                                 || path.equals("LICENSE.txt"),
                             is(true));

@@ -68,8 +68,10 @@ public class ClassTraversalTest {
                 assertThat(packageName, is(notNullValue()));
                 assertThat(shortClassName, is(notNullValue()));
                 assertThat(
+                    packageName,
                     packageName.startsWith("junit")
-                        || packageName.startsWith("org.junit"),
+                        || packageName.startsWith("org.junit")
+                        || packageName.startsWith("org.hamcrest"),
                     is(true));
                 count++;
             }
@@ -131,8 +133,10 @@ public class ClassTraversalTest {
                     assertThat(packageName, is(notNullValue()));
                     assertThat(shortClassName, is(notNullValue()));
                     assertThat(
+                        packageName,
                         packageName.startsWith("junit")
-                            || packageName.startsWith("org.junit"),
+                            || packageName.startsWith("org.junit")
+                            || packageName.startsWith("org.hamcrest"),
                         is(true));
                     count++;
                 }
