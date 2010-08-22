@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import junit.framework.TestCase;
 
 import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.util.io.OutputStreamUtil;
 
 /**
  * @author shot
@@ -61,17 +60,16 @@ public class OutputStreamUtilTest extends TestCase {
     private static class NotifyOutputStream extends OutputStream {
         private String notify_;
 
+        @Override
         public void write(int arg0) throws IOException {
         }
 
+        @Override
         public void close() throws IOException {
             super.close();
             notify_ = "closed";
         }
 
-        /**
-         * @return
-         */
         public String getNotify() {
             return notify_;
         }
@@ -79,9 +77,11 @@ public class OutputStreamUtilTest extends TestCase {
 
     private static class IOExceptionOccurOutputStream extends OutputStream {
 
+        @Override
         public void write(int arg0) throws IOException {
         }
 
+        @Override
         public void close() throws IOException {
             throw new IOException();
         }

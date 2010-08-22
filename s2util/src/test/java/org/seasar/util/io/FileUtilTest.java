@@ -31,6 +31,7 @@ public class FileUtilTest extends TestCase {
 
     File dest;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         root = ResourceUtil.getBuildDir(getClass()).getCanonicalPath();
@@ -40,6 +41,7 @@ public class FileUtilTest extends TestCase {
         dest = new File(destTxt);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         if (dest.exists()) {
             dest.delete();

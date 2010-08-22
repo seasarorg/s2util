@@ -88,7 +88,7 @@ public class ResourceUtilTest extends TestCase {
         assertEquals(file, file2);
         File junitJar = ResourceUtil.getBuildDir(TestCase.class);
         assertTrue(junitJar.exists());
-        URL url = junitJar.toURL();
+        URL url = junitJar.toURI().toURL();
         URLClassLoader loader = new URLClassLoader(new URL[] { url });
         loader.loadClass(TestCase.class.getName());
     }
@@ -124,7 +124,7 @@ public class ResourceUtilTest extends TestCase {
      * @throws Exception
      */
     public void testToExternalForm() throws Exception {
-        URL url = new File("/Program File").toURL();
+        URL url = new File("/Program File").toURI().toURL();
         assertEquals(
             "file:" + getRoot() + "Program File",
             ResourceUtil.toExternalForm(url));
@@ -134,7 +134,7 @@ public class ResourceUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetFileName() throws Exception {
-        URL url = new File("/Program File").toURL();
+        URL url = new File("/Program File").toURI().toURL();
         assertEquals(getRoot() + "Program File", ResourceUtil.getFileName(url));
         url = ResourceUtil.getResource("java/lang/String.class");
         assertNull(ResourceUtil.getFile(url));
