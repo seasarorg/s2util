@@ -13,12 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
-
-import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.io.TextUtil;
 
 import junit.framework.TestCase;
 
@@ -37,9 +34,9 @@ public class FileUtilTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         root = ResourceUtil.getBuildDir(getClass()).getCanonicalPath();
-        String srcTxt = root + "/org/seasar/framework/util/src.txt";
+        String srcTxt = root + "/org/seasar/util/io/src.txt";
         src = new File(srcTxt);
-        String destTxt = root + "/org/seasar/framework/util/dest.txt";
+        String destTxt = root + "/org/seasar/util/io/dest.txt";
         dest = new File(destTxt);
     }
 

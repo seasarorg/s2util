@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,10 +24,6 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.util.io.FileInputStreamUtil;
-import org.seasar.util.io.FileOutputStreamUtil;
-import org.seasar.util.io.InputStreamUtil;
-import org.seasar.util.io.OutputStreamUtil;
 
 /**
  * {@link File}を扱うユーティリティ・クラスです。
@@ -66,7 +62,7 @@ public class FileUtil {
      */
     public static URL toURL(final File file) {
         try {
-            return file.toURL();
+            return file.toURI().toURL();
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
@@ -121,10 +117,7 @@ public class FileUtil {
      *            ファイルのパス
      * @param data
      *            バイトの配列
-     * @param offset
-     *            オフセット
-     * @param length
-     *            配列の長さ
+     * 
      * @throws NullPointerException
      *             pathやdataがnullの場合。
      */
@@ -160,8 +153,8 @@ public class FileUtil {
             throw new NullPointerException("data");
         }
         try {
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(
-                    path));
+            OutputStream out =
+                new BufferedOutputStream(new FileOutputStream(path));
             try {
                 out.write(data, offset, length);
             } finally {

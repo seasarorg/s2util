@@ -26,6 +26,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.seasar.util.io.FileInputStreamUtil;
+import org.seasar.util.io.FileUtil;
 import org.seasar.util.io.InputStreamUtil;
 
 /**
