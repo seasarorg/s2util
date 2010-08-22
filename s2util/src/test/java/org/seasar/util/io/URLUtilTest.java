@@ -13,15 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-
-import org.seasar.util.io.FileUtil;
-import org.seasar.util.io.ResourceUtil;
 
 import junit.framework.TestCase;
 
@@ -39,8 +36,8 @@ public class URLUtilTest extends TestCase {
      */
     public void testDisableURLCaches() throws Exception {
         String root = ResourceUtil.getBuildDir(getClass()).getCanonicalPath();
-        String srcJar = root + "/org/seasar/framework/util/test.jar";
-        String destJar = root + "/org/seasar/framework/util/test2.jar";
+        String srcJar = root + "/org/seasar/util/io/test.jar";
+        String destJar = root + "/org/seasar/util/io/test2.jar";
         File dest = new File(destJar);
         if (dest.exists()) {
             dest.delete();
@@ -51,8 +48,8 @@ public class URLUtilTest extends TestCase {
 
         URLUtil.disableURLCaches();
 
-        URL url = new URL("jar:" + dest.toURI().toURL()
-                + "!/META-INF/MANIFEST.MF");
+        URL url =
+            new URL("jar:" + dest.toURI().toURL() + "!/META-INF/MANIFEST.MF");
         URLConnection connection = url.openConnection();
         InputStream stream = connection.getInputStream();
         stream.close();
@@ -90,10 +87,11 @@ public class URLUtilTest extends TestCase {
      */
     public void testToFile() throws Exception {
         File file = new File("Program Files/hoge.txt");
-        URL url = file.toURL();
+        URL url = file.toURI().toURL();
         assertEquals(file.getAbsoluteFile(), URLUtil.toFile(url));
-        assertEquals(file.getAbsoluteFile(), URLUtil.toFile(new URL(
-                "file:Program%20Files/hoge.txt")));
+        assertEquals(
+            file.getAbsoluteFile(),
+            URLUtil.toFile(new URL("file:Program%20Files/hoge.txt")));
     }
 
 }

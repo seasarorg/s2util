@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +30,7 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.exception.SRuntimeException;
+import org.seasar.framework.util.FieldUtil;
 
 /**
  * {@link URL}を扱うユーティリティ・クラスです。
@@ -39,7 +40,8 @@ import org.seasar.framework.exception.SRuntimeException;
 public class URLUtil {
 
     /** プロトコルを正規化するためのマップ */
-    protected static final Map CANONICAL_PROTOCOLS = new HashMap();
+    protected static final Map<String, String> CANONICAL_PROTOCOLS =
+        new HashMap<String, String>();
     static {
         CANONICAL_PROTOCOLS.put("wsjar", "jar"); // WebSphereがJarファイルのために使用する固有のプロトコル
         CANONICAL_PROTOCOLS.put("vfsfile", "file"); // JBossAS5がファイルシステムのために使用する固有のプロトコル
@@ -153,8 +155,7 @@ public class URLUtil {
      * @return 正規化されたプロトコル
      */
     public static String toCanonicalProtocol(final String protocol) {
-        final String canonicalProtocol = (String) CANONICAL_PROTOCOLS
-                .get(protocol);
+        final String canonicalProtocol = CANONICAL_PROTOCOLS.get(protocol);
         if (canonicalProtocol != null) {
             return canonicalProtocol;
         }

@@ -24,6 +24,7 @@ import java.util.zip.ZipFile;
 
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.util.io.FileUtil;
+import org.seasar.util.io.URLUtil;
 
 /**
  * {@link java.util.zip.ZipFile}を扱うユーティリティクラスです。
