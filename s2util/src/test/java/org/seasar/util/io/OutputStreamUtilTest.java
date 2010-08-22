@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import junit.framework.TestCase;
 
 import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.io.OutputStreamUtil;
 
 /**
  * @author shot
