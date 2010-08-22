@@ -31,6 +31,7 @@ import java.util.zip.ZipInputStream;
 
 import org.seasar.framework.util.ClassTraversal.ClassHandler;
 import org.seasar.framework.util.ResourceTraversal.ResourceHandler;
+import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.log.Logger;
 
