@@ -13,49 +13,57 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.text;
 
-import org.seasar.framework.unit.S2FrameworkTestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- *
+ * 
  */
-public class TokenizerTest extends S2FrameworkTestCase {
+public class TokenizerTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testEOF() throws Exception {
         Tokenizer tokenizer = new Tokenizer("");
-        assertEquals(Tokenizer.TT_EOF, tokenizer.nextToken());
-        assertEquals(Tokenizer.TT_EOF, tokenizer.nextToken());
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_EOF));
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_EOF));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testWhitespace() throws Exception {
         Tokenizer tokenizer = new Tokenizer("\t       \n");
-        assertEquals(Tokenizer.TT_EOF, tokenizer.nextToken());
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_EOF));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testHyphen() throws Exception {
         Tokenizer tokenizer = new Tokenizer("       - ");
-        assertEquals('-', tokenizer.nextToken());
-        assertEquals(Tokenizer.TT_EOF, tokenizer.nextToken());
+        assertThat(tokenizer.nextToken(), is((int) '-'));
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_EOF));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void pend_testDot() throws Exception {
         Tokenizer tokenizer = new Tokenizer("abc.hoge");
-        assertEquals(Tokenizer.TT_WORD, tokenizer.nextToken());
-        assertEquals("abc.hoge", tokenizer.getStringValue());
-        assertEquals(Tokenizer.TT_EOF, tokenizer.nextToken());
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_WORD));
+        assertThat(tokenizer.getStringValue(), is("abc.hoge"));
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TT_EOF));
     }
+
 }

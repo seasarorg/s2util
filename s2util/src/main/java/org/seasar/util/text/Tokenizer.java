@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.text;
 
 /**
  * トークンを認識するクラスです。
@@ -191,7 +191,7 @@ public class Tokenizer {
      * 
      * @return 文字列の値
      */
-    public final String getStringValue() {
+    public String getStringValue() {
         return sval;
     }
 
@@ -225,7 +225,7 @@ public class Tokenizer {
      * 
      * @return 既に読み込んだ文字列
      */
-    public final String getReadString() {
+    public String getReadString() {
         return str.substring(0, colno - 1);
     }
 
@@ -286,8 +286,9 @@ public class Tokenizer {
                 }
                 buf[i++] = (char) peekc;
                 peekc = read();
-                peekct = peekc < 0 ? CT_WHITESPACE
-                        : (peekc < 256 ? ctype[peekc] : CT_ALPHA);
+                peekct =
+                    peekc < 0 ? CT_WHITESPACE : (peekc < 256 ? ctype[peekc]
+                        : CT_ALPHA);
             } while ((peekct & (CT_ALPHA)) != 0);
             sval = String.copyValueOf(buf, 0, i);
             ttype = TT_WORD;
@@ -333,10 +334,12 @@ public class Tokenizer {
         if (peekct == 0) {
             ttype = peekc;
             peekc = read();
-            peekct = peekc < 0 ? CT_WHITESPACE : (peekc < 256 ? ctype[peekc]
+            peekct =
+                peekc < 0 ? CT_WHITESPACE : (peekc < 256 ? ctype[peekc]
                     : CT_ALPHA);
             return true;
         }
         return false;
     }
+
 }
