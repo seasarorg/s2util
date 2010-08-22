@@ -203,7 +203,7 @@
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.11.0.ga</version>
+			<version>3.11.0.GA</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
