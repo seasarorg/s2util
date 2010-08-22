@@ -29,12 +29,14 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.seasar.framework.util.ClassTraversal.ClassHandler;
-import org.seasar.framework.util.ResourceTraversal.ResourceHandler;
+import org.seasar.util.io.ClassTraversal;
 import org.seasar.util.io.FileUtil;
 import org.seasar.util.io.InputStreamUtil;
+import org.seasar.util.io.ResourceTraversal;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.io.URLUtil;
+import org.seasar.util.io.ClassTraversal.ClassHandler;
+import org.seasar.util.io.ResourceTraversal.ResourceHandler;
 import org.seasar.util.log.Logger;
 
 /**

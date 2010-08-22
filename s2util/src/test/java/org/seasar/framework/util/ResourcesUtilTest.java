@@ -25,12 +25,12 @@ import junit.framework.TestCase;
 import junit.textui.ResultPrinter;
 import junit.textui.TestRunner;
 
-import org.seasar.framework.util.ClassTraversal.ClassHandler;
-import org.seasar.framework.util.ResourceTraversal.ResourceHandler;
 import org.seasar.framework.util.ResourcesUtil.FileSystemResources;
 import org.seasar.framework.util.ResourcesUtil.JarFileResources;
 import org.seasar.framework.util.ResourcesUtil.Resources;
 import org.seasar.framework.util.xxx.DummyTest;
+import org.seasar.util.io.ClassTraversal.ClassHandler;
+import org.seasar.util.io.ResourceTraversal.ResourceHandler;
 
 /**
  * @author koichik

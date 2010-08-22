@@ -13,14 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.ResourcesUtil;
+import org.seasar.framework.util.ZipInputStreamUtil;
+
+import static org.seasar.util.collection.EnumerationIterator.*;
 
 /**
  * クラスを横断して処理するためのハンドラです。
@@ -31,12 +36,16 @@ import java.util.zip.ZipInputStream;
  * @author koichik
  * @see ResourcesUtil
  */
-public class ClassTraversal {
-    private static final String CLASS_SUFFIX = ".class";
+public abstract class ClassTraversal {
 
-    private static final String WAR_FILE_EXTENSION = ".war";
+    /** クラスファイルの拡張子 */
+    protected static final String CLASS_SUFFIX = ".class";
 
-    private static final String WEB_INF_CLASSES_PATH = "WEB-INF/classes/";
+    /** WARファイルの拡張子 */
+    protected static final String WAR_FILE_EXTENSION = ".war";
+
+    /** WARファイル内のクラスファイルのエントリプレフィックス */
+    protected static final String WEB_INF_CLASSES_PATH = "WEB-INF/classes/";
 
     /**
      * クラスを横断して処理するためのハンドラです。
@@ -122,20 +131,21 @@ public class ClassTraversal {
     public static void forEach(final JarFile jarFile, final String prefix,
             final ClassHandler handler) {
         final int startPos = prefix.length();
-        final Enumeration enumeration = jarFile.entries();
-        while (enumeration.hasMoreElements()) {
-            final JarEntry entry = (JarEntry) enumeration.nextElement();
+        for (final JarEntry entry : iterable(jarFile.entries())) {
             final String entryName = entry.getName().replace('\\', '/');
             if (entryName.startsWith(prefix)
-                    && entryName.endsWith(CLASS_SUFFIX)) {
-                final String className = entryName.substring(startPos,
+                && entryName.endsWith(CLASS_SUFFIX)) {
+                final String className =
+                    entryName.substring(
+                        startPos,
                         entryName.length() - CLASS_SUFFIX.length()).replace(
-                        '/', '.');
+                        '/',
+                        '.');
                 final int pos = className.lastIndexOf('.');
-                final String packageName = (pos == -1) ? null : className
-                        .substring(0, pos);
-                final String shortClassName = (pos == -1) ? className
-                        : className.substring(pos + 1);
+                final String packageName =
+                    (pos == -1) ? null : className.substring(0, pos);
+                final String shortClassName =
+                    (pos == -1) ? className : className.substring(pos + 1);
                 handler.processClass(packageName, shortClassName);
             }
         }
@@ -146,8 +156,6 @@ public class ClassTraversal {
      * 
      * @param zipInputStream
      *            ZIPファイル形式の入力ストリーム
-     * @param prefix
-     *            トラバースするリソースの名前が含む接頭辞。スラッシュ('/')で終了していなければなりません。
      * @param handler
      *            クラスを処理するハンドラ
      */
@@ -180,15 +188,18 @@ public class ClassTraversal {
             try {
                 final String entryName = entry.getName().replace('\\', '/');
                 if (entryName.startsWith(prefix)
-                        && entryName.endsWith(CLASS_SUFFIX)) {
-                    final String className = entryName.substring(startPos,
-                            entryName.length() - CLASS_SUFFIX.length())
+                    && entryName.endsWith(CLASS_SUFFIX)) {
+                    final String className =
+                        entryName
+                            .substring(
+                                startPos,
+                                entryName.length() - CLASS_SUFFIX.length())
                             .replace('/', '.');
                     final int pos = className.lastIndexOf('.');
-                    final String packageName = (pos == -1) ? null : className
-                            .substring(0, pos);
-                    final String shortClassName = (pos == -1) ? className
-                            : className.substring(pos + 1);
+                    final String packageName =
+                        (pos == -1) ? null : className.substring(0, pos);
+                    final String shortClassName =
+                        (pos == -1) ? className : className.substring(pos + 1);
                     handler.processClass(packageName, shortClassName);
                 }
             } finally {
@@ -197,33 +208,53 @@ public class ClassTraversal {
         }
     }
 
-    private static void traverseFileSystem(final File dir,
+    /**
+     * ファイルシステムに含まれるクラスをトラバースします。
+     * 
+     * @param dir
+     *            基点となるディレクトリ
+     * @param packageName
+     *            トラバースするパッケージ名
+     * @param handler
+     *            クラスを処理するハンドラ
+     */
+    protected static void traverseFileSystem(final File dir,
             final String packageName, final ClassHandler handler) {
-        final File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-            final File file = files[i];
+        for (final File file : dir.listFiles()) {
             final String fileName = file.getName();
             if (file.isDirectory()) {
-                traverseFileSystem(file, ClassUtil.concatName(packageName,
-                        fileName), handler);
+                traverseFileSystem(
+                    file,
+                    ClassUtil.concatName(packageName, fileName),
+                    handler);
             } else if (fileName.endsWith(".class")) {
-                final String shortClassName = fileName.substring(0, fileName
-                        .length()
-                        - CLASS_SUFFIX.length());
+                final String shortClassName =
+                    fileName.substring(
+                        0,
+                        fileName.length() - CLASS_SUFFIX.length());
                 handler.processClass(packageName, shortClassName);
             }
         }
     }
 
-    private static File getPackageDir(final File rootDir,
+    /**
+     * ルートパッケージに対応するディレクトリを表す{@link File}を返します。
+     * 
+     * @param rootDir
+     *            ルートディレクトリ
+     * @param rootPackage
+     *            ルートパッケージ
+     * @return パッケージに対応するディレクトリを表す{@link File}
+     */
+    protected static File getPackageDir(final File rootDir,
             final String rootPackage) {
         File packageDir = rootDir;
         if (rootPackage != null) {
-            final String[] names = rootPackage.split("\\.");
-            for (int i = 0; i < names.length; i++) {
-                packageDir = new File(packageDir, names[i]);
+            for (final String name : rootPackage.split("\\.")) {
+                packageDir = new File(packageDir, name);
             }
         }
         return packageDir;
     }
+
 }

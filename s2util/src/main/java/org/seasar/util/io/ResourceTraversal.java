@@ -13,21 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.seasar.util.io.FileInputStreamUtil;
-import org.seasar.util.io.FileUtil;
-import org.seasar.util.io.InputStreamUtil;
+import org.seasar.framework.util.JarFileUtil;
+import org.seasar.framework.util.ResourcesUtil;
+import org.seasar.framework.util.ZipInputStreamUtil;
+
+import static org.seasar.util.collection.EnumerationIterator.*;
 
 /**
  * リソースをトラバースするためのクラスです。
@@ -38,7 +39,7 @@ import org.seasar.util.io.InputStreamUtil;
  * @author taedium
  * @see ResourcesUtil
  */
-public class ResourceTraversal {
+public abstract class ResourceTraversal {
 
     /**
      * リソースを処理するインターフェースです。
@@ -52,12 +53,6 @@ public class ResourceTraversal {
          * @param is
          */
         void processResource(String path, InputStream is);
-    }
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ResourceTraversal() {
     }
 
     /**
@@ -129,16 +124,14 @@ public class ResourceTraversal {
     public static void forEach(final JarFile jarFile, final String prefix,
             final ResourceHandler handler) {
         final int pos = prefix.length();
-        final Enumeration enumeration = jarFile.entries();
-        while (enumeration.hasMoreElements()) {
-            final JarEntry entry = (JarEntry) enumeration.nextElement();
+        for (final JarEntry entry : iterable(jarFile.entries())) {
             if (!entry.isDirectory()) {
                 final String entryName = entry.getName().replace('\\', '/');
                 if (!entryName.startsWith(prefix)) {
                     continue;
                 }
-                final InputStream is = JarFileUtil.getInputStream(jarFile,
-                        entry);
+                final InputStream is =
+                    JarFileUtil.getInputStream(jarFile, entry);
                 try {
                     handler.processResource(entryName.substring(pos), is);
                 } finally {
@@ -187,28 +180,38 @@ public class ResourceTraversal {
                 if (!entryName.startsWith(prefix)) {
                     continue;
                 }
-                handler.processResource(entryName.substring(pos),
-                        new FilterInputStream(zipInputStream) {
-                            public void close() throws IOException {
-                                ZipInputStreamUtil.closeEntry(zipInputStream);
-                            }
-                        });
+                handler.processResource(
+                    entryName.substring(pos),
+                    new FilterInputStream(zipInputStream) {
+                        @Override
+                        public void close() throws IOException {
+                            ZipInputStreamUtil.closeEntry(zipInputStream);
+                        }
+                    });
             }
         }
     }
 
-    private static void traverseFileSystem(final File rootDir,
+    /**
+     * ファイルシステムに含まれるリソースをトラバースします。
+     * 
+     * @param rootDir
+     *            ルートディレクトリ
+     * @param baseDir
+     *            ベースディレクトリ
+     * @param handler
+     *            リソースを処理するハンドラ
+     */
+    protected static void traverseFileSystem(final File rootDir,
             final File baseDir, final ResourceHandler handler) {
-        final File[] files = baseDir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-            final File file = files[i];
+        for (final File file : baseDir.listFiles()) {
             if (file.isDirectory()) {
                 traverseFileSystem(rootDir, file, handler);
             } else {
                 final int pos = FileUtil.getCanonicalPath(rootDir).length();
                 final String filePath = FileUtil.getCanonicalPath(file);
-                final String resourcePath = filePath.substring(pos + 1)
-                        .replace('\\', '/');
+                final String resourcePath =
+                    filePath.substring(pos + 1).replace('\\', '/');
                 final InputStream is = FileInputStreamUtil.create(file);
                 try {
                     handler.processResource(resourcePath, is);
@@ -219,15 +222,24 @@ public class ResourceTraversal {
         }
     }
 
-    private static File getBaseDir(final File rootDir,
+    /**
+     * ベースディレクトリを表す{@link File}を返します。
+     * 
+     * @param rootDir
+     *            ルートディレクトリ
+     * @param baseDirectory
+     *            ベースディレクトリ
+     * @return ベースディレクトリを表す{@link File}
+     */
+    protected static File getBaseDir(final File rootDir,
             final String baseDirectory) {
         File baseDir = rootDir;
         if (baseDirectory != null) {
-            final String[] names = baseDirectory.split("/");
-            for (int i = 0; i < names.length; i++) {
-                baseDir = new File(baseDir, names[i]);
+            for (final String name : baseDirectory.split("/")) {
+                baseDir = new File(baseDir, name);
             }
         }
         return baseDir;
     }
+
 }
