@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.seasar.framework.exception.ResourceNotFoundRuntimeException;
 import org.seasar.framework.util.AssertionUtil;
@@ -26,20 +26,27 @@ import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
 import org.seasar.util.io.ResourceUtil;
 
+import static org.seasar.framework.util.tiger.CollectionsUtil.*;
+
 /**
  * {@link MessageResourceBundle}を取得するためのクラスです。
  * 
  * @author shot
  */
-public class MessageResourceBundleFactory {
+public abstract class MessageResourceBundleFactory {
 
-    private static final String PROPERTIES_EXT = ".properties";
+    /** プロパティファイルの拡張子 */
+    protected static final String PROPERTIES_EXT = ".properties";
 
-    private static final Object NOT_FOUND = new Object();
+    /** リソースバンドルのキャッシュ */
+    protected static Map<String, MessageResourceBundleFacade> cache =
+        newHashMap();
 
-    private static Map cache = new HashMap();
+    /** リソースバンドルのキャッシュ */
+    protected static Set<String> notFounds = newHashSet();
 
-    private static boolean initialized = false;
+    /** 初期化済みフラグ */
+    protected static boolean initialized = false;
 
     /**
      * {@link MessageResourceBundle}を返します。
@@ -48,7 +55,7 @@ public class MessageResourceBundleFactory {
      * @return {@link MessageResourceBundle}
      * @see #getBundle(String, Locale)
      */
-    public static MessageResourceBundle getBundle(String baseName) {
+    public static MessageResourceBundle getBundle(final String baseName) {
         return getBundle(baseName, Locale.getDefault());
     }
 
@@ -61,9 +68,10 @@ public class MessageResourceBundleFactory {
      * @throws ResourceNotFoundRuntimeException
      *             リソースが見つからなかった場合
      */
-    public static MessageResourceBundle getBundle(String baseName, Locale locale)
-            throws ResourceNotFoundRuntimeException {
-        MessageResourceBundle bundle = getNullableBundle(baseName, locale);
+    public static MessageResourceBundle getBundle(final String baseName,
+            final Locale locale) throws ResourceNotFoundRuntimeException {
+        final MessageResourceBundle bundle =
+            getNullableBundle(baseName, locale);
         if (bundle != null) {
             return bundle;
         }
@@ -77,7 +85,7 @@ public class MessageResourceBundleFactory {
      * @return {@link MessageResourceBundle}
      * @see #getNullableBundle(String, Locale)
      */
-    public static MessageResourceBundle getNullableBundle(String baseName) {
+    public static MessageResourceBundle getNullableBundle(final String baseName) {
         return getNullableBundle(baseName, Locale.getDefault());
     }
 
@@ -88,32 +96,27 @@ public class MessageResourceBundleFactory {
      * @param locale
      * @return {@link MessageResourceBundle}
      */
-    public static MessageResourceBundle getNullableBundle(String baseName,
-            Locale locale) {
+    public static MessageResourceBundle getNullableBundle(
+            final String baseName, final Locale locale) {
         AssertionUtil.assertNotNull("baseName", baseName);
         AssertionUtil.assertNotNull("locale", locale);
 
-        String base = baseName.replace('.', '/');
+        final String base = baseName.replace('.', '/');
 
-        String[] bundleNames = calcurateBundleNames(base, locale);
-        MessageResourceBundleFacade parentFacade = null;
-        MessageResourceBundleFacade facade = null;
-        int length = bundleNames.length;
-        for (int i = 0; i < length; ++i) {
-            facade = loadFacade(bundleNames[i] + PROPERTIES_EXT);
-            if (parentFacade == null) {
-                parentFacade = facade;
-            } else if (facade != null) {
-                facade.setParent(parentFacade);
-                parentFacade = facade;
+        final String[] bundleNames = calcurateBundleNames(base, locale);
+        MessageResourceBundleFacade descendantFacade = null;
+        for (final String bundleName : bundleNames) {
+            MessageResourceBundleFacade facade =
+                loadFacade(bundleName + PROPERTIES_EXT);
+            if (facade != null) {
+                facade.setParent(descendantFacade);
+                descendantFacade = facade;
             }
         }
-
-        if (parentFacade != null) {
-            return parentFacade.getBundle();
-        } else {
-            return null;
+        if (descendantFacade != null) {
+            return descendantFacade.getBundle();
         }
+        return null;
     }
 
     /**
@@ -123,34 +126,34 @@ public class MessageResourceBundleFactory {
      *            パス
      * @return メッセージリソースバンドルファザード
      */
-    protected static MessageResourceBundleFacade loadFacade(String path) {
-        synchronized (cache) {
-            if (!initialized) {
-                DisposableUtil.add(new Disposable() {
-                    public void dispose() {
-                        clear();
-                        initialized = false;
-                    }
-                });
-                initialized = true;
-            }
-            Object cachedFacade = cache.get(path);
-            if (cachedFacade == NOT_FOUND) {
-                return null;
-            } else if (cachedFacade != null) {
-                return (MessageResourceBundleFacade) cachedFacade;
-            }
-            URL url = ResourceUtil.getResourceNoException(path);
-            if (url != null) {
-                MessageResourceBundleFacade facade = new MessageResourceBundleFacade(
-                        url);
-                cache.put(path, facade);
-                return facade;
-            } else {
-                cache.put(path, NOT_FOUND);
-            }
+    protected static synchronized MessageResourceBundleFacade loadFacade(
+            final String path) {
+        if (!initialized) {
+            DisposableUtil.add(new Disposable() {
+                @Override
+                public void dispose() {
+                    clear();
+                    initialized = false;
+                }
+            });
+            initialized = true;
         }
-        return null;
+        final MessageResourceBundleFacade cachedFacade = cache.get(path);
+        if (cachedFacade != null) {
+            return cachedFacade;
+        }
+        if (notFounds.contains(path)) {
+            return null;
+        }
+        final URL url = ResourceUtil.getResourceNoException(path);
+        if (url == null) {
+            notFounds.add(path);
+            return null;
+        }
+        final MessageResourceBundleFacade facade =
+            new MessageResourceBundleFacade(url);
+        cache.put(path, facade);
+        return facade;
     }
 
     /**
@@ -162,22 +165,22 @@ public class MessageResourceBundleFactory {
      *            リソースバンドルが必要なロケール
      * @return リソースバンドル名配列
      */
-    protected static String[] calcurateBundleNames(String baseName,
-            Locale locale) {
+    protected static String[] calcurateBundleNames(final String baseName,
+            final Locale locale) {
         int length = 1;
-        boolean l = locale.getLanguage().length() > 0;
+        final boolean l = locale.getLanguage().length() > 0;
         if (l) {
             length++;
         }
-        boolean c = locale.getCountry().length() > 0;
+        final boolean c = locale.getCountry().length() > 0;
         if (c) {
             length++;
         }
-        boolean v = locale.getVariant().length() > 0;
+        final boolean v = locale.getVariant().length() > 0;
         if (v) {
             length++;
         }
-        String[] result = new String[length];
+        final String[] result = new String[length];
         int index = 0;
         result[index++] = baseName;
 
@@ -185,9 +188,10 @@ public class MessageResourceBundleFactory {
             return result;
         }
 
-        StringBuffer buffer = new StringBuffer(baseName);
-        buffer.append('_');
-        buffer.append(locale.getLanguage());
+        final StringBuilder buffer =
+            new StringBuilder(baseName)
+                .append('_')
+                .append(locale.getLanguage());
         if (l) {
             result[index++] = new String(buffer);
         }
@@ -195,8 +199,7 @@ public class MessageResourceBundleFactory {
         if (!(c || v)) {
             return result;
         }
-        buffer.append('_');
-        buffer.append(locale.getCountry());
+        buffer.append('_').append(locale.getCountry());
         if (c) {
             result[index++] = new String(buffer);
         }
@@ -204,8 +207,7 @@ public class MessageResourceBundleFactory {
         if (!v) {
             return result;
         }
-        buffer.append('_');
-        buffer.append(locale.getVariant());
+        buffer.append('_').append(locale.getVariant());
         result[index++] = new String(buffer);
 
         return result;

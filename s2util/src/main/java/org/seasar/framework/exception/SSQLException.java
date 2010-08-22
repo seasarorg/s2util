@@ -17,7 +17,7 @@ package org.seasar.framework.exception;
 
 import java.sql.SQLException;
 
-import org.seasar.framework.message.MessageFormatter;
+import org.seasar.util.message.MessageFormatter;
 
 /**
  * Seasar2用の{@link SQLException}です。

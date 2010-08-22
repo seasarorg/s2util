@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.util.AssertionUtil;
 import org.seasar.util.io.FileInputStreamUtil;
 import org.seasar.util.io.InputStreamUtil;
@@ -37,27 +36,59 @@ import org.seasar.util.io.URLUtil;
  */
 public class MessageResourceBundleFacade {
 
-    private File file;
+    /** Eagerモード */
+    protected static volatile boolean eager;
 
-    private long lastModified;
+    /** プロパティファイル */
+    protected File file;
 
-    private MessageResourceBundle bundle;
+    /** プロパティファイルの最終更新時刻 */
+    protected long lastModified;
 
-    private MessageResourceBundleFacade parent;
+    /** リソースバンドル */
+    protected MessageResourceBundle bundle;
+
+    /** 親のリソースバンドル */
+    protected volatile MessageResourceBundleFacade parent;
 
     /**
      * {@link MessageResourceBundleFacade}を作成します。
      * 
      * @param url
      */
-    public MessageResourceBundleFacade(URL url) {
+    public MessageResourceBundleFacade(final URL url) {
         setup(url);
+    }
+
+    /**
+     * 
+     */
+    protected MessageResourceBundleFacade() {
+    }
+
+    /**
+     * Eagerモードであれば{@literal true}を返します。
+     * 
+     * @return Eagerモードであれば{@literal true}
+     */
+    public static boolean isEager() {
+        return eager;
+    }
+
+    /**
+     * Eagerモードであれば{@literal true}に設定します。
+     * 
+     * @param eager
+     *            Eagerモードであれば{@literal true}
+     */
+    public static void setEager(final boolean eager) {
+        MessageResourceBundleFacade.eager = eager;
     }
 
     /**
      * {@link MessageResourceBundle}を返します。
      * 
-     * @return
+     * @return {@link MessageResourceBundle}
      */
     public synchronized MessageResourceBundle getBundle() {
         if (isModified()) {
@@ -70,20 +101,21 @@ public class MessageResourceBundleFacade {
     }
 
     /**
-     * 親を返します。
+     * 親のリソースバンドルを返します。
      * 
-     * @return 親
+     * @return 親のリソースバンドル
      */
-    public synchronized MessageResourceBundleFacade getParent() {
+    public MessageResourceBundleFacade getParent() {
         return parent;
     }
 
     /**
-     * 親を設定します。
+     * 親のリソースバンドルを設定します。
      * 
      * @param parent
+     *            親のリソースバンドル
      */
-    public synchronized void setParent(MessageResourceBundleFacade parent) {
+    public void setParent(final MessageResourceBundleFacade parent) {
         this.parent = parent;
     }
 
@@ -105,9 +137,9 @@ public class MessageResourceBundleFacade {
      * @param url
      *            URL
      */
-    protected void setup(URL url) {
+    protected void setup(final URL url) {
         AssertionUtil.assertNotNull("url", url);
-        if (HotdeployUtil.isHotdeploy()) {
+        if (isEager()) {
             file = ResourceUtil.getFile(url);
         }
         if (file != null) {
@@ -128,7 +160,7 @@ public class MessageResourceBundleFacade {
      *            ファイル
      * @return メッセージリソースバンドル
      */
-    protected static MessageResourceBundle createBundle(File file) {
+    protected static MessageResourceBundle createBundle(final File file) {
         return new MessageResourceBundleImpl(createProperties(file));
     }
 
@@ -139,7 +171,7 @@ public class MessageResourceBundleFacade {
      *            URL
      * @return メッセージリソースバンドル
      */
-    protected static MessageResourceBundle createBundle(URL url) {
+    protected static MessageResourceBundle createBundle(final URL url) {
         return new MessageResourceBundleImpl(createProperties(url));
     }
 
@@ -150,7 +182,7 @@ public class MessageResourceBundleFacade {
      *            ファイル
      * @return {@link Properties}
      */
-    protected static Properties createProperties(File file) {
+    protected static Properties createProperties(final File file) {
         return createProperties(FileInputStreamUtil.create(file));
     }
 
@@ -161,7 +193,7 @@ public class MessageResourceBundleFacade {
      *            URL
      * @return {@link Properties}
      */
-    protected static Properties createProperties(URL url) {
+    protected static Properties createProperties(final URL url) {
         return createProperties(URLUtil.openStream(url));
     }
 
@@ -178,11 +210,12 @@ public class MessageResourceBundleFacade {
             is = new BufferedInputStream(is);
         }
         try {
-            Properties properties = new Properties();
+            final Properties properties = new Properties();
             PropertiesUtil.load(properties, is);
             return properties;
         } finally {
             InputStreamUtil.close(is);
         }
     }
+
 }

@@ -13,33 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author shot
  * @author higa
  */
-public class MessageResourceBundleImplTest extends TestCase {
+public class MessageResourceBundleImplTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testAll() throws Exception {
         Properties parentProp = new Properties();
         parentProp.setProperty("b", "B");
-        MessageResourceBundleImpl parent = new MessageResourceBundleImpl(parentProp);
+        MessageResourceBundleImpl parent =
+            new MessageResourceBundleImpl(parentProp);
 
         Properties prop = new Properties();
         prop.setProperty("a", "A");
-        MessageResourceBundleImpl bundle = new MessageResourceBundleImpl(prop, parent);
+        MessageResourceBundleImpl bundle =
+            new MessageResourceBundleImpl(prop, parent);
 
-        assertEquals("A", bundle.get("a"));
-        assertEquals("B", bundle.get("b"));
-        assertEquals(null, bundle.get("c"));
-        assertEquals(null, bundle.get(null));
+        assertThat(bundle.get("a"), is("A"));
+        assertThat(bundle.get("b"), is("B"));
+        assertThat(bundle.get("c"), is(nullValue()));
+        assertThat(bundle.get(null), is(nullValue()));
     }
+
 }

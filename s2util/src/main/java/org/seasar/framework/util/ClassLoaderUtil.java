@@ -23,7 +23,7 @@ import java.util.Iterator;
 
 import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.message.MessageFormatter;
+import org.seasar.util.message.MessageFormatter;
 
 /**
  * {@link ClassLoader}を扱うためのユーティリティ・クラスです。

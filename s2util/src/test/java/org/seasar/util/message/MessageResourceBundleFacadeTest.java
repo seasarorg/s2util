@@ -13,115 +13,121 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
+import org.junit.Test;
 import org.seasar.util.io.ResourceUtil;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author shot
  * @author higa
  */
-public class MessageResourceBundleFacadeTest extends TestCase {
+public class MessageResourceBundleFacadeTest {
 
-    private static final String PATH = "SSRMessages.properties";
+    private static final String PATH = "MSGMessages.properties";
 
-    private static final String PATH2 = "SSRMessages_ja.properties";
+    private static final String PATH2 = "MSGMessages_ja.properties";
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateProperties_url() throws Exception {
         URL url = ResourceUtil.getResource(PATH);
         Properties props = MessageResourceBundleFacade.createProperties(url);
-        assertNotNull(props);
-        assertEquals("{0} not found", props.get("ESSR0001"));
+        assertThat(props, is(notNullValue()));
+        assertThat(props.getProperty("EMSG0001"), is("{0} not found"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateProperties_file() throws Exception {
         File file = ResourceUtil.getResourceAsFile(PATH);
         Properties props = MessageResourceBundleFacade.createProperties(file);
-        assertNotNull(props);
-        assertEquals("{0} not found", props.get("ESSR0001"));
+        assertThat(props, is(notNullValue()));
+        assertThat(props.getProperty("EMSG0001"), is("{0} not found"));
 
         file = ResourceUtil.getResourceAsFile(PATH2);
         props = MessageResourceBundleFacade.createProperties(file);
-        System.out.println(props.get("ESSR0001"));
-        assertEquals("{0}が見つかりません", props.get("ESSR0001"));
+        System.out.println(props.get("EMSG0001"));
+        assertThat(props.getProperty("EMSG0001"), is("{0}が見つかりません"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testIsModified_hot() throws Exception {
-        HotdeployUtil.setHotdeploy(true);
+        MessageResourceBundleFacade.setEager(true);
         try {
             URL url = ResourceUtil.getResource(PATH);
             File file = ResourceUtil.getFile(url);
-            MessageResourceBundleFacade facade = new MessageResourceBundleFacade(
-                    url);
+            MessageResourceBundleFacade facade =
+                new MessageResourceBundleFacade(url);
 
-            assertFalse(facade.isModified());
+            assertThat(facade.isModified(), is(not(true)));
             Thread.sleep(500);
             file.setLastModified(new Date().getTime());
-            assertTrue(facade.isModified());
+            assertThat(facade.isModified(), is(true));
         } finally {
-            HotdeployUtil.clearHotdeploy();
+            MessageResourceBundleFacade.setEager(false);
         }
-
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testIsModified_cool() throws Exception {
         URL url = ResourceUtil.getResource(PATH);
         File file = ResourceUtil.getFile(url);
-        MessageResourceBundleFacade facade = new MessageResourceBundleFacade(
-                url);
+        MessageResourceBundleFacade facade =
+            new MessageResourceBundleFacade(url);
 
-        assertFalse(facade.isModified());
+        assertThat(facade.isModified(), is(not(true)));
         Thread.sleep(500);
         file.setLastModified(new Date().getTime());
-        assertFalse(facade.isModified());
-
+        assertThat(facade.isModified(), is(not(true)));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testSetup() throws Exception {
         URL url = ResourceUtil.getResource(PATH);
-        MessageResourceBundleFacade facade = new MessageResourceBundleFacade(
-                url);
+        MessageResourceBundleFacade facade =
+            new MessageResourceBundleFacade(url);
         MessageResourceBundle bundle = facade.getBundle();
-        assertNotNull(bundle);
-        assertEquals("{0} not found", bundle.get("ESSR0001"));
+        assertThat(bundle, is(notNullValue()));
+        assertThat(bundle.get("EMSG0001"), is("{0} not found"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testParent() throws Exception {
         URL url = ResourceUtil.getResource(PATH2);
-        MessageResourceBundleFacade facade = new MessageResourceBundleFacade(
-                url);
+        MessageResourceBundleFacade facade =
+            new MessageResourceBundleFacade(url);
         URL parentUrl = ResourceUtil.getResource(PATH);
-        MessageResourceBundleFacade parent = new MessageResourceBundleFacade(
-                parentUrl);
+        MessageResourceBundleFacade parent =
+            new MessageResourceBundleFacade(parentUrl);
         facade.setParent(parent);
         MessageResourceBundle bundle = facade.getBundle();
-        assertNotNull(bundle);
-        assertNotNull(bundle.getParent());
+        assertThat(bundle, is(notNullValue()));
+        assertThat(bundle.getParent(), is(notNullValue()));
     }
+
 }

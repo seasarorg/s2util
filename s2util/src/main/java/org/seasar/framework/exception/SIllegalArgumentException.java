@@ -15,7 +15,7 @@
  */
 package org.seasar.framework.exception;
 
-import org.seasar.framework.message.MessageFormatter;
+import org.seasar.util.message.MessageFormatter;
 
 /**
  * Seasar2用の{@link IllegalArgumentException}です。

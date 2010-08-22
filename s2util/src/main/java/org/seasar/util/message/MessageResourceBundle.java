@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 /**
  * プロパティファイルに登録されているメッセージを扱うためのインターフェースです。

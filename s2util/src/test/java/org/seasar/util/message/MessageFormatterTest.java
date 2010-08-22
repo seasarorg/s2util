@@ -13,68 +13,87 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- *
  */
-public class MessageFormatterTest extends TestCase {
+public class MessageFormatterTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetMessage() throws Exception {
-        String s = MessageFormatter.getMessage("ESSR0304", null);
+        String s = MessageFormatter.getMessage("EMSG0000");
         System.out.println(s);
-        assertNotNull("1", s);
+        assertThat(s, is("[EMSG0000]test"));
     }
 
     /**
      * @throws Exception
      */
-    public void testGetMessageIllegalSystem() throws Exception {
-        String s = MessageFormatter.getMessage("EXXX0304", null);
+    @Test
+    public void testGetMessageWithArgs() throws Exception {
+        String s = MessageFormatter.getMessage("EMSG0001", "hoge");
         System.out.println(s);
-        assertNotNull("1", s);
+        assertThat(s, is("[EMSG0001]hogeが見つかりません"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
+    public void testGetMessageIllegalSystemName() throws Exception {
+        String s = MessageFormatter.getMessage("EXXX0001");
+        System.out.println(s);
+        assertThat(s, is("[EXXX0001]"));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testGetMessageIllegalMessageCode() throws Exception {
-        String s = MessageFormatter.getMessage("ESSRxxxx", null);
+        String s = MessageFormatter.getMessage("EMSGxxxx");
         System.out.println(s);
-        assertNotNull("1", s);
+        assertThat(s, is("[EMSGxxxx]"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetMessageIllegalMessageCode2() throws Exception {
-        String s = MessageFormatter.getMessage(null, null);
+        String s = MessageFormatter.getMessage(null);
         System.out.println(s);
-        assertNotNull("1", s);
+        assertThat(s, is("[]"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetMessageIllegalArgs() throws Exception {
-        String s = MessageFormatter.getMessage("ESSR0007", null);
+        String s = MessageFormatter.getMessage("EMSG0001");
         System.out.println(s);
-        assertNotNull("1", s);
+        assertThat(s, is("[EMSG0001]{0}が見つかりません"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetMessageLongForm() throws Exception {
-        String s = MessageFormatter.getMessage("ES2Framework0001", null);
+        String s = MessageFormatter.getMessage("EMsgLongSystemName0001");
         System.out.println(s);
-        assertNotNull(s);
-        assertEquals("[ES2Framework0001]Hoge Hoge", s);
+        assertThat(s, is(notNullValue()));
+        assertThat(s, is(equalTo("[EMsgLongSystemName0001]Hoge Hoge")));
     }
+
 }

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.message;
+package org.seasar.util.message;
 
 import java.util.Properties;
 
@@ -24,16 +24,18 @@ import java.util.Properties;
  */
 public class MessageResourceBundleImpl implements MessageResourceBundle {
 
-    private Properties prop;
+    /** プロパティ */
+    protected Properties prop;
 
-    private MessageResourceBundle parent;
+    /** 親のリソースバンドル */
+    protected MessageResourceBundle parent;
 
     /**
      * {@link MessageResourceBundleImpl}を作成します。
      * 
      * @param prop
      */
-    public MessageResourceBundleImpl(Properties prop) {
+    public MessageResourceBundleImpl(final Properties prop) {
         this.prop = prop;
     }
 
@@ -43,13 +45,14 @@ public class MessageResourceBundleImpl implements MessageResourceBundle {
      * @param prop
      * @param parent
      */
-    public MessageResourceBundleImpl(Properties prop,
-            MessageResourceBundle parent) {
+    public MessageResourceBundleImpl(final Properties prop,
+            final MessageResourceBundle parent) {
         this(prop);
         setParent(parent);
     }
 
-    public String get(String key) {
+    @Override
+    public String get(final String key) {
         if (key == null) {
             return null;
         }
@@ -59,11 +62,14 @@ public class MessageResourceBundleImpl implements MessageResourceBundle {
         return (parent != null) ? parent.get(key) : null;
     }
 
+    @Override
     public MessageResourceBundle getParent() {
         return parent;
     }
 
-    public void setParent(MessageResourceBundle parent) {
+    @Override
+    public void setParent(final MessageResourceBundle parent) {
         this.parent = parent;
     }
+
 }
