@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -22,32 +22,56 @@ import java.util.Iterator;
  * {@link Enumeration}を {@link Iterator}にするためのアダブタです。
  * 
  * @author shot
+ * @param <T>
+ *            列挙する要素の型
  */
-public class EnumerationIterator implements Iterator {
+public class EnumerationIterator<T> implements Iterator<T> {
 
-    private Enumeration enumeration = null;
+    private Enumeration<T> enumeration = null;
 
     /**
-     * {@link EnumerationIterator}を作成します。
+     * for each構文で使用するために{@link Enumeration}をラップした{@link Iterable}を返します。
+     * 
+     * @param <T>
+     *            列挙する要素の型
+     * @param e
+     *            {@link Enumeration}
+     * @return {@link Enumeration}をラップした{@link Iterable}
+     */
+    public static <T> Iterable<T> iterable(final Enumeration<T> e) {
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new EnumerationIterator<T>(e);
+            }
+        };
+    }
+
+    /**
+     * {@link Enumeration}をラップした{@link Iterator}のインスタンスを構築します。
      * 
      * @param e
+     *            {@link Enumeration}
      */
-    public EnumerationIterator(final Enumeration e) {
+    public EnumerationIterator(final Enumeration<T> e) {
         if (e == null) {
             throw new NullPointerException("Enumeration");
         }
         this.enumeration = e;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("remove");
     }
 
+    @Override
     public boolean hasNext() {
         return enumeration.hasMoreElements();
     }
 
-    public Object next() {
+    @Override
+    public T next() {
         return enumeration.nextElement();
     }
 

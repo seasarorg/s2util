@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.collection.EnumerationIterator;
 import org.seasar.util.message.MessageFormatter;
 
 /**
