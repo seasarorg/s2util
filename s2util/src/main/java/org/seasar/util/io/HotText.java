@@ -13,13 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.File;
 
 import org.seasar.framework.exception.EmptyRuntimeException;
-import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.io.TextUtil;
 
 /**
  * ファイルをHOTに読み込むクラスです。

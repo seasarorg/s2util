@@ -13,7 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
+
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.StringUtil;
+import org.seasar.util.io.HotText;
 
 /**
  * @author higa
