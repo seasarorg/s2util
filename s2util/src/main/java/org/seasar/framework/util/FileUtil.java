@@ -25,6 +25,7 @@ import java.net.URL;
 
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.util.io.FileInputStreamUtil;
+import org.seasar.util.io.FileOutputStreamUtil;
 
 /**
  * {@link File}を扱うユーティリティ・クラスです。
