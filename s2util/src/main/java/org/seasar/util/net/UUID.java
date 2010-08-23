@@ -32,10 +32,10 @@ public class UUID {
     private static final byte[] DEFAULT_ADDRESS = new byte[] { (byte) 127,
         (byte) 0, (byte) 0, (byte) 1 };
 
-    private static SecureRandom _random = new SecureRandom();
+    private static SecureRandom RANDOM = new SecureRandom();
 
-    private static String _base = StringUtil.toHex(getAddress())
-        + StringUtil.toHex(System.identityHashCode(_random));
+    private static String BASE = StringUtil.toHex(getAddress())
+        + StringUtil.toHex(System.identityHashCode(RANDOM));
 
     /**
      * インスタンスを構築します。
@@ -46,14 +46,14 @@ public class UUID {
     /**
      * UUIDを作成します。
      * 
-     * @return
+     * @return UUIDの文字列
      */
     public static String create() {
-        StringBuffer buf = new StringBuffer(_base.length() * 2);
-        buf.append(_base);
+        StringBuffer buf = new StringBuffer(BASE.length() * 2);
+        buf.append(BASE);
         int lowTime = (int) (System.currentTimeMillis() >> 32);
         StringUtil.appendHex(buf, lowTime);
-        StringUtil.appendHex(buf, _random.nextInt());
+        StringUtil.appendHex(buf, RANDOM.nextInt());
         return buf.toString();
     }
 
