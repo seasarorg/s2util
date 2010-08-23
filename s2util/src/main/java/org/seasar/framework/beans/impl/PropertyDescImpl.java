@@ -36,11 +36,11 @@ import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ModifierUtil;
 import org.seasar.framework.util.NumberConversionUtil;
 import org.seasar.framework.util.SqlDateConversionUtil;
-import org.seasar.framework.util.TimeConversionUtil;
-import org.seasar.framework.util.TimestampConversionUtil;
 import org.seasar.util.beans.IllegalPropertyRuntimeException;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
+import org.seasar.util.sql.TimeConversionUtil;
+import org.seasar.util.sql.TimestampConversionUtil;
 
 /**
  * {@link PropertyDesc}の実装クラスです。

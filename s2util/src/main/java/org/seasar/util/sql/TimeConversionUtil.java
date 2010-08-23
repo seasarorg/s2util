@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.sql;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.seasar.framework.util.StringUtil;
 import org.seasar.util.exception.ParseRuntimeException;
 
 /**
@@ -165,7 +166,7 @@ public class TimeConversionUtil {
      * @return 短いパターン
      */
     public static String convertShortPattern(String pattern) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < pattern.length(); ++i) {
             char c = pattern.charAt(i);
             if (c == 'h' || c == 'H' || c == 'm' || c == 's') {

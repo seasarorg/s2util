@@ -13,9 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.sql;
 
 import java.util.Locale;
+
+import org.seasar.util.sql.TimestampConversionUtil;
 
 import junit.framework.TestCase;
 

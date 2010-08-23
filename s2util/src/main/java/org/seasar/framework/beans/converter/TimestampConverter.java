@@ -20,8 +20,8 @@ import java.util.Date;
 import org.seasar.framework.beans.Converter;
 import org.seasar.framework.util.StringConversionUtil;
 import org.seasar.framework.util.StringUtil;
-import org.seasar.framework.util.TimestampConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.sql.TimestampConversionUtil;
 
 /**
  * 日時用のコンバータです。
