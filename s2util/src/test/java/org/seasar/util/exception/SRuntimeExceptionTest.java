@@ -31,8 +31,8 @@ public class SRuntimeExceptionTest {
      */
     @Test
     public void testSeasarRuntimeException() throws Exception {
-        SRuntimeException ex = new SRuntimeException("ESSR0001", "hoge");
-        assertThat(ex.getMessageCode(), is("ESSR0001"));
+        SRuntimeException ex = new SRuntimeException("EUTL0001", "hoge");
+        assertThat(ex.getMessageCode(), is("EUTL0001"));
         assertThat(ex.getArgs().length, is(1));
         assertThat(ex.getArgs()[0], is((Object) "hoge"));
         System.out.println(ex.getMessage());
@@ -45,7 +45,7 @@ public class SRuntimeExceptionTest {
     public void testGetCause() throws Exception {
         Throwable t = new NullPointerException("test");
         SRuntimeException ex =
-            new SRuntimeException("ESSR0017", t).initCause(t);
+            new SRuntimeException("EUTL0017", t).initCause(t);
         assertThat(ex.getCause(), is(t));
         ex.printStackTrace();
     }

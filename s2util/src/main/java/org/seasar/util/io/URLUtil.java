@@ -174,7 +174,7 @@ public class URLUtil {
             final String path = URLDecoder.decode(fileUrl.getPath(), "UTF-8");
             return new File(path).getAbsoluteFile();
         } catch (final Exception e) {
-            throw new SRuntimeException("ESSR0091", fileUrl).initCause(e);
+            throw new SRuntimeException("EUTL0091", fileUrl).initCause(e);
         }
     }
 

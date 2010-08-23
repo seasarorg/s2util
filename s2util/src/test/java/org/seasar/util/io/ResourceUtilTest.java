@@ -97,7 +97,7 @@ public class ResourceUtilTest extends TestCase {
      * @throws Exception
      */
     public void testIsExist() throws Exception {
-        assertEquals("1", true, ResourceUtil.isExist("SSRMessages.properties"));
+        assertEquals("1", true, ResourceUtil.isExist("UTLMessages.properties"));
         assertEquals("2", false, ResourceUtil.isExist("hoge"));
     }
 
