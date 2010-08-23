@@ -38,6 +38,8 @@ import org.seasar.util.io.URLUtil;
 import org.seasar.util.io.ClassTraversal.ClassHandler;
 import org.seasar.util.io.ResourceTraversal.ResourceHandler;
 import org.seasar.util.log.Logger;
+import org.seasar.util.zip.ZipFileUtil;
+import org.seasar.util.zip.ZipInputStreamUtil;
 
 /**
  * ファイルシステム上やJarファイル中に展開されているリソースの集まりを扱うユーティリティクラスです。
