@@ -19,8 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.seasar.framework.exception.IllegalAccessRuntimeException;
-import org.seasar.framework.exception.InvocationTargetRuntimeException;
+import org.seasar.util.exception.IllegalAccessRuntimeException;
+import org.seasar.util.exception.InvocationTargetRuntimeException;
 
 /**
  * {@link Method}用のユーティリティクラスです。

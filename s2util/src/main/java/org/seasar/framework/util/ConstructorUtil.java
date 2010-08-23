@@ -18,9 +18,9 @@ package org.seasar.framework.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import org.seasar.framework.exception.IllegalAccessRuntimeException;
-import org.seasar.framework.exception.InstantiationRuntimeException;
-import org.seasar.framework.exception.InvocationTargetRuntimeException;
+import org.seasar.util.exception.IllegalAccessRuntimeException;
+import org.seasar.util.exception.InstantiationRuntimeException;
+import org.seasar.util.exception.InvocationTargetRuntimeException;
 
 /**
  * {@link Constructor}用のユーティリティクラスです。

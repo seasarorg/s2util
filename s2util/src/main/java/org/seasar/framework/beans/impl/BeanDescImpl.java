@@ -37,14 +37,8 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.StringMemberValue;
 
 import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.ConstructorNotFoundRuntimeException;
-import org.seasar.framework.beans.FieldNotFoundRuntimeException;
-import org.seasar.framework.beans.IllegalDiiguRuntimeException;
-import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.PropertyNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
-import org.seasar.framework.exception.EmptyRuntimeException;
 import org.seasar.framework.util.CaseInsensitiveMap;
 import org.seasar.framework.util.ClassPoolUtil;
 import org.seasar.framework.util.ClassUtil;
@@ -57,7 +51,13 @@ import org.seasar.framework.util.LongConversionUtil;
 import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ShortConversionUtil;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.util.beans.ConstructorNotFoundRuntimeException;
+import org.seasar.util.beans.FieldNotFoundRuntimeException;
+import org.seasar.util.beans.IllegalDiiguRuntimeException;
+import org.seasar.util.beans.MethodNotFoundRuntimeException;
+import org.seasar.util.beans.PropertyNotFoundRuntimeException;
 import org.seasar.util.collection.ArrayMap;
+import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.log.Logger;
 
 /**

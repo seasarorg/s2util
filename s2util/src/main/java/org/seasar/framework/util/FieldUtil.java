@@ -19,8 +19,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.seasar.framework.exception.IllegalAccessRuntimeException;
-import org.seasar.framework.exception.SIllegalArgumentException;
+import org.seasar.util.exception.IllegalAccessRuntimeException;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 /**
  * {@link Field}用のユーティリティクラスです。

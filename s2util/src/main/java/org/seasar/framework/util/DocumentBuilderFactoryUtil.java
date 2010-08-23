@@ -19,7 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.seasar.framework.exception.ParserConfigurationRuntimeException;
+import org.seasar.util.exception.ParserConfigurationRuntimeException;
 
 /**
  * {@link DocumentBuilderFactory}の用のユーティリティクラスです。

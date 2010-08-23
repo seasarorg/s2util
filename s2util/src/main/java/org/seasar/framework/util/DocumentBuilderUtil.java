@@ -20,8 +20,8 @@ import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.exception.SAXRuntimeException;
+import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SAXRuntimeException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

@@ -20,7 +20,7 @@ import java.util.Hashtable;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.seasar.framework.exception.NamingRuntimeException;
+import org.seasar.util.exception.NamingRuntimeException;
 
 /**
  * {@link javax.naming.InitialContext 初期コンテキスト}を扱うためのユーティリティ・クラスです。
@@ -39,7 +39,7 @@ public class InitialContextUtil {
      * 初期コンテキストを作成して返します。
      * 
      * @return 初期コンテキスト
-     * @throws org.seasar.framework.exception.NamingRuntimeException
+     * @throws org.seasar.util.exception.NamingRuntimeException
      *             初期コンテキストを作成できなかった場合にスローされます
      */
     public static InitialContext create() {

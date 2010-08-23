@@ -22,7 +22,7 @@ import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.seasar.framework.exception.SAXRuntimeException;
+import org.seasar.util.exception.SAXRuntimeException;
 import org.xml.sax.SAXException;
 
 /**

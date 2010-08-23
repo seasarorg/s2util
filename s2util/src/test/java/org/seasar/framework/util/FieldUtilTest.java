@@ -20,7 +20,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.exception.SIllegalArgumentException;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 /**
  * @author y-komori

@@ -18,7 +18,7 @@ package org.seasar.util.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * {@link OutputStream}用のユーティリティクラスです。

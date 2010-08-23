@@ -24,12 +24,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.IllegalPropertyRuntimeException;
 import org.seasar.framework.beans.ParameterizedClassDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
-import org.seasar.framework.exception.EmptyRuntimeException;
-import org.seasar.framework.exception.SIllegalArgumentException;
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.framework.util.ConstructorUtil;
@@ -41,6 +38,9 @@ import org.seasar.framework.util.NumberConversionUtil;
 import org.seasar.framework.util.SqlDateConversionUtil;
 import org.seasar.framework.util.TimeConversionUtil;
 import org.seasar.framework.util.TimestampConversionUtil;
+import org.seasar.util.beans.IllegalPropertyRuntimeException;
+import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 /**
  * {@link PropertyDesc}の実装クラスです。

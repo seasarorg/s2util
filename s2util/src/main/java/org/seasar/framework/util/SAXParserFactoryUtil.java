@@ -21,8 +21,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.seasar.framework.exception.ParserConfigurationRuntimeException;
-import org.seasar.framework.exception.SAXRuntimeException;
+import org.seasar.util.exception.ParserConfigurationRuntimeException;
+import org.seasar.util.exception.SAXRuntimeException;
 import org.xml.sax.SAXException;
 
 /**

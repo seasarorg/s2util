@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * {@link JarInputStream}用のユーティリティクラスです。

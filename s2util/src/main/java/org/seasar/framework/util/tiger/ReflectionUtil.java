@@ -21,13 +21,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import org.seasar.framework.exception.ClassNotFoundRuntimeException;
-import org.seasar.framework.exception.IllegalAccessRuntimeException;
-import org.seasar.framework.exception.InstantiationRuntimeException;
-import org.seasar.framework.exception.InvocationTargetRuntimeException;
-import org.seasar.framework.exception.NoSuchConstructorRuntimeException;
-import org.seasar.framework.exception.NoSuchFieldRuntimeException;
-import org.seasar.framework.exception.NoSuchMethodRuntimeException;
+import org.seasar.util.exception.ClassNotFoundRuntimeException;
+import org.seasar.util.exception.IllegalAccessRuntimeException;
+import org.seasar.util.exception.InstantiationRuntimeException;
+import org.seasar.util.exception.InvocationTargetRuntimeException;
+import org.seasar.util.exception.NoSuchConstructorRuntimeException;
+import org.seasar.util.exception.NoSuchFieldRuntimeException;
+import org.seasar.util.exception.NoSuchMethodRuntimeException;
 
 /**
  * Java5のgenericsや可変長を活用する、リフレクションのためのユーティリティです。
@@ -149,7 +149,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes, e);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes).initCause(e);
         }
     }
 
@@ -173,7 +173,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getDeclaredConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes, e);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes).initCause(e);
         }
     }
 
@@ -194,7 +194,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getField(name);
         } catch (final NoSuchFieldException e) {
-            throw new NoSuchFieldRuntimeException(clazz, name, e);
+            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
         }
     }
 
@@ -215,7 +215,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getDeclaredField(name);
         } catch (final NoSuchFieldException e) {
-            throw new NoSuchFieldRuntimeException(clazz, name, e);
+            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
         }
     }
 
@@ -238,7 +238,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchMethodRuntimeException(clazz, name, argTypes, e);
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes).initCause(e);
         }
     }
 
@@ -262,7 +262,7 @@ public abstract class ReflectionUtil {
         try {
             return clazz.getDeclaredMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchMethodRuntimeException(clazz, name, argTypes, e);
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes).initCause(e);
         }
     }
 

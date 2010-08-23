@@ -22,7 +22,7 @@ import java.net.URLClassLoader;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.exception.ResourceNotFoundRuntimeException;
+import org.seasar.util.exception.ResourceNotFoundRuntimeException;
 
 /**
  * @author higa

@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.seasar.framework.exception.ClassNotFoundRuntimeException;
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.ClassNotFoundRuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * オブジェクトをシリアライズするためのユーティリティです。

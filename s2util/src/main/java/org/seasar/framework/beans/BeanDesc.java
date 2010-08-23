@@ -19,6 +19,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.seasar.util.beans.ConstructorNotFoundRuntimeException;
+import org.seasar.util.beans.FieldNotFoundRuntimeException;
+import org.seasar.util.beans.IllegalDiiguRuntimeException;
+import org.seasar.util.beans.MethodNotFoundRuntimeException;
+import org.seasar.util.beans.PropertyNotFoundRuntimeException;
+
 /**
  * Bean(JavaBeans)を扱うためのインターフェースです。
  * 

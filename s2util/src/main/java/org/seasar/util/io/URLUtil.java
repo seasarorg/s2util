@@ -28,9 +28,9 @@ import java.util.Map;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.exception.SRuntimeException;
 import org.seasar.framework.util.FieldUtil;
+import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SRuntimeException;
 
 /**
  * {@link URL}を扱うユーティリティ・クラスです。
@@ -174,7 +174,7 @@ public class URLUtil {
             final String path = URLDecoder.decode(fileUrl.getPath(), "UTF-8");
             return new File(path).getAbsoluteFile();
         } catch (final Exception e) {
-            throw new SRuntimeException("ESSR0091", new Object[] { fileUrl }, e);
+            throw new SRuntimeException("ESSR0091", fileUrl).initCause(e);
         }
     }
 

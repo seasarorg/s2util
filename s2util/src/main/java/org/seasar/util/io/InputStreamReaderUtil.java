@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * {@link InputStreamReader}用のユーティリティクラスです。

@@ -24,10 +24,10 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.IllegalPropertyRuntimeException;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.impl.sub.MogeBean;
 import org.seasar.framework.beans.impl.sub.MogeBeanFactory;
+import org.seasar.util.beans.IllegalPropertyRuntimeException;
 
 /**
  * @author higa

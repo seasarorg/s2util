@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.util.jar.JarFile;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * {@link JarURLConnection}用のユーティリティクラスです。

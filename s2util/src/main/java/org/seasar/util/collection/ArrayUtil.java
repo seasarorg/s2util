@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.seasar.framework.exception.EmptyRuntimeException;
+import org.seasar.util.exception.EmptyRuntimeException;
 
 /**
  * 配列に対するユーティリティクラスです。

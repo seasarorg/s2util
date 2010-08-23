@@ -19,7 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.seasar.framework.exception.SQLRuntimeException;
+import org.seasar.util.exception.SQLRuntimeException;
 
 /**
  * {@link PreparedStatement}用のユーティリティクラスです。

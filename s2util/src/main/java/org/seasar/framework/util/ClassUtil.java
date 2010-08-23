@@ -25,12 +25,12 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 
-import org.seasar.framework.exception.ClassNotFoundRuntimeException;
-import org.seasar.framework.exception.IllegalAccessRuntimeException;
-import org.seasar.framework.exception.InstantiationRuntimeException;
-import org.seasar.framework.exception.NoSuchConstructorRuntimeException;
-import org.seasar.framework.exception.NoSuchFieldRuntimeException;
-import org.seasar.framework.exception.NoSuchMethodRuntimeException;
+import org.seasar.util.exception.ClassNotFoundRuntimeException;
+import org.seasar.util.exception.IllegalAccessRuntimeException;
+import org.seasar.util.exception.InstantiationRuntimeException;
+import org.seasar.util.exception.NoSuchConstructorRuntimeException;
+import org.seasar.util.exception.NoSuchFieldRuntimeException;
+import org.seasar.util.exception.NoSuchMethodRuntimeException;
 
 /**
  * {@link Class}用のユーティリティクラスです。
@@ -243,7 +243,7 @@ public class ClassUtil {
         try {
             return clazz.getConstructor(argTypes);
         } catch (NoSuchMethodException ex) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes, ex);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes).initCause(ex);
         }
     }
 
@@ -262,7 +262,7 @@ public class ClassUtil {
         try {
             return clazz.getDeclaredConstructor(argTypes);
         } catch (NoSuchMethodException ex) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes, ex);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes).initCause(ex);
         }
     }
 
@@ -283,8 +283,8 @@ public class ClassUtil {
         try {
             return clazz.getMethod(methodName, argTypes);
         } catch (NoSuchMethodException ex) {
-            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes,
-                    ex);
+            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes)
+                    .initCause(ex);
         }
     }
 
@@ -305,8 +305,8 @@ public class ClassUtil {
         try {
             return clazz.getDeclaredMethod(methodName, argTypes);
         } catch (NoSuchMethodException ex) {
-            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes,
-                    ex);
+            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes)
+                    .initCause(ex);
         }
     }
 
@@ -325,7 +325,7 @@ public class ClassUtil {
         try {
             return clazz.getField(fieldName);
         } catch (NoSuchFieldException ex) {
-            throw new NoSuchFieldRuntimeException(clazz, fieldName, ex);
+            throw new NoSuchFieldRuntimeException(clazz, fieldName).initCause(ex);
         }
     }
 
@@ -344,7 +344,7 @@ public class ClassUtil {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException ex) {
-            throw new NoSuchFieldRuntimeException(clazz, fieldName, ex);
+            throw new NoSuchFieldRuntimeException(clazz, fieldName).initCause(ex);
         }
     }
 

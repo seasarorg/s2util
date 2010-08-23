@@ -20,7 +20,7 @@ import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 
-import org.seasar.framework.exception.SystemRuntimeException;
+import org.seasar.util.exception.SystemRuntimeException;
 
 /**
  * {@link TransactionManager}用のユーティリティクラスです。

@@ -21,8 +21,8 @@ import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.xa.XAResource;
 
-import org.seasar.framework.exception.RollbackRuntimeException;
-import org.seasar.framework.exception.SystemRuntimeException;
+import org.seasar.util.exception.RollbackRuntimeException;
+import org.seasar.util.exception.SystemRuntimeException;
 
 /**
  * {@link Transaction}用のユーティリティクラスです。

@@ -18,10 +18,10 @@ package org.seasar.framework.beans.converter;
 import java.util.Date;
 
 import org.seasar.framework.beans.Converter;
-import org.seasar.framework.exception.EmptyRuntimeException;
 import org.seasar.framework.util.SqlDateConversionUtil;
 import org.seasar.framework.util.StringConversionUtil;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.util.exception.EmptyRuntimeException;
 
 /**
  * SQLの日付用のコンバータです。

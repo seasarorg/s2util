@@ -24,7 +24,7 @@ import java.net.URLConnection;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.FileUtil;
 import org.seasar.util.io.URLUtil;
 

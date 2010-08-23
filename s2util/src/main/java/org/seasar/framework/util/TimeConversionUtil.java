@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import org.seasar.framework.exception.ParseRuntimeException;
+import org.seasar.util.exception.ParseRuntimeException;
 
 /**
  * タイム用の変換ユーティリティです。

@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.IllegalDiiguRuntimeException;
-import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.util.beans.IllegalDiiguRuntimeException;
+import org.seasar.util.beans.MethodNotFoundRuntimeException;
 
 /**
  * @author higa

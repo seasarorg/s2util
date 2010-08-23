@@ -20,6 +20,8 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
+import org.seasar.util.beans.IllegalPropertyRuntimeException;
+
 /**
  * プロパティを扱うためのインターフェースです。
  * 

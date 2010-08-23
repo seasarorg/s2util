@@ -17,7 +17,7 @@ package org.seasar.util.io;
 
 import java.io.File;
 
-import org.seasar.framework.exception.EmptyRuntimeException;
+import org.seasar.util.exception.EmptyRuntimeException;
 
 /**
  * ファイルをHOTに読み込むクラスです。

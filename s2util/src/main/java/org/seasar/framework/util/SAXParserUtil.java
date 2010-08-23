@@ -19,8 +19,8 @@ import java.io.IOException;
 
 import javax.xml.parsers.SAXParser;
 
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.exception.SAXRuntimeException;
+import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SAXRuntimeException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;

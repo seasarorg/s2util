@@ -19,8 +19,8 @@ import java.lang.reflect.Field;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.exception.NoSuchConstructorRuntimeException;
-import org.seasar.framework.exception.NoSuchFieldRuntimeException;
+import org.seasar.util.exception.NoSuchConstructorRuntimeException;
+import org.seasar.util.exception.NoSuchFieldRuntimeException;
 
 /**
  * @author higa

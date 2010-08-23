@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.seasar.framework.exception.ParseRuntimeException;
+import org.seasar.util.exception.ParseRuntimeException;
 
 /**
  * {@link Date}用の変換ユーティリティです。

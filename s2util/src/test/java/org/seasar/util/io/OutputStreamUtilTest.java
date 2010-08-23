@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.exception.IORuntimeException;
+import org.seasar.util.exception.IORuntimeException;
 
 /**
  * @author shot
