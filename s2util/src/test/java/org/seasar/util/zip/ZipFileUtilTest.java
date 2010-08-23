@@ -21,8 +21,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
-import org.seasar.util.zip.ZipFileUtil;
-
 import junit.framework.TestCase;
 
 /**
@@ -34,22 +32,36 @@ public class ZipFileUtilTest extends TestCase {
      * @throws Exception
      */
     public void testToJarFilePath() throws Exception {
-        URL url = new URL(null, "zip:/Program Files/foo.zip!/",
+        URL url =
+            new URL(
+                null,
+                "zip:/Program Files/foo.zip!/",
                 new URLStreamHandler() {
+                    @Override
                     protected void parseURL(URL u, String spec, int start,
                             int limit) {
-                        setURL(u, "zip", null, 0, null, null,
-                                spec.substring(4), null, null);
+                        setURL(
+                            u,
+                            "zip",
+                            null,
+                            0,
+                            null,
+                            null,
+                            spec.substring(4),
+                            null,
+                            null);
                     }
 
+                    @Override
                     protected URLConnection openConnection(URL u)
                             throws IOException {
                         return null;
                     }
                 });
         String root = new File("/").getCanonicalPath();
-        assertEquals(root + "Program Files" + File.separator + "foo.zip",
-                ZipFileUtil.toZipFilePath(url));
+        assertEquals(
+            root + "Program Files" + File.separator + "foo.zip",
+            ZipFileUtil.toZipFilePath(url));
     }
 
 }
