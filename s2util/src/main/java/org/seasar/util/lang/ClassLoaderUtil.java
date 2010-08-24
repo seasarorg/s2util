@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -24,8 +24,6 @@ import java.util.Iterator;
 import org.seasar.util.collection.EnumerationIterator;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
 import org.seasar.util.exception.IORuntimeException;
-import org.seasar.util.lang.ClassUtil;
-import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.message.MessageFormatter;
 
 /**
@@ -35,38 +33,43 @@ import org.seasar.util.message.MessageFormatter;
  */
 public abstract class ClassLoaderUtil {
 
-    private static final Method findLoadedClassMethod = getFindLoadedClassMethod();
+    private static final Method findLoadedClassMethod =
+        getFindLoadedClassMethod();
 
     private static final Method defineClassMethod = getDefineClassMethod();
 
     private static final Method definePackageMethod = getDefinePackageMethod();
 
-    /**
-     * インスタンスを構築します。
-     */
-    protected ClassLoaderUtil() {
-    }
-
     private static Method getFindLoadedClassMethod() {
-        final Method method = ClassUtil.getDeclaredMethod(ClassLoader.class,
-                "findLoadedClass", new Class[] { String.class });
+        final Method method =
+            ClassUtil.getDeclaredMethod(
+                ClassLoader.class,
+                "findLoadedClass",
+                new Class[] { String.class });
         method.setAccessible(true);
         return method;
     }
 
     private static Method getDefineClassMethod() {
-        final Method method = ClassUtil.getDeclaredMethod(ClassLoader.class,
-                "defineClass", new Class[] { String.class, byte[].class,
-                        int.class, int.class });
+        final Method method =
+            ClassUtil
+                .getDeclaredMethod(
+                    ClassLoader.class,
+                    "defineClass",
+                    new Class[] { String.class, byte[].class, int.class,
+                        int.class });
         method.setAccessible(true);
         return method;
     }
 
     private static Method getDefinePackageMethod() {
-        final Method method = ClassUtil.getDeclaredMethod(ClassLoader.class,
-                "definePackage", new Class[] { String.class, String.class,
-                        String.class, String.class, String.class, String.class,
-                        String.class, URL.class });
+        final Method method =
+            ClassUtil.getDeclaredMethod(
+                ClassLoader.class,
+                "definePackage",
+                new Class[] { String.class, String.class, String.class,
+                    String.class, String.class, String.class, String.class,
+                    URL.class });
         method.setAccessible(true);
         return method;
     }
@@ -80,7 +83,7 @@ public abstract class ClassLoaderUtil {
      * <li>呼び出されたスレッドにコンテキスト・クラスローダが設定されている場合はそのコンテキスト・クラスローダ</li>
      * <li>ターゲット・クラスをロードしたクラスローダを取得できればそのクラスローダ</li>
      * <li>このクラスをロードしたクラスローダを取得できればそのクラスローダ</li>
-     * <li>システムを取得できればそのクラスローダ</li>
+     * <li>システムクラスローダを取得できればそのクラスローダ</li>
      * </ol>
      * <p>
      * ただし、ターゲット・クラスをロードしたクラスローダとこのクラスをロードしたクラスローダの両方が取得できた場合で、
@@ -94,16 +97,16 @@ public abstract class ClassLoaderUtil {
      * @throws IllegalStateException
      *             クラスローダを取得できなかった場合
      */
-    public static ClassLoader getClassLoader(final Class targetClass) {
-        final ClassLoader contextClassLoader = Thread.currentThread()
-                .getContextClassLoader();
+    public static ClassLoader getClassLoader(final Class<?> targetClass) {
+        final ClassLoader contextClassLoader =
+            Thread.currentThread().getContextClassLoader();
         if (contextClassLoader != null) {
             return contextClassLoader;
         }
 
         final ClassLoader targetClassLoader = targetClass.getClassLoader();
-        final ClassLoader thisClassLoader = ClassLoaderUtil.class
-                .getClassLoader();
+        final ClassLoader thisClassLoader =
+            ClassLoaderUtil.class.getClassLoader();
         if (targetClassLoader != null && thisClassLoader != null) {
             if (isAncestor(thisClassLoader, targetClassLoader)) {
                 return thisClassLoader;
@@ -117,14 +120,36 @@ public abstract class ClassLoaderUtil {
             return thisClassLoader;
         }
 
-        final ClassLoader systemClassLoader = ClassLoader
-                .getSystemClassLoader();
+        final ClassLoader systemClassLoader =
+            ClassLoader.getSystemClassLoader();
         if (systemClassLoader != null) {
             return systemClassLoader;
         }
 
-        throw new IllegalStateException(MessageFormatter.getMessage("ESSR0001",
-                new Object[] { "ClassLoader" }));
+        throw new IllegalStateException(MessageFormatter.getMessage(
+            "EUTL0001",
+            "ClassLoader"));
+    }
+
+    /**
+     * クラスローダ<code>other</code>がクラスローダ<code>cl</code>の祖先なら<code>true</code>
+     * を返します。
+     * 
+     * @param cl
+     *            クラスローダ
+     * @param other
+     *            クラスローダ
+     * @return クラスローダ<code>other</code>がクラスローダ<code>cl</code>の祖先なら
+     *         <code>true</code>
+     */
+    protected static boolean isAncestor(ClassLoader cl, final ClassLoader other) {
+        while (cl != null) {
+            if (cl == other) {
+                return true;
+            }
+            cl = cl.getParent();
+        }
+        return false;
     }
 
     /**
@@ -136,9 +161,10 @@ public abstract class ClassLoaderUtil {
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
-    public static Iterator getResources(final String name) {
-        return getResources(Thread.currentThread().getContextClassLoader(),
-                name);
+    public static Iterator<URL> getResources(final String name) {
+        return getResources(
+            Thread.currentThread().getContextClassLoader(),
+            name);
     }
 
     /**
@@ -152,7 +178,7 @@ public abstract class ClassLoaderUtil {
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
-    public static Iterator getResources(final Class targetClass,
+    public static Iterator<URL> getResources(final Class<?> targetClass,
             final String name) {
         return getResources(getClassLoader(targetClass), name);
     }
@@ -168,37 +194,18 @@ public abstract class ClassLoaderUtil {
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
-    public static Iterator getResources(final ClassLoader loader,
+    public static Iterator<URL> getResources(final ClassLoader loader,
             final String name) {
         try {
-            final Enumeration e = loader.getResources(name);
-            return new EnumerationIterator(e);
+            final Enumeration<URL> e = loader.getResources(name);
+            return new EnumerationIterator<URL>(e);
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
 
     /**
-     * クラスローダ<code>other</code>がクラスローダ<code>cl</code>の祖先なら<code>true</code>を返します。
-     * 
-     * @param cl
-     *            クラスローダ
-     * @param other
-     *            クラスローダ
-     * @return クラスローダ<code>other</code>がクラスローダ<code>cl</code>の祖先なら<code>true</code>
-     */
-    protected static boolean isAncestor(ClassLoader cl, final ClassLoader other) {
-        while (cl != null) {
-            if (cl == other) {
-                return true;
-            }
-            cl = cl.getParent();
-        }
-        return false;
-    }
-
-    /**
-     * 指定のクラスローダまたはその祖先の暮らすローダが、 このバイナリ名を持つクラスの起動ローダとしてJava仮想マシンにより記録されていた場合は、
+     * 指定のクラスローダまたはその祖先のクラスローダが、 このバイナリ名を持つクラスの起動ローダとしてJava仮想マシンにより記録されていた場合は、
      * 指定されたバイナリ名を持つクラスを返します。 記録されていなかった場合は<code>null</code>を返します。
      * 
      * @param classLoader
@@ -208,12 +215,15 @@ public abstract class ClassLoaderUtil {
      * @return <code>Class</code>オブジェクト。クラスがロードされていない場合は<code>null</code>
      * @see java.lang.ClassLoader#findLoadedClass(String)
      */
-    public static Class findLoadedClass(final ClassLoader classLoader,
+    public static Class<?> findLoadedClass(final ClassLoader classLoader,
             final String className) {
-        for (ClassLoader loader = classLoader; loader != null; loader = loader
-                .getParent()) {
-            final Class clazz = (Class) MethodUtil.invoke(
-                    findLoadedClassMethod, loader, new Object[] { className });
+        for (ClassLoader loader = classLoader; loader != null; loader =
+            loader.getParent()) {
+            final Class<?> clazz =
+                (Class<?>) MethodUtil.invoke(
+                    findLoadedClassMethod,
+                    loader,
+                    className);
             if (clazz != null) {
                 return clazz;
             }
@@ -237,12 +247,16 @@ public abstract class ClassLoaderUtil {
      * @return 指定されたクラスデータから作成された<code>Class</code>オブジェクト
      * @see java.lang.ClassLoader#defineClass(String, byte[], int, int)
      */
-    public static Class defineClass(final ClassLoader classLoader,
+    public static Class<?> defineClass(final ClassLoader classLoader,
             final String className, final byte[] bytes, final int offset,
             final int length) {
-        return (Class) MethodUtil.invoke(defineClassMethod, classLoader,
-                new Object[] { className, bytes, new Integer(offset),
-                        new Integer(length) });
+        return (Class<?>) MethodUtil.invoke(
+            defineClassMethod,
+            classLoader,
+            className,
+            bytes,
+            offset,
+            length);
     }
 
     /**
@@ -265,7 +279,8 @@ public abstract class ClassLoaderUtil {
      * @param implVendor
      *            実装のベンダー
      * @param sealBase
-     *            <code>null</code>でない場合、このパッケージは指定されたコードソース<code>URL</code>オブジェクトを考慮してシールされる。そうでない場合、パッケージはシールされない
+     *            <code>null</code>でない場合、このパッケージは指定されたコードソース<code>URL</code>
+     *            オブジェクトを考慮してシールされる。そうでない場合、パッケージはシールされない
      * @return 新しく定義された<code>Package</code>オブジェクト
      * @see java.lang.ClassLoader#definePackage(String, String, String, String,
      *      String, String, String, URL)
@@ -275,9 +290,17 @@ public abstract class ClassLoaderUtil {
             final String specVersion, final String specVendor,
             final String implTitle, final String implVersion,
             final String implVendor, final URL sealBase) {
-        return (Package) MethodUtil.invoke(definePackageMethod, classLoader,
-                new Object[] { name, specTitle, specVersion, specVendor,
-                        implTitle, implVersion, implVendor, sealBase });
+        return (Package) MethodUtil.invoke(
+            definePackageMethod,
+            classLoader,
+            name,
+            specTitle,
+            specVersion,
+            specVendor,
+            implTitle,
+            implVersion,
+            implVendor,
+            sealBase);
     }
 
     /**
@@ -292,7 +315,7 @@ public abstract class ClassLoaderUtil {
      *             クラスが見つからなかった場合
      * @see java.lang.ClassLoader#loadClass(String)
      */
-    public static Class loadClass(final ClassLoader loader,
+    public static Class<?> loadClass(final ClassLoader loader,
             final String className) {
         try {
             return loader.loadClass(className);

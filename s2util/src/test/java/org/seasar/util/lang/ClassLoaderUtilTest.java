@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -21,26 +21,38 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.seasar.util.lang.ClassUtilTest.*;
+
 /**
  * @author koichik
  */
-public class ClassLoaderUtilTest extends TestCase {
+public class ClassLoaderUtilTest {
+
     /**
      * @throws Exception
      */
+    @Test
     public void testGetClassLoader() throws Exception {
-        assertSame("1", ClassLoaderUtil.class.getClassLoader(), ClassLoaderUtil
-                .getClassLoader(Object.class));
+        assertThat(
+            ClassLoaderUtil.getClassLoader(Object.class),
+            is(sameInstance(ClassLoaderUtil.class.getClassLoader())));
 
-        assertSame("2", TestCase.class.getClassLoader(), ClassLoaderUtil
-                .getClassLoader(TestCase.class));
+        assertThat(
+            ClassLoaderUtil.getClassLoader(TestCase.class),
+            is(sameInstance(TestCase.class.getClassLoader())));
 
         ClassLoader context = Thread.currentThread().getContextClassLoader();
         try {
-            ClassLoader cl = new URLClassLoader(new URL[0], getClass()
-                    .getClassLoader());
+            ClassLoader cl =
+                new URLClassLoader(new URL[0], getClass().getClassLoader());
             Thread.currentThread().setContextClassLoader(cl);
-            assertSame("3", cl, ClassLoaderUtil.getClassLoader(TestCase.class));
+            assertThat(
+                ClassLoaderUtil.getClassLoader(TestCase.class),
+                is(sameInstance(cl)));
         } finally {
             Thread.currentThread().setContextClassLoader(context);
         }
@@ -49,21 +61,24 @@ public class ClassLoaderUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testFindLoadedClass() throws Exception {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        Class clazz = ClassLoaderUtil.findLoadedClass(loader, getClass()
-                .getName());
-        assertEquals(getClass(), clazz);
+        Class<?> clazz =
+            ClassLoaderUtil.findLoadedClass(loader, getClass().getName());
+        assertThat(clazz, isSameClass(getClass()));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetResources() throws Exception {
         String name = TestCase.class.getName().replace('.', '/') + ".class";
-        Iterator itr = ClassLoaderUtil.getResources(this.getClass(), name);
-        assertNotNull(itr);
-        URL url = (URL) itr.next();
-        assertNotNull(url);
+        Iterator<URL> itr = ClassLoaderUtil.getResources(this.getClass(), name);
+        assertThat(itr, is(notNullValue()));
+        URL url = itr.next();
+        assertThat(url, is(notNullValue()));
     }
+
 }
