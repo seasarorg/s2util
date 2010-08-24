@@ -13,16 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import junit.framework.TestCase;
 
+import org.seasar.util.io.ResourceBundleUtil;
+
 /**
  * @author higa
- *
+ * 
  */
 public class ResourceBundleUtilTest extends TestCase {
 
@@ -30,10 +32,10 @@ public class ResourceBundleUtilTest extends TestCase {
      * @throws Exception
      */
     public void testConvertMap() throws Exception {
-        ResourceBundle bundle = ResourceBundleUtil.getBundle("SSRMessages",
-                null);
-        Map map = ResourceBundleUtil.convertMap(bundle);
-        String value = (String) map.get("ESSR0001");
+        ResourceBundle bundle =
+            ResourceBundleUtil.getBundle("SSRMessages", null);
+        Map<String, String> map = ResourceBundleUtil.convertMap(bundle);
+        String value = map.get("ESSR0001");
         System.out.println(value);
         assertNotNull("1", value);
     }
@@ -42,8 +44,10 @@ public class ResourceBundleUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetBundle() throws Exception {
-        ResourceBundle bundle = ResourceBundleUtil.getBundle("SSRMessages",
-                null, this.getClass().getClassLoader());
+        ResourceBundle bundle =
+            ResourceBundleUtil.getBundle("SSRMessages", null, this
+                .getClass()
+                .getClassLoader());
         assertNotNull(bundle);
     }
 

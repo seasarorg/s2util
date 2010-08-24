@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -82,10 +82,10 @@ public class ResourceBundleUtil {
      * @param bundle
      * @return {@link Map}
      */
-    public static final Map convertMap(ResourceBundle bundle) {
-        Map ret = new HashMap();
-        for (Enumeration e = bundle.getKeys(); e.hasMoreElements();) {
-            String key = (String) e.nextElement();
+    public static final Map<String, String> convertMap(ResourceBundle bundle) {
+        Map<String, String> ret = new HashMap<String, String>();
+        for (Enumeration<String> e = bundle.getKeys(); e.hasMoreElements();) {
+            String key = e.nextElement();
             String value = bundle.getString(key);
             ret.put(key, value);
         }
@@ -99,7 +99,8 @@ public class ResourceBundleUtil {
      * @param locale
      * @return {@link Map}
      */
-    public static final Map convertMap(String name, Locale locale) {
+    public static final Map<String, String> convertMap(String name,
+            Locale locale) {
         ResourceBundle bundle = getBundle(name, locale);
         return convertMap(bundle);
     }

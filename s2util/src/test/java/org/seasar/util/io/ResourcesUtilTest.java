@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,12 +25,13 @@ import junit.framework.TestCase;
 import junit.textui.ResultPrinter;
 import junit.textui.TestRunner;
 
-import org.seasar.framework.util.ResourcesUtil.FileSystemResources;
-import org.seasar.framework.util.ResourcesUtil.JarFileResources;
-import org.seasar.framework.util.ResourcesUtil.Resources;
 import org.seasar.framework.util.xxx.DummyTest;
 import org.seasar.util.io.ClassTraversal.ClassHandler;
 import org.seasar.util.io.ResourceTraversal.ResourceHandler;
+import org.seasar.util.io.ResourcesUtil;
+import org.seasar.util.io.ResourcesUtil.FileSystemResources;
+import org.seasar.util.io.ResourcesUtil.JarFileResources;
+import org.seasar.util.io.ResourcesUtil.Resources;
 import org.seasar.util.lang.ClassUtil;
 
 /**
@@ -49,8 +50,9 @@ public class ResourcesUtilTest extends TestCase {
         assertTrue(resources.isExistClass(DummyTest.class.getName()));
         assertFalse(resources.isExistClass(TestCase.class.getName()));
 
-        final Set set = new HashSet();
+        final Set<String> set = new HashSet<String>();
         resources.forEach(new ClassHandler() {
+            @Override
             public void processClass(String packageName, String shortClassName) {
                 set.add(ClassUtil.concatName(packageName, shortClassName));
             }
@@ -72,8 +74,9 @@ public class ResourcesUtilTest extends TestCase {
         assertTrue(resources.isExistClass(TestCase.class.getName()));
         assertFalse(resources.isExistClass(DummyTest.class.getName()));
 
-        final Set set = new HashSet();
+        final Set<String> set = new HashSet<String>();
         resources.forEach(new ClassHandler() {
+            @Override
             public void processClass(String packageName, String shortClassName) {
                 set.add(ClassUtil.concatName(packageName, shortClassName));
             }
@@ -87,19 +90,20 @@ public class ResourcesUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFromDir_FileSystem() throws Exception {
-        Resources resources = ResourcesUtil
-                .getResourcesType("org/seasar/framework/util/xxx");
+        Resources resources =
+            ResourcesUtil.getResourcesType("org/seasar/framework/util/xxx");
         assertNotNull(resources);
         assertTrue(resources instanceof FileSystemResources);
 
-        final List list = new ArrayList();
+        final List<String> list = new ArrayList<String>();
         resources.forEach(new ResourceHandler() {
+            @Override
             public void processResource(String path, InputStream is) {
                 list.add(path);
             }
         });
         assertEquals(1, list.size());
-        assertTrue(((String) list.get(0)).endsWith("DummyTest.class"));
+        assertTrue((list.get(0)).endsWith("DummyTest.class"));
     }
 
     /**
@@ -110,8 +114,9 @@ public class ResourcesUtilTest extends TestCase {
         assertNotNull(resources);
         assertTrue(resources instanceof JarFileResources);
 
-        final List list = new ArrayList();
+        final List<String> list = new ArrayList<String>();
         resources.forEach(new ResourceHandler() {
+            @Override
             public void processResource(String path, InputStream is) {
                 list.add(path);
             }
@@ -125,7 +130,8 @@ public class ResourcesUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFromRootPackage_FileSystem() throws Exception {
-        Resources[] resourcesArray = ResourcesUtil.getResourcesTypes("org.seasar.framework.util.xxx");
+        Resources[] resourcesArray =
+            ResourcesUtil.getResourcesTypes("org.seasar.framework.util.xxx");
         assertNotNull(resourcesArray);
         assertEquals(1, resourcesArray.length);
 
@@ -135,8 +141,9 @@ public class ResourcesUtilTest extends TestCase {
         assertTrue(resources.isExistClass("DummyTest"));
         assertFalse(resources.isExistClass("TestCase"));
 
-        final Set set = new HashSet();
+        final Set<String> set = new HashSet<String>();
         resources.forEach(new ClassHandler() {
+            @Override
             public void processClass(String packageName, String shortClassName) {
                 set.add(ClassUtil.concatName(packageName, shortClassName));
             }
@@ -151,7 +158,8 @@ public class ResourcesUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFromRootPackage_JarFile() throws Exception {
-        Resources[] resourcesArray = ResourcesUtil.getResourcesTypes("junit.textui");
+        Resources[] resourcesArray =
+            ResourcesUtil.getResourcesTypes("junit.textui");
         assertNotNull(resourcesArray);
         assertEquals(1, resourcesArray.length);
 
@@ -161,8 +169,9 @@ public class ResourcesUtilTest extends TestCase {
         assertTrue(resources.isExistClass("TestRunner"));
         assertFalse(resources.isExistClass("DummyTest"));
 
-        final Set set = new HashSet();
+        final Set<String> set = new HashSet<String>();
         resources.forEach(new ClassHandler() {
+            @Override
             public void processClass(String packageName, String shortClassName) {
                 set.add(ClassUtil.concatName(packageName, shortClassName));
             }
@@ -171,7 +180,7 @@ public class ResourcesUtilTest extends TestCase {
         assertTrue(set.contains(ResultPrinter.class.getName()));
         assertTrue(set.contains(TestRunner.class.getName()));
         assertFalse(set
-                .contains(junit.extensions.TestDecorator.class.getName()));
+            .contains(junit.extensions.TestDecorator.class.getName()));
     }
 
 }
