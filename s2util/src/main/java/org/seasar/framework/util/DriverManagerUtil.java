@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 
 import org.seasar.util.exception.SQLRuntimeException;
+import org.seasar.util.lang.ClassUtil;
 
 /**
  * {@link java.sql.DriverManager}のためのユーティリティクラスです。

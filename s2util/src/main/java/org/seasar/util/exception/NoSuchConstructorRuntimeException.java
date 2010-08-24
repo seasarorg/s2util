@@ -17,7 +17,6 @@ package org.seasar.util.exception;
 
 import java.lang.reflect.Constructor;
 
-import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.MethodUtil;
 
 /**
@@ -44,7 +43,7 @@ public class NoSuchConstructorRuntimeException extends SRuntimeException {
     public NoSuchConstructorRuntimeException(final Class<?> targetClass,
             final Class<?>... argTypes) {
         super("EUTL0064", targetClass.getName(), MethodUtil.getSignature(
-            ClassUtil.getShortClassName(targetClass),
+            targetClass.getSimpleName(),
             argTypes));
         this.targetClass = targetClass;
         this.argTypes = argTypes;

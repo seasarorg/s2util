@@ -18,10 +18,10 @@ package org.seasar.util.io;
 import java.io.File;
 import java.util.Date;
 
-import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.util.io.HotText;
 import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.lang.ClassUtil;
 
 import junit.framework.TestCase;
 

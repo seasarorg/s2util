@@ -21,7 +21,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.util.ClassUtil;
+import org.seasar.util.lang.ClassUtil;
 
 /**
  * @author higa

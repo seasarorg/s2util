@@ -27,6 +27,7 @@ import javassist.NotFoundException;
 import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
 import org.seasar.util.exception.NotFoundRuntimeException;
+import org.seasar.util.lang.ClassUtil;
 
 /**
  * ClassPool用のユーティリティクラスです。

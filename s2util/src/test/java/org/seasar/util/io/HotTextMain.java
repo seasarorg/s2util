@@ -15,9 +15,9 @@
  */
 package org.seasar.util.io;
 
-import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.util.io.HotText;
+import org.seasar.util.lang.ClassUtil;
 
 /**
  * @author higa

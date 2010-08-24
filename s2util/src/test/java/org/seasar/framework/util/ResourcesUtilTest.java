@@ -31,6 +31,7 @@ import org.seasar.framework.util.ResourcesUtil.Resources;
 import org.seasar.framework.util.xxx.DummyTest;
 import org.seasar.util.io.ClassTraversal.ClassHandler;
 import org.seasar.util.io.ResourceTraversal.ResourceHandler;
+import org.seasar.util.lang.ClassUtil;
 
 /**
  * @author koichik

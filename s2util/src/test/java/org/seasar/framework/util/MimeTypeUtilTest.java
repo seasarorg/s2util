@@ -18,6 +18,7 @@ package org.seasar.framework.util;
 import java.net.URLConnection;
 
 import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.lang.ClassUtil;
 
 import junit.framework.TestCase;
 

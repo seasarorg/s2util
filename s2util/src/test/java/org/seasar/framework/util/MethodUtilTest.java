@@ -18,6 +18,8 @@ package org.seasar.framework.util;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.seasar.util.lang.ClassUtil;
+
 import junit.framework.TestCase;
 
 /**
