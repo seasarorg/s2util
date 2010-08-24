@@ -13,24 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- *
  */
-public class CaseInsensitiveSetTest extends TestCase {
+public class CaseInsensitiveSetTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testContains() throws Exception {
-        Set set = new CaseInsensitiveSet();
+        Set<String> set = new CaseInsensitiveSet();
         set.add("one");
-        assertEquals("1", true, set.contains("ONE"));
+        assertThat(set.contains("ONE"), is(true));
     }
+
 }

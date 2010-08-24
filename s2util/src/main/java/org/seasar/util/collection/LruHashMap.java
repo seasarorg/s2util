@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,9 +23,12 @@ import java.util.Map;
  * LRU用の {@link HashMap}です。
  * 
  * @author koichik
- * 
+ * @param <K>
+ *            キーの型
+ * @param <V>
+ *            値の型
  */
-public class LruHashMap extends LinkedHashMap {
+public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +45,7 @@ public class LruHashMap extends LinkedHashMap {
     /**
      * 上限サイズです。
      */
-    protected int limitSize;
+    protected final int limitSize;
 
     /**
      * {@link LruHashMap}を作成します。
@@ -75,7 +78,9 @@ public class LruHashMap extends LinkedHashMap {
         return limitSize;
     }
 
-    protected boolean removeEldestEntry(final Map.Entry entry) {
+    @Override
+    protected boolean removeEldestEntry(final Map.Entry<K, V> entry) {
         return size() > limitSize;
     }
+
 }

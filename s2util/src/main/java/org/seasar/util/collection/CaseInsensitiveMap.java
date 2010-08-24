@@ -13,20 +13,18 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
-import java.util.Iterator;
 import java.util.Map;
-
-import org.seasar.util.collection.ArrayMap;
 
 /**
  * キーで大文字小文字を気にしない {@link ArrayMap}です。
  * 
- * @author higa
- * 
+ * @author higa 値の型
+ * @param <V>
+ *            値の型
  */
-public class CaseInsensitiveMap extends ArrayMap {
+public class CaseInsensitiveMap<V> extends ArrayMap<String, V> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +32,6 @@ public class CaseInsensitiveMap extends ArrayMap {
      * {@link CaseInsensitiveMap}を作成します。
      */
     public CaseInsensitiveMap() {
-        super();
     }
 
     /**
@@ -42,7 +39,7 @@ public class CaseInsensitiveMap extends ArrayMap {
      * 
      * @param capacity
      */
-    public CaseInsensitiveMap(int capacity) {
+    public CaseInsensitiveMap(final int capacity) {
         super(capacity);
     }
 
@@ -52,34 +49,39 @@ public class CaseInsensitiveMap extends ArrayMap {
      * @param key
      * @return キーが含まれているかどうか
      */
-    public final boolean containsKey(String key) {
+    public boolean containsKey(final String key) {
         return super.containsKey(convertKey(key));
     }
 
-    public final Object get(Object key) {
+    @Override
+    public V get(final Object key) {
         return super.get(convertKey(key));
     }
 
-    public final Object put(Object key, Object value) {
+    @Override
+    public final V put(final String key, final V value) {
         return super.put(convertKey(key), value);
     }
 
-    public final void putAll(Map map) {
-        for (Iterator i = map.entrySet().iterator(); i.hasNext();) {
-            Map.Entry entry = (Map.Entry) i.next();
+    @Override
+    public void putAll(final Map<? extends String, ? extends V> map) {
+        for (final Map.Entry<? extends String, ? extends V> entry : map
+            .entrySet()) {
             put(convertKey(entry.getKey()), entry.getValue());
         }
     }
 
-    public final Object remove(Object key) {
+    @Override
+    public final V remove(final Object key) {
         return super.remove(convertKey(key));
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return super.containsKey(convertKey(key));
     }
 
-    private static String convertKey(Object key) {
+    private static String convertKey(final Object key) {
         return ((String) key).toLowerCase();
     }
 

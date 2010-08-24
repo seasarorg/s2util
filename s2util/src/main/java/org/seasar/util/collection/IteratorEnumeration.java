@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -22,26 +22,42 @@ import java.util.Iterator;
  * {@link Iterator}を {@link Enumeration}にするためのアダブタです。
  * 
  * @author higa
- * 
+ * @param <T>
+ *            列挙する要素の型
  */
-public class EnumerationAdapter implements Enumeration {
+public class IteratorEnumeration<T> implements Enumeration<T> {
 
-    private Iterator iterator;
+    /** 反復子 */
+    protected final Iterator<T> iterator;
 
     /**
-     * {@link EnumerationAdapter}を作成します。
+     * {@link IteratorEnumeration}を作成します。
      * 
      * @param iterator
+     *            反復子
      */
-    public EnumerationAdapter(Iterator iterator) {
+    public IteratorEnumeration(final Iterator<T> iterator) {
         this.iterator = iterator;
     }
 
+    /**
+     * {@link IteratorEnumeration}を作成します。
+     * 
+     * @param iterable
+     *            反復可能なオブジェクト
+     */
+    public IteratorEnumeration(final Iterable<T> iterable) {
+        this(iterable.iterator());
+    }
+
+    @Override
     public boolean hasMoreElements() {
         return iterator.hasNext();
     }
 
-    public Object nextElement() {
+    @Override
+    public T nextElement() {
         return iterator.next();
     }
+
 }

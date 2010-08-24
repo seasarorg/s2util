@@ -13,32 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import org.seasar.framework.util.MapUtil.MapFactory;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.seasar.util.collection.Maps.*;
 
 /**
- * {@link java.util.concurrent.ConcurrentHashMap}を作成するファクトリの実装です。
- * 
  * @author koichik
  */
-@SuppressWarnings("unchecked")
-public class ConcurrentMapFactory implements MapFactory {
+public class MapsTest {
 
-    public Map create() {
-        return new ConcurrentHashMap();
-    }
-
-    public Map create(final int initialCapacity) {
-        return new ConcurrentHashMap(initialCapacity);
-    }
-
-    public Map create(final int initialCapacity, final float loadFactor) {
-        return new ConcurrentHashMap(initialCapacity, loadFactor,
-                initialCapacity);
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void test() throws Exception {
+        Map<String, Integer> map = map("a", 1).$("b", 2).$("c", 3).$();
+        assertThat(map.size(), is(3));
+        assertThat(map.get("a"), is(1));
+        assertThat(map.get("b"), is(2));
+        assertThat(map.get("c"), is(3));
     }
 
 }

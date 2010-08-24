@@ -21,7 +21,7 @@ import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
 import org.seasar.util.message.MessageFormatter;
 
-import static org.seasar.framework.util.tiger.CollectionsUtil.*;
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * ログ出力を提供するクラスです。

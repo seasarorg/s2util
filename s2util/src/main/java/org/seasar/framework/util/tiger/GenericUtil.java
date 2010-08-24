@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.seasar.util.collection.CollectionsUtil;
+
 /**
  * genericsを扱うためのユーティリティ・クラスです。
  * 

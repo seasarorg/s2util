@@ -13,118 +13,134 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- *
  */
-public class CaseInsensitiveMapTest extends TestCase {
+public class CaseInsensitiveMapTest {
 
-    private CaseInsensitiveMap map_;
+    CaseInsensitiveMap<String> map;
 
     /**
      * @throws Exception
      */
+    @Before
+    public void setUp() throws Exception {
+        map = new CaseInsensitiveMap<String>();
+        map.put("one", "1");
+        map.put("two", "2");
+    }
+
+    /**
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception {
+        map = null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testContainsKey() throws Exception {
-        assertTrue("1", map_.containsKey("ONE"));
-        assertTrue("2", map_.containsKey("one"));
-        assertTrue("3", !map_.containsKey("onex"));
+        assertThat(map.containsKey("ONE"), is(true));
+        assertThat(map.containsKey("one"), is(true));
+        assertThat(map.containsKey("onex"), is(not(true)));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGet() throws Exception {
-        assertEquals("1", "1", map_.get("ONE"));
-        assertEquals("2", "1", map_.get("One"));
-        assertEquals("3", null, map_.get("hoge"));
+        assertThat(map.get("ONE"), is("1"));
+        assertThat(map.get("One"), is("1"));
+        assertThat(map.get("hoge"), is(nullValue()));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testPut() throws Exception {
-        assertEquals("1", "1", map_.put("One", "11"));
-        assertEquals("2", "11", map_.get("one"));
+        assertThat(map.put("One", "11"), is("1"));
+        assertThat(map.get("one"), is("11"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testRemove() throws Exception {
-        assertEquals("1", "1", map_.remove("ONE"));
-        assertEquals("2", 1, map_.size());
-        assertEquals("3", null, map_.remove("dummy"));
+        assertThat(map.remove("ONE"), is("1"));
+        assertThat(map.size(), is(1));
+        assertThat(map.remove("dummy"), is(nullValue()));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testPutAll() throws Exception {
-        Map m = new HashMap();
+        Map<String, String> m = new HashMap<String, String>();
         m.put("three", "3");
         m.put("four", "4");
-        map_.putAll(m);
-        assertEquals("1", "3", map_.get("THREE"));
-        assertEquals("2", "4", map_.get("FOUR"));
-        assertEquals("3", 4, map_.size());
+        map.putAll(m);
+        assertThat(map.get("THREE"), is("3"));
+        assertThat(map.get("FOUR"), is("4"));
+        assertThat(map.size(), is(4));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testPerformance() throws Exception {
         for (int j = 0; j < 3; ++j) {
-
             int num = 100000;
-            Map hmap = new HashMap();
-            Map cimap = new CaseInsensitiveMap();
+            Map<String, String> hmap = new HashMap<String, String>();
+            Map<String, String> cimap = new CaseInsensitiveMap<String>();
 
             long start = System.currentTimeMillis();
             for (int i = 0; i < num; i++) {
                 hmap.put("a" + String.valueOf(i), null);
             }
             System.out.println("HashMap.put:"
-                    + (System.currentTimeMillis() - start));
+                + (System.currentTimeMillis() - start));
 
             start = System.currentTimeMillis();
             for (int i = 0; i < num; i++) {
                 cimap.put("a" + String.valueOf(i), null);
             }
             System.out.println("CaseInsensitiveMap.put:"
-                    + (System.currentTimeMillis() - start));
+                + (System.currentTimeMillis() - start));
 
             start = System.currentTimeMillis();
             for (int i = 0; i < num; i++) {
                 hmap.get("a" + String.valueOf(i));
             }
             System.out.println("HashMap.get:"
-                    + (System.currentTimeMillis() - start));
+                + (System.currentTimeMillis() - start));
 
             start = System.currentTimeMillis();
             for (int i = 0; i < num; i++) {
                 cimap.get("a" + String.valueOf(i));
             }
             System.out.println("CaseInsensitiveMap.get:"
-                    + (System.currentTimeMillis() - start));
-
+                + (System.currentTimeMillis() - start));
         }
-
     }
 
-    protected void setUp() throws Exception {
-        map_ = new CaseInsensitiveMap();
-        map_.put("one", "1");
-        map_.put("two", "2");
-    }
-
-    protected void tearDown() throws Exception {
-        map_ = null;
-    }
 }

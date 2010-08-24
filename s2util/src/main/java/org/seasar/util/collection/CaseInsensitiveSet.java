@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.io.Serializable;
 import java.util.AbstractSet;
@@ -26,14 +26,13 @@ import java.util.Set;
  * 大文字小文字を気にしない {@link Set}です。
  * 
  * @author higa
- * 
  */
-public class CaseInsensitiveSet extends AbstractSet implements Set,
-        Serializable {
+public class CaseInsensitiveSet extends AbstractSet<String> implements
+        Set<String>, Serializable {
 
     static final long serialVersionUID = 0L;
 
-    private transient Map map;
+    private transient Map<String, Object> map;
 
     private static final Object PRESENT = new Object();
 
@@ -41,16 +40,20 @@ public class CaseInsensitiveSet extends AbstractSet implements Set,
      * {@link CaseInsensitiveSet}を作成します。
      */
     public CaseInsensitiveSet() {
-        map = new CaseInsensitiveMap();
+        map = new CaseInsensitiveMap<Object>();
     }
 
     /**
      * {@link CaseInsensitiveSet}を作成します。
      * 
      * @param c
+     *            コピー元のコレクション
      */
-    public CaseInsensitiveSet(Collection c) {
-        map = new CaseInsensitiveMap(Math.max((int) (c.size() / .75f) + 1, 16));
+    public CaseInsensitiveSet(final Collection<String> c) {
+        map =
+            new CaseInsensitiveMap<Object>(Math.max(
+                (int) (c.size() / .75f) + 1,
+                16));
         addAll(c);
     }
 
@@ -58,36 +61,45 @@ public class CaseInsensitiveSet extends AbstractSet implements Set,
      * {@link CaseInsensitiveSet}を作成します。
      * 
      * @param initialCapacity
+     *            初期容量
      */
-    public CaseInsensitiveSet(int initialCapacity) {
-        map = new CaseInsensitiveMap(initialCapacity);
+    public CaseInsensitiveSet(final int initialCapacity) {
+        map = new CaseInsensitiveMap<Object>(initialCapacity);
     }
 
-    public Iterator iterator() {
+    @Override
+    public Iterator<String> iterator() {
         return map.keySet().iterator();
     }
 
+    @Override
     public int size() {
         return map.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return map.isEmpty();
     }
 
-    public boolean contains(Object o) {
+    @Override
+    public boolean contains(final Object o) {
         return map.containsKey(o);
     }
 
-    public boolean add(Object o) {
+    @Override
+    public boolean add(final String o) {
         return map.put(o, PRESENT) == null;
     }
 
-    public boolean remove(Object o) {
+    @Override
+    public boolean remove(final Object o) {
         return map.remove(o) == PRESENT;
     }
 
+    @Override
     public void clear() {
         map.clear();
     }
+
 }

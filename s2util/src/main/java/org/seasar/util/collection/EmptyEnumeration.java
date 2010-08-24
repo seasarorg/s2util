@@ -13,34 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Enumeration;
 
 /**
- * 空の {@link Iterator}です。
+ * 空の {@link Enumeration}です。
  * 
  * @author higa
- * 
+ * @param <T>
+ *            列挙する要素の型
  */
-public class EmptyIterator implements Iterator {
+public class EmptyEnumeration<T> extends IteratorEnumeration<T> {
 
     /**
-     * {@link EmptyIterator}を作成します。
+     * {@link EmptyEnumeration}を作成します。
      */
-    public EmptyIterator() {
+    public EmptyEnumeration() {
+        super(new EmptyIterator<T>());
     }
 
-    public void remove() {
-        throw new IllegalStateException();
-    }
-
-    public boolean hasNext() {
-        return false;
-    }
-
-    public Object next() {
-        throw new NoSuchElementException();
-    }
 }

@@ -16,10 +16,10 @@
 package org.seasar.framework.beans.factory;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.impl.BeanDescImpl;
-import org.seasar.framework.util.MapUtil;
 import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
 
@@ -33,7 +33,7 @@ public class BeanDescFactory {
 
     private static volatile boolean initialized;
 
-    private static Map beanDescCache = MapUtil.createHashMap(1024);
+    private static Map beanDescCache = new ConcurrentHashMap(1024);
 
     static {
         initialize();

@@ -13,21 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 
 /**
  * Seasar2用の連結リストです。
  * 
  * @author higa
+ * @param <E>
+ *            要素の型
  * 
  */
-public class SLinkedList implements Cloneable, Externalizable {
+public class SLinkedList<E> implements Cloneable, Externalizable {
 
     static final long serialVersionUID = 1L;
 
@@ -39,7 +42,31 @@ public class SLinkedList implements Cloneable, Externalizable {
      * {@link SLinkedList}を作成します。
      */
     public SLinkedList() {
-        header._next = header._previous = header;
+        header.next = header.previous = header;
+    }
+
+    /**
+     * 最初の要素を返します。
+     * 
+     * @return 最初の要素
+     */
+    public E getFirst() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return getFirstEntry().element;
+    }
+
+    /**
+     * 最後の要素を返します。
+     * 
+     * @return 最後の要素
+     */
+    public E getLast() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return getLastEntry().element;
     }
 
     /**
@@ -51,19 +78,7 @@ public class SLinkedList implements Cloneable, Externalizable {
         if (isEmpty()) {
             return null;
         }
-        return header._next;
-    }
-
-    /**
-     * 最初の要素を返します。
-     * 
-     * @return 最初の要素
-     */
-    public Object getFirst() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return getFirstEntry()._element;
+        return header.next;
     }
 
     /**
@@ -75,19 +90,7 @@ public class SLinkedList implements Cloneable, Externalizable {
         if (isEmpty()) {
             return null;
         }
-        return header._previous;
-    }
-
-    /**
-     * 最後の要素を返します。
-     * 
-     * @return 最後の要素
-     */
-    public Object getLast() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return getLastEntry()._element;
+        return header.previous;
     }
 
     /**
@@ -95,12 +98,12 @@ public class SLinkedList implements Cloneable, Externalizable {
      * 
      * @return 最初の要素
      */
-    public Object removeFirst() {
+    public E removeFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        Object first = header._next._element;
-        header._next.remove();
+        final E first = header.next.element;
+        header.next.remove();
         return first;
     }
 
@@ -109,33 +112,33 @@ public class SLinkedList implements Cloneable, Externalizable {
      * 
      * @return 最後の要素
      */
-    public Object removeLast() {
+    public E removeLast() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        Object last = header._previous._element;
-        header._previous.remove();
+        final E last = header.previous.element;
+        header.previous.remove();
         return last;
     }
 
     /**
      * 先頭に追加します。
      * 
-     * @param o
+     * @param element
      *            追加するオブジェクト
      */
-    public void addFirst(final Object o) {
-        header._next.addBefore(o);
+    public void addFirst(final E element) {
+        header.next.addBefore(element);
     }
 
     /**
      * 最後に追加します。
      * 
-     * @param o
+     * @param element
      *            追加するオブジェクト
      */
-    public void addLast(final Object o) {
-        header.addBefore(o);
+    public void addLast(final E element) {
+        header.addBefore(element);
     }
 
     /**
@@ -146,7 +149,7 @@ public class SLinkedList implements Cloneable, Externalizable {
      * @param element
      *            要素
      */
-    public void add(final int index, final Object element) {
+    public void add(final int index, final E element) {
         getEntry(index).addBefore(element);
     }
 
@@ -171,31 +174,31 @@ public class SLinkedList implements Cloneable, Externalizable {
     /**
      * 要素が含まれているかどうかを返します。
      * 
-     * @param o
+     * @param element
      *            要素
      * @return 要素が含まれているかどうか
      */
-    public boolean contains(final Object o) {
-        return indexOf(o) != -1;
+    public boolean contains(final E element) {
+        return indexOf(element) != -1;
     }
 
     /**
      * 要素を削除します。
      * 
-     * @param o
+     * @param element
      * @return 削除されたかどうか
      */
-    public boolean remove(final Object o) {
-        if (o == null) {
-            for (Entry e = header._next; e != header; e = e._next) {
-                if (e._element == null) {
+    public boolean remove(final E element) {
+        if (element == null) {
+            for (Entry e = header.next; e != header; e = e.next) {
+                if (e.element == null) {
                     e.remove();
                     return true;
                 }
             }
         } else {
-            for (Entry e = header._next; e != header; e = e._next) {
-                if (o.equals(e._element)) {
+            for (Entry e = header.next; e != header; e = e.next) {
+                if (element.equals(e.element)) {
                     e.remove();
                     return true;
                 }
@@ -212,16 +215,16 @@ public class SLinkedList implements Cloneable, Externalizable {
      * @return 削除された要素
      */
     public Object remove(final int index) {
-        Entry e = getEntry(index);
+        final Entry e = getEntry(index);
         e.remove();
-        return e._element;
+        return e.element;
     }
 
     /**
      * 要素を空にします。
      */
     public void clear() {
-        header._next = header._previous = header;
+        header.next = header.previous = header;
         size = 0;
     }
 
@@ -234,16 +237,16 @@ public class SLinkedList implements Cloneable, Externalizable {
     public Entry getEntry(final int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
-                    + size);
+                + size);
         }
         Entry e = header;
         if (index < size / 2) {
             for (int i = 0; i <= index; i++) {
-                e = e._next;
+                e = e.next;
             }
         } else {
             for (int i = size; i > index; i--) {
-                e = e._previous;
+                e = e.previous;
             }
         }
         return e;
@@ -256,8 +259,8 @@ public class SLinkedList implements Cloneable, Externalizable {
      *            位置
      * @return 要素
      */
-    public Object get(final int index) {
-        return getEntry(index)._element;
+    public E get(final int index) {
+        return getEntry(index).element;
     }
 
     /**
@@ -267,32 +270,32 @@ public class SLinkedList implements Cloneable, Externalizable {
      * @param element
      * @return 元の要素
      */
-    public Object set(final int index, final Object element) {
-        Entry e = getEntry(index);
-        Object oldVal = e._element;
-        e._element = element;
-        return oldVal;
+    public E set(final int index, final E element) {
+        final Entry entry = getEntry(index);
+        final E oldValue = entry.element;
+        entry.element = element;
+        return oldValue;
     }
 
     /**
      * 位置を返します。
      * 
-     * @param o
+     * @param element
      *            要素
      * @return 位置
      */
-    public int indexOf(final Object o) {
+    public int indexOf(final E element) {
         int index = 0;
-        if (o == null) {
-            for (Entry e = header._next; e != header; e = e._next) {
-                if (e._element == null) {
+        if (element == null) {
+            for (Entry e = header.next; e != header; e = e.next) {
+                if (e.element == null) {
                     return index;
                 }
                 index++;
             }
         } else {
-            for (Entry e = header._next; e != header; e = e._next) {
-                if (o.equals(e._element)) {
+            for (Entry e = header.next; e != header; e = e.next) {
+                if (element.equals(e.element)) {
                     return index;
                 }
                 index++;
@@ -301,28 +304,31 @@ public class SLinkedList implements Cloneable, Externalizable {
         return -1;
     }
 
+    @Override
     public void writeExternal(final ObjectOutput s) throws IOException {
         s.writeInt(size);
-        for (Entry e = header._next; e != header; e = e._next) {
-            s.writeObject(e._element);
+        for (Entry e = header.next; e != header; e = e.next) {
+            s.writeObject(e.element);
         }
     }
 
-    public void readExternal(ObjectInput s) throws IOException,
+    @SuppressWarnings("unchecked")
+    @Override
+    public void readExternal(final ObjectInput s) throws IOException,
             ClassNotFoundException {
-
-        int size = s.readInt();
+        final int size = s.readInt();
         header = new Entry(null, null, null);
-        header._next = header._previous = header;
+        header.next = header.previous = header;
         for (int i = 0; i < size; i++) {
-            addLast(s.readObject());
+            addLast((E) s.readObject());
         }
     }
 
+    @Override
     public Object clone() {
-        SLinkedList copy = new SLinkedList();
-        for (Entry e = header._next; e != header; e = e._next) {
-            copy.addLast(e._element);
+        final SLinkedList<E> copy = new SLinkedList<E>();
+        for (Entry e = header.next; e != header; e = e.next) {
+            copy.addLast(e.element);
         }
         return copy;
     }
@@ -333,30 +339,57 @@ public class SLinkedList implements Cloneable, Externalizable {
      * @return 配列
      */
     public Object[] toArray() {
-        Object[] result = new Object[size];
+        final Object[] result = new Object[size];
         int i = 0;
-        for (Entry e = header._next; e != header; e = e._next) {
-            result[i++] = e._element;
+        for (Entry e = header.next; e != header; e = e.next) {
+            result[i++] = e.element;
         }
         return result;
     }
 
     /**
-     * 要素を格納するエントリです。
+     * 配列に変換します。
      * 
+     * @param array
+     *            配列
+     * @return 配列
+     */
+    @SuppressWarnings("unchecked")
+    public E[] toArray(E[] array) {
+        if (array.length < size) {
+            array =
+                (E[]) Array.newInstance(
+                    array.getClass().getComponentType(),
+                    size);
+        }
+        int i = 0;
+        for (Entry e = header.next; e != header; e = e.next) {
+            array[i++] = e.element;
+        }
+        for (i = size; i < array.length; ++i) {
+            array[i] = null;
+        }
+        return array;
+    }
+
+    /**
+     * 要素を格納するエントリです。
      */
     public class Entry {
 
-        private Object _element;
+        /** 要素 */
+        protected E element;
 
-        private Entry _next;
+        /** 次のエントリ */
+        protected Entry next;
 
-        private Entry _previous;
+        /** 前のエントリ */
+        protected Entry previous;
 
-        Entry(final Object element, final Entry next, final Entry previous) {
-            _element = element;
-            _next = next;
-            _previous = previous;
+        Entry(final E element, final Entry next, final Entry previous) {
+            this.element = element;
+            this.next = next;
+            this.previous = previous;
         }
 
         /**
@@ -364,8 +397,8 @@ public class SLinkedList implements Cloneable, Externalizable {
          * 
          * @return 要素
          */
-        public Object getElement() {
-            return _element;
+        public E getElement() {
+            return element;
         }
 
         /**
@@ -374,8 +407,8 @@ public class SLinkedList implements Cloneable, Externalizable {
          * @return 次のエントリ
          */
         public Entry getNext() {
-            if (_next != SLinkedList.this.header) {
-                return _next;
+            if (next != SLinkedList.this.header) {
+                return next;
             }
             return null;
         }
@@ -386,8 +419,8 @@ public class SLinkedList implements Cloneable, Externalizable {
          * @return 前のエントリ
          */
         public Entry getPrevious() {
-            if (_previous != SLinkedList.this.header) {
-                return _previous;
+            if (previous != SLinkedList.this.header) {
+                return previous;
             }
             return null;
         }
@@ -396,9 +429,9 @@ public class SLinkedList implements Cloneable, Externalizable {
          * 要素を削除します。
          */
         public void remove() {
-            _previous._next = _next;
-            _next._previous = _previous;
-            SLinkedList.this.size--;
+            previous.next = next;
+            next.previous = previous;
+            --size;
         }
 
         /**
@@ -408,12 +441,14 @@ public class SLinkedList implements Cloneable, Externalizable {
          *            要素
          * @return 追加されたエントリ
          */
-        public Entry addBefore(final Object o) {
-            Entry newEntry = new Entry(o, this, _previous);
-            _previous._next = newEntry;
-            _previous = newEntry;
-            SLinkedList.this.size++;
+        public Entry addBefore(final E o) {
+            final Entry newEntry = new Entry(o, this, previous);
+            previous.next = newEntry;
+            previous = newEntry;
+            ++size;
             return newEntry;
         }
+
     }
+
 }

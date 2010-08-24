@@ -26,7 +26,7 @@ import org.seasar.util.DisposableUtil;
 import org.seasar.util.exception.ResourceNotFoundRuntimeException;
 import org.seasar.util.io.ResourceUtil;
 
-import static org.seasar.framework.util.tiger.CollectionsUtil.*;
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * {@link MessageResourceBundle}を取得するためのクラスです。

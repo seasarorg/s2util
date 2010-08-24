@@ -39,7 +39,6 @@ import javassist.bytecode.annotation.StringMemberValue;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
-import org.seasar.framework.util.CaseInsensitiveMap;
 import org.seasar.framework.util.ClassPoolUtil;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ConstructorUtil;
@@ -57,6 +56,7 @@ import org.seasar.util.beans.IllegalDiiguRuntimeException;
 import org.seasar.util.beans.MethodNotFoundRuntimeException;
 import org.seasar.util.beans.PropertyNotFoundRuntimeException;
 import org.seasar.util.collection.ArrayMap;
+import org.seasar.util.collection.CaseInsensitiveMap;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.log.Logger;
 

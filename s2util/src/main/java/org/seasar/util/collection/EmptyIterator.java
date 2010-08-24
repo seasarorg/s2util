@@ -13,24 +13,39 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
-import java.util.Map;
-
-import junit.framework.TestCase;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
- * @author koichik
+ * 空の {@link Iterator}です。
  * 
+ * @author higa
+ * @param <T>
+ *            反復する要素の型
  */
-public class MapUtilTest extends TestCase {
+public class EmptyIterator<T> implements Iterator<T> {
 
     /**
-     * 
+     * {@link EmptyIterator}を作成します。
      */
-    public void testCreate() {
-        Map map = MapUtil.createHashMap();
-        assertTrue(map instanceof Map);
+    public EmptyIterator() {
+    }
+
+    @Override
+    public void remove() {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public T next() {
+        throw new NoSuchElementException();
     }
 
 }

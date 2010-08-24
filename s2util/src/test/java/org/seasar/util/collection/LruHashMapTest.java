@@ -13,37 +13,41 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.collection;
 
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author taichi
- * 
  */
-public class LruHashMapTest extends TestCase {
+public class LruHashMapTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testAll() throws Exception {
-        LruHashMap lru = new LruHashMap(3);
+        LruHashMap<String, String> lru = new LruHashMap<String, String>(3);
         lru.put("aaa", "111");
         lru.put("bbb", "222");
         lru.put("ccc", "333");
-        assertEquals("111", lru.get("aaa"));
-        Iterator i = lru.keySet().iterator();
-        assertEquals("bbb", i.next());
-        assertEquals("ccc", i.next());
-        assertEquals("aaa", i.next());
+        assertThat(lru.get("aaa"), is("111"));
+        Iterator<String> i = lru.keySet().iterator();
+        assertThat(i.next(), is("bbb"));
+        assertThat(i.next(), is("ccc"));
+        assertThat(i.next(), is("aaa"));
         lru.put("ddd", "444");
-        assertEquals(3, lru.size());
-        assertNull(lru.get("bbb"));
+        assertThat(lru.size(), is(3));
+        assertThat(lru.get("bbb"), is(nullValue()));
         i = lru.keySet().iterator();
-        assertEquals("ccc", i.next());
-        assertEquals("aaa", i.next());
-        assertEquals("ddd", i.next());
+        assertThat(i.next(), is("ccc"));
+        assertThat(i.next(), is("aaa"));
+        assertThat(i.next(), is("ddd"));
     }
+
 }
