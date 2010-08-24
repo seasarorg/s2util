@@ -31,19 +31,13 @@ public class BigDecimalConversionUtil {
     /**
      * Tiger用のNormalizerのクラス名です。
      */
-    protected static final String TIGER_NORMALIZER_CLASS_NAME = "org.seasar.framework.util.TigerBigDecimalConversion";
+    protected static final String TIGER_NORMALIZER_CLASS_NAME =
+        "org.seasar.framework.util.TigerBigDecimalConversion";
 
     /**
      * デフォルトのNormalizerです。
      */
     protected static BigDecimalNormalizer normalizer = new DefaultNormalizer();
-    static {
-        try {
-            final Class clazz = Class.forName(TIGER_NORMALIZER_CLASS_NAME);
-            normalizer = (BigDecimalNormalizer) clazz.newInstance();
-        } catch (Exception ignore) {
-        }
-    }
 
     /**
      * インスタンスを構築します。
@@ -128,12 +122,14 @@ public class BigDecimalConversionUtil {
      * 
      */
     public static class DefaultNormalizer implements BigDecimalNormalizer {
+        @Override
         public BigDecimal normalize(final BigDecimal dec) {
-            return dec;
+            return new BigDecimal(dec.toPlainString());
         }
 
-        public String toString(final BigDecimal dec) {
-            return dec.toString();
+        @Override
+        public String toString(BigDecimal dec) {
+            return dec.toPlainString();
         }
     }
 }
