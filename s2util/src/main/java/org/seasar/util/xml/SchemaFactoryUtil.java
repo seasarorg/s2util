@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.xml;
 
 import javax.xml.XMLConstants;
 import javax.xml.validation.SchemaFactory;
