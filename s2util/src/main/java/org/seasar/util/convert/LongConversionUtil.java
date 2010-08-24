@@ -13,10 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.text.SimpleDateFormat;
 
+import org.seasar.framework.util.DecimalFormatUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -56,16 +57,17 @@ public class LongConversionUtil {
         } else if (o instanceof Long) {
             return (Long) o;
         } else if (o instanceof Number) {
-            return new Long(((Number) o).longValue());
+            return Long.valueOf(((Number) o).longValue());
         } else if (o instanceof String) {
             return toLong((String) o);
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
                 return new Long(new SimpleDateFormat(pattern).format(o));
             }
-            return new Long(((java.util.Date) o).getTime());
+            return Long.valueOf(((java.util.Date) o).getTime());
         } else if (o instanceof Boolean) {
-            return ((Boolean) o).booleanValue() ? new Long(1) : new Long(0);
+            return ((Boolean) o).booleanValue() ? Long.valueOf(1) : Long
+                .valueOf(0);
         } else {
             return toLong(o.toString());
         }

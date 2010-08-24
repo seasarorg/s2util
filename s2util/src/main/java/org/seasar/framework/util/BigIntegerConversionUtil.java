@@ -17,6 +17,8 @@ package org.seasar.framework.util;
 
 import java.math.BigInteger;
 
+import org.seasar.util.convert.LongConversionUtil;
+
 /**
  * {@link BigInteger}用の変換ユーティリティです。
  * 

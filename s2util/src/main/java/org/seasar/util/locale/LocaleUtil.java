@@ -13,37 +13,42 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.locale;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 /**
+ * {@link Locale}用のユーティリティクラスです。
+ * 
  * @author higa
  * 
  */
-public class MessageDigestUtil {
+public class LocaleUtil {
 
     /**
      * インスタンスを構築します。
      */
-    protected MessageDigestUtil() {
+    protected LocaleUtil() {
     }
 
     /**
-     * {@link MessageDigest#getInstance(String)}の例外処理をラップします。
+     * {@link Locale}を返します。
      * 
-     * @param algorithm
-     * @return {@link MessageDigest}
-     * @throws RuntimeException
-     *             {@link NoSuchAlgorithmException}が発生した場合
+     * @param localeStr
+     * @return {@link Locale}
      */
-    public static MessageDigest getInstance(String algorithm)
-            throws RuntimeException {
-        try {
-            return MessageDigest.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+    public static Locale getLocale(String localeStr) {
+        Locale locale = Locale.getDefault();
+        if (localeStr != null) {
+            int index = localeStr.indexOf('_');
+            if (index < 0) {
+                locale = new Locale(localeStr);
+            } else {
+                String language = localeStr.substring(0, index);
+                String country = localeStr.substring(index + 1);
+                locale = new Locale(language, country);
+            }
         }
+        return locale;
     }
 }

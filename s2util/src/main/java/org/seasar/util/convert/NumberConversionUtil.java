@@ -28,7 +28,6 @@ import org.seasar.framework.util.DecimalFormatSymbolsUtil;
 import org.seasar.framework.util.DoubleConversionUtil;
 import org.seasar.framework.util.FloatConversionUtil;
 import org.seasar.framework.util.IntegerConversionUtil;
-import org.seasar.framework.util.LongConversionUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**
