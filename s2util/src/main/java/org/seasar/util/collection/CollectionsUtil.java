@@ -15,9 +15,11 @@
  */
 package org.seasar.util.collection;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -38,12 +40,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Java5のgenericsや可変長を活用する、コレクションのためのユーティリティです。
@@ -51,12 +57,6 @@ import java.util.concurrent.PriorityBlockingQueue;
  * @author koichik
  */
 public abstract class CollectionsUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected CollectionsUtil() {
-    }
 
     /**
      * {@link ArrayBlockingQueue}の新しいインスタンスを作成して返します。
@@ -108,6 +108,47 @@ public abstract class CollectionsUtil {
             final int capacity, final boolean fair,
             final Collection<? extends E> c) {
         return new ArrayBlockingQueue<E>(capacity, fair, c);
+    }
+
+    /**
+     * {@link ArrayDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ArrayDeque}の要素型
+     * @return {@link ArrayDeque}の新しいインスタンス
+     * @see ArrayDeque#ArrayDeque()
+     */
+    public static <E> ArrayDeque<E> newArrayDeque() {
+        return new ArrayDeque<E>();
+    }
+
+    /**
+     * {@link ArrayDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ArrayDeque}の要素型
+     * @param c
+     *            要素が両端キューに配置されるコレクション
+     * @return {@link ArrayDeque}の新しいインスタンス
+     * @see ArrayDeque#ArrayDeque(Collection)
+     */
+    public static <E> ArrayDeque<E> newArrayDeque(
+            final Collection<? extends E> c) {
+        return new ArrayDeque<E>(c);
+    }
+
+    /**
+     * {@link ArrayDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ArrayDeque}の要素型
+     * @param numElements
+     *            両端キューの初期容量の範囲の下限
+     * @return {@link ArrayDeque}の新しいインスタンス
+     * @see ArrayDeque#ArrayDeque(int)
+     */
+    public static <E> ArrayDeque<E> newArrayDeque(final int numElements) {
+        return new ArrayDeque<E>(numElements);
     }
 
     /**
@@ -200,8 +241,10 @@ public abstract class CollectionsUtil {
     public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(
             final int initialCapacity, final float loadFactor,
             final int concurrencyLevel) {
-        return new ConcurrentHashMap<K, V>(initialCapacity, loadFactor,
-                concurrencyLevel);
+        return new ConcurrentHashMap<K, V>(
+            initialCapacity,
+            loadFactor,
+            concurrencyLevel);
     }
 
     /**
@@ -246,6 +289,127 @@ public abstract class CollectionsUtil {
     public static <E> ConcurrentLinkedQueue<E> newConcurrentLinkedQueue(
             final Collection<? extends E> c) {
         return new ConcurrentLinkedQueue<E>(c);
+    }
+
+    /**
+     * {@link ConcurrentSkipListMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link ConcurrentSkipListMap}のキーの型
+     * @param <V>
+     *            {@link ConcurrentSkipListMap}の値の型
+     * @return {@link ConcurrentSkipListMap}の新しいインスタンス
+     * @see ConcurrentSkipListMap#ConcurrentSkipListMap()
+     */
+    public static <K, V> ConcurrentSkipListMap<K, V> newConcurrentSkipListMap() {
+        return new ConcurrentSkipListMap<K, V>();
+    }
+
+    /**
+     * {@link ConcurrentSkipListMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link ConcurrentSkipListMap}のキーの型
+     * @param <V>
+     *            {@link ConcurrentSkipListMap}の値の型
+     * @param c
+     * @return {@link ConcurrentSkipListMap}の新しいインスタンス
+     * @see ConcurrentSkipListMap#ConcurrentSkipListMap(Comparator)
+     */
+    public static <K, V> ConcurrentSkipListMap<K, V> newConcurrentSkipListMap(
+            final Comparator<? super K> c) {
+        return new ConcurrentSkipListMap<K, V>(c);
+    }
+
+    /**
+     * {@link ConcurrentSkipListMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link ConcurrentSkipListMap}のキーの型
+     * @param <V>
+     *            {@link ConcurrentSkipListMap}の値の型
+     * @param m
+     *            作成されるマップに配置されるマップ
+     * @return {@link ConcurrentSkipListMap}の新しいインスタンス
+     * @see ConcurrentSkipListMap#ConcurrentSkipListMap(Map)
+     */
+    public static <K, V> ConcurrentSkipListMap<K, V> newConcurrentSkipListMap(
+            final Map<? extends K, ? extends V> m) {
+        return new ConcurrentSkipListMap<K, V>(m);
+    }
+
+    /**
+     * {@link ConcurrentSkipListMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link ConcurrentSkipListMap}のキーの型
+     * @param <V>
+     *            {@link ConcurrentSkipListMap}の値の型
+     * @param m
+     *            作成されるマップに配置されるマップ
+     * @return {@link ConcurrentSkipListMap}の新しいインスタンス
+     * @see ConcurrentSkipListMap#ConcurrentSkipListMap(SortedMap)
+     */
+    public static <K, V> ConcurrentSkipListMap<K, V> newConcurrentSkipListMap(
+            final SortedMap<K, ? extends V> m) {
+        return new ConcurrentSkipListMap<K, V>(m);
+    }
+
+    /**
+     * {@link ConcurrentSkipListSet}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ConcurrentSkipListSet}の要素型
+     * @return {@link ConcurrentSkipListSet}の新しいインスタンス
+     * @see ConcurrentSkipListSet#ConcurrentSkipListSet()
+     */
+    public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet() {
+        return new ConcurrentSkipListSet<E>();
+    }
+
+    /**
+     * {@link ConcurrentSkipListSet}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ConcurrentSkipListSet}の要素型
+     * @param c
+     *            要素がセットに配置されるコレクション
+     * @return {@link ConcurrentSkipListSet}の新しいインスタンス
+     * @see ConcurrentSkipListSet#ConcurrentSkipListSet(Collection)
+     */
+    public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(
+            final Collection<? extends E> c) {
+        return new ConcurrentSkipListSet<E>(c);
+    }
+
+    /**
+     * {@link ConcurrentSkipListSet}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ConcurrentSkipListSet}の要素型
+     * @param c
+     *            このセットをソートするために使用されるコンパレータ
+     * @return {@link ConcurrentSkipListSet}の新しいインスタンス
+     * @see ConcurrentSkipListSet#ConcurrentSkipListSet(Comparator)
+     */
+    public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(
+            final Comparator<? super E> c) {
+        return new ConcurrentSkipListSet<E>(c);
+    }
+
+    /**
+     * {@link ConcurrentSkipListSet}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link ConcurrentSkipListSet}の要素型
+     * @param s
+     *            要素がセットに配置されるコレクション
+     * @return {@link ConcurrentSkipListSet}の新しいインスタンス
+     * @see ConcurrentSkipListSet#ConcurrentSkipListSet(SortedSet)
+     */
+    public static <E> ConcurrentSkipListSet<E> newConcurrentSkipListSet(
+            final SortedSet<? extends E> s) {
+        return new ConcurrentSkipListSet<E>(s);
     }
 
     /**
@@ -342,6 +506,57 @@ public abstract class CollectionsUtil {
     public static <E extends Delayed> DelayQueue<E> newDelayQueue(
             final Collection<? extends E> c) {
         return new DelayQueue<E>(c);
+    }
+
+    /**
+     * {@link EnumMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link EnumMap}のキーの型
+     * @param <V>
+     *            {@link EnumMap}の値の型
+     * @param keyType
+     *            この {@literal enum} マップ用のキー型のクラスオブジェクト
+     * @return {@link EnumMap}の新しいインスタンス
+     * @see EnumMap#EnumMap(Class)
+     */
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(
+            final Class<K> keyType) {
+        return new EnumMap<K, V>(keyType);
+    }
+
+    /**
+     * {@link EnumMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link EnumMap}のキーの型
+     * @param <V>
+     *            {@link EnumMap}の値の型
+     * @param m
+     *            この {@literal enum} マップの初期化元の {@literal enum} マップ
+     * @return {@link EnumMap}の新しいインスタンス
+     * @see EnumMap#EnumMap(EnumMap)
+     */
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(
+            final EnumMap<K, ? extends V> m) {
+        return new EnumMap<K, V>(m);
+    }
+
+    /**
+     * {@link EnumMap}の新しいインスタンスを作成して返します。
+     * 
+     * @param <K>
+     *            {@link EnumMap}のキーの型
+     * @param <V>
+     *            {@link EnumMap}の値の型
+     * @param m
+     *            この {@literal enum} マップの初期化元のマップ
+     * @return {@link EnumMap}の新しいインスタンス
+     * @see EnumMap#EnumMap(Map)
+     */
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(
+            final Map<K, ? extends V> m) {
+        return new EnumMap<K, V>(m);
     }
 
     /**
@@ -579,6 +794,48 @@ public abstract class CollectionsUtil {
     public static <K, V> IdentityHashMap<K, V> newIdentityHashMap(
             final Map<? extends K, ? extends V> m) {
         return new IdentityHashMap<K, V>(m);
+    }
+
+    /**
+     * {@link LinkedBlockingDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link LinkedBlockingDeque}の要素型
+     * @return {@link LinkedBlockingDeque}の新しいインスタンス
+     * @see LinkedBlockingDeque#LinkedBlockingDeque()
+     */
+    public static <E> LinkedBlockingDeque<E> newLinkedBlockingDeque() {
+        return new LinkedBlockingDeque<E>();
+    }
+
+    /**
+     * {@link LinkedBlockingDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link LinkedBlockingDeque}の要素型
+     * @param c
+     *            要素がリストに配置されるコレクション
+     * @return {@link LinkedBlockingDeque}の新しいインスタンス
+     * @see LinkedBlockingDeque#LinkedBlockingDeque(Collection)
+     */
+    public static <E> LinkedBlockingDeque<E> newLinkedBlockingDeque(
+            final Collection<? extends E> c) {
+        return new LinkedBlockingDeque<E>(c);
+    }
+
+    /**
+     * {@link LinkedBlockingDeque}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link LinkedBlockingDeque}の要素型
+     * @param initialCapacity
+     *            リストの初期容量
+     * @return {@link LinkedBlockingDeque}の新しいインスタンス
+     * @see LinkedBlockingDeque#LinkedBlockingDeque(int)
+     */
+    public static <E> LinkedBlockingDeque<E> newLinkedBlockingDeque(
+            final int initialCapacity) {
+        return new LinkedBlockingDeque<E>(initialCapacity);
     }
 
     /**
@@ -937,6 +1194,33 @@ public abstract class CollectionsUtil {
     }
 
     /**
+     * {@link SynchronousQueue}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link SynchronousQueue}の要素型
+     * @return {@link SynchronousQueue}の新しいインスタンス
+     * @see SynchronousQueue#SynchronousQueue()
+     */
+    public static <E> SynchronousQueue<E> newSynchronousQueue() {
+        return new SynchronousQueue<E>();
+    }
+
+    /**
+     * {@link SynchronousQueue}の新しいインスタンスを作成して返します。
+     * 
+     * @param <E>
+     *            {@link SynchronousQueue}の要素型
+     * @param fair
+     *            {@literal true} の場合、待機中のスレッドは FIFO
+     *            の順序でアクセスが決定される。そうでない場合、順序は未指定
+     * @return {@link SynchronousQueue}の新しいインスタンス
+     * @see SynchronousQueue#SynchronousQueue()
+     */
+    public static <E> SynchronousQueue<E> newSynchronousQueue(final boolean fair) {
+        return new SynchronousQueue<E>(fair);
+    }
+
+    /**
      * {@link TreeMap}の新しいインスタンスを作成して返します。
      * 
      * @param <K>
@@ -959,7 +1243,7 @@ public abstract class CollectionsUtil {
      *            {@link TreeMap}の値の型
      * @param c
      * @return {@link TreeMap}の新しいインスタンス
-     * @see TreeMap#TreeMap()
+     * @see TreeMap#TreeMap(Comparator)
      */
     public static <K, V> TreeMap<K, V> newTreeMap(final Comparator<? super K> c) {
         return new TreeMap<K, V>(c);
@@ -1200,7 +1484,7 @@ public abstract class CollectionsUtil {
      */
     public static <K, V> V putIfAbsent(final ConcurrentMap<K, V> map,
             final K key, final V value) {
-        V exists = map.putIfAbsent(key, value);
+        final V exists = map.putIfAbsent(key, value);
         if (exists != null) {
             return exists;
         }
