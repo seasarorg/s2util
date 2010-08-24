@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.seasar.framework.util.StringUtil;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.IllegalAccessRuntimeException;

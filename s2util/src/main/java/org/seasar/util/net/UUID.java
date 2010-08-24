@@ -19,7 +19,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
 
-import org.seasar.framework.util.StringUtil;
+import org.seasar.util.lang.StringUtil;
 
 /**
  * UUIDを作成するユーティリティです。

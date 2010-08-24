@@ -18,6 +18,8 @@ package org.seasar.framework.util;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
+import org.seasar.util.lang.StringUtil;
+
 /**
  * {@link BigDecimal}用の変換ユーティリティです。
  * 

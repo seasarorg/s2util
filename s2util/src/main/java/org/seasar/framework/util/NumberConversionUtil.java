@@ -20,6 +20,8 @@ import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.seasar.util.lang.StringUtil;
+
 /**
  * {@link Number}用の変換ユーティリティです。
  * 

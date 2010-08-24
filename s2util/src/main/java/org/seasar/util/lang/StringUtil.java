@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,6 @@ public class StringUtil {
      * @param text
      *            文字列
      * @return 文字列が<code>null</code>でも空文字列でもなければ<code>true</code>
-     * @since 2.4.33
      */
     public static final boolean isNotEmpty(final String text) {
         return !isEmpty(text);
@@ -78,7 +77,7 @@ public class StringUtil {
         if (text == null || fromText == null || toText == null) {
             return null;
         }
-        StringBuffer buf = new StringBuffer(100);
+        StringBuilder buf = new StringBuilder(100);
         int pos = 0;
         int pos2 = 0;
         while (true) {
@@ -111,12 +110,12 @@ public class StringUtil {
         if (isEmpty(str)) {
             return EMPTY_STRINGS;
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         StringTokenizer st = new StringTokenizer(str, delim);
         while (st.hasMoreElements()) {
-            list.add(st.nextElement());
+            list.add(st.nextElement().toString());
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -248,7 +247,7 @@ public class StringUtil {
         }
         char chars[] = name.toCharArray();
         if (chars.length >= 2 && Character.isUpperCase(chars[0])
-                && Character.isUpperCase(chars[1])) {
+            && Character.isUpperCase(chars[1])) {
             return name;
         }
         chars[0] = Character.toLowerCase(chars[0]);
@@ -269,21 +268,6 @@ public class StringUtil {
         char chars[] = name.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
-    }
-
-    /**
-     * ケースインセンシティブで特定の文字列で開始されているかどうかを返します。
-     * 
-     * @param text
-     *            テキスト
-     * @param fragment
-     *            特定の文字列
-     * @return ケースインセンシティブで特定の文字列で開始されているかどうか
-     * @see #startsWithIgnoreCase(String, String)
-     * @deprecated
-     */
-    public static boolean startsWith(final String text, final String fragment) {
-        return startsWithIgnoreCase(text, fragment);
     }
 
     /**
@@ -374,7 +358,7 @@ public class StringUtil {
     public static boolean equalsIgnoreCase(final String target1,
             final String target2) {
         return (target1 == null) ? (target2 == null) : target1
-                .equalsIgnoreCase(target2);
+            .equalsIgnoreCase(target2);
     }
 
     /**
@@ -540,7 +524,7 @@ public class StringUtil {
         if (array.length == 1) {
             return StringUtil.capitalize(s);
         }
-        StringBuffer buf = new StringBuffer(40);
+        StringBuilder buf = new StringBuilder(40);
         for (int i = 0; i < array.length; ++i) {
             buf.append(StringUtil.capitalize(array[i]));
         }
@@ -561,7 +545,7 @@ public class StringUtil {
         if (s.length() == 1) {
             return s.toUpperCase();
         }
-        StringBuffer buf = new StringBuffer(40);
+        StringBuilder buf = new StringBuilder(40);
         int pos = 0;
         for (int i = 1; i < s.length(); ++i) {
             if (Character.isUpperCase(s.charAt(i))) {

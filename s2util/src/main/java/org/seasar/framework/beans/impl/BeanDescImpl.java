@@ -45,7 +45,6 @@ import org.seasar.framework.util.FloatConversionUtil;
 import org.seasar.framework.util.IntegerConversionUtil;
 import org.seasar.framework.util.LongConversionUtil;
 import org.seasar.framework.util.ShortConversionUtil;
-import org.seasar.framework.util.StringUtil;
 import org.seasar.util.beans.ConstructorNotFoundRuntimeException;
 import org.seasar.util.beans.FieldNotFoundRuntimeException;
 import org.seasar.util.beans.IllegalDiiguRuntimeException;
@@ -58,6 +57,7 @@ import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.lang.MethodUtil;
+import org.seasar.util.lang.StringUtil;
 import org.seasar.util.log.Logger;
 
 /**

@@ -13,7 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
+
+import org.seasar.util.lang.StringUtil;
 
 import junit.framework.TestCase;
 

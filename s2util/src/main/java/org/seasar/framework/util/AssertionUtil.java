@@ -16,6 +16,7 @@
 package org.seasar.framework.util;
 
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.lang.StringUtil;
 
 /**
  * 表明についてのユーティリティクラスです。

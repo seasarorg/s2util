@@ -19,9 +19,9 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import org.seasar.framework.beans.Converter;
-import org.seasar.framework.util.StringUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.ParseRuntimeException;
+import org.seasar.util.lang.StringUtil;
 
 /**
  * 数値用のコンバータです。

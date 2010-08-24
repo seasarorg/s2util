@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.math.BigDecimal;
 
@@ -25,10 +25,12 @@ import org.seasar.framework.util.BigDecimalConversionUtil.BigDecimalNormalizer;
  */
 public class TigerBigDecimalConversion implements BigDecimalNormalizer {
 
+    @Override
     public BigDecimal normalize(final BigDecimal dec) {
         return new BigDecimal(dec.toPlainString());
     }
 
+    @Override
     public String toString(BigDecimal dec) {
         return dec.toPlainString();
     }

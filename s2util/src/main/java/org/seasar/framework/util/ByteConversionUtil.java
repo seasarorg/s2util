@@ -17,6 +17,8 @@ package org.seasar.framework.util;
 
 import java.text.SimpleDateFormat;
 
+import org.seasar.util.lang.StringUtil;
+
 /**
  * {@link Byte}用の変換ユーティリティです。
  * 

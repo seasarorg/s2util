@@ -17,9 +17,9 @@ package org.seasar.util.io;
 
 import java.io.InputStream;
 
-import org.seasar.framework.util.StringUtil;
 import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.lang.StringUtil;
 
 import junit.framework.TestCase;
 

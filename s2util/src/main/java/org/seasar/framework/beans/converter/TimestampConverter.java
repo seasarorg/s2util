@@ -18,10 +18,10 @@ package org.seasar.framework.beans.converter;
 import java.util.Date;
 
 import org.seasar.framework.beans.Converter;
-import org.seasar.framework.util.StringConversionUtil;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.lang.StringUtil;
 
 /**
  * 日時用のコンバータです。
