@@ -17,8 +17,8 @@ package org.seasar.util.beans;
 
 import java.lang.reflect.Method;
 
-import org.seasar.framework.util.MethodUtil;
 import org.seasar.util.exception.SRuntimeException;
+import org.seasar.util.lang.MethodUtil;
 
 /**
  * {@link Method}が見つからなかったときにスローされる例外です。

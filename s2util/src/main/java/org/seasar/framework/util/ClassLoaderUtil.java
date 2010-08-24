@@ -25,6 +25,7 @@ import org.seasar.util.collection.EnumerationIterator;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.lang.ClassUtil;
+import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.message.MessageFormatter;
 
 /**

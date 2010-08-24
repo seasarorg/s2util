@@ -45,7 +45,6 @@ import org.seasar.framework.util.DoubleConversionUtil;
 import org.seasar.framework.util.FloatConversionUtil;
 import org.seasar.framework.util.IntegerConversionUtil;
 import org.seasar.framework.util.LongConversionUtil;
-import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ShortConversionUtil;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.util.beans.ConstructorNotFoundRuntimeException;
@@ -58,6 +57,7 @@ import org.seasar.util.collection.CaseInsensitiveMap;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.FieldUtil;
+import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.log.Logger;
 
 /**
@@ -527,7 +527,7 @@ public class BeanDescImpl implements BeanDesc {
         Method[] methods = beanClass.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method m = methods[i];
-            if (MethodUtil.isBridgeMethod(m) || MethodUtil.isSyntheticMethod(m)) {
+            if (m.isBridge() || m.isSynthetic()) {
                 continue;
             }
             String methodName = m.getName();
@@ -685,8 +685,8 @@ public class BeanDescImpl implements BeanDesc {
         Method[] methods = beanClass.getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (MethodUtil.isBridgeMethod(method)
-                    || MethodUtil.isSyntheticMethod(method)) {
+            if (method.isBridge()
+                    || method.isSynthetic()) {
                 continue;
             }
             String methodName = method.getName();

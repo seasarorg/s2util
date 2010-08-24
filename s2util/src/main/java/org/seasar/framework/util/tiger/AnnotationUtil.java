@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.util.MethodUtil;
+import org.seasar.util.lang.MethodUtil;
 
 /**
  * アノテーションのためのユーティリティクラスです。

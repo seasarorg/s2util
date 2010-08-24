@@ -15,7 +15,7 @@
  */
 package org.seasar.util.exception;
 
-import org.seasar.framework.util.MethodUtil;
+import org.seasar.util.lang.MethodUtil;
 
 /**
  * {@link NoSuchMethodException}をラップする例外です。

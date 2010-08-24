@@ -19,12 +19,12 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.seasar.util.lang.ClassUtilTest.*;
 
 /**
  * @author y-komori
@@ -133,10 +133,6 @@ public class FieldUtilTest {
         Field f = ClassUtil.getField(Baz.class, "map");
         assertThat(FieldUtil.getKeyTypeOfMap(f), isSameClass(String.class));
         assertThat(FieldUtil.getValueTypeOfMap(f), isSameClass(Integer.class));
-    }
-
-    static Matcher<Object> isSameClass(Class<?> clazz) {
-        return is((Object) clazz);
     }
 
     /**

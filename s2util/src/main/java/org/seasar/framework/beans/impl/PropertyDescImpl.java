@@ -31,7 +31,6 @@ import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.framework.util.ConstructorUtil;
 import org.seasar.framework.util.DateConversionUtil;
-import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ModifierUtil;
 import org.seasar.framework.util.NumberConversionUtil;
 import org.seasar.framework.util.SqlDateConversionUtil;
@@ -39,6 +38,7 @@ import org.seasar.util.beans.IllegalPropertyRuntimeException;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.FieldUtil;
+import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.sql.TimeConversionUtil;
 import org.seasar.util.sql.TimestampConversionUtil;
 
@@ -136,8 +136,8 @@ public class PropertyDescImpl implements PropertyDesc {
         Method[] methods = propertyType.getMethods();
         for (int i = 0; i < methods.length; ++i) {
             Method method = methods[i];
-            if (MethodUtil.isBridgeMethod(method)
-                    || MethodUtil.isSyntheticMethod(method)) {
+            if (method.isBridge()
+                    || method.isSynthetic()) {
                 continue;
             }
             if (ModifierUtil.isStatic(method.getModifiers())

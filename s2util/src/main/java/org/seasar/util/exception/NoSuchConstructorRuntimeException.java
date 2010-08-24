@@ -17,7 +17,7 @@ package org.seasar.util.exception;
 
 import java.lang.reflect.Constructor;
 
-import org.seasar.framework.util.MethodUtil;
+import org.seasar.util.lang.MethodUtil;
 
 /**
  * {@link Constructor}が見つからない場合にスローされる{@link NoSuchMethodException}をラップする例外です。

@@ -27,7 +27,6 @@ import org.seasar.util.exception.SIllegalArgumentException;
  * {@link Field}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
 public abstract class FieldUtil {
 
