@@ -13,14 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import org.seasar.util.convert.ShortConversionUtil;
+import org.seasar.framework.util.BigDecimalConversionUtil;
+import org.seasar.framework.util.BigIntegerConversionUtil;
+import org.seasar.framework.util.BooleanConversionUtil;
+import org.seasar.framework.util.ByteConversionUtil;
+import org.seasar.framework.util.DecimalFormatSymbolsUtil;
+import org.seasar.framework.util.DoubleConversionUtil;
+import org.seasar.framework.util.FloatConversionUtil;
+import org.seasar.framework.util.IntegerConversionUtil;
+import org.seasar.framework.util.LongConversionUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -44,7 +52,7 @@ public class NumberConversionUtil {
      * @param o
      * @return 適切な {@link Number}
      */
-    public static Object convertNumber(Class type, Object o) {
+    public static Object convertNumber(Class<?> type, Object o) {
         if (type == Integer.class) {
             return IntegerConversionUtil.toInteger(o);
         } else if (type == BigDecimal.class) {
@@ -72,13 +80,13 @@ public class NumberConversionUtil {
      * @param o
      * @return Wrapper
      */
-    public static Object convertPrimitiveWrapper(Class type, Object o) {
+    public static Object convertPrimitiveWrapper(Class<?> type, Object o) {
         if (type == int.class) {
             Integer i = IntegerConversionUtil.toInteger(o);
             if (i != null) {
                 return i;
             }
-            return new Integer(0);
+            return Integer.valueOf(0);
         } else if (type == double.class) {
             Double d = DoubleConversionUtil.toDouble(o);
             if (d != null) {
@@ -90,7 +98,7 @@ public class NumberConversionUtil {
             if (l != null) {
                 return l;
             }
-            return new Long(0);
+            return Long.valueOf(0);
         } else if (type == float.class) {
             Float f = FloatConversionUtil.toFloat(o);
             if (f != null) {
@@ -102,7 +110,7 @@ public class NumberConversionUtil {
             if (s != null) {
                 return s;
             }
-            return new Short((short) 0);
+            return Short.valueOf((short) 0);
         } else if (type == boolean.class) {
             Boolean b = BooleanConversionUtil.toBoolean(o);
             if (b != null) {
@@ -114,7 +122,7 @@ public class NumberConversionUtil {
             if (b != null) {
                 return b;
             }
-            return new Byte((byte) 0);
+            return Byte.valueOf((byte) 0);
         }
         return o;
     }

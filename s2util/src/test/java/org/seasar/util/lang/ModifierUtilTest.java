@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.seasar.util.lang.ModifierUtil;
 
 /**
  * @author shot
@@ -76,7 +78,7 @@ public class ModifierUtilTest extends TestCase {
         public static final String s = null;
 
         /**
-         * @return
+         * @return 何か
          */
         public static String hoge() {
             return "aaa";

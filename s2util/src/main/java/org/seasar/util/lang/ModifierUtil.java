@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -99,7 +99,7 @@ public class ModifierUtil {
      *            クラス
      * @return <code>abstract</code>かどうか
      */
-    public static boolean isAbstract(Class clazz) {
+    public static boolean isAbstract(Class<?> clazz) {
         return isAbstract(clazz.getModifiers());
     }
 

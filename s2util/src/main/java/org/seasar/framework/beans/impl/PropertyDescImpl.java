@@ -30,9 +30,8 @@ import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.framework.util.DateConversionUtil;
-import org.seasar.framework.util.ModifierUtil;
-import org.seasar.framework.util.NumberConversionUtil;
 import org.seasar.util.beans.IllegalPropertyRuntimeException;
+import org.seasar.util.convert.NumberConversionUtil;
 import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
@@ -41,6 +40,7 @@ import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.lang.MethodUtil;
+import org.seasar.util.lang.ModifierUtil;
 
 /**
  * {@link PropertyDesc}の実装クラスです。
