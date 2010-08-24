@@ -13,7 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
+
+import org.seasar.util.convert.ShortConversionUtil;
 
 import junit.framework.TestCase;
 
@@ -21,25 +23,33 @@ import junit.framework.TestCase;
  * @author higa
  * 
  */
-public class SerializeUtilTest extends TestCase {
+public class ShortConversionUtilTest extends TestCase {
 
     /**
      * @throws Exception
      */
-    public void testSerialize() throws Exception {
-        String[] a = new String[] { "1", "2" };
-        String[] b = (String[]) SerializeUtil.serialize(a);
-        assertEquals("1", b.length, a.length);
-        assertEquals("2", "1", b[0]);
-        assertEquals("3", "2", b[1]);
+    public void testToShort() throws Exception {
+        assertEquals(new Short("1000"), ShortConversionUtil.toShort("1,000"));
     }
 
     /**
      * @throws Exception
      */
-    public void testObjectAndBinary() throws Exception {
-        String o = "hoge";
-        byte[] binary = SerializeUtil.fromObjectToBinary(o);
-        assertEquals(o, SerializeUtil.fromBinaryToObject(binary));
+    public void testToPrimitiveShort() throws Exception {
+        assertEquals(1000, ShortConversionUtil.toPrimitiveShort("1,000"));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public void testToPrimitiveShortForEmptyString() throws Exception {
+        assertEquals(0, ShortConversionUtil.toPrimitiveShort(""));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public void testToShortForEmptyString() throws Exception {
+        assertNull(ShortConversionUtil.toShort(""));
     }
 }

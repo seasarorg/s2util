@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.seasar.util.convert.ShortConversionUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**

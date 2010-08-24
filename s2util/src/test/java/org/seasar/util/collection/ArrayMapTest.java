@@ -22,7 +22,7 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.framework.util.SerializeUtil;
+import org.seasar.util.io.SerializeUtil;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

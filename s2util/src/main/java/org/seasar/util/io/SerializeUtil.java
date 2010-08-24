@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,7 +44,7 @@ public class SerializeUtil {
      * オブジェクトをシリアライズできるかテストします。
      * 
      * @param o
-     * @return
+     * @return シリアライズして復元したオブジェクト
      * @throws IORuntimeException
      * @throws ClassNotFoundRuntimeException
      */
@@ -59,13 +59,13 @@ public class SerializeUtil {
      * オブジェクトをbyteの配列に変換します。
      * 
      * @param o
-     * @return
+     * @return オブジェクトのbyte配列
      */
     public static byte[] fromObjectToBinary(Object o) {
 
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(
-                    BYTE_ARRAY_SIZE);
+            ByteArrayOutputStream baos =
+                new ByteArrayOutputStream(BYTE_ARRAY_SIZE);
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             try {
                 oos.writeObject(o);
@@ -82,7 +82,7 @@ public class SerializeUtil {
      * byteの配列をオブジェクトに変換します。
      * 
      * @param binary
-     * @return
+     * @return 復元したオブジェクト
      */
     public static Object fromBinaryToObject(byte[] binary) {
         try {

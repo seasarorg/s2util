@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,6 +33,7 @@ public class SPrintWriter extends PrintWriter {
         super(new StringWriter());
     }
 
+    @Override
     public String toString() {
         return out.toString();
     }

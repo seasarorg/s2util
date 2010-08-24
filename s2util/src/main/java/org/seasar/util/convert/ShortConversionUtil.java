@@ -13,10 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.text.SimpleDateFormat;
 
+import org.seasar.framework.util.DecimalFormatUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -59,17 +60,17 @@ public class ShortConversionUtil {
         } else if (o instanceof Short) {
             return (Short) o;
         } else if (o instanceof Number) {
-            return new Short(((Number) o).shortValue());
+            return Short.valueOf(((Number) o).shortValue());
         } else if (o instanceof String) {
             return toShort((String) o);
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
-                return new Short(new SimpleDateFormat(pattern).format(o));
+                return Short.valueOf(new SimpleDateFormat(pattern).format(o));
             }
-            return new Short((short) ((java.util.Date) o).getTime());
+            return Short.valueOf((short) ((java.util.Date) o).getTime());
         } else if (o instanceof Boolean) {
-            return ((Boolean) o).booleanValue() ? new Short((short) 1)
-                    : new Short((short) 0);
+            return ((Boolean) o).booleanValue() ? Short.valueOf((short) 1)
+                : Short.valueOf((short) 0);
         } else {
             return toShort(o.toString());
         }
@@ -112,7 +113,7 @@ public class ShortConversionUtil {
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
                 return Short
-                        .parseShort(new SimpleDateFormat(pattern).format(o));
+                    .parseShort(new SimpleDateFormat(pattern).format(o));
             }
             return (short) ((java.util.Date) o).getTime();
         } else if (o instanceof Boolean) {

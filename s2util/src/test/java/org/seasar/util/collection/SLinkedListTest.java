@@ -18,7 +18,7 @@ package org.seasar.util.collection;
 import java.util.NoSuchElementException;
 
 import org.junit.Test;
-import org.seasar.framework.util.SerializeUtil;
+import org.seasar.util.io.SerializeUtil;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
