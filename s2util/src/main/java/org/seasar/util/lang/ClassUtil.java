@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.seasar.framework.util.StringUtil;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
+import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.InstantiationRuntimeException;
 import org.seasar.util.exception.NoSuchConstructorRuntimeException;
@@ -109,6 +110,8 @@ public abstract class ClassUtil {
      * @param loader
      *            クラスのロード元である必要があるクラスローダ
      * @return 指定された名前を持つクラスの{@link Class}オブジェクト
+     * @throws EmptyRuntimeException
+     *             クラス名が{@literal null}または空文字列だった場合
      * @throws ClassNotFoundRuntimeException
      *             クラスが見つからなかった場合
      * @see Class#forName(String, boolean, ClassLoader)
@@ -116,6 +119,9 @@ public abstract class ClassUtil {
     @SuppressWarnings("unchecked")
     public static <T> Class<T> forName(final String className,
             final ClassLoader loader) throws ClassNotFoundRuntimeException {
+        if (StringUtil.isEmpty(className)) {
+            throw new EmptyRuntimeException("className");
+        }
         try {
             return (Class<T>) Class.forName(className, true, loader);
         } catch (final ClassNotFoundException e) {
@@ -162,6 +168,9 @@ public abstract class ClassUtil {
     @SuppressWarnings("unchecked")
     public static <T> Class<T> forNameNoException(final String className,
             final ClassLoader loader) {
+        if (StringUtil.isEmpty(className)) {
+            return null;
+        }
         try {
             return (Class<T>) Class.forName(className, true, loader);
         } catch (final Throwable ignore) {
@@ -175,12 +184,17 @@ public abstract class ClassUtil {
      * @param className
      *            クラス名
      * @return {@link Class}
+     * @throws EmptyRuntimeException
+     *             クラス名が{@literal null}または空文字列だった場合
      * @throws ClassNotFoundRuntimeException
      *             {@link ClassNotFoundException}がおきた場合
      * @see #forName(String)
      */
     public static Class<?> convertClass(final String className)
             throws ClassNotFoundRuntimeException {
+        if (StringUtil.isEmpty(className)) {
+            throw new EmptyRuntimeException("className");
+        }
         final Class<?> clazz = primitiveNameToClassMap.get(className);
         if (clazz != null) {
             return clazz;
@@ -401,12 +415,17 @@ public abstract class ClassUtil {
      * @param name
      *            フィールド名
      * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
+     * @throws EmptyRuntimeException
+     *             フィールド名が{@literal null}または空文字列だった場合
      * @throws NoSuchFieldRuntimeException
      *             指定された名前のフィールドが見つからない場合
      * @see Class#getField(String)
      */
     public static Field getField(final Class<?> clazz, final String name)
             throws NoSuchFieldRuntimeException {
+        if (StringUtil.isEmpty(name)) {
+            throw new EmptyRuntimeException("name");
+        }
         try {
             return clazz.getField(name);
         } catch (final NoSuchFieldException e) {
@@ -447,12 +466,17 @@ public abstract class ClassUtil {
      * @param argTypes
      *            パラメータのリスト
      * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
+     * @throws EmptyRuntimeException
+     *             メソッド名が{@literal null}または空文字列だった場合
      * @throws NoSuchMethodRuntimeException
      *             一致するメソッドが見つからない場合
      * @see Class#getMethod(String, Class...)
      */
     public static Method getMethod(final Class<?> clazz, final String name,
             final Class<?>... argTypes) throws NoSuchMethodRuntimeException {
+        if (StringUtil.isEmpty(name)) {
+            throw new EmptyRuntimeException("name");
+        }
         try {
             return clazz.getMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {

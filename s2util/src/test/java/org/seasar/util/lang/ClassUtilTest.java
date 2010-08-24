@@ -17,6 +17,7 @@ package org.seasar.util.lang;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
+import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.NoSuchConstructorRuntimeException;
 import org.seasar.util.exception.NoSuchFieldRuntimeException;
 
@@ -25,14 +26,35 @@ import static org.junit.Assert.*;
 
 /**
  * @author higa
- * 
  */
 public class ClassUtilTest {
 
-    /**
-     * 
-     */
+    /** */
     public static final String HOGE = "hoge";
+
+    /**
+     * @throws Exception
+     */
+    @Test(expected = EmptyRuntimeException.class)
+    public void testForName_EmptyName() throws Exception {
+        ClassUtil.forName("");
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test(expected = EmptyRuntimeException.class)
+    public void testGetField_EmptyName() throws Exception {
+        ClassUtil.getField(getClass(), "");
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test(expected = EmptyRuntimeException.class)
+    public void testGetMethod_EmptyName() throws Exception {
+        ClassUtil.getMethod(getClass(), "");
+    }
 
     /**
      * 
