@@ -42,7 +42,6 @@ import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.framework.util.ClassPoolUtil;
 import org.seasar.framework.util.ConstructorUtil;
 import org.seasar.framework.util.DoubleConversionUtil;
-import org.seasar.framework.util.FieldUtil;
 import org.seasar.framework.util.FloatConversionUtil;
 import org.seasar.framework.util.IntegerConversionUtil;
 import org.seasar.framework.util.LongConversionUtil;
@@ -58,6 +57,7 @@ import org.seasar.util.collection.ArrayMap;
 import org.seasar.util.collection.CaseInsensitiveMap;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.ClassUtil;
+import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.log.Logger;
 
 /**

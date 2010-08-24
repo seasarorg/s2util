@@ -31,7 +31,6 @@ import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.framework.util.ConstructorUtil;
 import org.seasar.framework.util.DateConversionUtil;
-import org.seasar.framework.util.FieldUtil;
 import org.seasar.framework.util.MethodUtil;
 import org.seasar.framework.util.ModifierUtil;
 import org.seasar.framework.util.NumberConversionUtil;
@@ -39,6 +38,7 @@ import org.seasar.framework.util.SqlDateConversionUtil;
 import org.seasar.util.beans.IllegalPropertyRuntimeException;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
+import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.sql.TimeConversionUtil;
 import org.seasar.util.sql.TimestampConversionUtil;
 
