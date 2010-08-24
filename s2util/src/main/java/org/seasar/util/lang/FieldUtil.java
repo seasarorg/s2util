@@ -31,16 +31,16 @@ import org.seasar.util.exception.SIllegalArgumentException;
 public abstract class FieldUtil {
 
     /**
-     * staticな{@link Field}の値をオブジェクトとして取得します。
+     * {@link Field}によって表される{@code static}フィールドの値を返します。
      * 
      * @param <T>
      *            フィールドの型
      * @param field
      *            フィールド
-     * @return {@link Object} フィールドの値
+     * @return {@code static}フィールドで表現される値
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}がおきた場合
-     * @see #get(Field, Object)
+     *             基本となるフィールドにアクセスできない場合
+     * @see Field#get(Object)
      */
     @SuppressWarnings("unchecked")
     public static <T> T get(final Field field)
@@ -49,17 +49,17 @@ public abstract class FieldUtil {
     }
 
     /**
-     * {@link Field}の値をオブジェクトとして取得します。
+     * 指定されたオブジェクトについて、{@link Field}によって表されるフィールドの値を返します。
      * 
      * @param <T>
      *            フィールドの型
      * @param field
      *            フィールド
      * @param target
-     *            ターゲットオブジェクト
-     * @return {@link Object} フィールドの値
+     *            表現されるフィールド値の抽出元オブジェクト
+     * @return オブジェクト{@code obj}内で表現される値
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}がおきた場合
+     *             基本となるフィールドにアクセスできない場合
      * @see Field#get(Object)
      */
     @SuppressWarnings("unchecked")
@@ -151,16 +151,32 @@ public abstract class FieldUtil {
     }
 
     /**
-     * {@link Field}に値を設定します。
+     * {@link Field}オブジェクトによって表される{@code static}フィールドを、指定された新しい値に設定します。
+     * 
+     * @param field
+     *            フィールド
+     * @param value
+     *            {@code static}フィールドの新しい値
+     * @throws IllegalAccessRuntimeException
+     *             基本となるフィールドにアクセスできない場合
+     * @see Field#set(Object, Object)
+     */
+    public static void set(final Field field, final Object value)
+            throws IllegalAccessRuntimeException {
+        set(field, null, value);
+    }
+
+    /**
+     * {@link Field}オブジェクトによって表される指定されたオブジェクト引数のフィールドを、指定された新しい値に設定します。
      * 
      * @param field
      *            フィールド
      * @param target
-     *            ターゲットオブジェクト
+     *            フィールドを変更するオブジェクト
      * @param value
-     *            フィールドに設定する値
+     *            変更中の{@code target}の新しいフィールド値
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}が発生した場合
+     *             基本となるフィールドにアクセスできない場合
      * @see Field#set(Object, Object)
      */
     public static void set(final Field field, final Object target,

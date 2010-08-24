@@ -32,22 +32,22 @@ import org.seasar.util.exception.InvocationTargetRuntimeException;
 public abstract class MethodUtil {
 
     /**
-     * メソッドを呼び出します．
+     * {@link Method}オブジェクトによって表される基本となるメソッドを、指定したオブジェクトに対して指定したパラメータで呼び出します。
      * 
      * @param <T>
-     *            戻り値の型
+     *            メソッドの戻り値の型
      * @param method
      *            メソッド
      * @param target
-     *            ターゲットオブジェクト
+     *            基本となるメソッドの呼び出し元のオブジェクト
      * @param args
-     *            引数の並び
-     * @return 呼び出したメソッドの戻り値
-     * @throws InvocationTargetRuntimeException
-     *             {@link InvocationTargetException}が発生した場合
+     *            メソッド呼び出しに使用される引数
+     * @return このオブジェクトが表すメソッドを、パラメータ{@code args}を使用して{@code obj}にディスパッチした結果
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}が発生した場合
-     * @see Method#invoke(Object, Object...)
+     *             この{@link Method}オブジェクトがJava言語アクセス制御を実施し、 基本となるメソッドにアクセスできない場合
+     * @throws InvocationTargetRuntimeException
+     *             基本となるメソッドが例外をスローする場合
+     * @see Method#invoke(Object, Object[])
      */
     @SuppressWarnings("unchecked")
     public static <T> T invoke(final Method method, final Object target,
@@ -74,20 +74,20 @@ public abstract class MethodUtil {
     }
 
     /**
-     * staticメソッドを呼び出します．
+     * {@link Method}オブジェクトによって表される基本となる{@code static}メソッドを、指定したパラメータで呼び出します。
      * 
      * @param <T>
-     *            戻り値の型
+     *            メソッドの戻り値の型
      * @param method
      *            メソッド
      * @param args
-     *            引数の並び
-     * @return 呼び出したメソッドの戻り値
-     * @throws InvocationTargetRuntimeException
-     *             {@link InvocationTargetException}が発生した場合
+     *            メソッド呼び出しに使用される引数
+     * @return このオブジェクトが表す{@code static}メソッドを、パラメータ{@code args}を使用してディスパッチした結果
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}が発生した場合
-     * @see Method#invoke(Object, Object...)
+     *             この{@link Method}オブジェクトがJava言語アクセス制御を実施し、 基本となるメソッドにアクセスできない場合
+     * @throws InvocationTargetRuntimeException
+     *             基本となるメソッドが例外をスローする場合
+     * @see Method#invoke(Object, Object[])
      */
     @SuppressWarnings("unchecked")
     public static <T> T invokeStatic(final Method method, final Object... args)

@@ -79,16 +79,19 @@ public abstract class ClassUtil {
     }
 
     /**
-     * コンテキストクラスローダから指定された名前の{@link Class}を返します。
+     * 現在のスレッドのコンテキストクラスローダを使って、 指定された文字列名を持つクラスまたはインタフェースに関連付けられた、
+     * {@link Class}オブジェクトを返します。
      * 
+     * @param <T>
+     *            {@link Class}オブジェクトが表すクラス
      * @param className
-     *            クラス名
-     * @return {@link Class}
+     *            要求するクラスの完全修飾名
+     * @return 指定された名前を持つクラスの{@link Class}オブジェクト
      * @throws ClassNotFoundRuntimeException
-     *             {@link ClassNotFoundException}がおきた場合
+     *             クラスが見つからなかった場合
      * @see Class#forName(String, boolean, ClassLoader)
      */
-    public static Class<?> forName(final String className)
+    public static <T> Class<T> forName(final String className)
             throws ClassNotFoundRuntimeException {
         return forName(className, Thread
             .currentThread()
@@ -96,23 +99,73 @@ public abstract class ClassUtil {
     }
 
     /**
-     * 指定のクラスローダから指定された名前の{@link Class}を返します。
+     * 指定されたクラスローダを使って、 指定された文字列名を持つクラスまたはインタフェースに関連付けられた{@link Class}
+     * オブジェクトを返します。
      * 
+     * @param <T>
+     *            {@link Class}オブジェクトが表すクラス
      * @param className
-     *            クラス名
+     *            要求するクラスの完全修飾名
      * @param loader
-     *            クラスローダ
-     * @return {@link Class}
+     *            クラスのロード元である必要があるクラスローダ
+     * @return 指定された名前を持つクラスの{@link Class}オブジェクト
      * @throws ClassNotFoundRuntimeException
-     *             {@link ClassNotFoundException}がおきた場合
+     *             クラスが見つからなかった場合
      * @see Class#forName(String, boolean, ClassLoader)
      */
-    public static Class<?> forName(final String className,
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> forName(final String className,
             final ClassLoader loader) throws ClassNotFoundRuntimeException {
         try {
-            return Class.forName(className, true, loader);
-        } catch (final ClassNotFoundException ex) {
-            throw new ClassNotFoundRuntimeException(className, ex);
+            return (Class<T>) Class.forName(className, true, loader);
+        } catch (final ClassNotFoundException e) {
+            throw new ClassNotFoundRuntimeException(e);
+        }
+    }
+
+    /**
+     * 現在のスレッドのコンテキストクラスローダを使って、 指定された文字列名を持つクラスまたはインタフェースに関連付けられた、
+     * {@link Class}オブジェクトを返します。
+     * <p>
+     * クラスが見つからなかった場合は{@code null}を返します。
+     * </p>
+     * 
+     * @param <T>
+     *            {@link Class}オブジェクトが表すクラス
+     * @param className
+     *            要求するクラスの完全修飾名
+     * @return 指定された名前を持つクラスの{@link Class}オブジェクト
+     * @see Class#forName(String)
+     */
+    public static <T> Class<T> forNameNoException(final String className) {
+        return forNameNoException(className, Thread
+            .currentThread()
+            .getContextClassLoader());
+    }
+
+    /**
+     * 指定されたクラスローダを使って、 指定された文字列名を持つクラスまたはインタフェースに関連付けられた、 {@link Class}
+     * オブジェクトを返します。
+     * <p>
+     * クラスが見つからなかった場合は{@code null}を返します。
+     * </p>
+     * 
+     * @param <T>
+     *            {@link Class}オブジェクトが表すクラス
+     * @param className
+     *            要求するクラスの完全修飾名
+     * @param loader
+     *            クラスのロード元である必要があるクラスローダ
+     * @return 指定された名前を持つクラスの{@link Class}オブジェクト
+     * @see Class#forName(String)
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> forNameNoException(final String className,
+            final ClassLoader loader) {
+        try {
+            return (Class<T>) Class.forName(className, true, loader);
+        } catch (final Throwable ignore) {
+            return null;
         }
     }
 
@@ -136,45 +189,50 @@ public abstract class ClassUtil {
     }
 
     /**
-     * 新しいインスタンスを作成します。
+     * 指定されたクラスのデフォルトコンストラクタで、クラスの新しいインスタンスを作成および初期化します。
      * 
      * @param <T>
-     *            インスタンスを作成する型
+     *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラス
-     * @return 新しいインスタンス
+     *            クラスを表す{@link Class}オブジェクト
+     * @return デフォルトコンストラクタを呼び出すことで作成される新規オブジェクト
      * @throws InstantiationRuntimeException
-     *             {@link InstantiationException}が起きた場合
+     *             基本となるコンストラクタを宣言するクラスが{@code abstract}クラスを表す場合
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}が起きた場合
-     * @see Class#newInstance()
+     *             実パラメータ数と仮パラメータ数が異なる場合、 プリミティブ引数のラップ解除変換が失敗した場合、 またはラップ解除後、
+     *             メソッド呼び出し変換によってパラメータ値を対応する仮パラメータ型に変換できない場合、
+     *             このコンストラクタが列挙型に関連している場合
+     * @see Constructor#newInstance(Object[])
      */
     public static <T> T newInstance(final Class<T> clazz)
             throws InstantiationRuntimeException, IllegalAccessRuntimeException {
         try {
             return clazz.newInstance();
-        } catch (final InstantiationException ex) {
-            throw new InstantiationRuntimeException(clazz, ex);
-        } catch (final IllegalAccessException ex) {
-            throw new IllegalAccessRuntimeException(clazz, ex);
+        } catch (final InstantiationException e) {
+            throw new InstantiationRuntimeException(clazz, e);
+        } catch (final IllegalAccessException e) {
+            throw new IllegalAccessRuntimeException(clazz, e);
         }
     }
 
     /**
-     * コンテキストクラスローダから取得したクラスの新しいインスタンスを作成します。
+     * 指定されたクラスをコンテキストクラスローダから取得し、デフォルトコンストラクタで、クラスの新しいインスタンスを作成および初期化します。
      * 
      * @param <T>
      *            生成するインスタンスの型
      * @param className
      *            クラス名
-     * @return 新しいインスタンス
+     * @return デフォルトコンストラクタを呼び出すことで作成される新規オブジェクト
      * @throws ClassNotFoundRuntimeException
-     *             {@link ClassNotFoundException}がおきた場合
+     *             クラスが見つからなかった場合
      * @throws InstantiationRuntimeException
-     *             {@link InstantiationException}がおきた場合
+     *             基本となるコンストラクタを宣言するクラスが{@code abstract}クラスを表す場合
      * @throws IllegalAccessRuntimeException
-     *             {@link IllegalAccessException}がおきた場合
+     *             実パラメータ数と仮パラメータ数が異なる場合、 プリミティブ引数のラップ解除変換が失敗した場合、 またはラップ解除後、
+     *             メソッド呼び出し変換によってパラメータ値を対応する仮パラメータ型に変換できない場合、
+     *             このコンストラクタが列挙型に関連している場合
      * @see #newInstance(Class)
+     * @see #forName(String)
      */
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(final String className)
@@ -184,7 +242,7 @@ public abstract class ClassUtil {
     }
 
     /**
-     * 指定のトクラスローダから取得したクラスの新しいインスタンスを作成します。
+     * 指定されたクラスを指定のクラスローダから取得し、デフォルトコンストラクタで、クラスの新しいインスタンスを作成および初期化します。
      * 
      * @param <T>
      *            生成するインスタンスの型
@@ -200,6 +258,7 @@ public abstract class ClassUtil {
      * @throws IllegalAccessRuntimeException
      *             {@link IllegalAccessException}がおきた場合
      * @see #newInstance(Class)
+     * @see #forName(String, ClassLoader)
      */
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(final String className,
@@ -281,17 +340,19 @@ public abstract class ClassUtil {
     }
 
     /**
-     * {@link Constructor}を返します。
+     * {@link Class}オブジェクトが表すクラスの指定された{@code public}コンストラクタをリフレクトする
+     * {@link Constructor}オブジェクトを返します。
      * 
      * @param <T>
-     *            クラスの型
+     *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラス
+     *            クラスの{@link Class}オブジェクト
      * @param argTypes
-     *            引数型の並び
-     * @return {@link Constructor}
+     *            パラメータ配列
+     * @return 指定された{@code argTypes}と一致する{@code public}コンストラクタの
+     *         {@link Constructor}オブジェクト
      * @throws NoSuchConstructorRuntimeException
-     *             {@link NoSuchMethodException}がおきた場合
+     *             一致するコンストラクタが見つからない場合
      * @see Class#getConstructor(Class...)
      */
     public static <T> Constructor<T> getConstructor(final Class<T> clazz,
@@ -299,24 +360,25 @@ public abstract class ClassUtil {
             throws NoSuchConstructorRuntimeException {
         try {
             return clazz.getConstructor(argTypes);
-        } catch (final NoSuchMethodException ex) {
+        } catch (final NoSuchMethodException e) {
             throw new NoSuchConstructorRuntimeException(clazz, argTypes)
-                .initCause(ex);
+                .initCause(e);
         }
     }
 
     /**
-     * そのクラスに宣言されている {@link Constructor}を返します。
+     * {@link Class}オブジェクトが表すクラスまたはインタフェースの指定されたコンストラクタをリフレクトする
+     * {@link Constructor}オブジェクトを返します。
      * 
      * @param <T>
-     *            クラスの型
+     *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラス
+     *            クラスの{@link Class}オブジェクト
      * @param argTypes
-     *            引数型の並び
-     * @return {@link Constructor}
+     *            パラメータ配列
+     * @return 指定された{@code argTypes}と一致するコンストラクタの{@link Constructor}オブジェクト
      * @throws NoSuchConstructorRuntimeException
-     *             {@link NoSuchMethodException}がおきた場合
+     *             一致するコンストラクタが見つからない場合
      * @see Class#getDeclaredConstructor(Class...)
      */
     public static <T> Constructor<T> getDeclaredConstructor(
@@ -324,103 +386,104 @@ public abstract class ClassUtil {
             throws NoSuchConstructorRuntimeException {
         try {
             return clazz.getDeclaredConstructor(argTypes);
-        } catch (final NoSuchMethodException ex) {
+        } catch (final NoSuchMethodException e) {
             throw new NoSuchConstructorRuntimeException(clazz, argTypes)
-                .initCause(ex);
+                .initCause(e);
         }
     }
 
     /**
-     * {@link Method}を返します。
+     * {@link Class}オブジェクトが表すクラスまたはインタフェースの指定された{@code public}メンバフィールドをリフレクトする
+     * {@link Field}オブジェクトを返します。
      * 
      * @param clazz
-     *            クラス
-     * @param methodName
-     *            メソッド名
+     *            クラスの{@link Class}オブジェクト
+     * @param name
+     *            フィールド名
+     * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
+     * @throws NoSuchFieldRuntimeException
+     *             指定された名前のフィールドが見つからない場合
+     * @see Class#getField(String)
+     */
+    public static Field getField(final Class<?> clazz, final String name)
+            throws NoSuchFieldRuntimeException {
+        try {
+            return clazz.getField(name);
+        } catch (final NoSuchFieldException e) {
+            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
+        }
+    }
+
+    /**
+     * {@link Class}オブジェクトが表すクラスまたはインタフェースの指定された宣言フィールドをリフレクトする{@link Field}
+     * オブジェクトを返します。
+     * 
+     * @param clazz
+     *            クラスの{@link Class}オブジェクト
+     * @param name
+     *            フィールド名
+     * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
+     * @throws NoSuchFieldRuntimeException
+     *             指定された名前のフィールドが見つからない場合
+     * @see Class#getDeclaredField(String)
+     */
+    public static Field getDeclaredField(final Class<?> clazz, final String name)
+            throws NoSuchFieldRuntimeException {
+        try {
+            return clazz.getDeclaredField(name);
+        } catch (final NoSuchFieldException e) {
+            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
+        }
+    }
+
+    /**
+     * {@link Class}オブジェクトが表すクラスまたはインタフェースの指定された{@code public}メンバメソッドをリフレクトする
+     * {@link Method}オブジェクトを返します。
+     * 
+     * @param clazz
+     *            クラスの{@link Class}オブジェクト
+     * @param name
+     *            メソッドの名前
      * @param argTypes
-     *            引数型の並び
-     * @return {@link Method}
+     *            パラメータのリスト
+     * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
      * @throws NoSuchMethodRuntimeException
-     *             {@link NoSuchMethodException}がおきた場合
+     *             一致するメソッドが見つからない場合
      * @see Class#getMethod(String, Class...)
      */
-    public static Method getMethod(final Class<?> clazz,
-            final String methodName, final Class<?>... argTypes)
-            throws NoSuchMethodRuntimeException {
+    public static Method getMethod(final Class<?> clazz, final String name,
+            final Class<?>... argTypes) throws NoSuchMethodRuntimeException {
         try {
-            return clazz.getMethod(methodName, argTypes);
-        } catch (final NoSuchMethodException ex) {
-            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes)
-                .initCause(ex);
+            return clazz.getMethod(name, argTypes);
+        } catch (final NoSuchMethodException e) {
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes)
+                .initCause(e);
         }
     }
 
     /**
-     * そのクラスに宣言されている {@link Method}を返します。
+     * {@link Class}オブジェクトが表すクラスまたはインタフェースの指定されたメンバメソッドをリフレクトする{@link Method}
+     * オブジェクトを返します。
      * 
      * @param clazz
-     *            クラス
-     * @param methodName
-     *            メソッド名
+     *            クラスの{@link Class}オブジェクト
+     * @param name
+     *            メソッドの名前
      * @param argTypes
-     *            引数型の並び
-     * @return {@link Method}
+     *            パラメータのリスト
+     * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
      * @throws NoSuchMethodRuntimeException
-     *             {@link NoSuchMethodException}がおきた場合
+     *             一致するメソッドが見つからない場合
      * @see Class#getDeclaredMethod(String, Class...)
      */
     public static Method getDeclaredMethod(final Class<?> clazz,
-            final String methodName, final Class<?>... argTypes)
+            final String name, final Class<?>... argTypes)
             throws NoSuchMethodRuntimeException {
         try {
-            return clazz.getDeclaredMethod(methodName, argTypes);
-        } catch (final NoSuchMethodException ex) {
-            throw new NoSuchMethodRuntimeException(clazz, methodName, argTypes)
-                .initCause(ex);
-        }
-    }
-
-    /**
-     * {@link Field}を返します。
-     * 
-     * @param clazz
-     *            クラス
-     * @param fieldName
-     *            フィールド名
-     * @return {@link Field}
-     * @throws NoSuchFieldRuntimeException
-     *             {@link NoSuchFieldException}がおきた場合
-     * @see Class#getField(String)
-     */
-    public static Field getField(final Class<?> clazz, final String fieldName)
-            throws NoSuchFieldRuntimeException {
-        try {
-            return clazz.getField(fieldName);
-        } catch (final NoSuchFieldException ex) {
-            throw new NoSuchFieldRuntimeException(clazz, fieldName)
-                .initCause(ex);
-        }
-    }
-
-    /**
-     * そのクラスに宣言されている {@link Field}を返します。
-     * 
-     * @param clazz
-     *            クラス名
-     * @param fieldName
-     *            フィールド名
-     * @return {@link Field}
-     * @throws NoSuchFieldRuntimeException
-     *             {@link NoSuchFieldException}がおきた場合
-     * @see Class#getDeclaredField(String)
-     */
-    public static Field getDeclaredField(final Class<?> clazz,
-            final String fieldName) throws NoSuchFieldRuntimeException {
-        try {
-            return clazz.getDeclaredField(fieldName);
-        } catch (final NoSuchFieldException ex) {
-            throw new NoSuchFieldRuntimeException(clazz, fieldName)
-                .initCause(ex);
+            return clazz.getDeclaredMethod(name, argTypes);
+        } catch (final NoSuchMethodException e) {
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes)
+                .initCause(e);
         }
     }
 
