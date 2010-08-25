@@ -13,10 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
+package org.seasar.util.exception;
 
 import org.seasar.framework.beans.Converter;
-import org.seasar.util.exception.SRuntimeException;
 
 /**
  * {@link Converter}でエラーが起きた場合にスローされる例外です。

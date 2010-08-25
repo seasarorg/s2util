@@ -26,8 +26,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.factory.BeanDescFactory;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SRuntimeException;
 import org.seasar.util.lang.FieldUtil;

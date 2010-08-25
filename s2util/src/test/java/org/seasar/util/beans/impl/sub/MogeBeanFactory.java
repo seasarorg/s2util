@@ -13,35 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.impl.sub;
+package org.seasar.util.beans.impl.sub;
 
 /**
  * @author koichik
- *
  */
-class MogeBeanImpl implements MogeBean {
-
-    String name;
-    
-    /**
-     * 
-     */
-    public MogeBeanImpl() {
-    }
+public class MogeBeanFactory {
 
     /**
      * @param name
+     * @return MogeBean
      */
-    public MogeBeanImpl(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public static MogeBean create(String name) {
+        return new MogeBeanImpl(name);
     }
 
 }

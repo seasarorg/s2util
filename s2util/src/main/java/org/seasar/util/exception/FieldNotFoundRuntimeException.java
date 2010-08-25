@@ -13,11 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
+package org.seasar.util.exception;
 
 import java.lang.reflect.Field;
 
-import org.seasar.util.exception.SRuntimeException;
 
 /**
  * {@link Field}が見つからない場合にスローされる例外です。

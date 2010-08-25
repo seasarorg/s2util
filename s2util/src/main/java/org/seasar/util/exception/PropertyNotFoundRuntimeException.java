@@ -13,45 +13,41 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
+package org.seasar.util.exception;
 
-import org.seasar.util.exception.SRuntimeException;
 
 /**
- * プロパティの値の設定に失敗したときにスローされる例外です。
+ * プロパティが見つからなかった場合にスローされる例外です。
  * 
  * @author higa
  * 
  */
-public class IllegalPropertyRuntimeException extends SRuntimeException {
+public class PropertyNotFoundRuntimeException extends SRuntimeException {
 
-    private static final long serialVersionUID = 3584516316082904020L;
+    private static final long serialVersionUID = -5177019197796206774L;
 
     private final Class<?> targetClass;
 
     private final String propertyName;
 
     /**
-     * {@link IllegalPropertyRuntimeException}を作成します。
+     * {@link PropertyNotFoundRuntimeException}を返します。
      * 
      * @param targetClass
      *            ターゲットクラス
      * @param propertyName
      *            プロパティ名
-     * @param cause
-     *            原因となった例外
      */
-    public IllegalPropertyRuntimeException(final Class<?> targetClass,
-            final String propertyName, final Throwable cause) {
-        super("EUTL0059", targetClass.getName(), propertyName, cause);
-        initCause(cause);
+    public PropertyNotFoundRuntimeException(final Class<?> targetClass,
+            final String propertyName) {
+        super("EUTL0065", targetClass.getName(), propertyName);
         this.targetClass = targetClass;
         this.propertyName = propertyName;
     }
 
     @Override
-    public IllegalPropertyRuntimeException initCause(final Throwable cause) {
-        return (IllegalPropertyRuntimeException) super.initCause(cause);
+    public PropertyNotFoundRuntimeException initCause(final Throwable cause) {
+        return (PropertyNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

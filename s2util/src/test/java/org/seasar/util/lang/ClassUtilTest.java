@@ -234,7 +234,11 @@ public class ClassUtilTest {
             isSameClass(String.class));
     }
 
-    static Matcher<Object> isSameClass(Class<?> clazz) {
+    /**
+     * @param clazz
+     * @return クラスをチェックする{@link Matcher}
+     */
+    public static Matcher<Object> isSameClass(Class<?> clazz) {
         return is((Object) clazz);
     }
 

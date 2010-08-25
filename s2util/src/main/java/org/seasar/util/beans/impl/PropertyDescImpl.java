@@ -13,29 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.impl;
+package org.seasar.util.beans.impl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
 
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.ParameterizedClassDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.framework.util.DateConversionUtil;
-import org.seasar.util.beans.IllegalPropertyRuntimeException;
+import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.ParameterizedClassDesc;
+import org.seasar.util.beans.PropertyDesc;
+import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.util.convert.NumberConversionUtil;
 import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.IllegalPropertyRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
@@ -53,7 +55,7 @@ public class PropertyDescImpl implements PropertyDesc {
 
     private String propertyName;
 
-    private Class propertyType;
+    private Class<?> propertyType;
 
     private Method readMethod;
 
@@ -63,7 +65,7 @@ public class PropertyDescImpl implements PropertyDesc {
 
     private BeanDesc beanDesc;
 
-    private Constructor stringConstructor;
+    private Constructor<?> stringConstructor;
 
     private Method valueOfMethod;
 
@@ -82,11 +84,17 @@ public class PropertyDescImpl implements PropertyDesc {
      * @param writeMethod
      * @param beanDesc
      */
-    public PropertyDescImpl(String propertyName, Class propertyType,
-            Method readMethod, Method writeMethod, BeanDesc beanDesc) {
+    public PropertyDescImpl(final String propertyName,
+            final Class<?> propertyType, final Method readMethod,
+            final Method writeMethod, final BeanDesc beanDesc) {
 
-        this(propertyName, propertyType, readMethod, writeMethod, null,
-                beanDesc);
+        this(
+            propertyName,
+            propertyType,
+            readMethod,
+            writeMethod,
+            null,
+            beanDesc);
     }
 
     /**
@@ -99,9 +107,9 @@ public class PropertyDescImpl implements PropertyDesc {
      * @param field
      * @param beanDesc
      */
-    public PropertyDescImpl(String propertyName, Class propertyType,
-            Method readMethod, Method writeMethod, Field field,
-            BeanDesc beanDesc) {
+    public PropertyDescImpl(final String propertyName,
+            final Class<?> propertyType, final Method readMethod,
+            final Method writeMethod, final Field field, final BeanDesc beanDesc) {
 
         if (propertyName == null) {
             throw new EmptyRuntimeException("propertyName");
@@ -121,11 +129,11 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     private void setupStringConstructor() {
-        Constructor[] cons = propertyType.getConstructors();
+        final Constructor<?>[] cons = propertyType.getConstructors();
         for (int i = 0; i < cons.length; ++i) {
-            Constructor con = cons[i];
+            final Constructor<?> con = cons[i];
             if (con.getParameterTypes().length == 1
-                    && con.getParameterTypes()[0].equals(String.class)) {
+                && con.getParameterTypes()[0].equals(String.class)) {
                 stringConstructor = con;
                 break;
             }
@@ -133,17 +141,16 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     private void setupValueOfMethod() {
-        Method[] methods = propertyType.getMethods();
+        final Method[] methods = propertyType.getMethods();
         for (int i = 0; i < methods.length; ++i) {
-            Method method = methods[i];
-            if (method.isBridge()
-                    || method.isSynthetic()) {
+            final Method method = methods[i];
+            if (method.isBridge() || method.isSynthetic()) {
                 continue;
             }
             if (ModifierUtil.isStatic(method.getModifiers())
-                    && method.getName().equals("valueOf")
-                    && method.getParameterTypes().length == 1
-                    && method.getParameterTypes()[0].equals(String.class)) {
+                && method.getName().equals("valueOf")
+                && method.getParameterTypes().length == 1
+                && method.getParameterTypes()[0].equals(String.class)) {
                 valueOfMethod = method;
                 break;
             }
@@ -151,32 +158,45 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     private void setUpParameterizedClassDesc() {
-        final Map typeVariables = ((BeanDescImpl) beanDesc).getTypeVariables();
+        final Map<TypeVariable<?>, Type> typeVariables =
+            ((BeanDescImpl) beanDesc).getTypeVariables();
         if (field != null) {
-            parameterizedClassDesc = ParameterizedClassDescFactory
-                    .createParameterizedClassDesc(field, typeVariables);
+            parameterizedClassDesc =
+                ParameterizedClassDescFactory.createParameterizedClassDesc(
+                    field,
+                    typeVariables);
         } else if (readMethod != null) {
-            parameterizedClassDesc = ParameterizedClassDescFactory
-                    .createParameterizedClassDesc(readMethod, typeVariables);
+            parameterizedClassDesc =
+                ParameterizedClassDescFactory.createParameterizedClassDesc(
+                    readMethod,
+                    typeVariables);
         } else if (writeMethod != null) {
-            parameterizedClassDesc = ParameterizedClassDescFactory
-                    .createParameterizedClassDesc(writeMethod, 0, typeVariables);
+            parameterizedClassDesc =
+                ParameterizedClassDescFactory.createParameterizedClassDesc(
+                    writeMethod,
+                    0,
+                    typeVariables);
         }
     }
 
+    @Override
     public final String getPropertyName() {
         return propertyName;
     }
 
-    public final Class getPropertyType() {
-        return propertyType;
+    @Override
+    @SuppressWarnings("unchecked")
+    public final <T> Class<T> getPropertyType() {
+        return (Class<T>) propertyType;
     }
 
+    @Override
     public final Method getReadMethod() {
         return readMethod;
     }
 
-    public final void setReadMethod(Method readMethod) {
+    @Override
+    public final void setReadMethod(final Method readMethod) {
         this.readMethod = readMethod;
         if (readMethod != null) {
             readable = true;
@@ -184,15 +204,18 @@ public class PropertyDescImpl implements PropertyDesc {
         }
     }
 
+    @Override
     public final boolean hasReadMethod() {
         return readMethod != null;
     }
 
+    @Override
     public final Method getWriteMethod() {
         return writeMethod;
     }
 
-    public final void setWriteMethod(Method writeMethod) {
+    @Override
+    public final void setWriteMethod(final Method writeMethod) {
         this.writeMethod = writeMethod;
         if (writeMethod != null) {
             writable = true;
@@ -200,15 +223,18 @@ public class PropertyDescImpl implements PropertyDesc {
         }
     }
 
+    @Override
     public final boolean hasWriteMethod() {
         return writeMethod != null;
     }
 
+    @Override
     public Field getField() {
         return field;
     }
 
-    public void setField(Field field) {
+    @Override
+    public void setField(final Field field) {
         this.field = field;
         if (field != null && ModifierUtil.isPublic(field)) {
             readable = true;
@@ -216,77 +242,90 @@ public class PropertyDescImpl implements PropertyDesc {
         }
     }
 
+    @Override
     public boolean isReadable() {
         return readable;
     }
 
+    @Override
     public boolean isWritable() {
         return writable;
     }
 
-    public final Object getValue(Object target) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getValue(final Object target) {
         try {
             if (!readable) {
                 throw new IllegalStateException(propertyName
-                        + " is not readable.");
+                    + " is not readable.");
             } else if (hasReadMethod()) {
-                return MethodUtil.invoke(readMethod, target, EMPTY_ARGS);
+                return (T) MethodUtil.invoke(readMethod, target, EMPTY_ARGS);
             } else {
-                return FieldUtil.get(field, target);
+                return (T) FieldUtil.get(field, target);
             }
-        } catch (Throwable t) {
-            throw new IllegalPropertyRuntimeException(beanDesc.getBeanClass(),
-                    propertyName, t);
+        } catch (final Throwable t) {
+            throw new IllegalPropertyRuntimeException(
+                beanDesc.getBeanClass(),
+                propertyName,
+                t);
         }
     }
 
-    public final void setValue(Object target, Object value) {
+    @Override
+    public void setValue(final Object target, Object value) {
         try {
             value = convertIfNeed(value);
             if (!writable) {
                 throw new IllegalStateException(propertyName
-                        + " is not writable.");
+                    + " is not writable.");
             } else if (hasWriteMethod()) {
                 try {
-                    MethodUtil.invoke(writeMethod, target,
-                            new Object[] { value });
-                } catch (Throwable t) {
-                    Class clazz = writeMethod.getDeclaringClass();
-                    Class valueClass = value == null ? null : value.getClass();
-                    Class targetClass = target == null ? null : target
-                            .getClass();
-                    throw new SIllegalArgumentException("ESSR0098",
-                            new Object[] {
-                                    clazz.getName(),
-                                    clazz.getClassLoader(),
-                                    propertyType.getName(),
-                                    propertyType.getClassLoader(),
-                                    propertyName,
-                                    valueClass == null ? null : valueClass
-                                            .getName(),
-                                    valueClass == null ? null : valueClass
-                                            .getClassLoader(),
-                                    value,
-                                    targetClass == null ? null : targetClass
-                                            .getName(),
-                                    targetClass == null ? null : targetClass
-                                            .getClassLoader() }).initCause(t);
+                    MethodUtil.invoke(
+                        writeMethod,
+                        target,
+                        new Object[] { value });
+                } catch (final Throwable t) {
+                    final Class<?> clazz = writeMethod.getDeclaringClass();
+                    final Class<?> valueClass =
+                        value == null ? null : value.getClass();
+                    final Class<?> targetClass =
+                        target == null ? null : target.getClass();
+                    throw new SIllegalArgumentException(
+                        "ESSR0098",
+                        new Object[] {
+                            clazz.getName(),
+                            clazz.getClassLoader(),
+                            propertyType.getName(),
+                            propertyType.getClassLoader(),
+                            propertyName,
+                            valueClass == null ? null : valueClass.getName(),
+                            valueClass == null ? null
+                                : valueClass.getClassLoader(),
+                            value,
+                            targetClass == null ? null : targetClass.getName(),
+                            targetClass == null ? null
+                                : targetClass.getClassLoader() }).initCause(t);
                 }
             } else {
                 FieldUtil.set(field, target, value);
             }
-        } catch (Throwable t) {
-            throw new IllegalPropertyRuntimeException(beanDesc.getBeanClass(),
-                    propertyName, t);
+        } catch (final Throwable t) {
+            throw new IllegalPropertyRuntimeException(
+                beanDesc.getBeanClass(),
+                propertyName,
+                t);
         }
     }
 
+    @Override
     public BeanDesc getBeanDesc() {
         return beanDesc;
     }
 
+    @Override
     public final String toString() {
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
         buf.append("propertyName=");
         buf.append(propertyName);
         buf.append(",propertyType=");
@@ -298,35 +337,37 @@ public class PropertyDescImpl implements PropertyDesc {
         return buf.toString();
     }
 
-    public Object convertIfNeed(Object arg) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T convertIfNeed(final Object arg) {
         if (propertyType.isPrimitive()) {
-            return convertPrimitiveWrapper(arg);
+            return (T) convertPrimitiveWrapper(arg);
         } else if (Number.class.isAssignableFrom(propertyType)) {
-            return convertNumber(arg);
+            return (T) convertNumber(arg);
         } else if (java.util.Date.class.isAssignableFrom(propertyType)) {
-            return convertDate(arg);
+            return (T) convertDate(arg);
         } else if (Boolean.class.isAssignableFrom(propertyType)) {
-            return BooleanConversionUtil.toBoolean(arg);
+            return (T) BooleanConversionUtil.toBoolean(arg);
         } else if (arg != null && arg.getClass() != String.class
-                && String.class == propertyType) {
-            return arg.toString();
+            && String.class == propertyType) {
+            return (T) arg.toString();
         } else if (arg instanceof String && !String.class.equals(propertyType)) {
-            return convertWithString(arg);
+            return (T) convertWithString(arg);
         } else if (java.util.Calendar.class.isAssignableFrom(propertyType)) {
-            return CalendarConversionUtil.toCalendar(arg);
+            return (T) CalendarConversionUtil.toCalendar(arg);
         }
-        return arg;
+        return (T) arg;
     }
 
-    private Object convertPrimitiveWrapper(Object arg) {
+    private Object convertPrimitiveWrapper(final Object arg) {
         return NumberConversionUtil.convertPrimitiveWrapper(propertyType, arg);
     }
 
-    private Object convertNumber(Object arg) {
+    private Object convertNumber(final Object arg) {
         return NumberConversionUtil.convertNumber(propertyType, arg);
     }
 
-    private Object convertDate(Object arg) {
+    private Object convertDate(final Object arg) {
         if (propertyType == java.util.Date.class) {
             return DateConversionUtil.toDate(arg);
         } else if (propertyType == Timestamp.class) {
@@ -339,10 +380,11 @@ public class PropertyDescImpl implements PropertyDesc {
         return arg;
     }
 
-    private Object convertWithString(Object arg) {
+    private Object convertWithString(final Object arg) {
         if (stringConstructor != null) {
-            return ConstructorUtil.newInstance(stringConstructor,
-                    new Object[] { arg });
+            return ConstructorUtil.newInstance(
+                stringConstructor,
+                new Object[] { arg });
         }
         if (valueOfMethod != null) {
             return MethodUtil.invoke(valueOfMethod, null, new Object[] { arg });
@@ -350,46 +392,51 @@ public class PropertyDescImpl implements PropertyDesc {
         return arg;
     }
 
+    @Override
     public boolean isParameterized() {
         return parameterizedClassDesc != null
-                && parameterizedClassDesc.isParameterizedClass();
+            && parameterizedClassDesc.isParameterizedClass();
     }
 
+    @Override
     public ParameterizedClassDesc getParameterizedClassDesc() {
         return parameterizedClassDesc;
     }
 
-    public Class getElementClassOfCollection() {
+    @Override
+    public Class<?> getElementClassOfCollection() {
         if (!Collection.class.isAssignableFrom(propertyType)
-                || !isParameterized()) {
+            || !isParameterized()) {
             return null;
         }
-        final ParameterizedClassDesc pcd = parameterizedClassDesc
-                .getArguments()[0];
+        final ParameterizedClassDesc pcd =
+            parameterizedClassDesc.getArguments()[0];
         if (pcd == null) {
             return null;
         }
         return pcd.getRawClass();
     }
 
-    public Class getKeyClassOfMap() {
+    @Override
+    public Class<?> getKeyClassOfMap() {
         if (!Map.class.isAssignableFrom(propertyType) || !isParameterized()) {
             return null;
         }
-        final ParameterizedClassDesc pcd = parameterizedClassDesc
-                .getArguments()[0];
+        final ParameterizedClassDesc pcd =
+            parameterizedClassDesc.getArguments()[0];
         if (pcd == null) {
             return null;
         }
         return pcd.getRawClass();
     }
 
-    public Class getValueClassOfMap() {
+    @Override
+    public Class<?> getValueClassOfMap() {
         if (!Map.class.isAssignableFrom(propertyType) || !isParameterized()) {
             return null;
         }
-        final ParameterizedClassDesc pcd = parameterizedClassDesc
-                .getArguments()[1];
+        final ParameterizedClassDesc pcd =
+            parameterizedClassDesc.getArguments()[1];
         if (pcd == null) {
             return null;
         }

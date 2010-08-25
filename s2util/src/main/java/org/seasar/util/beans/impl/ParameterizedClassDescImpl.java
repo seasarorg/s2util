@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.impl;
+package org.seasar.util.beans.impl;
 
-import org.seasar.framework.beans.ParameterizedClassDesc;
+import org.seasar.util.beans.ParameterizedClassDesc;
 
 /**
  * {@link ParameterizedClassDesc}の実装クラスです。
@@ -26,7 +26,7 @@ import org.seasar.framework.beans.ParameterizedClassDesc;
 public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
 
     /** 原型となるクラス */
-    protected Class rawClass;
+    protected Class<?> rawClass;
 
     /** 型引数を表す{@link ParameterizedClassDesc}の配列 */
     protected ParameterizedClassDesc[] arguments;
@@ -43,7 +43,7 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * @param rawClass
      *            原型となるクラス
      */
-    public ParameterizedClassDescImpl(final Class rawClass) {
+    public ParameterizedClassDescImpl(final Class<?> rawClass) {
         this.rawClass = rawClass;
     }
 
@@ -55,18 +55,21 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * @param arguments
      *            型引数を表す{@link ParameterizedClassDesc}の配列
      */
-    public ParameterizedClassDescImpl(final Class rawClass,
+    public ParameterizedClassDescImpl(final Class<?> rawClass,
             final ParameterizedClassDesc[] arguments) {
         this.rawClass = rawClass;
         this.arguments = arguments;
     }
 
+    @Override
     public boolean isParameterizedClass() {
         return arguments != null;
     }
 
-    public Class getRawClass() {
-        return rawClass;
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> Class<T> getRawClass() {
+        return (Class<T>) rawClass;
     }
 
     /**
@@ -75,10 +78,11 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * @param rawClass
      *            原型となるクラス
      */
-    public void setRawClass(final Class rawClass) {
+    public void setRawClass(final Class<?> rawClass) {
         this.rawClass = rawClass;
     }
 
+    @Override
     public ParameterizedClassDesc[] getArguments() {
         return arguments;
     }

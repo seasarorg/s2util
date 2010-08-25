@@ -13,9 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
+package org.seasar.util.exception;
 
 import org.junit.Test;
+import org.seasar.util.exception.ConverterRuntimeException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

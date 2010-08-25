@@ -13,32 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.factory;
+package org.seasar.util.beans.factory;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.seasar.util.beans.BeanDesc;
 
-import org.seasar.framework.beans.BeanDesc;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  */
-public class BeanDescFactoryTest extends TestCase {
+public class BeanDescFactoryTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetBeanDesc() throws Exception {
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(MyBean.class);
-        assertSame("1", beanDesc, BeanDescFactory.getBeanDesc(MyBean.class));
+        assertThat(
+            BeanDescFactory.getBeanDesc(MyBean.class),
+            is(sameInstance(beanDesc)));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testClear() throws Exception {
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(MyBean.class);
         BeanDescFactory.clear();
-        assertNotSame("1", beanDesc, BeanDescFactory.getBeanDesc(MyBean.class));
+        assertThat(
+            BeanDescFactory.getBeanDesc(MyBean.class),
+            is(not(sameInstance(beanDesc))));
     }
 
     /**
@@ -47,7 +55,7 @@ public class BeanDescFactoryTest extends TestCase {
     public static class MyBean {
 
         /**
-         * @return
+         * @return String
          */
         public String getAaa() {
             return null;
@@ -55,28 +63,28 @@ public class BeanDescFactoryTest extends TestCase {
 
         /**
          * @param a
-         * @return
+         * @return String
          */
         public String getBbb(Object a) {
             return null;
         }
 
         /**
-         * @return
+         * @return boolean
          */
         public boolean isCCC() {
             return true;
         }
 
         /**
-         * @return
+         * @return Object
          */
         public Object isDdd() {
             return null;
         }
 
         /**
-         * @return
+         * @return String
          */
         public String getEee() {
             return null;
@@ -84,6 +92,7 @@ public class BeanDescFactoryTest extends TestCase {
 
         /**
          * @param eee
+         *            eee
          */
         public void setEee(String eee) {
         }

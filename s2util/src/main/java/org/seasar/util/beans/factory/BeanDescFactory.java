@@ -13,52 +13,46 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.factory;
+package org.seasar.util.beans.factory;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.impl.BeanDescImpl;
 import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
+import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.impl.BeanDescImpl;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * {@link BeanDesc}を生成するクラスです。
  * 
  * @author higa
- * 
  */
-public class BeanDescFactory {
+public abstract class BeanDescFactory {
 
     private static volatile boolean initialized;
 
-    private static Map beanDescCache = new ConcurrentHashMap(1024);
+    private static final ConcurrentMap<Class<?>, BeanDesc> beanDescCache =
+        newConcurrentHashMap(1024);
 
     static {
         initialize();
     }
 
     /**
-     * インスタンスを構築します。
-     */
-    protected BeanDescFactory() {
-    }
-
-    /**
      * {@link BeanDesc}を返します。
      * 
      * @param clazz
+     *            Beanクラス
      * @return {@link BeanDesc}
      */
-    public static BeanDesc getBeanDesc(Class clazz) {
-        if (!initialized) {
-            initialize();
-        }
-        BeanDesc beanDesc = (BeanDesc) beanDescCache.get(clazz);
+    public static BeanDesc getBeanDesc(final Class<?> clazz) {
+        initialize();
+        BeanDesc beanDesc = beanDescCache.get(clazz);
         if (beanDesc == null) {
-            beanDesc = new BeanDescImpl(clazz);
-            beanDescCache.put(clazz, beanDesc);
+            beanDesc =
+                putIfAbsent(beanDescCache, clazz, new BeanDescImpl(clazz));
         }
         return beanDesc;
     }
@@ -67,12 +61,19 @@ public class BeanDescFactory {
      * 初期化を行ないます。
      */
     public static void initialize() {
-        DisposableUtil.add(new Disposable() {
-            public void dispose() {
-                clear();
+        if (!initialized) {
+            synchronized (BeanDescFactory.class) {
+                if (!initialized) {
+                    DisposableUtil.add(new Disposable() {
+                        @Override
+                        public void dispose() {
+                            clear();
+                        }
+                    });
+                    initialized = true;
+                }
             }
-        });
-        initialized = true;
+        }
     }
 
     /**
@@ -82,4 +83,5 @@ public class BeanDescFactory {
         beanDescCache.clear();
         initialized = false;
     }
+
 }

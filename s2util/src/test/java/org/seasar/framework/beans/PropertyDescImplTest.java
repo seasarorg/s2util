@@ -17,7 +17,9 @@ package org.seasar.framework.beans;
 
 import junit.framework.TestCase;
 
-import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.PropertyDesc;
+import org.seasar.util.beans.factory.BeanDescFactory;
 
 /**
  * @author higa

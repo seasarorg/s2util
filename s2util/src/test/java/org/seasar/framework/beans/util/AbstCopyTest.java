@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 import org.seasar.framework.beans.converter.DateConverter;
 import org.seasar.framework.beans.converter.NumberConverter;
-import org.seasar.util.beans.ConverterRuntimeException;
+import org.seasar.util.exception.ConverterRuntimeException;
 
 /**
  * @author higa

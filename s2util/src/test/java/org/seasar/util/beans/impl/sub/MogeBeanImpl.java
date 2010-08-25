@@ -9,33 +9,40 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
-
-import org.seasar.util.exception.SRuntimeException;
+package org.seasar.util.beans.impl.sub;
 
 /**
- * Diiguでエンハンスされていないときにスローされる例外です。
- * 
- * @author higa
+ * @author koichik
  */
-public class IllegalDiiguRuntimeException extends SRuntimeException {
+class MogeBeanImpl implements MogeBean {
 
-    private static final long serialVersionUID = 1L;
+    String name;
 
     /**
-     * {@link IllegalDiiguRuntimeException}を作成します。
+     * 
      */
-    public IllegalDiiguRuntimeException() {
-        super("EUTL0090");
+    public MogeBeanImpl() {
+    }
+
+    /**
+     * @param name
+     */
+    public MogeBeanImpl(String name) {
+        this.name = name;
     }
 
     @Override
-    public IllegalDiiguRuntimeException initCause(final Throwable cause) {
-        return (IllegalDiiguRuntimeException) super.initCause(cause);
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

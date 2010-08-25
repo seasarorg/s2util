@@ -13,11 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans;
+package org.seasar.util.exception;
 
 import java.lang.reflect.Constructor;
 
-import org.seasar.util.exception.SRuntimeException;
 
 /**
  * {@link Constructor}が見つからなかったときにスローされる例外Vです。
