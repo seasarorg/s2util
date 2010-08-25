@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.misc;
 
 /**
- * 4つの値の組です。
+ * 5つの値の組です。
  * 
  * @author koichik
- * @since 2.4.18
  * @param <T1>
  *            1番目の値の型
  * @param <T2>
@@ -28,8 +27,10 @@ package org.seasar.framework.util.tiger;
  *            3番目の値の型
  * @param <T4>
  *            4番目の値の型
+ * @param <T5>
+ *            5番目の値の型
  */
-public class Tuple4<T1, T2, T3, T4> {
+public class Tuple5<T1, T2, T3, T4, T5> {
 
     /** 1番目の値 */
     protected T1 value1;
@@ -43,6 +44,9 @@ public class Tuple4<T1, T2, T3, T4> {
     /** 4番目の値 */
     protected T4 value4;
 
+    /** 5番目の値 */
+    protected T5 value5;
+
     /**
      * 4つの値の組を作成して返します。
      * 
@@ -54,6 +58,8 @@ public class Tuple4<T1, T2, T3, T4> {
      *            3番目の値の型
      * @param <T4>
      *            4番目の値の型
+     * @param <T5>
+     *            5番目の値の型
      * @param value1
      *            1番目の値
      * @param value2
@@ -62,17 +68,25 @@ public class Tuple4<T1, T2, T3, T4> {
      *            3番目の値
      * @param value4
      *            4番目の値
-     * @return 4つの値の組
+     * @param value5
+     *            5番目の値
+     * @return 5つの値の組
      */
-    public static <T1, T2, T3, T4> Tuple4<T1, T2, T3, T4> tuple4(
-            final T1 value1, final T2 value2, final T3 value3, final T4 value4) {
-        return new Tuple4<T1, T2, T3, T4>(value1, value2, value3, value4);
+    public static <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> tuple5(
+            final T1 value1, final T2 value2, final T3 value3, final T4 value4,
+            final T5 value5) {
+        return new Tuple5<T1, T2, T3, T4, T5>(
+            value1,
+            value2,
+            value3,
+            value4,
+            value5);
     }
 
     /**
      * インスタンスを構築します。
      */
-    public Tuple4() {
+    public Tuple5() {
     }
 
     /**
@@ -86,13 +100,16 @@ public class Tuple4<T1, T2, T3, T4> {
      *            3番目の値
      * @param value4
      *            4番目の値
+     * @param value5
+     *            5番目の値
      */
-    public Tuple4(final T1 value1, final T2 value2, final T3 value3,
-            final T4 value4) {
+    public Tuple5(final T1 value1, final T2 value2, final T3 value3,
+            final T4 value4, final T5 value5) {
         this.value1 = value1;
         this.value2 = value2;
         this.value3 = value3;
         this.value4 = value4;
+        this.value5 = value5;
     }
 
     /**
@@ -171,10 +188,29 @@ public class Tuple4<T1, T2, T3, T4> {
         this.value4 = value4;
     }
 
+    /**
+     * 5番目の値を返します。
+     * 
+     * @return 5番目の値
+     */
+    public T5 getValue5() {
+        return value5;
+    }
+
+    /**
+     * 5番目の値を設定します。
+     * 
+     * @param value5
+     *            5番目の値
+     */
+    public void setValue5(final T5 value5) {
+        this.value5 = value5;
+    }
+
     @Override
     public String toString() {
         return "{" + value1 + ", " + value2 + ", " + value3 + ", " + value4
-                + "}";
+            + ", " + value5 + "}";
     }
 
 }

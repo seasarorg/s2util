@@ -13,73 +13,59 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.misc;
 
 /**
- * 3つの値の組です。
+ * 二つの値のペアです。
  * 
  * @author koichik
- * @since 2.4.18
  * @param <T1>
  *            1番目の値の型
  * @param <T2>
  *            2番目の値の型
- * @param <T3>
- *            3番目の値の型
  */
-public class Tuple3<T1, T2, T3> {
+public class Pair<T1, T2> {
 
     /** 1番目の値 */
-    protected T1 value1;
+    protected T1 first;
 
     /** 2番目の値 */
-    protected T2 value2;
-
-    /** 3番目の値 */
-    protected T3 value3;
+    protected T2 second;
 
     /**
-     * 3つの値の組を作成して返します。
+     * 二つの値のペアを作成して返します。
      * 
      * @param <T1>
      *            1番目の値の型
      * @param <T2>
      *            2番目の値の型
-     * @param <T3>
-     *            3番目の値の型
-     * @param value1
+     * @param first
      *            1番目の値
-     * @param value2
+     * @param second
      *            2番目の値
-     * @param value3
-     *            3番目の値
-     * @return 3つの値の組
+     * @return 二つの値のペア
      */
-    public static <T1, T2, T3> Tuple3<T1, T2, T3> tuple3(final T1 value1,
-            final T2 value2, final T3 value3) {
-        return new Tuple3<T1, T2, T3>(value1, value2, value3);
+    public static <T1, T2> Pair<T1, T2> pair(final T1 first, final T2 second) {
+        return new Pair<T1, T2>(first, second);
     }
 
     /**
      * インスタンスを構築します。
      */
-    public Tuple3() {
+    public Pair() {
     }
 
     /**
      * インスタンスを構築します。
      * 
-     * @param value1
+     * @param first
      *            1番目の値
-     * @param value2
+     * @param second
      *            2番目の値
-     * @param value3
-     *            3番目の値
      */
-    public Tuple3(final T1 value1, final T2 value2, final T3 value3) {
-        this.value1 = value1;
-        this.value2 = value2;
-        this.value3 = value3;
+    public Pair(final T1 first, final T2 second) {
+        this.first = first;
+        this.second = second;
     }
 
     /**
@@ -87,18 +73,18 @@ public class Tuple3<T1, T2, T3> {
      * 
      * @return 1番目の値
      */
-    public T1 getValue1() {
-        return value1;
+    public T1 getFirst() {
+        return first;
     }
 
     /**
      * 1番目の値を設定します。
      * 
-     * @param value1
+     * @param first
      *            1番目の値
      */
-    public void setValue1(final T1 value1) {
-        this.value1 = value1;
+    public void setFirst(final T1 first) {
+        this.first = first;
     }
 
     /**
@@ -106,42 +92,23 @@ public class Tuple3<T1, T2, T3> {
      * 
      * @return 2番目の値
      */
-    public T2 getValue2() {
-        return value2;
+    public T2 getSecond() {
+        return second;
     }
 
     /**
      * 2番目の値を設定します。
      * 
-     * @param value2
+     * @param second
      *            2番目の値
      */
-    public void setValue2(final T2 value2) {
-        this.value2 = value2;
-    }
-
-    /**
-     * 3番目の値を返します。
-     * 
-     * @return 3番目の値
-     */
-    public T3 getValue3() {
-        return value3;
-    }
-
-    /**
-     * 3番目の値を設定します。
-     * 
-     * @param value3
-     *            3番目の値
-     */
-    public void setValue3(final T3 value3) {
-        this.value3 = value3;
+    public void setSecond(final T2 second) {
+        this.second = second;
     }
 
     @Override
     public String toString() {
-        return "{" + value1 + ", " + value2 + ", " + value3 + "}";
+        return "{" + first + ", " + second + "}";
     }
 
 }

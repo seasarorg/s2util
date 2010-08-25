@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.misc;
 
 /**
  * 値を保持するクラスです。
  * 
  * @author koichik
- * @since 2.4.18
  * @param <T>
  *            値の型
  */
@@ -40,7 +39,7 @@ public class ValueHolder<T> {
      * @param value
      *            値
      */
-    public ValueHolder(T value) {
+    public ValueHolder(final T value) {
         this.value = value;
     }
 
