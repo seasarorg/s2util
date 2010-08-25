@@ -40,15 +40,15 @@ public abstract class ResourceUtil {
      * @param extension
      * @return リソースパス
      */
-    public static String getResourcePath(String path, String extension) {
+    public static String getResourcePath(final String path, String extension) {
         if (extension == null) {
             return path;
         }
-        extension = "." + extension;
-        if (path.endsWith(extension)) {
+        String ext = "." + extension;
+        if (path.endsWith(ext)) {
             return path;
         }
-        return path.replace('.', '/') + extension;
+        return path.replace('.', '/') + ext;
     }
 
     /**
@@ -140,8 +140,8 @@ public abstract class ResourceUtil {
         if (path == null || loader == null) {
             return null;
         }
-        path = getResourcePath(path, extension);
-        return loader.getResource(path);
+        String p = getResourcePath(path, extension);
+        return loader.getResource(p);
     }
 
     /**

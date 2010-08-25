@@ -65,7 +65,7 @@ public class ResourcesUtil {
     private static final Logger logger = Logger.getLogger(ResourcesUtil.class);
 
     /** URLのプロトコルをキー、{@link ResourcesFactory}を値とするマッピングです。 */
-    protected static final Map<String, ResourcesFactory> resourcesTypeFactories =
+    protected static final Map<String, ResourcesFactory> RESOURCES_TYPE_FACTORIES =
         new HashMap<String, ResourcesUtil.ResourcesFactory>();
     static {
         addResourcesFactory("file", new ResourcesFactory() {
@@ -120,7 +120,7 @@ public class ResourcesUtil {
      */
     public static void addResourcesFactory(final String protocol,
             ResourcesFactory factory) {
-        resourcesTypeFactories.put(protocol, factory);
+        RESOURCES_TYPE_FACTORIES.put(protocol, factory);
     }
 
     /**
@@ -208,7 +208,7 @@ public class ResourcesUtil {
     protected static Resources getResourcesType(final URL url,
             final String rootPackage, final String rootDir) {
         final ResourcesFactory factory =
-            resourcesTypeFactories.get(URLUtil.toCanonicalProtocol(url
+            RESOURCES_TYPE_FACTORIES.get(URLUtil.toCanonicalProtocol(url
                 .getProtocol()));
         if (factory != null) {
             return factory.create(url, rootPackage, rootDir);

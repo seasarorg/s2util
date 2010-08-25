@@ -18,6 +18,8 @@ package org.seasar.util.security;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
+
 /**
  * @author higa
  * 
@@ -38,12 +40,11 @@ public class MessageDigestUtil {
      * @throws RuntimeException
      *             {@link NoSuchAlgorithmException}が発生した場合
      */
-    public static MessageDigest getInstance(String algorithm)
-            throws RuntimeException {
+    public static MessageDigest getInstance(String algorithm) {
         try {
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new NoSuchAlgorithmRuntimeException(e);
         }
     }
 }

@@ -32,9 +32,9 @@ public class UUID {
     private static final byte[] DEFAULT_ADDRESS = new byte[] { (byte) 127,
         (byte) 0, (byte) 0, (byte) 1 };
 
-    private static SecureRandom RANDOM = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
-    private static String BASE = StringUtil.toHex(getAddress())
+    private static final String BASE = StringUtil.toHex(getAddress())
         + StringUtil.toHex(System.identityHashCode(RANDOM));
 
     /**
