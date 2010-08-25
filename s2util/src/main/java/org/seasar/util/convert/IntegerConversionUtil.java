@@ -13,10 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.text.SimpleDateFormat;
 
+import org.seasar.framework.util.DecimalFormatUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -56,17 +57,17 @@ public class IntegerConversionUtil {
         } else if (o instanceof Integer) {
             return (Integer) o;
         } else if (o instanceof Number) {
-            return new Integer(((Number) o).intValue());
+            return Integer.valueOf(((Number) o).intValue());
         } else if (o instanceof String) {
             return toInteger((String) o);
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
-                return new Integer(new SimpleDateFormat(pattern).format(o));
+                return Integer.valueOf(new SimpleDateFormat(pattern).format(o));
             }
-            return new Integer((int) ((java.util.Date) o).getTime());
+            return Integer.valueOf((int) ((java.util.Date) o).getTime());
         } else if (o instanceof Boolean) {
-            return ((Boolean) o).booleanValue() ? new Integer(1) : new Integer(
-                    0);
+            return ((Boolean) o).booleanValue() ? Integer.valueOf(1) : Integer
+                .valueOf(0);
         } else {
             return toInteger(o.toString());
         }
@@ -106,7 +107,7 @@ public class IntegerConversionUtil {
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
                 return Integer
-                        .parseInt(new SimpleDateFormat(pattern).format(o));
+                    .parseInt(new SimpleDateFormat(pattern).format(o));
             }
             return (int) ((java.util.Date) o).getTime();
         } else if (o instanceof Boolean) {

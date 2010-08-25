@@ -24,8 +24,8 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.framework.util.JarFileUtil;
 import org.seasar.util.io.ClassTraversal.ClassHandler;
+import org.seasar.util.jar.JarFileUtil;
 import org.seasar.util.lang.ClassUtil;
 
 import static org.hamcrest.CoreMatchers.*;

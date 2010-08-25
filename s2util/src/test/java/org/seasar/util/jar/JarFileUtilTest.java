@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.jar;
 
 import java.io.File;
 import java.net.URL;
@@ -30,10 +30,11 @@ public class JarFileUtilTest extends TestCase {
      */
     public void testToJarFilePath() throws Exception {
         File f = new File("/Program Files/foo.jar");
-        URL url = new URL("jar:" + f.toURL() + "!/");
+        URL url = new URL("jar:" + f.toURI().toURL() + "!/");
         String root = new File("/").getCanonicalPath();
-        assertEquals(root + "Program Files" + File.separator + "foo.jar",
-                JarFileUtil.toJarFilePath(url));
+        assertEquals(
+            root + "Program Files" + File.separator + "foo.jar",
+            JarFileUtil.toJarFilePath(url));
     }
 
     /**
@@ -41,7 +42,7 @@ public class JarFileUtilTest extends TestCase {
      */
     public void testRelativePath() throws Exception {
         File f = new File("/Program Files/foo.jar");
-        URL url = new URL("jar:" + f.toURL() + "!/foo/bar/");
+        URL url = new URL("jar:" + f.toURI().toURL() + "!/foo/bar/");
         url = new URL(url, "..");
         System.out.println(url.toExternalForm());
     }

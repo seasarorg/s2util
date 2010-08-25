@@ -24,7 +24,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.seasar.framework.util.JarFileUtil;
+import org.seasar.util.jar.JarFileUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
 
 import static org.seasar.util.collection.EnumerationIterator.*;

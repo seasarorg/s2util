@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.jar;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +27,7 @@ import java.util.zip.ZipEntry;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.FileUtil;
 import org.seasar.util.io.URLUtil;
+import org.seasar.util.net.JarURLConnectionUtil;
 
 /**
  * {@link java.util.jar.JarFile}を扱うユーティリティクラスです。

@@ -21,9 +21,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.seasar.framework.util.JarFileUtil;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.ResourceNotFoundRuntimeException;
+import org.seasar.util.jar.JarFileUtil;
 
 /**
  * リソース用のユーティリティクラスです。
