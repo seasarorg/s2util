@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.naming;
 
 import java.util.Hashtable;
 
@@ -59,7 +59,7 @@ public class InitialContextUtil {
      * @throws NamingRuntimeException
      *             初期コンテキストを作成できなかった場合にスローされます
      */
-    public static InitialContext create(final Hashtable env) {
+    public static InitialContext create(final Hashtable<?, ?> env) {
         try {
             return new InitialContext(env);
         } catch (final NamingException ex) {
