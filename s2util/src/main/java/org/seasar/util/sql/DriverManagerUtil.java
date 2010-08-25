@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.sql;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -39,7 +39,8 @@ public abstract class DriverManagerUtil {
      * @since 2.4.10
      */
     public static void registerDriver(final String driverClassName) {
-        registerDriver(ClassUtil.forName(driverClassName));
+        Class<Driver> clazz = ClassUtil.forName(driverClassName);
+        registerDriver(clazz);
     }
 
     /**
@@ -49,8 +50,8 @@ public abstract class DriverManagerUtil {
      *            登録するJDBCドライバのクラス
      * @since 2.4.10
      */
-    public static void registerDriver(final Class driverClass) {
-        registerDriver((Driver) ClassUtil.newInstance(driverClass));
+    public static void registerDriver(final Class<Driver> driverClass) {
+        registerDriver(ClassUtil.newInstance(driverClass));
     }
 
     /**
@@ -89,9 +90,9 @@ public abstract class DriverManagerUtil {
      * @since 2.4.10
      */
     public static synchronized void deregisterAllDrivers() {
-        for (final Enumeration e = DriverManager.getDrivers(); e
-                .hasMoreElements();) {
-            deregisterDriver((Driver) e.nextElement());
+        for (final Enumeration<Driver> e = DriverManager.getDrivers(); e
+            .hasMoreElements();) {
+            deregisterDriver(e.nextElement());
         }
     }
 

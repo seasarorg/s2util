@@ -25,7 +25,6 @@ import org.seasar.framework.util.BigIntegerConversionUtil;
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.ByteConversionUtil;
 import org.seasar.framework.util.DecimalFormatSymbolsUtil;
-import org.seasar.framework.util.DoubleConversionUtil;
 import org.seasar.util.lang.StringUtil;
 
 /**

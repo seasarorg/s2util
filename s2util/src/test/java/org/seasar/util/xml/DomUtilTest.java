@@ -13,13 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.xml;
 
 import javax.xml.parsers.DocumentBuilder;
 
 import junit.framework.TestCase;
 
 import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.xml.DomUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

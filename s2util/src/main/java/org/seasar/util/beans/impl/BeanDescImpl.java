@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.framework.util.ByteConversionUtil;
-import org.seasar.framework.util.DoubleConversionUtil;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.collection.ArrayMap;
 import org.seasar.util.collection.CaseInsensitiveMap;
+import org.seasar.util.convert.DoubleConversionUtil;
 import org.seasar.util.convert.FloatConversionUtil;
 import org.seasar.util.convert.IntegerConversionUtil;
 import org.seasar.util.convert.LongConversionUtil;

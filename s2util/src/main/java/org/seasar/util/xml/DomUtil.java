@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -85,7 +85,7 @@ public class DomUtil {
             return null;
         }
         char[] content = s.toCharArray();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < content.length; i++) {
             switch (content[i]) {
             case '<':
@@ -118,7 +118,7 @@ public class DomUtil {
             return null;
         }
         char[] content = s.toCharArray();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < content.length; i++) {
             switch (content[i]) {
             case '<':
