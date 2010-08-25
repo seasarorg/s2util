@@ -13,12 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
+
+import org.seasar.util.convert.BigDecimalConversionUtil;
 
 /**
  * @author koichik
@@ -35,16 +37,16 @@ public class BigDecimalConversionUtilTest extends TestCase {
         assertSame(ZERO, BigDecimalConversionUtil.toBigDecimal(ZERO));
         assertEquals(
             new BigDecimal("1"),
-            BigDecimalConversionUtil.toBigDecimal(new Byte((byte) 1)));
+            BigDecimalConversionUtil.toBigDecimal(Byte.valueOf((byte) 1)));
         assertEquals(
             new BigDecimal("10"),
-            BigDecimalConversionUtil.toBigDecimal(new Short((short) 10)));
+            BigDecimalConversionUtil.toBigDecimal(Short.valueOf((short) 10)));
         assertEquals(
             new BigDecimal("100"),
-            BigDecimalConversionUtil.toBigDecimal(new Integer(100)));
+            BigDecimalConversionUtil.toBigDecimal(Integer.valueOf(100)));
         assertEquals(
             new BigDecimal("1000"),
-            BigDecimalConversionUtil.toBigDecimal(new Long(1000L)));
+            BigDecimalConversionUtil.toBigDecimal(Long.valueOf(1000L)));
 
         assertEquals(
             0,

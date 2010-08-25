@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,17 +21,21 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
+import org.seasar.util.convert.CalendarConversionUtil;
+
 /**
  * @author higa
  * 
  */
 public class CalendarConversionUtilTest extends TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
+    @Override
     protected void tearDown() throws Exception {
         TimeZone.setDefault(null);
         super.tearDown();

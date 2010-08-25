@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.text.SimpleDateFormat;
 
@@ -57,17 +57,17 @@ public class ByteConversionUtil {
         } else if (o instanceof Byte) {
             return (Byte) o;
         } else if (o instanceof Number) {
-            return new Byte(((Number) o).byteValue());
+            return Byte.valueOf(((Number) o).byteValue());
         } else if (o instanceof String) {
             return toByte((String) o);
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
-                return new Byte(new SimpleDateFormat(pattern).format(o));
+                return Byte.valueOf(new SimpleDateFormat(pattern).format(o));
             }
-            return new Byte((byte) ((java.util.Date) o).getTime());
+            return Byte.valueOf((byte) ((java.util.Date) o).getTime());
         } else if (o instanceof Boolean) {
-            return ((Boolean) o).booleanValue() ? new Byte((byte) 1)
-                    : new Byte((byte) 0);
+            return ((Boolean) o).booleanValue() ? Byte.valueOf((byte) 1) : Byte
+                .valueOf((byte) 0);
         } else {
             return toByte(o.toString());
         }

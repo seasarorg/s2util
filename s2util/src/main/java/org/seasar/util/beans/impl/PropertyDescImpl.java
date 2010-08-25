@@ -25,12 +25,12 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
 
-import org.seasar.framework.util.BooleanConversionUtil;
-import org.seasar.framework.util.CalendarConversionUtil;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
+import org.seasar.util.convert.BooleanConversionUtil;
+import org.seasar.util.convert.CalendarConversionUtil;
 import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.NumberConversionUtil;
 import org.seasar.util.convert.SqlDateConversionUtil;

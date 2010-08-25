@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.seasar.util.convert.DateConversionUtil;
 
 /**
  * {@link Calendar}用の変換ユーティリティです。
@@ -70,7 +69,7 @@ public class CalendarConversionUtil {
      * 
      * @param calendar
      *            {@link Calendar}
-     * @return
+     * @return カレンダー
      */
     public static Calendar localize(Calendar calendar) {
         if (calendar == null) {

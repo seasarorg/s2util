@@ -20,10 +20,6 @@ import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import org.seasar.framework.util.BigDecimalConversionUtil;
-import org.seasar.framework.util.BigIntegerConversionUtil;
-import org.seasar.framework.util.BooleanConversionUtil;
-import org.seasar.framework.util.ByteConversionUtil;
 import org.seasar.util.lang.StringUtil;
 import org.seasar.util.text.DecimalFormatSymbolsUtil;
 

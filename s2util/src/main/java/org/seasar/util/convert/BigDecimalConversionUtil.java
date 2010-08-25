@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -27,17 +27,6 @@ import org.seasar.util.lang.StringUtil;
  * 
  */
 public class BigDecimalConversionUtil {
-
-    /**
-     * Tiger用のNormalizerのクラス名です。
-     */
-    protected static final String TIGER_NORMALIZER_CLASS_NAME =
-        "org.seasar.framework.util.TigerBigDecimalConversion";
-
-    /**
-     * デフォルトのNormalizerです。
-     */
-    protected static BigDecimalNormalizer normalizer = new DefaultNormalizer();
 
     /**
      * インスタンスを構築します。
@@ -77,9 +66,9 @@ public class BigDecimalConversionUtil {
             if (StringUtil.isEmpty(s)) {
                 return null;
             }
-            return normalizer.normalize(new BigDecimal(s));
+            return normalize(new BigDecimal(s));
         } else {
-            return normalizer.normalize(new BigDecimal(o.toString()));
+            return normalize(new BigDecimal(o.toString()));
         }
     }
 
@@ -90,46 +79,16 @@ public class BigDecimalConversionUtil {
      * @return 文字列に変換されたデータ
      */
     public static String toString(BigDecimal dec) {
-        return normalizer.toString(dec);
+        return dec.toPlainString();
     }
 
     /**
-     * {@link BigDecimal}を正規化するためのインターフェースです。
-     * これは、Java5からtoString()のロジックが変わったことに対応するためです。
+     * {@link BigDecimal}を正規化します。
      * 
+     * @param dec
+     * @return 正規化されたデータ
      */
-    public interface BigDecimalNormalizer {
-
-        /**
-         * 正規化します。
-         * 
-         * @param dec
-         * @return 正規化された{@link BigDecimal}
-         */
-        BigDecimal normalize(BigDecimal dec);
-
-        /**
-         * {@link BigDecimal}を文字列に変換します。
-         * 
-         * @param dec
-         * @return
-         */
-        String toString(BigDecimal dec);
-    }
-
-    /**
-     * デフォルトの{@link BigDecimalConversionUtil.BigDecimalNormalizer}の実装クラスです。
-     * 
-     */
-    public static class DefaultNormalizer implements BigDecimalNormalizer {
-        @Override
-        public BigDecimal normalize(final BigDecimal dec) {
-            return new BigDecimal(dec.toPlainString());
-        }
-
-        @Override
-        public String toString(BigDecimal dec) {
-            return dec.toPlainString();
-        }
+    private static BigDecimal normalize(final BigDecimal dec) {
+        return new BigDecimal(dec.toPlainString());
     }
 }
