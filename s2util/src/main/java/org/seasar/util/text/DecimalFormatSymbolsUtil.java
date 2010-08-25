@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.text;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -28,7 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DecimalFormatSymbolsUtil {
 
-    private static Map cache = new ConcurrentHashMap();
+    private static final Map<Locale, DecimalFormatSymbols> CACHE =
+        new ConcurrentHashMap<Locale, DecimalFormatSymbols>();
 
     /**
      * インスタンスを構築します。
@@ -52,10 +53,10 @@ public class DecimalFormatSymbolsUtil {
      * @return {@link DecimalFormatSymbols}
      */
     public static DecimalFormatSymbols getDecimalFormatSymbols(Locale locale) {
-        DecimalFormatSymbols symbols = (DecimalFormatSymbols) cache.get(locale);
+        DecimalFormatSymbols symbols = CACHE.get(locale);
         if (symbols == null) {
             symbols = new DecimalFormatSymbols(locale);
-            cache.put(locale, symbols);
+            CACHE.put(locale, symbols);
         }
         return symbols;
     }

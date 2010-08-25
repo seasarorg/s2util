@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.seasar.util.convert.DateConversionUtil;
+
 /**
  * {@link Calendar}用の変換ユーティリティです。
  * 

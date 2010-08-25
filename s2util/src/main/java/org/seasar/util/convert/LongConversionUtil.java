@@ -17,8 +17,8 @@ package org.seasar.util.convert;
 
 import java.text.SimpleDateFormat;
 
-import org.seasar.framework.util.DecimalFormatUtil;
 import org.seasar.util.lang.StringUtil;
+import org.seasar.util.text.DecimalFormatUtil;
 
 /**
  * {@link Long}用の変換ユーティリティです。

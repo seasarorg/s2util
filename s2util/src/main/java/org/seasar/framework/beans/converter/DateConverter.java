@@ -18,7 +18,7 @@ package org.seasar.framework.beans.converter;
 import java.util.Date;
 
 import org.seasar.framework.beans.Converter;
-import org.seasar.framework.util.DateConversionUtil;
+import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.StringUtil;

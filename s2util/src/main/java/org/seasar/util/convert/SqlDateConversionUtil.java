@@ -17,7 +17,6 @@ package org.seasar.util.convert;
 
 import java.sql.Date;
 
-import org.seasar.framework.util.DateConversionUtil;
 
 /**
  * {@link Date}用の変換ユーティリティです。

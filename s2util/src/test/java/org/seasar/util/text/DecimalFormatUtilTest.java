@@ -13,9 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.text;
 
 import java.util.Locale;
+
+import org.seasar.util.text.DecimalFormatUtil;
 
 import junit.framework.TestCase;
 

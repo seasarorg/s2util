@@ -27,11 +27,11 @@ import java.util.Map;
 
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.CalendarConversionUtil;
-import org.seasar.framework.util.DateConversionUtil;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
+import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.NumberConversionUtil;
 import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;

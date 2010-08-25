@@ -24,8 +24,8 @@ import org.seasar.framework.util.BigDecimalConversionUtil;
 import org.seasar.framework.util.BigIntegerConversionUtil;
 import org.seasar.framework.util.BooleanConversionUtil;
 import org.seasar.framework.util.ByteConversionUtil;
-import org.seasar.framework.util.DecimalFormatSymbolsUtil;
 import org.seasar.util.lang.StringUtil;
+import org.seasar.util.text.DecimalFormatSymbolsUtil;
 
 /**
  * {@link Number}用の変換ユーティリティです。

@@ -19,7 +19,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Locale;
 
-import org.seasar.framework.util.DateConversionUtil;
 
 /**
  * {@link Timestamp}用の変換ユーティリティです。

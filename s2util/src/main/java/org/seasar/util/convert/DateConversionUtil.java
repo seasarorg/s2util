@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.convert;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -85,7 +85,7 @@ public class DateConversionUtil {
      * @param s
      * @param pattern
      * @param locale
-     * @return
+     * @return 日付
      */
     public static Date toDate(String s, String pattern, Locale locale) {
         if (StringUtil.isEmpty(s)) {
@@ -131,8 +131,10 @@ public class DateConversionUtil {
                 return new SimpleDateFormat(shortPattern);
             }
             if (s.length() == shortPattern.length() + 2) {
-                return new SimpleDateFormat(StringUtil.replace(shortPattern,
-                        "yy", "yyyy"));
+                return new SimpleDateFormat(StringUtil.replace(
+                    shortPattern,
+                    "yy",
+                    "yyyy"));
             }
         } else {
             String[] array = StringUtil.split(s, delimitor);
@@ -188,8 +190,10 @@ public class DateConversionUtil {
      * @return 日付パターン
      */
     public static String getPattern(Locale locale) {
-        SimpleDateFormat df = (SimpleDateFormat) DateFormat.getDateInstance(
-                DateFormat.SHORT, locale);
+        SimpleDateFormat df =
+            (SimpleDateFormat) DateFormat.getDateInstance(
+                DateFormat.SHORT,
+                locale);
         String pattern = df.toPattern();
         int index = pattern.indexOf(' ');
         if (index > 0) {
@@ -247,7 +251,7 @@ public class DateConversionUtil {
      * @return 日付のデリミタを取り除いた後のパターン
      */
     public static String removeDelimiter(String pattern) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < pattern.length(); ++i) {
             char c = pattern.charAt(i);
             if (c == 'y' || c == 'M' || c == 'd') {

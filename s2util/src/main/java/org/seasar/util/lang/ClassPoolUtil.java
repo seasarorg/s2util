@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.lang;
 
 import java.util.Collections;
 import java.util.Map;
@@ -27,8 +27,6 @@ import javassist.NotFoundException;
 import org.seasar.util.Disposable;
 import org.seasar.util.DisposableUtil;
 import org.seasar.util.exception.NotFoundRuntimeException;
-import org.seasar.util.lang.ClassLoaderUtil;
-import org.seasar.util.lang.ClassUtil;
 
 /**
  * ClassPool用のユーティリティクラスです。
@@ -40,8 +38,8 @@ public class ClassPoolUtil {
     /**
      * ClassPoolのキャッシュです。
      */
-    protected static final Map classPoolMap = Collections
-            .synchronizedMap(new WeakHashMap());
+    protected static final Map<ClassLoader, ClassPool> CLASS_POOL_MAP =
+        Collections.synchronizedMap(new WeakHashMap<ClassLoader, ClassPool>());
 
     /** クラスが初期化済みであることを示します。 */
     protected static boolean initialized;
@@ -52,9 +50,10 @@ public class ClassPoolUtil {
     public static synchronized void initialize() {
         if (!initialized) {
             DisposableUtil.add(new Disposable() {
+                @Override
                 public void dispose() {
                     synchronized (ClassPoolUtil.class) {
-                        classPoolMap.clear();
+                        CLASS_POOL_MAP.clear();
                         initialized = false;
                     }
                 }
@@ -69,7 +68,7 @@ public class ClassPoolUtil {
      * @param targetClass
      * @return ClassPool
      */
-    public static ClassPool getClassPool(final Class targetClass) {
+    public static ClassPool getClassPool(final Class<?> targetClass) {
         return getClassPool(ClassLoaderUtil.getClassLoader(targetClass));
     }
 
@@ -81,14 +80,14 @@ public class ClassPoolUtil {
      */
     public static ClassPool getClassPool(final ClassLoader classLoader) {
         initialize();
-        ClassPool classPool = (ClassPool) classPoolMap.get(classLoader);
+        ClassPool classPool = CLASS_POOL_MAP.get(classLoader);
         if (classPool == null) {
             if (classLoader == null) {
                 return ClassPool.getDefault();
             }
             classPool = new ClassPool();
             classPool.appendClassPath(new LoaderClassPath(classLoader));
-            classPoolMap.put(classLoader, classPool);
+            CLASS_POOL_MAP.put(classLoader, classPool);
         }
         return classPool;
     }
@@ -100,7 +99,8 @@ public class ClassPoolUtil {
      * @param clazz
      * @return CtClass
      */
-    public static CtClass toCtClass(final ClassPool classPool, final Class clazz) {
+    public static CtClass toCtClass(final ClassPool classPool,
+            final Class<?> clazz) {
         return toCtClass(classPool, ClassUtil.getSimpleClassName(clazz));
     }
 
@@ -147,7 +147,7 @@ public class ClassPoolUtil {
      * @return CtClassの配列
      */
     public static CtClass[] toCtClassArray(final ClassPool classPool,
-            final Class[] classes) {
+            final Class<?>[] classes) {
         if (classes == null) {
             return null;
         }
@@ -179,7 +179,7 @@ public class ClassPoolUtil {
      * @return CtClass
      */
     public static CtClass createCtClass(final ClassPool classPool,
-            final String name, final Class superClass) {
+            final String name, final Class<?> superClass) {
         return createCtClass(classPool, name, toCtClass(classPool, superClass));
     }
 
