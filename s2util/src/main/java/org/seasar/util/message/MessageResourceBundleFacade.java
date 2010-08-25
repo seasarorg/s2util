@@ -21,12 +21,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.seasar.framework.util.AssertionUtil;
 import org.seasar.util.io.FileInputStreamUtil;
 import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.PropertiesUtil;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.io.URLUtil;
+import org.seasar.util.misc.AssertionUtil;
 
 /**
  * {@link MessageResourceBundle}をキャッシュするクラスです。

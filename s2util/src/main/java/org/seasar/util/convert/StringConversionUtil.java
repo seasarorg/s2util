@@ -18,7 +18,7 @@ package org.seasar.util.convert;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-import org.seasar.framework.util.Base64Util;
+import org.seasar.util.misc.Base64Util;
 
 /**
  * {@link String}用の変換ユーティリティです。

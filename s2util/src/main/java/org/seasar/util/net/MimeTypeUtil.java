@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 
-import org.seasar.framework.util.AssertionUtil;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.misc.AssertionUtil;
 
 /**
  * Mimeタイプ用のユーティリティクラスです。
