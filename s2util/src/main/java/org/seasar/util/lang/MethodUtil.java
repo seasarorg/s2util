@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
-import org.seasar.framework.util.tiger.GenericUtil;
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.InvocationTargetRuntimeException;
 
@@ -237,7 +236,7 @@ public abstract class MethodUtil {
     public static Class<?> getElementTypeOfCollectionFromParameterType(
             final Method method, final int position) {
         final Type[] parameterTypes = method.getGenericParameterTypes();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getElementTypeOfCollection(parameterTypes[position]));
     }
 
@@ -251,7 +250,7 @@ public abstract class MethodUtil {
     public static Class<?> getElementTypeOfCollectionFromReturnType(
             final Method method) {
         final Type returnType = method.getGenericReturnType();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getElementTypeOfCollection(returnType));
     }
 
@@ -267,7 +266,7 @@ public abstract class MethodUtil {
     public static Class<?> getKeyTypeOfMapFromParameterType(
             final Method method, final int position) {
         final Type[] parameterTypes = method.getGenericParameterTypes();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getKeyTypeOfMap(parameterTypes[position]));
     }
 
@@ -280,7 +279,7 @@ public abstract class MethodUtil {
      */
     public static Class<?> getKeyTypeOfMapFromReturnType(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        return GenericUtil.getRawClass(GenericUtil.getKeyTypeOfMap(returnType));
+        return GenericsUtil.getRawClass(GenericsUtil.getKeyTypeOfMap(returnType));
     }
 
     /**
@@ -295,7 +294,7 @@ public abstract class MethodUtil {
     public static Class<?> getValueTypeOfMapFromParameterType(
             final Method method, final int position) {
         final Type[] parameterTypes = method.getGenericParameterTypes();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getValueTypeOfMap(parameterTypes[position]));
     }
 
@@ -308,7 +307,7 @@ public abstract class MethodUtil {
      */
     public static Class<?> getValueTypeOfMapFromReturnType(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getValueTypeOfMap(returnType));
     }
 

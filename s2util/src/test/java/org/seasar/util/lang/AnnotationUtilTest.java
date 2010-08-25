@@ -13,31 +13,34 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.lang;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import org.seasar.util.lang.ClassUtil;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  */
-public class AnnotationUtilTest extends TestCase {
+public class AnnotationUtilTest {
 
     /**
      * @throws Exception
      */
     @Hoge(bbb = "3")
+    @Test
     public void testGetProperties() throws Exception {
-        Method m = ClassUtil.getMethod(getClass(), "testGetProperties", null);
+        Method m = ClassUtil.getMethod(getClass(), "testGetProperties");
         Annotation anno = m.getAnnotation(Hoge.class);
         Map<String, Object> props = AnnotationUtil.getProperties(anno);
-        assertEquals("123", props.get("aaa"));
-        assertEquals("3", props.get("bbb"));
-        assertNull(props.get("ccc"));
+        assertThat((String) props.get("aaa"), is("123"));
+        assertThat((String) props.get("bbb"), is("3"));
+        assertThat(props.get("ccc"), is(nullValue()));
     }
+
 }

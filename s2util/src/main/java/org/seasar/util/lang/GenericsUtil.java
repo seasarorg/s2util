@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.lang;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
@@ -34,13 +34,7 @@ import org.seasar.util.collection.CollectionsUtil;
  * 
  * @author koichik
  */
-public abstract class GenericUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected GenericUtil() {
-    }
+public abstract class GenericsUtil {
 
     /**
      * <code>type</code>の原型が<code>clazz</code>に代入可能であれば<code>true</code>を、
@@ -57,8 +51,8 @@ public abstract class GenericUtil {
             return clazz.isAssignableFrom(Class.class.cast(type));
         }
         if (ParameterizedType.class.isInstance(type)) {
-            final ParameterizedType parameterizedType = ParameterizedType.class
-                    .cast(type);
+            final ParameterizedType parameterizedType =
+                ParameterizedType.class.cast(type);
             return isTypeOf(parameterizedType.getRawType(), clazz);
         }
         return false;
@@ -83,8 +77,8 @@ public abstract class GenericUtil {
             return Class.class.cast(type);
         }
         if (ParameterizedType.class.isInstance(type)) {
-            final ParameterizedType parameterizedType = ParameterizedType.class
-                    .cast(type);
+            final ParameterizedType parameterizedType =
+                ParameterizedType.class.cast(type);
             return getRawClass(parameterizedType.getRawType());
         }
         if (WildcardType.class.isInstance(type)) {
@@ -93,10 +87,10 @@ public abstract class GenericUtil {
             return getRawClass(types[0]);
         }
         if (GenericArrayType.class.isInstance(type)) {
-            final GenericArrayType genericArrayType = GenericArrayType.class
-                    .cast(type);
-            final Class<?> rawClass = getRawClass(genericArrayType
-                    .getGenericComponentType());
+            final GenericArrayType genericArrayType =
+                GenericArrayType.class.cast(type);
+            final Class<?> rawClass =
+                getRawClass(genericArrayType.getGenericComponentType());
             return Array.newInstance(rawClass, 0).getClass();
         }
         return null;
@@ -117,8 +111,9 @@ public abstract class GenericUtil {
             return ParameterizedType.class.cast(type).getActualTypeArguments();
         }
         if (GenericArrayType.class.isInstance(type)) {
-            return getGenericParameter(GenericArrayType.class.cast(type)
-                    .getGenericComponentType());
+            return getGenericParameter(GenericArrayType.class
+                .cast(type)
+                .getGenericComponentType());
         }
         return null;
     }
@@ -257,13 +252,14 @@ public abstract class GenericUtil {
      */
     public static Map<TypeVariable<?>, Type> getTypeVariableMap(
             final Class<?> clazz) {
-        final Map<TypeVariable<?>, Type> map = CollectionsUtil
-                .newLinkedHashMap();
+        final Map<TypeVariable<?>, Type> map =
+            CollectionsUtil.newLinkedHashMap();
 
         final TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
-        for (TypeVariable<?> typeParameter : typeParameters) {
-            map.put(typeParameter, getActualClass(typeParameter.getBounds()[0],
-                    map));
+        for (final TypeVariable<?> typeParameter : typeParameters) {
+            map.put(
+                typeParameter,
+                getActualClass(typeParameter.getBounds()[0], map));
         }
 
         final Class<?> superClass = clazz.getSuperclass();
@@ -322,12 +318,14 @@ public abstract class GenericUtil {
     protected static void gatherTypeVariables(final Type type,
             final Map<TypeVariable<?>, Type> map) {
         if (ParameterizedType.class.isInstance(type)) {
-            final ParameterizedType parameterizedType = ParameterizedType.class
-                    .cast(type);
-            final TypeVariable<?>[] typeVariables = GenericDeclaration.class
-                    .cast(parameterizedType.getRawType()).getTypeParameters();
-            final Type[] actualTypes = parameterizedType
-                    .getActualTypeArguments();
+            final ParameterizedType parameterizedType =
+                ParameterizedType.class.cast(type);
+            final TypeVariable<?>[] typeVariables =
+                GenericDeclaration.class
+                    .cast(parameterizedType.getRawType())
+                    .getTypeParameters();
+            final Type[] actualTypes =
+                parameterizedType.getActualTypeArguments();
             for (int i = 0; i < actualTypes.length; ++i) {
                 map.put(typeVariables[i], actualTypes[i]);
             }
@@ -358,12 +356,14 @@ public abstract class GenericUtil {
             return Class.class.cast(type);
         }
         if (ParameterizedType.class.isInstance(type)) {
-            return getActualClass(ParameterizedType.class.cast(type)
-                    .getRawType(), map);
+            return getActualClass(ParameterizedType.class
+                .cast(type)
+                .getRawType(), map);
         }
         if (WildcardType.class.isInstance(type)) {
-            return getActualClass(WildcardType.class.cast(type)
-                    .getUpperBounds()[0], map);
+            return getActualClass(WildcardType.class
+                .cast(type)
+                .getUpperBounds()[0], map);
         }
         if (TypeVariable.class.isInstance(type)) {
             final TypeVariable<?> typeVariable = TypeVariable.class.cast(type);
@@ -373,10 +373,10 @@ public abstract class GenericUtil {
             return getActualClass(typeVariable.getBounds()[0], map);
         }
         if (GenericArrayType.class.isInstance(type)) {
-            final GenericArrayType genericArrayType = GenericArrayType.class
-                    .cast(type);
-            final Class<?> componentClass = getActualClass(genericArrayType
-                    .getGenericComponentType(), map);
+            final GenericArrayType genericArrayType =
+                GenericArrayType.class.cast(type);
+            final Class<?> componentClass =
+                getActualClass(genericArrayType.getGenericComponentType(), map);
             return Array.newInstance(componentClass, 0).getClass();
         }
         return null;
@@ -405,8 +405,9 @@ public abstract class GenericUtil {
         if (!GenericArrayType.class.isInstance(type)) {
             return null;
         }
-        return getActualClass(GenericArrayType.class.cast(type)
-                .getGenericComponentType(), map);
+        return getActualClass(GenericArrayType.class
+            .cast(type)
+            .getGenericComponentType(), map);
     }
 
     /**

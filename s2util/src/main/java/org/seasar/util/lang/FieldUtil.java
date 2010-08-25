@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
-import org.seasar.framework.util.tiger.GenericUtil;
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 
@@ -251,7 +250,7 @@ public abstract class FieldUtil {
      */
     public static Class<?> getElementTypeOfCollection(final Field field) {
         final Type type = field.getGenericType();
-        return GenericUtil.getRawClass(GenericUtil
+        return GenericsUtil.getRawClass(GenericsUtil
             .getElementTypeOfCollection(type));
     }
 
@@ -264,7 +263,7 @@ public abstract class FieldUtil {
      */
     public static Class<?> getKeyTypeOfMap(final Field field) {
         final Type type = field.getGenericType();
-        return GenericUtil.getRawClass(GenericUtil.getKeyTypeOfMap(type));
+        return GenericsUtil.getRawClass(GenericsUtil.getKeyTypeOfMap(type));
     }
 
     /**
@@ -276,7 +275,7 @@ public abstract class FieldUtil {
      */
     public static Class<?> getValueTypeOfMap(final Field field) {
         final Type type = field.getGenericType();
-        return GenericUtil.getRawClass(GenericUtil.getValueTypeOfMap(type));
+        return GenericsUtil.getRawClass(GenericsUtil.getValueTypeOfMap(type));
     }
 
 }

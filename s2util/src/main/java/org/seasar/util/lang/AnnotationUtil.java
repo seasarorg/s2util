@@ -13,29 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.lang;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
-import org.seasar.util.lang.MethodUtil;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * アノテーションのためのユーティリティクラスです。
  * 
  * @author higa
  */
-public class AnnotationUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected AnnotationUtil() {
-    }
+public abstract class AnnotationUtil {
 
     /**
      * アノテーションの要素を名前と値の{@link Map}として返します。
@@ -44,14 +38,12 @@ public class AnnotationUtil {
      *            アノテーション
      * @return アノテーションの要素の名前と値からなる{@link Map}
      */
-    public static Map<String, Object> getProperties(Annotation annotation) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(annotation
-                .annotationType());
-        String[] names = beanDesc.getMethodNames();
-        for (int i = 0; i < names.length; i++) {
-            String name = names[i];
-            Object v = getProperty(beanDesc, annotation, name);
+    public static Map<String, Object> getProperties(final Annotation annotation) {
+        final Map<String, Object> map = newHashMap();
+        final BeanDesc beanDesc =
+            BeanDescFactory.getBeanDesc(annotation.annotationType());
+        for (final String name : beanDesc.getMethodNames()) {
+            final Object v = getProperty(beanDesc, annotation, name);
             if (v != null) {
                 map.put(name, v);
             }
@@ -70,17 +62,17 @@ public class AnnotationUtil {
      *            要素の名前
      * @return アノテーションの要素の値
      */
-    public static Object getProperty(BeanDesc beanDesc, Annotation annotation,
-            String name) {
-        Method m = beanDesc.getMethodNoException(name);
-        if (m == null) {
+    protected static Object getProperty(final BeanDesc beanDesc,
+            final Annotation annotation, final String name) {
+        final Method method = beanDesc.getMethodNoException(name);
+        if (method == null) {
             return null;
         }
-        Object v = MethodUtil.invoke(m, annotation, null);
-        if (v != null && !"".equals(v)) {
-            return v;
+        final Object value = MethodUtil.invoke(method, annotation);
+        if (value == null || "".equals(value)) {
+            return null;
         }
-        return null;
+        return value;
     }
 
 }

@@ -48,8 +48,8 @@ import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.lang.StringUtil;
 
-import static org.seasar.framework.util.tiger.GenericUtil.*;
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.lang.GenericsUtil.*;
 
 /**
  * {@link BeanDesc}の実装クラスです。

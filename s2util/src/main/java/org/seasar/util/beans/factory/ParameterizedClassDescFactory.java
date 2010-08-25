@@ -25,7 +25,7 @@ import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.impl.ParameterizedClassDescImpl;
 
-import static org.seasar.framework.util.tiger.GenericUtil.*;
+import static org.seasar.util.lang.GenericsUtil.*;
 
 /**
  * フィールの型やメソッドの引数型、戻り値型を表現する{@link ParameterizedClassDesc}を作成するファクトリです。
