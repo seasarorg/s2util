@@ -87,7 +87,6 @@ public class PropertyDescImpl implements PropertyDesc {
     public PropertyDescImpl(final String propertyName,
             final Class<?> propertyType, final Method readMethod,
             final Method writeMethod, final BeanDesc beanDesc) {
-
         this(
             propertyName,
             propertyType,
@@ -110,7 +109,6 @@ public class PropertyDescImpl implements PropertyDesc {
     public PropertyDescImpl(final String propertyName,
             final Class<?> propertyType, final Method readMethod,
             final Method writeMethod, final Field field, final BeanDesc beanDesc) {
-
         if (propertyName == null) {
             throw new EmptyRuntimeException("propertyName");
         }
@@ -129,9 +127,7 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     private void setupStringConstructor() {
-        final Constructor<?>[] cons = propertyType.getConstructors();
-        for (int i = 0; i < cons.length; ++i) {
-            final Constructor<?> con = cons[i];
+        for (final Constructor<?> con : propertyType.getConstructors()) {
             if (con.getParameterTypes().length == 1
                 && con.getParameterTypes()[0].equals(String.class)) {
                 stringConstructor = con;
@@ -141,9 +137,7 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     private void setupValueOfMethod() {
-        final Method[] methods = propertyType.getMethods();
-        for (int i = 0; i < methods.length; ++i) {
-            final Method method = methods[i];
+        for (final Method method : propertyType.getMethods()) {
             if (method.isBridge() || method.isSynthetic()) {
                 continue;
             }
@@ -325,16 +319,17 @@ public class PropertyDescImpl implements PropertyDesc {
 
     @Override
     public final String toString() {
-        final StringBuffer buf = new StringBuffer();
-        buf.append("propertyName=");
-        buf.append(propertyName);
-        buf.append(",propertyType=");
-        buf.append(propertyType.getName());
-        buf.append(",readMethod=");
-        buf.append(readMethod != null ? readMethod.getName() : "null");
-        buf.append(",writeMethod=");
-        buf.append(writeMethod != null ? writeMethod.getName() : "null");
-        return buf.toString();
+        final StringBuilder buf = new StringBuilder(256);
+        buf
+            .append("propertyName=")
+            .append(propertyName)
+            .append(",propertyType=")
+            .append(propertyType.getName())
+            .append(",readMethod=")
+            .append(readMethod != null ? readMethod.getName() : "null")
+            .append(",writeMethod=")
+            .append(writeMethod != null ? writeMethod.getName() : "null");
+        return new String(buf);
     }
 
     @SuppressWarnings("unchecked")

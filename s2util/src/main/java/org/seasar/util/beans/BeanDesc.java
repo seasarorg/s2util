@@ -22,8 +22,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
-import org.seasar.util.exception.FieldNotFoundRuntimeException;
-
 /**
  * Bean(JavaBeans)を扱うためのインターフェースです。
  * 
@@ -107,11 +105,8 @@ public interface BeanDesc {
      * @param fieldName
      * @param target
      * @return {@link Field}の値
-     * @throws FieldNotFoundRuntimeException
-     *             {@link Field}が見つからない場合
      */
-    <T> T getFieldValue(String fieldName, Object target)
-            throws FieldNotFoundRuntimeException;
+    <T> T getFieldValue(String fieldName, Object target);
 
     /**
      * {@link Field}を返します。

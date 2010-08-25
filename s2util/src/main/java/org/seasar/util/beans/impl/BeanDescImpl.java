@@ -162,8 +162,7 @@ public class BeanDescImpl implements BeanDesc {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getFieldValue(final String fieldName, final Object target)
-            throws FieldNotFoundRuntimeException {
+    public <T> T getFieldValue(final String fieldName, final Object target) {
         final Field field = getField(fieldName);
         return (T) FieldUtil.get(field, target);
     }
@@ -219,8 +218,7 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     @Override
-    public Method getSuitableMethod(final String methodName, Object... args)
-            throws MethodNotFoundRuntimeException {
+    public Method getSuitableMethod(final String methodName, Object... args) {
         final Method[] methods = getMethods(methodName);
         Method method = findSuitableMethod(methods, args);
         if (method != null) {
@@ -265,8 +263,7 @@ public class BeanDescImpl implements BeanDesc {
      * @see org.seasar.util.beans.BeanDesc#getMethods(java.lang.String)
      */
     @Override
-    public Method[] getMethods(final String methodName)
-            throws MethodNotFoundRuntimeException {
+    public Method[] getMethods(final String methodName) {
         final Method[] methods = methodsCache.get(methodName);
         if (methods == null) {
             throw new MethodNotFoundRuntimeException(beanClass, methodName);
