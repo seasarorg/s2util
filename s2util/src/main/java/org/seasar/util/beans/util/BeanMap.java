@@ -13,18 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
-import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
- * @author higa
+ * Stringがキーで、存在しないキーにアクセスする(get)と例外を投げるマップです。
  * 
+ * @author higa
  */
-public class MyBean2 {
+public class BeanMap extends LinkedHashMap<String, Object> {
 
-    /**
-     * 
-     */
-    public Date aaa;
+    private static final long serialVersionUID = 1;
+
+    @Override
+    public Object get(final Object key) {
+        if (!containsKey(key)) {
+            throw new IllegalArgumentException(key + " is not found in "
+                + keySet());
+        }
+        return super.get(key);
+    }
+
 }

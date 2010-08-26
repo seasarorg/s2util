@@ -13,13 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.ModifierUtil;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * JavaBeansやMapを作成し、プロパティをコピーするクラスです。
@@ -27,19 +28,18 @@ import org.seasar.util.lang.ModifierUtil;
  * @author higa
  * @param <T>
  *            作成するタイプ
- * 
  */
 public class CreateAndCopy<T> extends AbstractCopy<CreateAndCopy<T>> {
 
     /**
      * 作成対象クラス
      */
-    protected Class<T> destClass;
+    protected final Class<T> destClass;
 
     /**
      * コピー元です。
      */
-    protected Object src;
+    protected final Object src;
 
     /**
      * インスタンスを構築します。
@@ -51,7 +51,7 @@ public class CreateAndCopy<T> extends AbstractCopy<CreateAndCopy<T>> {
      * @throws NullPointerException
      *             引数が<code>null</code>だった場合
      */
-    public CreateAndCopy(Class<T> destClass, Object src)
+    public CreateAndCopy(final Class<T> destClass, final Object src)
             throws NullPointerException {
         if (destClass == null) {
             throw new NullPointerException("destClass");
@@ -71,25 +71,26 @@ public class CreateAndCopy<T> extends AbstractCopy<CreateAndCopy<T>> {
     @SuppressWarnings("unchecked")
     public T execute() {
         if (Map.class.isAssignableFrom(destClass)) {
-            Map dest = null;
+            final Map<String, Object> dest;
             if (ModifierUtil.isAbstract(destClass)) {
-                dest = new HashMap();
+                dest = newHashMap();
             } else {
-                dest = (Map) ClassUtil.newInstance(destClass);
+                dest = (Map<String, Object>) ClassUtil.newInstance(destClass);
             }
             if (src instanceof Map) {
-                copyMapToMap((Map) src, dest);
+                copyMapToMap((Map<String, Object>) src, dest);
             } else {
                 copyBeanToMap(src, dest);
             }
             return (T) dest;
         }
-        T dest = (T) ClassUtil.newInstance(destClass);
+        final T dest = ClassUtil.newInstance(destClass);
         if (src instanceof Map) {
-            copyMapToBean((Map) src, dest);
+            copyMapToBean((Map<String, Object>) src, dest);
         } else {
             copyBeanToBean(src, dest);
         }
         return dest;
     }
+
 }

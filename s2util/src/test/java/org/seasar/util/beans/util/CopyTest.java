@@ -13,59 +13,67 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  */
-public class CopyTest extends TestCase {
+public class CopyTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testExecute_beanToBean() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         MyBean dest = new MyBean();
         new Copy(src, dest).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testExecute_beanToMap() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         Map<String, Object> dest = new HashMap<String, Object>();
         new Copy(src, dest).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testExecute_mapToBean() throws Exception {
         Map<String, Object> src = new HashMap<String, Object>();
         src.put("aaa", "aaa");
         MyBean dest = new MyBean();
         new Copy(src, dest).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testExecute_mapToMap() throws Exception {
         Map<String, Object> src = new HashMap<String, Object>();
         src.put("aaa", "aaa");
         Map<String, Object> dest = new HashMap<String, Object>();
         new Copy(src, dest).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
+
 }

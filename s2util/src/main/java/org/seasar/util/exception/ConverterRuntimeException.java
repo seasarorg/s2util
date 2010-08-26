@@ -15,7 +15,7 @@
  */
 package org.seasar.util.exception;
 
-import org.seasar.framework.beans.Converter;
+import org.seasar.util.beans.Converter;
 
 import static org.seasar.util.collection.ArrayUtil.*;
 

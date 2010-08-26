@@ -13,34 +13,41 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
-import junit.framework.TestCase;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  * 
  */
-public class TimestampConverterTest extends TestCase {
+public class DateConverterTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetAsObjectAndGetAsString() throws Exception {
-        TimestampConverter converter = new TimestampConverter(
-                "yyyy/MM/dd HH:mm:ss");
-        java.sql.Timestamp result = (java.sql.Timestamp) converter
-                .getAsObject("2008/12/31 12:34:56");
+        DateConverter converter = new DateConverter("yyyy/MM/dd");
+        Date result = (Date) converter.getAsObject("2008/01/16");
         System.out.println(result);
-        assertEquals("2008/12/31 12:34:56", converter.getAsString(result));
+        assertThat(converter.getAsString(result), is("2008/01/16"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testIsTarget() throws Exception {
-        TimestampConverter converter = new TimestampConverter("yyyy/MM/dd");
-        assertTrue(converter.isTarget(java.sql.Timestamp.class));
-        assertFalse(converter.isTarget(java.util.Date.class));
+        DateConverter converter = new DateConverter("yyyy/MM/dd");
+        assertThat(converter.isTarget(Date.class), is(true));
+        assertThat(converter.isTarget(Timestamp.class), is(not(true)));
     }
+
 }

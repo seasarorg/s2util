@@ -13,23 +13,22 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
 import java.util.Date;
 
-import org.seasar.framework.beans.Converter;
-import org.seasar.util.convert.DateConversionUtil;
+import org.seasar.util.beans.Converter;
+import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.StringUtil;
 
 /**
- * 日付用のコンバータです。
+ * SQLの日付用のコンバータです。
  * 
  * @author higa
- * 
  */
-public class DateConverter implements Converter {
+public class SqlDateConverter implements Converter {
 
     /**
      * 日付のパターンです。
@@ -42,26 +41,29 @@ public class DateConverter implements Converter {
      * @param pattern
      *            日付のパターン
      */
-    public DateConverter(String pattern) {
+    public SqlDateConverter(final String pattern) {
         if (StringUtil.isEmpty(pattern)) {
             throw new EmptyRuntimeException("pattern");
         }
         this.pattern = pattern;
     }
 
-    public Object getAsObject(String value) {
+    @Override
+    public Object getAsObject(final String value) {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
-        return DateConversionUtil.toDate(value, pattern);
+        return SqlDateConversionUtil.toDate(value, pattern);
     }
 
-    public String getAsString(Object value) {
+    @Override
+    public String getAsString(final Object value) {
         return StringConversionUtil.toString((Date) value, pattern);
     }
 
-    public boolean isTarget(Class clazz) {
-        return clazz == Date.class;
+    @Override
+    public boolean isTarget(final Class<?> clazz) {
+        return clazz == java.sql.Date.class;
     }
 
 }

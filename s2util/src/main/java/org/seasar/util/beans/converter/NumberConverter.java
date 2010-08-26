@@ -13,27 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
-import java.sql.Time;
-import java.util.Date;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 
-import org.seasar.framework.beans.Converter;
-import org.seasar.util.convert.StringConversionUtil;
-import org.seasar.util.convert.TimeConversionUtil;
+import org.seasar.util.beans.Converter;
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.ParseRuntimeException;
 import org.seasar.util.lang.StringUtil;
 
 /**
- * 時間用のコンバータです。
+ * 数値用のコンバータです。
  * 
  * @author higa
- * 
  */
-public class TimeConverter implements Converter {
+public class NumberConverter implements Converter {
 
     /**
-     * 時間のパターンです。
+     * 数値のパターンです。
      */
     protected String pattern;
 
@@ -41,28 +39,36 @@ public class TimeConverter implements Converter {
      * インスタンスを構築します。
      * 
      * @param pattern
-     *            時間のパターン
+     *            数値のパターン
      */
-    public TimeConverter(String pattern) {
+    public NumberConverter(final String pattern) {
         if (StringUtil.isEmpty(pattern)) {
             throw new EmptyRuntimeException("pattern");
         }
         this.pattern = pattern;
     }
 
-    public Object getAsObject(String value) {
+    @Override
+    public Object getAsObject(final String value) {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
-        return TimeConversionUtil.toTime(value, pattern);
+        try {
+            return new DecimalFormat(pattern).parse(value);
+        } catch (final ParseException e) {
+            throw new ParseRuntimeException(e);
+        }
+
     }
 
-    public String getAsString(Object value) {
-        return StringConversionUtil.toString((Date) value, pattern);
+    @Override
+    public String getAsString(final Object value) {
+        return new DecimalFormat(pattern).format(value);
     }
 
-    public boolean isTarget(Class clazz) {
-        return clazz == Time.class;
+    @Override
+    public boolean isTarget(final Class<?> clazz) {
+        return Number.class.isAssignableFrom(clazz);
     }
 
 }

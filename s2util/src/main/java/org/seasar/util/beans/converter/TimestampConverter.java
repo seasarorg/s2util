@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
 import java.util.Date;
 
-import org.seasar.framework.beans.Converter;
+import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
@@ -27,7 +27,6 @@ import org.seasar.util.lang.StringUtil;
  * 日時用のコンバータです。
  * 
  * @author higa
- * 
  */
 public class TimestampConverter implements Converter {
 
@@ -42,25 +41,28 @@ public class TimestampConverter implements Converter {
      * @param pattern
      *            日時のパターン
      */
-    public TimestampConverter(String pattern) {
+    public TimestampConverter(final String pattern) {
         if (StringUtil.isEmpty(pattern)) {
             throw new EmptyRuntimeException("pattern");
         }
         this.pattern = pattern;
     }
 
-    public Object getAsObject(String value) {
+    @Override
+    public Object getAsObject(final String value) {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
         return TimestampConversionUtil.toTimestamp(value, pattern);
     }
 
-    public String getAsString(Object value) {
+    @Override
+    public String getAsString(final Object value) {
         return StringConversionUtil.toString((Date) value, pattern);
     }
 
-    public boolean isTarget(Class clazz) {
+    @Override
+    public boolean isTarget(final Class<?> clazz) {
         return clazz == java.sql.Timestamp.class;
     }
 

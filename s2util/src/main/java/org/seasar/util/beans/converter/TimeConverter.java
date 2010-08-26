@@ -13,26 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
+import java.sql.Time;
 import java.util.Date;
 
-import org.seasar.framework.beans.Converter;
-import org.seasar.util.convert.SqlDateConversionUtil;
+import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.StringConversionUtil;
+import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.StringUtil;
 
 /**
- * SQLの日付用のコンバータです。
+ * 時間用のコンバータです。
  * 
  * @author higa
- * 
  */
-public class SqlDateConverter implements Converter {
+public class TimeConverter implements Converter {
 
     /**
-     * 日付のパターンです。
+     * 時間のパターンです。
      */
     protected String pattern;
 
@@ -40,28 +40,31 @@ public class SqlDateConverter implements Converter {
      * インスタンスを構築します。
      * 
      * @param pattern
-     *            日付のパターン
+     *            時間のパターン
      */
-    public SqlDateConverter(String pattern) {
+    public TimeConverter(final String pattern) {
         if (StringUtil.isEmpty(pattern)) {
             throw new EmptyRuntimeException("pattern");
         }
         this.pattern = pattern;
     }
 
-    public Object getAsObject(String value) {
+    @Override
+    public Object getAsObject(final String value) {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
-        return SqlDateConversionUtil.toDate(value, pattern);
+        return TimeConversionUtil.toTime(value, pattern);
     }
 
-    public String getAsString(Object value) {
+    @Override
+    public String getAsString(final Object value) {
         return StringConversionUtil.toString((Date) value, pattern);
     }
 
-    public boolean isTarget(Class clazz) {
-        return clazz == java.sql.Date.class;
+    @Override
+    public boolean isTarget(final Class<?> clazz) {
+        return clazz == Time.class;
     }
 
 }

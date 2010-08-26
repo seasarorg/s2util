@@ -13,26 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
+import java.util.Date;
 
-import org.seasar.framework.beans.Converter;
+import org.seasar.util.beans.Converter;
+import org.seasar.util.convert.DateConversionUtil;
+import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
-import org.seasar.util.exception.ParseRuntimeException;
 import org.seasar.util.lang.StringUtil;
 
 /**
- * 数値用のコンバータです。
+ * 日付用のコンバータです。
  * 
  * @author higa
- * 
  */
-public class NumberConverter implements Converter {
+public class DateConverter implements Converter {
 
     /**
-     * 数値のパターンです。
+     * 日付のパターンです。
      */
     protected String pattern;
 
@@ -40,33 +39,31 @@ public class NumberConverter implements Converter {
      * インスタンスを構築します。
      * 
      * @param pattern
-     *            数値のパターン
+     *            日付のパターン
      */
-    public NumberConverter(String pattern) {
+    public DateConverter(final String pattern) {
         if (StringUtil.isEmpty(pattern)) {
             throw new EmptyRuntimeException("pattern");
         }
         this.pattern = pattern;
     }
 
-    public Object getAsObject(String value) {
+    @Override
+    public Object getAsObject(final String value) {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
-        try {
-            return new DecimalFormat(pattern).parse(value);
-        } catch (ParseException e) {
-            throw new ParseRuntimeException(e);
-        }
-
+        return DateConversionUtil.toDate(value, pattern);
     }
 
-    public String getAsString(Object value) {
-        return new DecimalFormat(pattern).format(value);
+    @Override
+    public String getAsString(final Object value) {
+        return StringConversionUtil.toString((Date) value, pattern);
     }
 
-    public boolean isTarget(Class clazz) {
-        return Number.class.isAssignableFrom(clazz);
+    @Override
+    public boolean isTarget(final Class<?> clazz) {
+        return clazz == Date.class;
     }
 
 }

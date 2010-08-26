@@ -13,111 +13,125 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.seasar.util.beans.converter.DateConverter;
 
-import org.seasar.framework.beans.converter.DateConverter;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  */
-public class BeansTest extends TestCase {
+public class BeansTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCopy_beanToBean() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         MyBean dest = new MyBean();
         Beans.copy(src, dest).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCopy_beanToBean_converter() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "2008/01/17";
         MyBean2 dest = new MyBean2();
-        Beans.copy(src, dest).converter(new DateConverter("yyyy/MM/dd"))
-                .execute();
+        Beans
+            .copy(src, dest)
+            .converter(new DateConverter("yyyy/MM/dd"))
+            .execute();
         System.out.println(dest.aaa);
-        assertNotNull(dest.aaa);
+        assertThat(dest.aaa, is(notNullValue()));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCopy_beanToMap() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         BeanMap dest = new BeanMap();
         Beans.copy(src, dest).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCopy_mapToBean() throws Exception {
         BeanMap src = new BeanMap();
         src.put("aaa", "aaa");
         MyBean dest = new MyBean();
         Beans.copy(src, dest).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCopy_mapToMap() throws Exception {
         BeanMap src = new BeanMap();
         src.put("aaa", "aaa");
         BeanMap dest = new BeanMap();
         Beans.copy(src, dest).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateAndCopy_beanToBean() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         MyBean dest = Beans.createAndCopy(MyBean.class, src).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateAndCopy_beanToMap() throws Exception {
         MyBean src = new MyBean();
         src.aaa = "aaa";
         BeanMap dest = Beans.createAndCopy(BeanMap.class, src).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateAndCopy_mapToBean() throws Exception {
         BeanMap src = new BeanMap();
         src.put("aaa", "aaa");
         MyBean dest = Beans.createAndCopy(MyBean.class, src).execute();
-        assertEquals("aaa", dest.aaa);
+        assertThat(dest.aaa, is("aaa"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCreateAndCopy_mapToMap() throws Exception {
         BeanMap src = new BeanMap();
         src.put("aaa", "aaa");
         BeanMap dest = Beans.createAndCopy(BeanMap.class, src).execute();
-        assertEquals("aaa", dest.get("aaa"));
+        assertThat(dest.get("aaa"), is((Object) "aaa"));
     }
+
 }

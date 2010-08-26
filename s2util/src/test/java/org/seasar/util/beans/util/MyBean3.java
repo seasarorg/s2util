@@ -13,11 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
 /**
  * @author higa
- * 
  */
 public class MyBean3 {
 
@@ -45,4 +44,5 @@ public class MyBean3 {
      * 
      */
     public String ab = "ab";
+
 }

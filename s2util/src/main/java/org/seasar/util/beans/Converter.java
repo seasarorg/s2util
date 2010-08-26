@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans;
+package org.seasar.util.beans;
 
 /**
  * 文字列とオブジェクトの変換を行なうインターフェースです。
  * 
  * @author higa
- * 
  */
 public interface Converter {
 
@@ -42,10 +41,12 @@ public interface Converter {
     Object getAsObject(String value);
 
     /**
-     * 対象の型かどうかを返します。 対象のプロパティを指定しない場合に呼び出されます。
+     * このコンバータの変換対象なら{@literal true}を返します。
      * 
      * @param clazz
-     * @return
+     *            型
+     * @return このコンバータの変換対象なら{@literal true}
      */
-    boolean isTarget(Class clazz);
+    boolean isTarget(Class<?> clazz);
+
 }

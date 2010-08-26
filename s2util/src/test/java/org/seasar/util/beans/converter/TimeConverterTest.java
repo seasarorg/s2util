@@ -13,33 +13,37 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- * 
  */
-public class SqlDateConverterTest extends TestCase {
+public class TimeConverterTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetAsObjectAndGetAsString() throws Exception {
-        SqlDateConverter converter = new SqlDateConverter("yyyy/MM/dd");
-        java.sql.Date result = (java.sql.Date) converter
-                .getAsObject("2008/01/16");
+        TimeConverter converter = new TimeConverter("HH:mm:ss");
+        java.sql.Time result =
+            (java.sql.Time) converter.getAsObject("12:34:56");
         System.out.println(result);
-        assertEquals("2008/01/16", converter.getAsString(result));
+        assertThat(converter.getAsString(result), is("12:34:56"));
     }
 
     /**
      * @throws Exception
      */
     public void testIsTarget() throws Exception {
-        SqlDateConverter converter = new SqlDateConverter("yyyy/MM/dd");
-        assertTrue(converter.isTarget(java.sql.Date.class));
-        assertFalse(converter.isTarget(java.util.Date.class));
+        TimeConverter converter = new TimeConverter("yyyy/MM/dd");
+        assertThat(converter.isTarget(java.sql.Time.class), is(true));
+        assertThat(converter.isTarget(java.util.Date.class), is(not(true)));
     }
+
 }

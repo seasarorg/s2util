@@ -13,30 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
+import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * JavaBeans用のユーティリティです。
  * 
  * @author Kimura Satoshi
  * @author higa
- * 
  */
-public class BeanUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected BeanUtil() {
-    }
+public abstract class BeanUtil {
 
     /**
      * マップの値をJavaBeansにコピーします。
@@ -46,17 +40,17 @@ public class BeanUtil {
      * @param dest
      *            あて先
      */
-    public static void copyProperties(Map src, Object dest) {
+    public static void copyProperties(final Map<String, ?> src,
+            final Object dest) {
         if (src == null || dest == null) {
             return;
         }
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
-        for (Iterator i = src.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
+        for (final String key : src.keySet()) {
             if (!beanDesc.hasPropertyDesc(key)) {
                 continue;
             }
-            PropertyDesc pd = beanDesc.getPropertyDesc(key);
+            final PropertyDesc pd = beanDesc.getPropertyDesc(key);
             if (pd.isWritable()) {
                 pd.setValue(dest, src.get(key));
             }
@@ -71,7 +65,8 @@ public class BeanUtil {
      * @param dest
      *            あて先
      */
-    public static void copyProperties(Object src, Map dest) {
+    public static void copyProperties(final Object src,
+            final Map<String, Object> dest) {
         if (src == null || dest == null) {
             return;
         }
@@ -79,7 +74,7 @@ public class BeanUtil {
         final int size = beanDesc.getPropertyDescSize();
         for (int i = 0; i < size; ++i) {
             final PropertyDesc pd = beanDesc.getPropertyDesc(i);
-            if (pd.isReadable() && pd.isWritable()) {
+            if (pd.isReadable()) {
                 final Object value = pd.getValue(src);
                 dest.put(pd.getPropertyName(), value);
             }
@@ -105,32 +100,35 @@ public class BeanUtil {
      *            ソース
      * @param dest
      *            あて先
-     * @param includeNull
+     * @param includesNull
      *            <code>null</code>を含めるかどうか
      */
     public static void copyProperties(final Object src, final Object dest,
-            final boolean includeNull) {
-        final BeanDesc srcBeanDesc = BeanDescFactory
-                .getBeanDesc(src.getClass());
-        final BeanDesc destBeanDesc = BeanDescFactory.getBeanDesc(dest
-                .getClass());
+            final boolean includesNull) {
+        final BeanDesc srcBeanDesc =
+            BeanDescFactory.getBeanDesc(src.getClass());
+        final BeanDesc destBeanDesc =
+            BeanDescFactory.getBeanDesc(dest.getClass());
 
         final int propertyDescSize = destBeanDesc.getPropertyDescSize();
         for (int i = 0; i < propertyDescSize; i++) {
-            final PropertyDesc destPropertyDesc = destBeanDesc
-                    .getPropertyDesc(i);
+            final PropertyDesc destPropertyDesc =
+                destBeanDesc.getPropertyDesc(i);
+            if (!destPropertyDesc.isWritable()) {
+                continue;
+            }
             final String propertyName = destPropertyDesc.getPropertyName();
-            if (srcBeanDesc.hasPropertyDesc(propertyName)) {
-                final PropertyDesc srcPropertyDesc = srcBeanDesc
-                        .getPropertyDesc(propertyName);
-                if (destPropertyDesc.isWritable()
-                        && srcPropertyDesc.isReadable()) {
-                    final Object value = srcPropertyDesc.getValue(src);
-                    if (includeNull || value != null) {
-                        destPropertyDesc.setValue(dest, srcPropertyDesc
-                                .getValue(src));
-                    }
-                }
+            if (!srcBeanDesc.hasPropertyDesc(propertyName)) {
+                continue;
+            }
+            final PropertyDesc srcPropertyDesc =
+                srcBeanDesc.getPropertyDesc(propertyName);
+            if (!srcPropertyDesc.isReadable()) {
+                continue;
+            }
+            final Object value = srcPropertyDesc.getValue(src);
+            if (value != null || includesNull) {
+                destPropertyDesc.setValue(dest, srcPropertyDesc.getValue(src));
             }
         }
     }
@@ -142,7 +140,7 @@ public class BeanUtil {
      *            ソース
      * @return JavaBeansの値を持つマップ
      */
-    public static Map createProperties(Object src) {
+    public static Map<String, Object> createProperties(final Object src) {
         return createProperties(src, null);
     }
 
@@ -155,8 +153,9 @@ public class BeanUtil {
      *            プレフィックス
      * @return JavaBeansの値を持つマップ
      */
-    public static Map createProperties(Object src, String prefix) {
-        Map map = new HashMap();
+    public static Map<String, Object> createProperties(final Object src,
+            final String prefix) {
+        final Map<String, Object> map = newHashMap();
         if (src == null) {
             return map;
         }
@@ -164,19 +163,18 @@ public class BeanUtil {
         final int size = beanDesc.getPropertyDescSize();
         for (int i = 0; i < size; ++i) {
             final PropertyDesc pd = beanDesc.getPropertyDesc(i);
-            if (pd.isReadable()) {
-                if (prefix == null) {
-                    final Object value = pd.getValue(src);
-                    String name = pd.getPropertyName().replace('$', '.');
-                    map.put(name, value);
-                } else if (pd.getPropertyName().startsWith(prefix)) {
-                    final Object value = pd.getValue(src);
-                    String name = pd.getPropertyName().substring(
-                            prefix.length()).replace('$', '.');
-                    map.put(name, value);
-                }
+            if (!pd.isReadable()) {
+                continue;
+            }
+            final Object value = pd.getValue(src);
+            final String destName = pd.getPropertyName().replace('$', '.');
+            if (StringUtil.isEmpty(prefix)) {
+                map.put(destName, value);
+            } else if (destName.startsWith(prefix)) {
+                map.put(destName.substring(prefix.length()), value);
             }
         }
         return map;
     }
+
 }

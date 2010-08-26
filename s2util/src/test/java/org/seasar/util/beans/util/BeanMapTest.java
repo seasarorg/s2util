@@ -13,29 +13,38 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- * 
  */
-public class BeanMapTest extends TestCase {
+public class BeanMapTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGet() throws Exception {
         BeanMap map = new BeanMap();
         map.put("aaa", 1);
         map.put("bbb", 2);
-        assertEquals(1, map.get("aaa"));
-        try {
-            map.get("xxx");
-            fail();
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
+        assertThat(map.get("aaa"), is((Object) 1));
     }
+
+    /**
+     * @throws Exception
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGet_NotContains() throws Exception {
+        BeanMap map = new BeanMap();
+        map.put("aaa", 1);
+        map.put("bbb", 2);
+        map.get("xxx");
+    }
+
 }

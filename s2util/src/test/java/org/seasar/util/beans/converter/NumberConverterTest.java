@@ -13,40 +13,48 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.converter;
+package org.seasar.util.beans.converter;
 
 import java.sql.Timestamp;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
- * 
  */
-public class NumberConverterTest extends TestCase {
+public class NumberConverterTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetAsObject() throws Exception {
         NumberConverter converter = new NumberConverter("##0");
-        assertEquals(new Long("100"), converter.getAsObject("100"));
+        assertThat(
+            converter.getAsObject("100"),
+            is((Object) Long.valueOf("100")));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetAsString() throws Exception {
         NumberConverter converter = new NumberConverter("##0");
-        assertEquals("100", converter.getAsString(new Integer("100")));
+        assertThat(converter.getAsString(new Integer("100")), is("100"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testIsTarget() throws Exception {
         NumberConverter converter = new NumberConverter("##0");
-        assertTrue(converter.isTarget(Integer.class));
-        assertFalse(converter.isTarget(Timestamp.class));
+        assertThat(converter.isTarget(Integer.class), is(true));
+        assertThat(converter.isTarget(Timestamp.class), is(not(true)));
     }
+
 }

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.beans.util;
+package org.seasar.util.beans.util;
 
 import java.util.Map;
 
@@ -21,19 +21,18 @@ import java.util.Map;
  * プロパティのコピーをするクラスです。
  * 
  * @author higa
- * 
  */
 public class Copy extends AbstractCopy<Copy> {
 
     /**
      * コピー元です。
      */
-    protected Object src;
+    protected final Object src;
 
     /**
      * コピー先です。
      */
-    protected Object dest;
+    protected final Object dest;
 
     /**
      * インスタンスを構築します。
@@ -45,7 +44,8 @@ public class Copy extends AbstractCopy<Copy> {
      * @throws NullPointerException
      *             引数が<code>null</code>だった場合
      */
-    public Copy(Object src, Object dest) throws NullPointerException {
+    public Copy(final Object src, final Object dest)
+            throws NullPointerException {
         if (src == null) {
             throw new NullPointerException("src");
         }
@@ -62,13 +62,14 @@ public class Copy extends AbstractCopy<Copy> {
     @SuppressWarnings("unchecked")
     public void execute() {
         if (src instanceof Map && dest instanceof Map) {
-            copyMapToMap((Map) src, (Map) dest);
+            copyMapToMap((Map<String, Object>) src, (Map<String, Object>) dest);
         } else if (src instanceof Map) {
-            copyMapToBean((Map) src, dest);
+            copyMapToBean((Map<String, Object>) src, dest);
         } else if (dest instanceof Map) {
-            copyBeanToMap(src, (Map) dest);
+            copyBeanToMap(src, (Map<String, Object>) dest);
         } else {
             copyBeanToBean(src, dest);
         }
     }
+
 }
