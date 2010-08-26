@@ -23,7 +23,6 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 
 import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.xml.SAXParserFactoryUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -49,8 +48,10 @@ public class SAXParserFactoryUtilTest extends TestCase {
         spf.setNamespaceAware(true);
         SAXParser parser = SAXParserFactoryUtil.newSAXParser(spf);
 
-        InputSource is = new InputSource(ResourceUtil
-                .getResourceAsStream("org/seasar/framework/util/include.xml"));
+        InputSource is =
+            new InputSource(
+                ResourceUtil
+                    .getResourceAsStream("org/seasar/util/xml/include.xml"));
         is.setSystemId("include.xml");
         parser.parse(is, new DefaultHandler() {
 
@@ -65,9 +66,10 @@ public class SAXParserFactoryUtilTest extends TestCase {
             @Override
             public InputSource resolveEntity(String publicId, String systemId)
                     throws IOException, SAXException {
-                InputSource is = new InputSource(
+                InputSource is =
+                    new InputSource(
                         ResourceUtil
-                                .getResourceAsStream("org/seasar/framework/util/included.xml"));
+                            .getResourceAsStream("org/seasar/util/xml/included.xml"));
                 is.setSystemId("included.xml");
                 return is;
             }

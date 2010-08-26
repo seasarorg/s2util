@@ -20,13 +20,12 @@ import javax.xml.parsers.DocumentBuilder;
 import junit.framework.TestCase;
 
 import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.xml.DomUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * @author higa
- *
+ * 
  */
 public class DomUtilTest extends TestCase {
 
@@ -42,10 +41,11 @@ public class DomUtilTest extends TestCase {
      * @throws Exception
      */
     public void testToString() throws Exception {
-        DocumentBuilder builder = DocumentBuilderFactoryUtil
-                .newDocumentBuilder();
-        Document doc = DocumentBuilderUtil.parse(builder, ResourceUtil
-                .getResourceAsStream("org/seasar/framework/util/test1.xml"));
+        DocumentBuilder builder =
+            DocumentBuilderFactoryUtil.newDocumentBuilder();
+        Document doc =
+            DocumentBuilderUtil.parse(builder, ResourceUtil
+                .getResourceAsStream("org/seasar/util/xml/test1.xml"));
         Element root = doc.getDocumentElement();
         String contents = DomUtil.toString(root);
         System.out.println(contents);
