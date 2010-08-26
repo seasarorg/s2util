@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * Java5固有の機能を利用するユーティリティを提供します。
+ * JNDIを扱うユーティリティを提供します。
  */
-package org.seasar.framework.util.tiger;
+package org.seasar.util.naming;
 
