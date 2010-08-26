@@ -266,7 +266,10 @@ public class BeanDescImpl implements BeanDesc {
     public Method[] getMethods(final String methodName) {
         final Method[] methods = methodsCache.get(methodName);
         if (methods == null) {
-            throw new MethodNotFoundRuntimeException(beanClass, methodName);
+            throw new MethodNotFoundRuntimeException(
+                beanClass,
+                methodName,
+                null);
         }
         return methods;
     }

@@ -19,6 +19,8 @@ import java.lang.reflect.Constructor;
 
 import org.seasar.util.lang.MethodUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link Constructor}が見つからない場合にスローされる{@link NoSuchMethodException}をラップする例外です。
  * 
@@ -39,19 +41,19 @@ public class NoSuchConstructorRuntimeException extends SRuntimeException {
      *            ターゲットクラス
      * @param argTypes
      *            引数型の並び
+     * @param cause
+     *            原因となった例外
      */
     public NoSuchConstructorRuntimeException(final Class<?> targetClass,
-            final Class<?>... argTypes) {
-        super("EUTL0064", targetClass.getName(), MethodUtil.getSignature(
-            targetClass.getSimpleName(),
-            argTypes));
+            final Class<?>[] argTypes, final Throwable cause) {
+        super(
+            "EUTL0064",
+            asArray(
+                targetClass.getName(),
+                MethodUtil.getSignature(targetClass.getSimpleName(), argTypes)),
+            cause);
         this.targetClass = targetClass;
         this.argTypes = argTypes;
-    }
-
-    @Override
-    public NoSuchConstructorRuntimeException initCause(final Throwable cause) {
-        return (NoSuchConstructorRuntimeException) super.initCause(cause);
     }
 
     /**

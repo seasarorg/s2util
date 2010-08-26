@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import org.seasar.util.lang.MethodUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link NoSuchMethodException}をラップする例外です。
  * 
@@ -41,20 +43,18 @@ public class NoSuchMethodRuntimeException extends SRuntimeException {
      *            メソッド名
      * @param argTypes
      *            引数型の並び
+     * @param cause
+     *            原因となった例外
      */
     public NoSuchMethodRuntimeException(final Class<?> targetClass,
-            final String methodName, final Class<?>... argTypes) {
-        super("EUTL0057", targetClass.getName(), MethodUtil.getSignature(
-            methodName,
-            argTypes));
+            final String methodName, final Class<?>[] argTypes,
+            final Throwable cause) {
+        super("EUTL0057", asArray(
+            targetClass.getName(),
+            MethodUtil.getSignature(methodName, argTypes)), cause);
         this.targetClass = targetClass;
         this.methodName = methodName;
         this.argTypes = argTypes;
-    }
-
-    @Override
-    public NoSuchMethodRuntimeException initCause(final Throwable cause) {
-        return (NoSuchMethodRuntimeException) super.initCause(cause);
     }
 
     /**

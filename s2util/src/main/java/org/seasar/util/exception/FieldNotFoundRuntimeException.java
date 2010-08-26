@@ -17,6 +17,7 @@ package org.seasar.util.exception;
 
 import java.lang.reflect.Field;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * {@link Field}が見つからない場合にスローされる例外です。
@@ -42,14 +43,9 @@ public class FieldNotFoundRuntimeException extends SRuntimeException {
      */
     public FieldNotFoundRuntimeException(final Class<?> targetClass,
             final String fieldName) {
-        super("EUTL0070", targetClass.getName(), fieldName);
+        super("EUTL0070", asArray(targetClass.getName(), fieldName));
         this.targetClass = targetClass;
         this.fieldName = fieldName;
-    }
-
-    @Override
-    public FieldNotFoundRuntimeException initCause(final Throwable cause) {
-        return (FieldNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

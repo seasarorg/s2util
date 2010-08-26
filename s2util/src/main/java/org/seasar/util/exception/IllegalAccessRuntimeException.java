@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link IllegalAccessException}をラップする例外です。
  * 
@@ -36,14 +38,8 @@ public class IllegalAccessRuntimeException extends SRuntimeException {
      */
     public IllegalAccessRuntimeException(final Class<?> targetClass,
             final IllegalAccessException cause) {
-        super("EUTL0042", targetClass.getName(), cause);
-        initCause(cause);
+        super("EUTL0042", asArray(targetClass.getName(), cause), cause);
         this.targetClass = targetClass;
-    }
-
-    @Override
-    public IllegalAccessRuntimeException initCause(final Throwable cause) {
-        return (IllegalAccessRuntimeException) super.initCause(cause);
     }
 
     /**

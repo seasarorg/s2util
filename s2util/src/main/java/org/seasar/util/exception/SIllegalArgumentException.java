@@ -39,15 +39,25 @@ public class SIllegalArgumentException extends IllegalArgumentException {
      *            引数の配列
      */
     public SIllegalArgumentException(final String messageCode,
-            final Object... args) {
-        super(MessageFormatter.getMessage(messageCode, args));
-        this.messageCode = messageCode;
-        this.args = args;
+            final Object[] args) {
+        this(messageCode, args, null);
     }
 
-    @Override
-    public SIllegalArgumentException initCause(final Throwable cause) {
-        return (SIllegalArgumentException) super.initCause(cause);
+    /**
+     * {@link SIllegalArgumentException}を作成します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の配列
+     * @param cause
+     *            原因となった例外
+     */
+    public SIllegalArgumentException(final String messageCode,
+            final Object[] args, Throwable cause) {
+        super(MessageFormatter.getMessage(messageCode, args), cause);
+        this.messageCode = messageCode;
+        this.args = args;
     }
 
     /**

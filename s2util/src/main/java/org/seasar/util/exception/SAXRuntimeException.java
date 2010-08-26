@@ -18,6 +18,8 @@ package org.seasar.util.exception;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link SAXException}をラップする例外です。
  * 
@@ -34,13 +36,7 @@ public class SAXRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public SAXRuntimeException(final SAXException cause) {
-        super("EUTL0054", createMessage(cause));
-        initCause(cause);
-    }
-
-    @Override
-    public SAXRuntimeException initCause(final Throwable cause) {
-        return (SAXRuntimeException) super.initCause(cause);
+        super("EUTL0054", asArray(createMessage(cause)), cause);
     }
 
     /**

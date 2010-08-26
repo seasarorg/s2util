@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * 空の場合にスローされる例外です。
  * 
@@ -33,13 +35,8 @@ public class EmptyRuntimeException extends SRuntimeException {
      *            対象の名前
      */
     public EmptyRuntimeException(final String targetName) {
-        super("EUTL0007", targetName);
+        super("EUTL0007", asArray(targetName));
         this.targetName = targetName;
-    }
-
-    @Override
-    public EmptyRuntimeException initCause(final Throwable cause) {
-        return (EmptyRuntimeException) super.initCause(cause);
     }
 
     /**

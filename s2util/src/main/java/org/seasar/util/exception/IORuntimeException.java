@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import java.io.IOException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link IOException}をラップする例外です。
  * 
@@ -33,13 +35,7 @@ public class IORuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public IORuntimeException(final IOException cause) {
-        super("EUTL0040", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public IORuntimeException initCause(Throwable cause) {
-        return (IORuntimeException) super.initCause(cause);
+        super("EUTL0040", asArray(cause), cause);
     }
 
 }

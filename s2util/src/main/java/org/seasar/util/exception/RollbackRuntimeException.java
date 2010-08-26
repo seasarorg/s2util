@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import javax.transaction.RollbackException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link RollbackException}をラップする例外です。
  * 
@@ -33,13 +35,7 @@ public class RollbackRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public RollbackRuntimeException(final RollbackException cause) {
-        super("EUTL0063", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public RollbackRuntimeException initCause(final Throwable cause) {
-        return (RollbackRuntimeException) super.initCause(cause);
+        super("EUTL0063", asArray(cause), cause);
     }
 
 }

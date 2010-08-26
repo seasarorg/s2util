@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import java.text.ParseException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link ParseException}をラップする例外です。
  * 
@@ -33,13 +35,7 @@ public class ParseRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public ParseRuntimeException(final ParseException cause) {
-        super("EUTL0050", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public ParseRuntimeException initCause(final Throwable cause) {
-        return (ParseRuntimeException) super.initCause(cause);
+        super("EUTL0050", asArray(cause), cause);
     }
 
 }

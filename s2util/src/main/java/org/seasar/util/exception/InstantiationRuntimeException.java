@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link InstantiationException}をラップする例外です。
  * 
@@ -36,8 +38,7 @@ public class InstantiationRuntimeException extends SRuntimeException {
      */
     public InstantiationRuntimeException(final Class<?> targetClass,
             final InstantiationException cause) {
-        super("EUTL0041", targetClass.getName(), cause);
-        initCause(cause);
+        super("EUTL0041", asArray(targetClass.getName(), cause), cause);
         this.targetClass = targetClass;
     }
 

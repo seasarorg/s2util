@@ -15,6 +15,7 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * プロパティの値の設定に失敗したときにスローされる例外です。
@@ -42,15 +43,12 @@ public class IllegalPropertyRuntimeException extends SRuntimeException {
      */
     public IllegalPropertyRuntimeException(final Class<?> targetClass,
             final String propertyName, final Throwable cause) {
-        super("EUTL0059", targetClass.getName(), propertyName, cause);
-        initCause(cause);
+        super(
+            "EUTL0059",
+            asArray(targetClass.getName(), propertyName, cause),
+            cause);
         this.targetClass = targetClass;
         this.propertyName = propertyName;
-    }
-
-    @Override
-    public IllegalPropertyRuntimeException initCause(final Throwable cause) {
-        return (IllegalPropertyRuntimeException) super.initCause(cause);
     }
 
     /**

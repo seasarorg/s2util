@@ -42,72 +42,139 @@ public class SSQLException extends SQLException {
      * @param args
      *            引数の並び
      */
-    public SSQLException(final String messageCode, final Object... args) {
-        this(null, null, 0, messageCode, args);
+    public SSQLException(final String messageCode, final Object[] args) {
+        this(messageCode, args, null, 0, null, null);
     }
 
     /**
      * {@link SSQLException}を作成します。
      * 
-     * @param sqlState
-     *            SQLステート
      * @param messageCode
      *            メッセージコード
      * @param args
      *            引数の並び
+     * @param cause
+     *            原因となった例外
      */
-    public SSQLException(final String sqlState, final String messageCode, final Object... args) {
-        this(null, sqlState, 0, messageCode, args);
+    public SSQLException(final String messageCode, final Object[] args,
+            final Throwable cause) {
+        this(messageCode, args, null, 0, cause, null);
     }
 
     /**
      * {@link SSQLException}を作成します。
      * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の並び
+     * @param sqlState
+     *            SQLステート
+     */
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState) {
+        this(messageCode, args, sqlState, 0, null, null);
+    }
+
+    /**
+     * {@link SSQLException}を作成します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の並び
+     * @param sqlState
+     *            SQLステート
+     * @param cause
+     *            原因となった例外
+     */
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState, final Throwable cause) {
+        this(messageCode, args, sqlState, 0, cause, null);
+    }
+
+    /**
+     * {@link SSQLException}を作成します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の並び
      * @param sqlState
      *            SQLステート
      * @param vendorCode
      *            ベンダーコード
-     * @param messageCode
-     *            メッセージコード
-     * @param args
-     *            引数の並び
      */
-    public SSQLException(final String sqlState, final int vendorCode, final String messageCode,
-            final Object... args) {
-        this(null, sqlState, vendorCode, messageCode, args);
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState, final int vendorCode) {
+        this(messageCode, args, sqlState, vendorCode, null, null);
     }
 
     /**
      * {@link SSQLException}を作成します。
      * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の並び
+     * @param sqlState
+     *            SQLステート
+     * @param vendorCode
+     *            ベンダーコード
+     * @param cause
+     *            原因となった例外
+     */
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState, final int vendorCode, final Throwable cause) {
+        this(messageCode, args, sqlState, vendorCode, cause, null);
+    }
+
+    /**
+     * {@link SSQLException}を作成します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の並び
+     * @param sqlState
+     *            SQLステート
+     * @param vendorCode
+     *            ベンダーコード
      * @param sql
      *            SQL文字列
-     * @param sqlState
-     *            SQLステート
-     * @param vendorCode
-     *            ベンダーコード
+     */
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState, final int vendorCode, final String sql) {
+        this(messageCode, args, sqlState, vendorCode, null, sql);
+    }
+
+    /**
+     * {@link SSQLException}を作成します。
+     * 
      * @param messageCode
      *            メッセージコード
      * @param args
      *            引数の並び
+     * @param sqlState
+     *            SQLステート
+     * @param vendorCode
+     *            ベンダーコード
+     * @param cause
+     *            原因となった例外
+     * @param sql
+     *            SQL文字列
      */
-    public SSQLException(final String sql, final String sqlState, final int vendorCode,
-            final String messageCode, final Object... args) {
+    public SSQLException(final String messageCode, final Object[] args,
+            final String sqlState, final int vendorCode, final Throwable cause,
+            final String sql) {
         super(
             MessageFormatter.getMessage(messageCode, args),
             sqlState,
-            vendorCode);
+            vendorCode,
+            cause);
         this.messageCode = messageCode;
         this.args = args;
         this.sql = sql;
-    }
-
-    @Override
-    public SSQLException initCause(final Throwable cause) {
-        if (cause instanceof SQLException) {
-            setNextException((SQLException) cause);
-        }
-        return (SSQLException) super.initCause(cause);
     }
 
     /**

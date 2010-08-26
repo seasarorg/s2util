@@ -33,6 +33,19 @@ public class ArrayUtilTest {
      * @throws Exception
      */
     @Test
+    public void testArray() throws Exception {
+        assertArrayEquals(new int[] { 1, 2 }, ArrayUtil.asIntArray(1, 2));
+        assertArrayEquals(new Object[] { "a", 2 }, ArrayUtil.asArray("a", 2));
+        assertArrayEquals(
+            new String[] { "a", "b" },
+            ArrayUtil.asArray("a", "b"));
+        assertArrayEquals(new Integer[] { 1, 2 }, ArrayUtil.asArray(1, 2));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testAdd() throws Exception {
         String[] array = new String[] { "111" };
         String[] newArray = ArrayUtil.add(array, "222");

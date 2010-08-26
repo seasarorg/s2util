@@ -32,6 +32,8 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SRuntimeException;
 import org.seasar.util.lang.FieldUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link URL}を扱うユーティリティ・クラスです。
  * 
@@ -174,7 +176,7 @@ public class URLUtil {
             final String path = URLDecoder.decode(fileUrl.getPath(), "UTF-8");
             return new File(path).getAbsoluteFile();
         } catch (final Exception e) {
-            throw new SRuntimeException("EUTL0091", fileUrl).initCause(e);
+            throw new SRuntimeException("EUTL0091", asArray(fileUrl), e);
         }
     }
 

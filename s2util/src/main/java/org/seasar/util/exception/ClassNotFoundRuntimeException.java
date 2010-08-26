@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * クラスが見つからないときにスローされる例外です。
  * 
@@ -46,14 +48,8 @@ public class ClassNotFoundRuntimeException extends SRuntimeException {
      */
     public ClassNotFoundRuntimeException(final String className,
             final ClassNotFoundException cause) {
-        super("EUTL0044", cause);
-        initCause(cause);
+        super("EUTL0044", asArray(cause), cause);
         this.className = className;
-    }
-
-    @Override
-    public ClassNotFoundRuntimeException initCause(final Throwable cause) {
-        return (ClassNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

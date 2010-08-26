@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import java.security.NoSuchAlgorithmException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link NoSuchAlgorithmException}をラップする例外です。
  * 
@@ -30,15 +32,10 @@ public class NoSuchAlgorithmRuntimeException extends SRuntimeException {
      * {@link NoSuchAlgorithmRuntimeException}を作成します。
      * 
      * @param cause
+     *            原因となった例外
      */
     public NoSuchAlgorithmRuntimeException(final NoSuchAlgorithmException cause) {
-        super("EUTL0066", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public NoSuchAlgorithmRuntimeException initCause(Throwable cause) {
-        return (NoSuchAlgorithmRuntimeException) super.initCause(cause);
+        super("EUTL0066", asArray(cause), cause);
     }
 
 }

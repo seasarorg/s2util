@@ -42,16 +42,27 @@ public class SRuntimeException extends RuntimeException {
      * @param args
      *            引数
      */
-    public SRuntimeException(final String messageCode, final Object... args) {
+    public SRuntimeException(final String messageCode, final Object[] args) {
+        this(messageCode, args, null);
+    }
+
+    /**
+     * {@link SRuntimeException}を作成します。
+     * 
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数
+     * @param cause
+     *            原因となった例外
+     */
+    public SRuntimeException(final String messageCode, final Object[] args,
+            final Throwable cause) {
+        super(cause);
         this.messageCode = messageCode;
         this.args = args;
         simpleMessage = MessageFormatter.getSimpleMessage(messageCode, args);
         message = "[" + messageCode + "]" + simpleMessage;
-    }
-
-    @Override
-    public SRuntimeException initCause(final Throwable cause) {
-        return (SRuntimeException) super.initCause(cause);
     }
 
     /**

@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import java.lang.reflect.InvocationTargetException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link InvocationTargetException}をラップする例外です。
  * 
@@ -38,14 +40,10 @@ public class InvocationTargetRuntimeException extends SRuntimeException {
      */
     public InvocationTargetRuntimeException(final Class<?> targetClass,
             final InvocationTargetException cause) {
-        super("EUTL0043", targetClass.getName(), cause.getTargetException());
-        initCause(cause.getTargetException());
+        super("EUTL0043", asArray(
+            targetClass.getName(),
+            cause.getTargetException()), cause.getTargetException());
         this.targetClass = targetClass;
-    }
-
-    @Override
-    public InvocationTargetRuntimeException initCause(final Throwable cause) {
-        return (InvocationTargetRuntimeException) super.initCause(cause);
     }
 
     /**

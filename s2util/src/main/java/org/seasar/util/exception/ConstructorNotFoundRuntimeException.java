@@ -17,6 +17,7 @@ package org.seasar.util.exception;
 
 import java.lang.reflect.Constructor;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * {@link Constructor}が見つからなかったときにスローされる例外Vです。
@@ -42,8 +43,10 @@ public class ConstructorNotFoundRuntimeException extends SRuntimeException {
      *            引数の並び
      */
     public ConstructorNotFoundRuntimeException(final Class<?> targetClass,
-            final Object... methodArgs) {
-        super("EUTL0048", targetClass.getName(), getSignature(methodArgs));
+            final Object[] methodArgs) {
+        super("EUTL0048", asArray(
+            targetClass.getName(),
+            getSignature(methodArgs)));
         this.targetClass = targetClass;
         this.methodArgs = methodArgs;
         paramTypes = null;
@@ -58,16 +61,13 @@ public class ConstructorNotFoundRuntimeException extends SRuntimeException {
      *            引数型の並び
      */
     public ConstructorNotFoundRuntimeException(final Class<?> targetClass,
-            final Class<?>... paramTypes) {
-        super("EUTL0048", targetClass.getName(), getSignature(paramTypes));
+            final Class<?>[] paramTypes) {
+        super("EUTL0048", asArray(
+            targetClass.getName(),
+            getSignature(paramTypes)));
         this.targetClass = targetClass;
         this.paramTypes = paramTypes;
         methodArgs = null;
-    }
-
-    @Override
-    public ConstructorNotFoundRuntimeException initCause(final Throwable cause) {
-        return (ConstructorNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

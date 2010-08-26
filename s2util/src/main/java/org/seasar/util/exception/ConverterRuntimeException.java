@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import org.seasar.framework.beans.Converter;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link Converter}でエラーが起きた場合にスローされる例外です。
  * 
@@ -42,15 +44,9 @@ public class ConverterRuntimeException extends SRuntimeException {
      */
     public ConverterRuntimeException(final String propertyName,
             final Object value, final Throwable cause) {
-        super("EUTL0097", propertyName, value, cause);
-        initCause(cause);
+        super("EUTL0097", asArray(propertyName, value, cause), cause);
         this.propertyName = propertyName;
         this.value = value;
-    }
-
-    @Override
-    public ConverterRuntimeException initCause(final Throwable cause) {
-        return (ConverterRuntimeException) super.initCause(cause);
     }
 
     /**

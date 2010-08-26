@@ -19,6 +19,8 @@ import java.sql.SQLException;
 
 import org.seasar.util.message.MessageFormatter;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link SQLException}をラップする例外です。
  * 
@@ -36,21 +38,18 @@ public class SQLRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public SQLRuntimeException(final SQLException cause) {
-        super("EUTL0072", getSql(cause), getRealMessage(cause), Integer
-            .toString(cause.getErrorCode()), cause.getSQLState());
-        initCause(cause);
-    }
-
-    @Override
-    public SQLRuntimeException initCause(final Throwable cause) {
-        return (SQLRuntimeException) super.initCause(cause);
+        super("EUTL0072", asArray(
+            getSql(cause),
+            getRealMessage(cause),
+            Integer.toString(cause.getErrorCode()),
+            cause.getSQLState()), cause);
     }
 
     /**
      * <code>SQL</code>を返します。
      * 
      * @param cause
-     *            原因となって例外
+     *            原因となった例外
      * @return <code>SQL</code>
      */
     protected static String getSql(final SQLException cause) {

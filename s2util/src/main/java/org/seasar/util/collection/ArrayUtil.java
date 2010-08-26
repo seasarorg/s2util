@@ -16,6 +16,8 @@
 package org.seasar.util.collection;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,226 @@ import org.seasar.util.exception.EmptyRuntimeException;
  * @author higa
  */
 public abstract class ArrayUtil {
+
+    /**
+     * {@literal boolean}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static boolean[] asBooleanArray(final boolean... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal char}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static char[] asCharArray(final char... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal byte}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static byte[] asByteArray(final byte... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal short}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static short[] asShortArray(final short... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal int}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static int[] asIntArray(final int... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal long}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static long[] asLongArray(final long... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal float}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static float[] asFloatArray(final float... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal double}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static double[] asDoubleArray(final double... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Object}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Object[] asArray(final Object... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal String}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static String[] asStringArray(final String... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Boolean}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Boolean[] asArray(final Boolean... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Character}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Character[] asArray(final Character... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Byte}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Byte[] asArray(final Byte... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Short}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Short[] asArray(final Short... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Integer}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Integer[] asArray(final Integer... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Long}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Long[] asArray(final Long... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Float}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Float[] asArray(final Float... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal Double}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static Double[] asArray(final Double... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal BigInteger}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static BigInteger[] asArray(final BigInteger... elements) {
+        return elements;
+    }
+
+    /**
+     * {@literal BigDecimal}の配列を返します。
+     * 
+     * @param elements
+     *            配列の要素
+     * @return 配列
+     */
+    public static BigDecimal[] asArray(final BigDecimal... elements) {
+        return elements;
+    }
 
     /**
      * 配列の末尾にオブジェクトを追加した配列を返します。

@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link ParserConfigurationException}をラップする例外です。
  * 
@@ -34,13 +36,7 @@ public class ParserConfigurationRuntimeException extends SRuntimeException {
      */
     public ParserConfigurationRuntimeException(
             final ParserConfigurationException cause) {
-        super("EUTL0053", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public ParserConfigurationRuntimeException initCause(final Throwable cause) {
-        return (ParserConfigurationRuntimeException) super.initCause(cause);
+        super("EUTL0053", asArray(cause), cause);
     }
 
 }

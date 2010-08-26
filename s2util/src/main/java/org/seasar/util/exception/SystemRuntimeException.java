@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import javax.transaction.SystemException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link SystemException}をラップする例外です。
  * 
@@ -33,13 +35,7 @@ public class SystemRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public SystemRuntimeException(final SystemException cause) {
-        super("EUTL0061", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public SystemRuntimeException initCause(final Throwable cause) {
-        return (SystemRuntimeException) super.initCause(cause);
+        super("EUTL0061", asArray(cause), cause);
     }
 
 }

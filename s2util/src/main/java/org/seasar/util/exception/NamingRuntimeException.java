@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import javax.naming.NamingException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link NamingException}をラップする例外です。
  * 
@@ -32,13 +34,7 @@ public class NamingRuntimeException extends SRuntimeException {
      * @param cause
      */
     public NamingRuntimeException(final NamingException cause) {
-        super("EUTL0066", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public NamingRuntimeException initCause(Throwable cause) {
-        return (NamingRuntimeException) super.initCause(cause);
+        super("EUTL0066", asArray(cause), cause);
     }
 
 }

@@ -22,6 +22,8 @@ import java.lang.reflect.Type;
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link Field}用のユーティリティクラスです。
  * 
@@ -192,8 +194,7 @@ public abstract class FieldUtil {
             final Class<?> valueClass = value == null ? null : value.getClass();
             final Class<?> targetClass =
                 target == null ? field.getDeclaringClass() : target.getClass();
-            throw new SIllegalArgumentException(
-                "EUTL0094",
+            throw new SIllegalArgumentException("EUTL0094", asArray(
                 clazz.getName(),
                 clazz.getClassLoader(),
                 fieldClass.getName(),
@@ -203,8 +204,7 @@ public abstract class FieldUtil {
                 valueClass == null ? null : valueClass.getClassLoader(),
                 value,
                 targetClass == null ? null : targetClass.getName(),
-                targetClass == null ? null : targetClass.getClassLoader())
-                .initCause(e);
+                targetClass == null ? null : targetClass.getClassLoader()), e);
         }
     }
 

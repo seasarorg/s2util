@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * リソースが見つからなかったときにスローされる例外です。
  * 
@@ -33,13 +35,8 @@ public class ResourceNotFoundRuntimeException extends SRuntimeException {
      *            リソースのパス
      */
     public ResourceNotFoundRuntimeException(final String path) {
-        super("EUTL0055", path);
+        super("EUTL0055", asArray(path));
         this.path = path;
-    }
-
-    @Override
-    public ResourceNotFoundRuntimeException initCause(final Throwable cause) {
-        return (ResourceNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

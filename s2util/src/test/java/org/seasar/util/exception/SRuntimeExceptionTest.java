@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * @author higa
@@ -31,7 +32,8 @@ public class SRuntimeExceptionTest {
      */
     @Test
     public void testSeasarRuntimeException() throws Exception {
-        SRuntimeException ex = new SRuntimeException("EUTL0001", "hoge");
+        SRuntimeException ex =
+            new SRuntimeException("EUTL0001", asArray("hoge"));
         assertThat(ex.getMessageCode(), is("EUTL0001"));
         assertThat(ex.getArgs().length, is(1));
         assertThat(ex.getArgs()[0], is((Object) "hoge"));
@@ -44,8 +46,7 @@ public class SRuntimeExceptionTest {
     @Test
     public void testGetCause() throws Exception {
         Throwable t = new NullPointerException("test");
-        SRuntimeException ex =
-            new SRuntimeException("EUTL0017", t).initCause(t);
+        SRuntimeException ex = new SRuntimeException("EUTL0017", asArray(t), t);
         assertThat(ex.getCause(), is(t));
         ex.printStackTrace();
     }

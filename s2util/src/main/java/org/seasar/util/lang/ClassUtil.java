@@ -374,8 +374,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes)
-                .initCause(e);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes, e);
         }
     }
 
@@ -400,8 +399,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getDeclaredConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchConstructorRuntimeException(clazz, argTypes)
-                .initCause(e);
+            throw new NoSuchConstructorRuntimeException(clazz, argTypes, e);
         }
     }
 
@@ -428,7 +426,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getField(name);
         } catch (final NoSuchFieldException e) {
-            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
+            throw new NoSuchFieldRuntimeException(clazz, name, e);
         }
     }
 
@@ -450,7 +448,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getDeclaredField(name);
         } catch (final NoSuchFieldException e) {
-            throw new NoSuchFieldRuntimeException(clazz, name).initCause(e);
+            throw new NoSuchFieldRuntimeException(clazz, name, e);
         }
     }
 
@@ -479,8 +477,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchMethodRuntimeException(clazz, name, argTypes)
-                .initCause(e);
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes, e);
         }
     }
 
@@ -505,8 +502,7 @@ public abstract class ClassUtil {
         try {
             return clazz.getDeclaredMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
-            throw new NoSuchMethodRuntimeException(clazz, name, argTypes)
-                .initCause(e);
+            throw new NoSuchMethodRuntimeException(clazz, name, argTypes, e);
         }
     }
 

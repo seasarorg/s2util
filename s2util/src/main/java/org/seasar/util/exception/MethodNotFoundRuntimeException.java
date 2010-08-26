@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
 
 import org.seasar.util.lang.MethodUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link Method}が見つからなかったときにスローされる例外です。
  * 
@@ -46,7 +48,7 @@ public class MethodNotFoundRuntimeException extends SRuntimeException {
      *            引数の並び
      */
     public MethodNotFoundRuntimeException(final Class<?> targetClass,
-            final String methodName, final Object... methodArgs) {
+            final String methodName, final Object[] methodArgs) {
         this(targetClass, methodName, toClassArray(methodArgs));
     }
 
@@ -61,18 +63,13 @@ public class MethodNotFoundRuntimeException extends SRuntimeException {
      *            引数型の並び
      */
     public MethodNotFoundRuntimeException(final Class<?> targetClass,
-            final String methodName, final Class<?>... methodArgClasses) {
-        super("EUTL0049", targetClass.getName(), MethodUtil.getSignature(
-            methodName,
-            methodArgClasses));
+            final String methodName, final Class<?>[] methodArgClasses) {
+        super("EUTL0049", asArray(
+            targetClass.getName(),
+            MethodUtil.getSignature(methodName, methodArgClasses)));
         this.targetClass = targetClass;
         this.methodName = methodName;
         this.methodArgClasses = methodArgClasses;
-    }
-
-    @Override
-    public MethodNotFoundRuntimeException initCause(final Throwable cause) {
-        return (MethodNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

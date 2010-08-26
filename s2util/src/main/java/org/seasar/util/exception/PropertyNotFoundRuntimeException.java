@@ -15,6 +15,7 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * プロパティが見つからなかった場合にスローされる例外です。
@@ -40,14 +41,9 @@ public class PropertyNotFoundRuntimeException extends SRuntimeException {
      */
     public PropertyNotFoundRuntimeException(final Class<?> targetClass,
             final String propertyName) {
-        super("EUTL0065", targetClass.getName(), propertyName);
+        super("EUTL0065", asArray(targetClass.getName(), propertyName));
         this.targetClass = targetClass;
         this.propertyName = propertyName;
-    }
-
-    @Override
-    public PropertyNotFoundRuntimeException initCause(final Throwable cause) {
-        return (PropertyNotFoundRuntimeException) super.initCause(cause);
     }
 
     /**

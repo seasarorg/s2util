@@ -15,6 +15,8 @@
  */
 package org.seasar.util.exception;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * {@link NoSuchFieldException}をラップする例外です。
  * 
@@ -35,16 +37,14 @@ public class NoSuchFieldRuntimeException extends SRuntimeException {
      *            ターゲットクラス
      * @param fieldName
      *            フィールド名
+     * @param cause
+     *            原因となった例外
      */
-    public NoSuchFieldRuntimeException(final Class<?> targetClass, final String fieldName) {
-        super("EUTL0070", targetClass.getName(), fieldName);
+    public NoSuchFieldRuntimeException(final Class<?> targetClass,
+            final String fieldName, final Throwable cause) {
+        super("EUTL0070", asArray(targetClass.getName(), fieldName), cause);
         this.targetClass = targetClass;
         this.fieldName = fieldName;
-    }
-
-    @Override
-    public NoSuchFieldRuntimeException initCause(final Throwable cause) {
-        return (NoSuchFieldRuntimeException) super.initCause(cause);
     }
 
     /**

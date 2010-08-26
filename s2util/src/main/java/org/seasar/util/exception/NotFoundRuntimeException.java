@@ -17,6 +17,8 @@ package org.seasar.util.exception;
 
 import javassist.NotFoundException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+
 /**
  * <code>NotFoundException</code>をラップする例外です。
  * 
@@ -33,13 +35,7 @@ public class NotFoundRuntimeException extends SRuntimeException {
      *            原因となった例外
      */
     public NotFoundRuntimeException(final NotFoundException cause) {
-        super("EUTL0017", cause);
-        initCause(cause);
-    }
-
-    @Override
-    public NotFoundRuntimeException initCause(final Throwable cause) {
-        return (NotFoundRuntimeException) super.initCause(cause);
+        super("EUTL0017", asArray(cause), cause);
     }
 
 }
