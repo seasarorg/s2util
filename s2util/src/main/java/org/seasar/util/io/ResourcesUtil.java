@@ -185,7 +185,7 @@ public class ResourcesUtil {
             }
         }
         if (list.isEmpty()) {
-            logger.log("WSSR0014", new Object[] { rootPackage });
+            logger.log("WUTL0014", new Object[] { rootPackage });
             return EMPTY_ARRAY;
         }
         return list.toArray(new Resources[list.size()]);
@@ -213,7 +213,7 @@ public class ResourcesUtil {
         if (factory != null) {
             return factory.create(url, rootPackage, rootDir);
         }
-        logger.log("WSSR0013", new Object[] { rootPackage, url });
+        logger.log("WUTL0013", new Object[] { rootPackage, url });
         return null;
     }
 

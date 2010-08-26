@@ -286,7 +286,7 @@ public class PropertyDescImpl implements PropertyDesc {
                     final Class<?> targetClass =
                         target == null ? null : target.getClass();
                     throw new SIllegalArgumentException(
-                        "ESSR0098",
+                        "EUTL0098",
                         new Object[] {
                             clazz.getName(),
                             clazz.getClassLoader(),

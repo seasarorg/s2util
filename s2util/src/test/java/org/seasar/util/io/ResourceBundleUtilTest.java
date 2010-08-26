@@ -20,8 +20,6 @@ import java.util.ResourceBundle;
 
 import junit.framework.TestCase;
 
-import org.seasar.util.io.ResourceBundleUtil;
-
 /**
  * @author higa
  * 
@@ -33,9 +31,9 @@ public class ResourceBundleUtilTest extends TestCase {
      */
     public void testConvertMap() throws Exception {
         ResourceBundle bundle =
-            ResourceBundleUtil.getBundle("SSRMessages", null);
+            ResourceBundleUtil.getBundle("UTLMessages", null);
         Map<String, String> map = ResourceBundleUtil.convertMap(bundle);
-        String value = map.get("ESSR0001");
+        String value = map.get("EUTL0001");
         System.out.println(value);
         assertNotNull("1", value);
     }
@@ -45,7 +43,7 @@ public class ResourceBundleUtilTest extends TestCase {
      */
     public void testGetBundle() throws Exception {
         ResourceBundle bundle =
-            ResourceBundleUtil.getBundle("SSRMessages", null, this
+            ResourceBundleUtil.getBundle("UTLMessages", null, this
                 .getClass()
                 .getClassLoader());
         assertNotNull(bundle);
