@@ -24,6 +24,7 @@ import java.util.Date;
 import org.junit.Test;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.PropertyDesc;
+import org.seasar.util.beans.factory.BeanDescFactory;
 import org.seasar.util.beans.impl.sub.MogeBean;
 import org.seasar.util.beans.impl.sub.MogeBeanFactory;
 import org.seasar.util.exception.IllegalPropertyRuntimeException;
@@ -197,6 +198,17 @@ public class PropertyDescImplTest {
         PropertyDesc propDesc = beanDesc.getPropertyDesc("URL");
         propDesc.setValue(myBean, "http://www.seasar.org");
         assertThat(myBean.getURL(), is(notNullValue()));
+    }
+
+    /**
+     * 
+     */
+    public void testConvertWithString() {
+        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(MyDto.class);
+        PropertyDesc pd = beanDesc.getPropertyDesc("myEnum");
+        MyDto dto = new MyDto();
+        pd.setValue(dto, "ONE");
+        assertEquals(MyEnum.ONE, dto.myEnum);
     }
 
     /**
@@ -386,6 +398,31 @@ public class PropertyDescImplTest {
         public void setCal(Calendar cal) {
             this.cal = cal;
         }
+    }
+
+    /**
+     *
+     */
+    public enum MyEnum {
+        /**
+         * 
+         */
+        ONE,
+        /**
+         * 
+         */
+        TWO
+    }
+
+    /**
+     *
+     */
+    private class MyDto {
+
+        /**
+         * 
+         */
+        public MyEnum myEnum;
     }
 
 }
