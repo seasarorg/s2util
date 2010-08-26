@@ -13,29 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.framework.util;
+package org.seasar.util.io.xxx;
 
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 
 /**
- * @author manhole
+ * @author higa
+ * 
  */
-public class ExceptionAssert {
+public class DummyTest extends TestCase {
 
     /**
-     * @param th
+     * 
      */
-    public static void assertMessageExist(Throwable th) {
-        String message = th.getMessage();
-        try {
-            Assert.assertNotNull("Throwable should have message", message);
-            Assert.assertTrue("Throwable should have message", message.trim()
-                    .length() > 0);
-        } catch (AssertionFailedError afe) {
-            th.printStackTrace();
-            throw afe;
-        }
+    public void test() {
     }
-
 }

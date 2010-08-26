@@ -25,13 +25,12 @@ import junit.framework.TestCase;
 import junit.textui.ResultPrinter;
 import junit.textui.TestRunner;
 
-import org.seasar.framework.util.xxx.DummyTest;
 import org.seasar.util.io.ClassTraversal.ClassHandler;
 import org.seasar.util.io.ResourceTraversal.ResourceHandler;
-import org.seasar.util.io.ResourcesUtil;
 import org.seasar.util.io.ResourcesUtil.FileSystemResources;
 import org.seasar.util.io.ResourcesUtil.JarFileResources;
 import org.seasar.util.io.ResourcesUtil.Resources;
+import org.seasar.util.io.xxx.DummyTest;
 import org.seasar.util.lang.ClassUtil;
 
 /**
@@ -91,7 +90,7 @@ public class ResourcesUtilTest extends TestCase {
      */
     public void testFromDir_FileSystem() throws Exception {
         Resources resources =
-            ResourcesUtil.getResourcesType("org/seasar/framework/util/xxx");
+            ResourcesUtil.getResourcesType("org/seasar/util/io/xxx");
         assertNotNull(resources);
         assertTrue(resources instanceof FileSystemResources);
 
@@ -131,7 +130,7 @@ public class ResourcesUtilTest extends TestCase {
      */
     public void testFromRootPackage_FileSystem() throws Exception {
         Resources[] resourcesArray =
-            ResourcesUtil.getResourcesTypes("org.seasar.framework.util.xxx");
+            ResourcesUtil.getResourcesTypes("org.seasar.util.io.xxx");
         assertNotNull(resourcesArray);
         assertEquals(1, resourcesArray.length);
 
