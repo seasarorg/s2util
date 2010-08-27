@@ -103,10 +103,45 @@ public interface BeanDesc {
      * @param <T>
      *            フィールドの型
      * @param fieldName
+     *            フィールド名
      * @param target
+     *            対象のオブジェクト
      * @return {@link Field}の値
      */
     <T> T getFieldValue(String fieldName, Object target);
+
+    /**
+     * staticな{@link Field}の値を返します。
+     * 
+     * @param <T>
+     *            フィールドの型
+     * @param fieldName
+     *            フィールド名
+     * @return {@link Field}の値
+     */
+    <T> T getStaticFieldValue(String fieldName);
+
+    /**
+     * {@link Field}の値を設定します。
+     * 
+     * @param fieldName
+     *            フィールド名
+     * @param target
+     *            対象のオブジェクト
+     * @param value
+     *            {@link Field}の値
+     */
+    void setFieldValue(String fieldName, Object target, Object value);
+
+    /**
+     * staticな{@link Field}の値を設定します。
+     * 
+     * @param fieldName
+     *            フィールド名
+     * @param value
+     *            {@link Field}の値
+     */
+    void setStaticFieldValue(String fieldName, Object value);
 
     /**
      * {@link Field}を返します。

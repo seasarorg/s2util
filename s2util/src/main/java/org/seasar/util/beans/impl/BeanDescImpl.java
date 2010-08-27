@@ -167,6 +167,25 @@ public class BeanDescImpl implements BeanDesc {
         return (T) FieldUtil.get(field, target);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getStaticFieldValue(String fieldName) {
+        final Field field = getField(fieldName);
+        return (T) FieldUtil.get(field);
+    }
+
+    @Override
+    public void setFieldValue(String fieldName, Object target, Object value) {
+        final Field field = getField(fieldName);
+        FieldUtil.set(field, target, value);
+    }
+
+    @Override
+    public void setStaticFieldValue(String fieldName, Object value) {
+        final Field field = getField(fieldName);
+        FieldUtil.set(field, value);
+    }
+
     @Override
     public int getFieldSize() {
         return fieldCache.size();
@@ -190,7 +209,7 @@ public class BeanDescImpl implements BeanDesc {
     @Override
     public <T> T invokeStatic(final String methodName, final Object... args) {
         final Method method = getSuitableMethod(methodName, args);
-        return (T) MethodUtil.invoke(method, null, args);
+        return (T) MethodUtil.invokeStatic(method, args);
     }
 
     @Override

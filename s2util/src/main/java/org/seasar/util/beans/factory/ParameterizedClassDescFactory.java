@@ -33,7 +33,7 @@ import static org.seasar.util.lang.GenericsUtil.*;
  * @author koichik
  * @see PropertyDesc#getParameterizedClassDesc()
  */
-public class ParameterizedClassDescFactory {
+public abstract class ParameterizedClassDescFactory {
 
     /**
      * パラメータ化された型(クラスまたはインタフェース)が持つ型変数をキー、型引数を値とする{@link Map}を返します。

@@ -167,6 +167,29 @@ public class BeanDescImplTest {
      * @throws Exception
      */
     @Test
+    public void testGetFieldValue() throws Exception {
+        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
+        MyBean bean = new MyBean();
+        assertThat(beanDesc.hasField("HOGE"), is(true));
+        assertThat(beanDesc.getFieldValue("aaa", bean), is(nullValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testSetFieldValue() throws Exception {
+        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
+        assertThat(beanDesc.hasField("aaa"), is(true));
+        MyBean bean = new MyBean();
+        beanDesc.setFieldValue("aaa", bean, "MOGE");
+        assertThat(beanDesc.getFieldValue("aaa", bean), is((Object) "MOGE"));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testHasMethod() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
         assertThat(beanDesc.hasMethod("getAaa"), is(true));
