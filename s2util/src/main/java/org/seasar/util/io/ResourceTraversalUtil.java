@@ -32,27 +32,13 @@ import static org.seasar.util.collection.EnumerationIterator.*;
 /**
  * リソースをトラバースするためのクラスです。
  * <p>
- * このクラスを直接使うより、{@link ResourcesUtil}を使用してください。
+ * このクラスを直接使うより、{@link ResourceTraverserUtil}を使用してください。
  * </p>
  * 
  * @author taedium
- * @see ResourcesUtil
+ * @see ResourceTraverserUtil
  */
-public abstract class ResourceTraversal {
-
-    /**
-     * リソースを処理するインターフェースです。
-     * 
-     */
-    public interface ResourceHandler {
-        /**
-         * リソースを処理します。
-         * 
-         * @param path
-         * @param is
-         */
-        void processResource(String path, InputStream is);
-    }
+public abstract class ResourceTraversalUtil {
 
     /**
      * ファイルシステムに含まれるリソースをトラバースします。

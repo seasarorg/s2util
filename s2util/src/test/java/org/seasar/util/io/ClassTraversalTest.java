@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.util.io.ClassTraversal.ClassHandler;
 import org.seasar.util.jar.JarFileUtil;
 import org.seasar.util.lang.ClassUtil;
 
@@ -33,7 +32,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author taedium
- * 
  */
 public class ClassTraversalTest {
 
@@ -57,7 +55,7 @@ public class ClassTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         final JarURLConnection con =
             (JarURLConnection) classURL.openConnection();
-        ClassTraversal.forEach(con.getJarFile(), new ClassHandler() {
+        ClassTraversalUtil.forEach(con.getJarFile(), new ClassHandler() {
             @Override
             public void processClass(String packageName, String shortClassName) {
                 if (count < 10) {
@@ -89,23 +87,27 @@ public class ClassTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         final JarURLConnection con =
             (JarURLConnection) classURL.openConnection();
-        ClassTraversal.forEach(con.getJarFile(), "junit/", new ClassHandler() {
-            @Override
-            public void processClass(String packageName, String shortClassName) {
-                if (count < 10) {
-                    System.out.println(ClassUtil.concatName(
-                        packageName,
-                        shortClassName));
+        ClassTraversalUtil.forEach(
+            con.getJarFile(),
+            "junit/",
+            new ClassHandler() {
+                @Override
+                public void processClass(String packageName,
+                        String shortClassName) {
+                    if (count < 10) {
+                        System.out.println(ClassUtil.concatName(
+                            packageName,
+                            shortClassName));
+                    }
+                    assertThat(packageName, is(notNullValue()));
+                    assertThat(shortClassName, is(notNullValue()));
+                    assertThat(
+                        packageName.startsWith("junit")
+                            || packageName.startsWith("org.junit"),
+                        is(not(true)));
+                    count++;
                 }
-                assertThat(packageName, is(notNullValue()));
-                assertThat(shortClassName, is(notNullValue()));
-                assertThat(
-                    packageName.startsWith("junit")
-                        || packageName.startsWith("org.junit"),
-                    is(not(true)));
-                count++;
-            }
-        });
+            });
         assertTrue(count > 0);
     }
 
@@ -119,7 +121,7 @@ public class ClassTraversalTest {
         URL classURL = ResourceUtil.getResource(classFilePath);
         URL jarURL =
             new File(JarFileUtil.toJarFilePath(classURL)).toURI().toURL();
-        ClassTraversal.forEach(
+        ClassTraversalUtil.forEach(
             new ZipInputStream(jarURL.openStream()),
             new ClassHandler() {
                 @Override
@@ -154,7 +156,7 @@ public class ClassTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         URL jarURL =
             new File(JarFileUtil.toJarFilePath(classURL)).toURI().toURL();
-        ClassTraversal.forEach(
+        ClassTraversalUtil.forEach(
             new ZipInputStream(jarURL.openStream()),
             "junit/",
             new ClassHandler() {

@@ -29,13 +29,13 @@ import static org.seasar.util.collection.EnumerationIterator.*;
 /**
  * クラスを横断して処理するためのハンドラです。
  * <p>
- * このクラスを直接使うより、{@link ResourcesUtil}を使用してください。
+ * このクラスを直接使うより、{@link ResourceTraverserUtil}を使用してください。
  * </p>
  * 
  * @author koichik
- * @see ResourcesUtil
+ * @see ResourceTraverserUtil
  */
-public abstract class ClassTraversal {
+public abstract class ClassTraversalUtil {
 
     /** クラスファイルの拡張子 */
     protected static final String CLASS_SUFFIX = ".class";
@@ -47,24 +47,12 @@ public abstract class ClassTraversal {
     protected static final String WEB_INF_CLASSES_PATH = "WEB-INF/classes/";
 
     /**
-     * クラスを横断して処理するためのハンドラです。
-     * 
-     */
-    public interface ClassHandler {
-        /**
-         * クラスを処理します。
-         * 
-         * @param packageName
-         * @param shortClassName
-         */
-        void processClass(String packageName, String shortClassName);
-    }
-
-    /**
-     * rootディレクトリ配下を処理します。
+     * ルートディレクトリ配下を処理します。
      * 
      * @param rootDir
+     *            ルートディレクトリ
      * @param handler
+     *            クラスを処理するハンドラ
      */
     public static void forEach(final File rootDir, final ClassHandler handler) {
         forEach(rootDir, null, handler);

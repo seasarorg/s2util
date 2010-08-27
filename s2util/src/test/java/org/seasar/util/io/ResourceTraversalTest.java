@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.util.io.ResourceTraversal.ResourceHandler;
 import org.seasar.util.jar.JarFileUtil;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -33,7 +32,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author taedium
- * 
  */
 public class ResourceTraversalTest {
 
@@ -56,7 +54,7 @@ public class ResourceTraversalTest {
         final String path = ResourceUtil.getResourcePath(getClass());
         final int pos = path.lastIndexOf("/");
         final String baseDirectory = path.substring(0, pos);
-        ResourceTraversal.forEach(
+        ResourceTraversalUtil.forEach(
             rootDir,
             baseDirectory,
             new ResourceHandler() {
@@ -87,7 +85,7 @@ public class ResourceTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         final JarURLConnection con =
             (JarURLConnection) classURL.openConnection();
-        ResourceTraversal.forEach(con.getJarFile(), new ResourceHandler() {
+        ResourceTraversalUtil.forEach(con.getJarFile(), new ResourceHandler() {
             @Override
             public void processResource(String path, InputStream is) {
                 try {
@@ -123,7 +121,7 @@ public class ResourceTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         final JarURLConnection con =
             (JarURLConnection) classURL.openConnection();
-        ResourceTraversal.forEach(
+        ResourceTraversalUtil.forEach(
             con.getJarFile(),
             "junit/",
             new ResourceHandler() {
@@ -155,7 +153,7 @@ public class ResourceTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         URL jarURL =
             new File(JarFileUtil.toJarFilePath(classURL)).toURI().toURL();
-        ResourceTraversal.forEach(
+        ResourceTraversalUtil.forEach(
             new ZipInputStream(jarURL.openStream()),
             new ResourceHandler() {
                 @Override
@@ -193,7 +191,7 @@ public class ResourceTraversalTest {
         final URL classURL = ResourceUtil.getResource(classFilePath);
         URL jarURL =
             new File(JarFileUtil.toJarFilePath(classURL)).toURI().toURL();
-        ResourceTraversal.forEach(
+        ResourceTraversalUtil.forEach(
             new ZipInputStream(jarURL.openStream()),
             "junit/",
             new ResourceHandler() {
