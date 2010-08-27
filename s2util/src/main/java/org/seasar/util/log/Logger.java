@@ -17,9 +17,9 @@ package org.seasar.util.log;
 
 import java.util.Map;
 
-import org.seasar.util.Disposable;
-import org.seasar.util.DisposableUtil;
 import org.seasar.util.message.MessageFormatter;
+import org.seasar.util.misc.Disposable;
+import org.seasar.util.misc.DisposableUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
 

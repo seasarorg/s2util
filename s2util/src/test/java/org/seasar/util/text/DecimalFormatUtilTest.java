@@ -17,8 +17,6 @@ package org.seasar.util.text;
 
 import java.util.Locale;
 
-import org.seasar.util.text.DecimalFormatUtil;
-
 import junit.framework.TestCase;
 
 /**

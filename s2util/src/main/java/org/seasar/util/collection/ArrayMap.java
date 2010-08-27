@@ -332,7 +332,10 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
 
     @Override
     public boolean equals(final Object o) {
-        if (!getClass().isInstance(o)) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof ArrayMap)) {
             return false;
         }
         @SuppressWarnings("unchecked")
@@ -609,6 +612,12 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
 
         /** 次のエントリ */
         protected transient Entry<K, V> next;
+
+        /**
+         * インスタンスを構築します。
+         */
+        public Entry() {
+        }
 
         /**
          * インスタンスを構築します。

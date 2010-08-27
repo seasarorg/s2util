@@ -20,8 +20,6 @@ import java.math.BigInteger;
 
 import junit.framework.TestCase;
 
-import org.seasar.util.convert.BigDecimalConversionUtil;
-
 /**
  * @author koichik
  * 

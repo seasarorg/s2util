@@ -23,6 +23,8 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.seasar.util.exception.ParserConfigurationRuntimeException;
 import org.seasar.util.exception.SAXRuntimeException;
+import org.seasar.util.lang.ClassUtil;
+import org.seasar.util.lang.MethodUtil;
 import org.xml.sax.SAXException;
 
 /**
@@ -90,11 +92,14 @@ public class SAXParserFactoryUtil {
     public static boolean setXIncludeAware(final SAXParserFactory spf,
             final boolean state) {
         try {
-            final Method method = spf.getClass().getMethod("setXIncludeAware",
-                    new Class[] { boolean.class });
-            method.invoke(spf, new Object[] { Boolean.valueOf(state) });
+            Method method =
+                ClassUtil.getMethod(
+                    spf.getClass(),
+                    "setXIncludeAware",
+                    boolean.class);
+            MethodUtil.invoke(method, spf, state);
             return true;
-        } catch (final Exception ignore) {
+        } catch (RuntimeException e) {
             return false;
         }
     }

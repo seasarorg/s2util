@@ -16,6 +16,7 @@
 package org.seasar.util.beans.util;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.PropertyDesc;
@@ -46,13 +47,14 @@ public abstract class BeanUtil {
             return;
         }
         final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
-        for (final String key : src.keySet()) {
+        for (final Entry<String, ?> entry : src.entrySet()) {
+            final String key = entry.getKey();
             if (!beanDesc.hasPropertyDesc(key)) {
                 continue;
             }
             final PropertyDesc pd = beanDesc.getPropertyDesc(key);
             if (pd.isWritable()) {
-                pd.setValue(dest, src.get(key));
+                pd.setValue(dest, entry.getValue());
             }
         }
     }

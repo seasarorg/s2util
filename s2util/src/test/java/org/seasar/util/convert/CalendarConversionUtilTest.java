@@ -21,8 +21,6 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.seasar.util.convert.CalendarConversionUtil;
-
 /**
  * @author higa
  * 

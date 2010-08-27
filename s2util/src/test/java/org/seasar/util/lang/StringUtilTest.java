@@ -15,8 +15,6 @@
  */
 package org.seasar.util.lang;
 
-import org.seasar.util.lang.StringUtil;
-
 import junit.framework.TestCase;
 
 /**

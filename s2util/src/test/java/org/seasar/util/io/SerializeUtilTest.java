@@ -15,8 +15,6 @@
  */
 package org.seasar.util.io;
 
-import org.seasar.util.io.SerializeUtil;
-
 import junit.framework.TestCase;
 
 /**

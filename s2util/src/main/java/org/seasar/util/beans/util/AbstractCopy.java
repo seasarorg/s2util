@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.Converter;
@@ -438,7 +439,8 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
             final Object dest) {
         final BeanDesc destBeanDesc =
             BeanDescFactory.getBeanDesc(dest.getClass());
-        for (final String srcPropertyName : src.keySet()) {
+        for (final Entry<String, Object> entry : src.entrySet()) {
+            final String srcPropertyName = entry.getKey();
             if (!isTargetProperty(srcPropertyName)) {
                 continue;
             }
@@ -452,7 +454,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
             if (!destPropertyDesc.isWritable()) {
                 continue;
             }
-            final Object value = src.get(srcPropertyName);
+            final Object value = entry.getValue();
             if (value instanceof String && excludesWhitespace
                 && ((String) value).trim().length() == 0) {
                 continue;
@@ -479,12 +481,13 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      */
     protected void copyMapToMap(final Map<String, Object> src,
             final Map<String, Object> dest) {
-        for (final String srcPropertyName : src.keySet()) {
+        for (final Entry<String, Object> entry : src.entrySet()) {
+            final String srcPropertyName = entry.getKey();
             if (!isTargetProperty(srcPropertyName)) {
                 continue;
             }
             final String destPropertyName = trimPrefix(srcPropertyName);
-            final Object value = src.get(srcPropertyName);
+            final Object value = entry.getValue();
             if (value instanceof String && excludesWhitespace
                 && ((String) value).trim().length() == 0) {
                 continue;

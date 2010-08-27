@@ -17,13 +17,11 @@ package org.seasar.util.misc;
 
 import java.util.Locale;
 
-import org.seasar.util.misc.LocaleUtil;
-
 import junit.framework.TestCase;
 
 /**
  * @author higa
- *
+ * 
  */
 public class LocaleUtilTest extends TestCase {
 

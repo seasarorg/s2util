@@ -15,8 +15,6 @@
  */
 package org.seasar.util.convert;
 
-import org.seasar.util.convert.ByteConversionUtil;
-
 import junit.framework.TestCase;
 
 /**

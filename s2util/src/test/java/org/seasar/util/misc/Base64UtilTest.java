@@ -15,8 +15,6 @@
  */
 package org.seasar.util.misc;
 
-import org.seasar.util.misc.Base64Util;
-
 import junit.framework.TestCase;
 
 /**

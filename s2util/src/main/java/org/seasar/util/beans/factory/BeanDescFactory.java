@@ -17,10 +17,10 @@ package org.seasar.util.beans.factory;
 
 import java.util.concurrent.ConcurrentMap;
 
-import org.seasar.util.Disposable;
-import org.seasar.util.DisposableUtil;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.impl.BeanDescImpl;
+import org.seasar.util.misc.Disposable;
+import org.seasar.util.misc.DisposableUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
 

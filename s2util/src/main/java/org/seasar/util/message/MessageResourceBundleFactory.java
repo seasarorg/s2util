@@ -20,11 +20,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.seasar.util.Disposable;
-import org.seasar.util.DisposableUtil;
 import org.seasar.util.exception.ResourceNotFoundRuntimeException;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.misc.AssertionUtil;
+import org.seasar.util.misc.Disposable;
+import org.seasar.util.misc.DisposableUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
 

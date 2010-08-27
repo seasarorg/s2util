@@ -17,8 +17,6 @@ package org.seasar.util.convert;
 
 import java.util.Locale;
 
-import org.seasar.util.convert.TimestampConversionUtil;
-
 import junit.framework.TestCase;
 
 /**

@@ -15,8 +15,6 @@
  */
 package org.seasar.util.net;
 
-import org.seasar.util.net.UUID;
-
 import junit.framework.TestCase;
 
 /**

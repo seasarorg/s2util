@@ -22,8 +22,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.seasar.util.lang.ModifierUtil;
-
 /**
  * @author shot
  */

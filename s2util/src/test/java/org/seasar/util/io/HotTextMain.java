@@ -15,7 +15,6 @@
  */
 package org.seasar.util.io;
 
-import org.seasar.util.io.HotText;
 import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.StringUtil;
 

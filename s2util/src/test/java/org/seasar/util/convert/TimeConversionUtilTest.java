@@ -18,8 +18,6 @@ package org.seasar.util.convert;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import org.seasar.util.convert.TimeConversionUtil;
-
 import junit.framework.TestCase;
 
 /**

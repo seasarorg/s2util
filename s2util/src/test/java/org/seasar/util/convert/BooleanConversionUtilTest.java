@@ -17,8 +17,6 @@ package org.seasar.util.convert;
 
 import junit.framework.TestCase;
 
-import org.seasar.util.convert.BooleanConversionUtil;
-
 /**
  * @author higa
  * 

@@ -15,8 +15,6 @@
  */
 package org.seasar.util.convert;
 
-import org.seasar.util.convert.ShortConversionUtil;
-
 import junit.framework.TestCase;
 
 /**

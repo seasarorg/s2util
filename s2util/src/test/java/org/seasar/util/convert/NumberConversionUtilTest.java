@@ -18,8 +18,6 @@ package org.seasar.util.convert;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import org.seasar.util.convert.NumberConversionUtil;
-
 import junit.framework.TestCase;
 
 /**

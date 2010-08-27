@@ -16,7 +16,6 @@
 package org.seasar.util.exception;
 
 import org.junit.Test;
-import org.seasar.util.exception.ConverterRuntimeException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

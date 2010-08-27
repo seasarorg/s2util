@@ -17,11 +17,10 @@ package org.seasar.util.net;
 
 import java.net.URLConnection;
 
+import junit.framework.TestCase;
+
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.lang.ClassUtil;
-import org.seasar.util.net.MimeTypeUtil;
-
-import junit.framework.TestCase;
 
 /**
  * @author shot

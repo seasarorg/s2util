@@ -32,7 +32,8 @@ public class CaseInsensitiveSet extends AbstractSet<String> implements
 
     static final long serialVersionUID = 0L;
 
-    private transient Map<String, Object> map;
+    private transient Map<String, Object> map =
+        new CaseInsensitiveMap<Object>();
 
     private static final Object PRESENT = new Object();
 

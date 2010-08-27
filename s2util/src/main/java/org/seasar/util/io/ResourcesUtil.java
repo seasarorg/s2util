@@ -19,12 +19,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -38,6 +37,8 @@ import org.seasar.util.lang.StringUtil;
 import org.seasar.util.log.Logger;
 import org.seasar.util.zip.ZipFileUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * ファイルシステム上やJarファイル中に展開されているリソースの集まりを扱うユーティリティクラスです。
@@ -57,7 +58,7 @@ import org.seasar.util.zip.ZipInputStreamUtil;
  * @author koichik
  * @see URLUtil#toCanonicalProtocol(String)
  */
-public class ResourcesUtil {
+public abstract class ResourcesUtil {
 
     /** 空の{@link Resources}の配列です。 */
     protected static final Resources[] EMPTY_ARRAY = new Resources[0];
@@ -65,8 +66,8 @@ public class ResourcesUtil {
     private static final Logger logger = Logger.getLogger(ResourcesUtil.class);
 
     /** URLのプロトコルをキー、{@link ResourcesFactory}を値とするマッピングです。 */
-    protected static final Map<String, ResourcesFactory> RESOURCES_TYPE_FACTORIES =
-        new HashMap<String, ResourcesUtil.ResourcesFactory>();
+    protected static final ConcurrentMap<String, ResourcesFactory> resourcesTypeFactories =
+        newConcurrentHashMap();
     static {
         addResourcesFactory("file", new ResourcesFactory() {
             @Override
@@ -119,8 +120,8 @@ public class ResourcesUtil {
      *            プロトコルに対応する{@link Resources}のファクトリ
      */
     public static void addResourcesFactory(final String protocol,
-            ResourcesFactory factory) {
-        RESOURCES_TYPE_FACTORIES.put(protocol, factory);
+            final ResourcesFactory factory) {
+        resourcesTypeFactories.put(protocol, factory);
     }
 
     /**
@@ -141,7 +142,7 @@ public class ResourcesUtil {
         final String path[] = referenceClass.getName().split("\\.");
         String baseUrl = url.toExternalForm();
         for (int i = 0; i < path.length; ++i) {
-            int pos = baseUrl.lastIndexOf('/');
+            final int pos = baseUrl.lastIndexOf('/');
             baseUrl = baseUrl.substring(0, pos);
         }
         return getResourcesType(URLUtil.create(baseUrl + '/'), null, null);
@@ -208,7 +209,7 @@ public class ResourcesUtil {
     protected static Resources getResourcesType(final URL url,
             final String rootPackage, final String rootDir) {
         final ResourcesFactory factory =
-            RESOURCES_TYPE_FACTORIES.get(URLUtil.toCanonicalProtocol(url
+            resourcesTypeFactories.get(URLUtil.toCanonicalProtocol(url
                 .getProtocol()));
         if (factory != null) {
             return factory.create(url, rootPackage, rootDir);
@@ -464,8 +465,8 @@ public class ResourcesUtil {
         public void forEach(final ClassHandler handler) {
             ClassTraversal.forEach(jarFile, new ClassHandler() {
                 @Override
-                public void processClass(String packageName,
-                        String shortClassName) {
+                public void processClass(final String packageName,
+                        final String shortClassName) {
                     if (rootPackage == null
                         || (packageName != null && packageName
                             .startsWith(rootPackage))) {
@@ -479,7 +480,7 @@ public class ResourcesUtil {
         public void forEach(final ResourceHandler handler) {
             ResourceTraversal.forEach(jarFile, new ResourceHandler() {
                 @Override
-                public void processResource(String path, InputStream is) {
+                public void processResource(final String path, final InputStream is) {
                     if (rootDir == null || path.startsWith(rootDir)) {
                         handler.processResource(path, is);
                     }
@@ -591,8 +592,8 @@ public class ResourcesUtil {
             try {
                 ClassTraversal.forEach(zis, prefix, new ClassHandler() {
                     @Override
-                    public void processClass(String packageName,
-                            String shortClassName) {
+                    public void processClass(final String packageName,
+                            final String shortClassName) {
                         if (rootPackage == null
                             || (packageName != null && packageName
                                 .startsWith(rootPackage))) {
@@ -612,7 +613,7 @@ public class ResourcesUtil {
             try {
                 ResourceTraversal.forEach(zis, prefix, new ResourceHandler() {
                     @Override
-                    public void processResource(String path, InputStream is) {
+                    public void processResource(final String path, final InputStream is) {
                         if (rootDir == null || path.startsWith(rootDir)) {
                             handler.processResource(path, is);
                         }
