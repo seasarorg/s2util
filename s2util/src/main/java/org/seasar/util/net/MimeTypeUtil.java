@@ -29,35 +29,30 @@ import org.seasar.util.misc.AssertionUtil;
  * 
  * @author shot
  */
-public class MimeTypeUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected MimeTypeUtil() {
-    }
+public abstract class MimeTypeUtil {
 
     /**
      * コンテントタイプを予想します。
      * 
      * @param path
+     *            パス
      * @return コンテントタイプ
      */
     public static String guessContentType(final String path) {
         AssertionUtil.assertNotNull("path is null.", path);
-        InputStream is = null;
-        String mimetype = null;
+        final InputStream is = ResourceUtil.getResourceAsStream(path);
         try {
-            is = ResourceUtil.getResourceAsStream(path);
-            mimetype = URLConnection.guessContentTypeFromStream(is);
-        } catch (IOException e) {
+            final String mimetype =
+                URLConnection.guessContentTypeFromStream(is);
+            if (mimetype != null) {
+                return mimetype;
+            }
+            return URLConnection.guessContentTypeFromName(path);
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         } finally {
             InputStreamUtil.close(is);
         }
-        if (mimetype == null) {
-            mimetype = URLConnection.guessContentTypeFromName(path);
-        }
-        return mimetype;
     }
+
 }
