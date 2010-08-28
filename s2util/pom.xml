@@ -242,6 +242,10 @@
 		</dependency>
 	</dependencies>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<!-- Profile Settings -->
 	<profiles>
 		<profile>
@@ -281,8 +285,6 @@
 						<configuration>
 							<findbugsXmlOutput>true</findbugsXmlOutput>
 							<xmlOutput>true</xmlOutput>
-							<inputEncoding>UTF-8</inputEncoding>
-							<outputEncoding>UTF-8</outputEncoding>
 						</configuration>
 						<executions>
 							<execution>
