@@ -281,6 +281,8 @@
 						<configuration>
 							<findbugsXmlOutput>true</findbugsXmlOutput>
 							<xmlOutput>true</xmlOutput>
+							<inputEncoding>UTF-8</inputEncoding>
+							<outputEncoding>UTF-8</outputEncoding>
 						</configuration>
 						<executions>
 							<execution>
