@@ -279,6 +279,7 @@
 						</executions>
 					</plugin>
 					<!-- FindBugs -->
+					<!--
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>findbugs-maven-plugin</artifactId>
@@ -295,6 +296,7 @@
 							</execution>
 						</executions>
 					</plugin>
+					-->
 				</plugins>
 			</build>
 		</profile>
