@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.misc.AssertionUtil;
 
@@ -44,12 +45,15 @@ public class MimeTypeUtil {
      */
     public static String guessContentType(final String path) {
         AssertionUtil.assertNotNull("path is null.", path);
-        final InputStream is = ResourceUtil.getResourceAsStream(path);
+        InputStream is = null;
         String mimetype = null;
         try {
+            is = ResourceUtil.getResourceAsStream(path);
             mimetype = URLConnection.guessContentTypeFromStream(is);
         } catch (IOException e) {
             throw new IORuntimeException(e);
+        } finally {
+            InputStreamUtil.close(is);
         }
         if (mimetype == null) {
             mimetype = URLConnection.guessContentTypeFromName(path);
