@@ -26,7 +26,8 @@ import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.PropertiesUtil;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.io.URLUtil;
-import org.seasar.util.misc.AssertionUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link MessageResourceBundle}をキャッシュするクラスです。
@@ -138,7 +139,7 @@ public class MessageResourceBundleFacade {
      *            URL
      */
     protected void setup(final URL url) {
-        AssertionUtil.assertNotNull("url", url);
+        assertArgumentNotNull("url", url);
         if (isEager()) {
             file = ResourceUtil.getFile(url);
         }
@@ -205,7 +206,7 @@ public class MessageResourceBundleFacade {
      * @return {@link Properties}
      */
     protected static Properties createProperties(InputStream is) {
-        AssertionUtil.assertNotNull("is", is);
+        assertArgumentNotNull("is", is);
         if (!(is instanceof BufferedInputStream)) {
             is = new BufferedInputStream(is);
         }

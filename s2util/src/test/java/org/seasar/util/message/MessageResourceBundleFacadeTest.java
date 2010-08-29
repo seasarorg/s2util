@@ -16,11 +16,15 @@
 package org.seasar.util.message;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.io.ResourceUtil;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -31,6 +35,12 @@ import static org.junit.Assert.*;
  * @author higa
  */
 public class MessageResourceBundleFacadeTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static final String PATH = "MSGMessages.properties";
 
@@ -128,6 +138,31 @@ public class MessageResourceBundleFacadeTest {
         MessageResourceBundle bundle = facade.getBundle();
         assertThat(bundle, is(notNullValue()));
         assertThat(bundle.getParent(), is(notNullValue()));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.message.MessageResourceBundleFacade#MessageResourceBundleFacade(URL)}
+     * .
+     */
+    @Test
+    public void testMessageResourceBundleFacade() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[url]がnullです。"));
+        new MessageResourceBundleFacade(null);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.message.MessageResourceBundleFacade#createProperties(java.io.InputStream)}
+     * .
+     */
+    @Test
+    public void testCreateProperties() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[is]がnullです。"));
+        InputStream is = null;
+        MessageResourceBundleFacade.createProperties(is);
     }
 
 }

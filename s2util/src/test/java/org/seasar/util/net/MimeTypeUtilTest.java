@@ -17,22 +17,34 @@ package org.seasar.util.net;
 
 import java.net.URLConnection;
 
-import junit.framework.TestCase;
-
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.lang.ClassUtil;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author shot
  */
-public class MimeTypeUtilTest extends TestCase {
+public class MimeTypeUtilTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetFromStream() throws Exception {
-        String path = ClassUtil.getPackageName(this.getClass()).replaceAll(
-                "\\.", "/")
+        String path =
+            ClassUtil.getPackageName(this.getClass()).replaceAll("\\.", "/")
                 + "/aaa.html";
         String contentType = MimeTypeUtil.guessContentType(path);
         assertEquals("text/html", contentType);
@@ -41,9 +53,10 @@ public class MimeTypeUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testGetFromStream_gif() throws Exception {
-        String path = ClassUtil.getPackageName(this.getClass()).replaceAll(
-                "\\.", "/")
+        String path =
+            ClassUtil.getPackageName(this.getClass()).replaceAll("\\.", "/")
                 + "/ccc.gif";
         String contentType = MimeTypeUtil.guessContentType(path);
         assertEquals("image/gif", contentType);
@@ -52,15 +65,28 @@ public class MimeTypeUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testGetFromPath() throws Exception {
-        String path = ClassUtil.getPackageName(this.getClass()).replaceAll(
-                "\\.", "/")
+        String path =
+            ClassUtil.getPackageName(this.getClass()).replaceAll("\\.", "/")
                 + "/bbb.html";
-        String s = URLConnection.guessContentTypeFromStream(ResourceUtil
+        String s =
+            URLConnection.guessContentTypeFromStream(ResourceUtil
                 .getResourceAsStream(path));
         assertNull(s);
         String contentType = MimeTypeUtil.guessContentType(path);
         assertEquals("text/html", contentType);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.net.MimeTypeUtil#guessContentType(String)} .
+     */
+    @Test
+    public void testGuessContentType() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[path]がnullです。"));
+        MimeTypeUtil.guessContentType(null);
     }
 
 }

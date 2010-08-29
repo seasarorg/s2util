@@ -35,21 +35,6 @@ public class AssertionUtil {
     /**
      * <code>null</code>でないことを表明します。
      * 
-     * @param message
-     * @param obj
-     * @throws NullPointerException
-     *             <code>null</code>の場合。
-     */
-    public static void assertNotNull(String message, Object obj)
-            throws NullPointerException {
-        if (obj == null) {
-            throw new NullPointerException(message);
-        }
-    }
-
-    /**
-     * <code>null</code>でないことを表明します。
-     * 
      * @param argName
      *            {@code null} であってはならない引数の名前
      * @param obj

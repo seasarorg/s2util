@@ -22,7 +22,8 @@ import java.net.URLConnection;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.InputStreamUtil;
 import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.misc.AssertionUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * Mimeタイプ用のユーティリティクラスです。
@@ -39,7 +40,7 @@ public abstract class MimeTypeUtil {
      * @return コンテントタイプ
      */
     public static String guessContentType(final String path) {
-        AssertionUtil.assertNotNull("path is null.", path);
+        assertArgumentNotNull("path", path);
         final InputStream is = ResourceUtil.getResourceAsStream(path);
         try {
             final String mimetype =

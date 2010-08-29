@@ -18,7 +18,10 @@ package org.seasar.util.message;
 import java.util.Locale;
 
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -28,6 +31,12 @@ import static org.junit.Assert.*;
  * @author higa
  */
 public class MessageResourceBundleFactoryTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static final String BASE_NAME = "MSGMessages";
 
@@ -202,4 +211,27 @@ public class MessageResourceBundleFactoryTest {
         assertArrayEquals(expected, bundleNames);
     }
 
+    /**
+     * Test method for
+     * {@link org.seasar.util.message.MessageResourceBundleFactory#getNullableBundle(String, Locale)}
+     * .
+     */
+    @Test
+    public void testGetNullableBundleBaseNameNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[baseName]がnullです。"));
+        MessageResourceBundleFactory.getNullableBundle(null, Locale.JAPANESE);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.message.MessageResourceBundleFactory#getNullableBundle(String, Locale)}
+     * .
+     */
+    @Test
+    public void testGetNullableBundleLocalNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[locale]がnullです。"));
+        MessageResourceBundleFactory.getNullableBundle("aaa", null);
+    }
 }
