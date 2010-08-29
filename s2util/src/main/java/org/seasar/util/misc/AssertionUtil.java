@@ -51,7 +51,7 @@ public class AssertionUtil {
      * <code>null</code>でないことを表明します。
      * 
      * @param argName
-     *            {@code null} である引数の名前
+     *            {@code null} であってはならない引数の名前
      * @param obj
      * @throws NullArgumentException
      *             <code>null</code>の場合。
