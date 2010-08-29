@@ -16,6 +16,7 @@
 package org.seasar.util.misc;
 
 import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -43,6 +44,22 @@ public class AssertionUtil {
             throws NullPointerException {
         if (obj == null) {
             throw new NullPointerException(message);
+        }
+    }
+
+    /**
+     * <code>null</code>でないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} である引数の名前
+     * @param obj
+     * @throws NullArgumentException
+     *             <code>null</code>の場合。
+     */
+    public static void assertArgumentNotNull(String argName, Object obj)
+            throws NullArgumentException {
+        if (obj == null) {
+            throw new NullArgumentException(argName);
         }
     }
 

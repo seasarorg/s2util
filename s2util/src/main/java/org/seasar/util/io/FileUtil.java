@@ -24,6 +24,9 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.NullArgumentException;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link File}を扱うユーティリティ・クラスです。
@@ -118,16 +121,12 @@ public class FileUtil {
      * @param data
      *            バイトの配列
      * 
-     * @throws NullPointerException
+     * @throws NullArgumentException
      *             pathやdataがnullの場合。
      */
     public static void write(String path, byte[] data) {
-        if (path == null) {
-            throw new NullPointerException("path");
-        }
-        if (data == null) {
-            throw new NullPointerException("data");
-        }
+        assertArgumentNotNull("path", path);
+        assertArgumentNotNull("data", data);
         write(path, data, 0, data.length);
     }
 
@@ -142,16 +141,12 @@ public class FileUtil {
      *            オフセット
      * @param length
      *            配列の長さ
-     * @throws NullPointerException
+     * @throws NullArgumentException
      *             pathやdataがnullの場合。
      */
     public static void write(String path, byte[] data, int offset, int length) {
-        if (path == null) {
-            throw new NullPointerException("path");
-        }
-        if (data == null) {
-            throw new NullPointerException("data");
-        }
+        assertArgumentNotNull("path", path);
+        assertArgumentNotNull("data", data);
         try {
             OutputStream out =
                 new BufferedOutputStream(new FileOutputStream(path));

@@ -17,13 +17,27 @@ package org.seasar.util.io;
 
 import java.io.File;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author taichi
  * 
  */
-public class FileUtilTest extends TestCase {
+public class FileUtilTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     String root;
 
@@ -31,9 +45,11 @@ public class FileUtilTest extends TestCase {
 
     File dest;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    /**
+     * @throws Exception
+     */
+    @Before
+    public void setUp() throws Exception {
         root = ResourceUtil.getBuildDir(getClass()).getCanonicalPath();
         String srcTxt = root + "/org/seasar/util/io/src.txt";
         src = new File(srcTxt);
@@ -41,20 +57,22 @@ public class FileUtilTest extends TestCase {
         dest = new File(destTxt);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    /**
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception {
         if (dest.exists()) {
             dest.delete();
         }
-        super.tearDown();
     }
 
     /**
-     * Test method for 'org.seasar.framework.util.FileUtil.copy(File, File,
-     * boolean)'
+     * Test method for {@link org.seasar.util.io.FileUtil#copy(File, File)}
      * 
      * @throws Exception
      */
+    @Test
     public void testCopy_New() throws Exception {
         assertTrue(src.exists());
         assertFalse(dest.exists());
@@ -64,11 +82,11 @@ public class FileUtilTest extends TestCase {
     }
 
     /**
-     * Test method for 'org.seasar.framework.util.FileUtil.copy(File, File,
-     * boolean)'
+     * Test method for {@link org.seasar.util.io.FileUtil#copy(File, File)}
      * 
      * @throws Exception
      */
+    @Test
     public void testCopy_Exists() throws Exception {
         assertTrue(src.exists());
         assertFalse(dest.exists());
@@ -76,6 +94,48 @@ public class FileUtilTest extends TestCase {
         dest.createNewFile();
         FileUtil.copy(src, dest);
         assertEquals(TextUtil.readText(src), TextUtil.readText(dest));
+    }
+
+    /**
+     * Test method for {@link org.seasar.util.io.FileUtil#write(String, byte[])}
+     */
+    @Test
+    public void testWritePathNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[path]がnullです。"));
+        FileUtil.write(null, new byte[] {});
+    }
+
+    /**
+     * Test method for {@link org.seasar.util.io.FileUtil#write(String, byte[])}
+     */
+    @Test
+    public void testWriteDataNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[data]がnullです。"));
+        FileUtil.write("hoge", null);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.FileUtil#write(String, byte[], int, int)}
+     */
+    @Test
+    public void testWriteOffsetPathNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[path]がnullです。"));
+        FileUtil.write(null, new byte[] {}, 0, 0);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.FileUtil#write(String, byte[], int, int)}
+     */
+    @Test
+    public void testWriteOffsetDataNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[data]がnullです。"));
+        FileUtil.write("hoge", null, 0, 0);
     }
 
 }
