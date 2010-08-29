@@ -17,6 +17,7 @@ package org.seasar.util.misc;
 
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.NullArgumentException;
+import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.StringUtil;
 
 /**
@@ -45,6 +46,29 @@ public class AssertionUtil {
             throws NullArgumentException {
         if (obj == null) {
             throw new NullArgumentException(argName);
+        }
+    }
+
+    /**
+     * 引数が不正でないことを表明します。
+     * 
+     * @param argName
+     *            不正であってはならない引数の名前
+     * 
+     * @param expression
+     *            事前条件
+     * 
+     * @param description
+     *            不正な引数であることの説明
+     * 
+     * @throws SIllegalArgumentException
+     *             {@code expression}がfalseの場合。
+     */
+    public static void assertArgument(String argName, boolean expression,
+            String description) throws SIllegalArgumentException {
+        if (!expression) {
+            throw new SIllegalArgumentException("EUTL0009", new Object[] {
+                argName, description });
         }
     }
 
