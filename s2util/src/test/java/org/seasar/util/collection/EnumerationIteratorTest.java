@@ -18,7 +18,10 @@ package org.seasar.util.collection;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -29,6 +32,12 @@ import static org.seasar.util.collection.EnumerationIterator.*;
  * @author manhole
  */
 public class EnumerationIteratorTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * 
@@ -69,7 +78,7 @@ public class EnumerationIteratorTest {
     /**
      * @throws Exception
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = NullArgumentException.class)
     public void testConstructorWithNull() throws Exception {
         new EnumerationIterator<String>((Enumeration<String>) null);
     }
@@ -88,6 +97,18 @@ public class EnumerationIteratorTest {
             ++count;
         }
         assertThat(count, is(2));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.collection.EnumerationIterator#EnumerationIterator(Enumeration)}
+     * .
+     */
+    @Test
+    public void testCopyDestNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[enumeration]がnullです。"));
+        new EnumerationIterator<Object>(null);
     }
 
 }

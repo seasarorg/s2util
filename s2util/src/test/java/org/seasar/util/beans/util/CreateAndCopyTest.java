@@ -15,7 +15,10 @@
  */
 package org.seasar.util.beans.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -24,6 +27,12 @@ import static org.junit.Assert.*;
  * @author higa
  */
 public class CreateAndCopyTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * @throws Exception
@@ -82,6 +91,31 @@ public class CreateAndCopyTest {
         src.put("aaa", "aaa");
         BeanMap dest = new CreateAndCopy<BeanMap>(BeanMap.class, src).execute();
         assertThat(dest.get("aaa"), is((Object) "aaa"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.beans.util.CreateAndCopy#CreateAndCopy(Class, Object)}
+     * .
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void testCreateAndCopyDestClassNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[destClass]がnullです。"));
+        new CreateAndCopy(null, new Object());
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.beans.util.CreateAndCopy#CreateAndCopy(Class, Object)}
+     * .
+     */
+    @Test
+    public void testCreateAndCopySrcNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[src]がnullです。"));
+        new CreateAndCopy<BeanMap>(BeanMap.class, null).execute();
     }
 
 }

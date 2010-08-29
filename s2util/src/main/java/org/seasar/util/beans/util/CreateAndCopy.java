@@ -17,10 +17,12 @@ package org.seasar.util.beans.util;
 
 import java.util.Map;
 
+import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.ModifierUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * JavaBeansやMapを作成し、プロパティをコピーするクラスです。
@@ -48,17 +50,13 @@ public class CreateAndCopy<T> extends AbstractCopy<CreateAndCopy<T>> {
      *            作成対象クラス
      * @param src
      *            コピー元
-     * @throws NullPointerException
+     * @throws NullArgumentException
      *             引数が<code>null</code>だった場合
      */
     public CreateAndCopy(final Class<T> destClass, final Object src)
-            throws NullPointerException {
-        if (destClass == null) {
-            throw new NullPointerException("destClass");
-        }
-        if (src == null) {
-            throw new NullPointerException("src");
-        }
+            throws NullArgumentException {
+        assertArgumentNotNull("destClass", destClass);
+        assertArgumentNotNull("src", src);
         this.destClass = destClass;
         this.src = src;
     }

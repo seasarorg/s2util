@@ -18,7 +18,10 @@ package org.seasar.util.beans.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -27,6 +30,12 @@ import static org.junit.Assert.*;
  * @author higa
  */
 public class CopyTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * @throws Exception
@@ -74,6 +83,28 @@ public class CopyTest {
         Map<String, Object> dest = new HashMap<String, Object>();
         new Copy(src, dest).execute();
         assertThat(dest.get("aaa"), is((Object) "aaa"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.beans.util.Copy#Copy(Object, Object)} .
+     */
+    @Test
+    public void testCopySrcNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[src]がnullです。"));
+        new Copy(null, new Object());
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.beans.util.Copy#Copy(Object, Object)} .
+     */
+    @Test
+    public void testCopyDestNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[dest]がnullです。"));
+        new Copy(new Object(), null);
     }
 
 }

@@ -17,6 +17,8 @@ package org.seasar.util.beans.util;
 
 import java.util.Map;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * プロパティのコピーをするクラスです。
  * 
@@ -46,12 +48,8 @@ public class Copy extends AbstractCopy<Copy> {
      */
     public Copy(final Object src, final Object dest)
             throws NullPointerException {
-        if (src == null) {
-            throw new NullPointerException("src");
-        }
-        if (dest == null) {
-            throw new NullPointerException("dest");
-        }
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("dest", dest);
         this.src = src;
         this.dest = dest;
     }

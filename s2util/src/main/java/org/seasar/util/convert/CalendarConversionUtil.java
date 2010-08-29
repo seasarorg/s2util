@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link Calendar}用の変換ユーティリティです。
@@ -72,9 +73,7 @@ public class CalendarConversionUtil {
      * @return カレンダー
      */
     public static Calendar localize(Calendar calendar) {
-        if (calendar == null) {
-            throw new NullPointerException("calendar");
-        }
+        assertArgumentNotNull("calendar", calendar);
         Calendar localCalendar = Calendar.getInstance();
         localCalendar.setTimeInMillis(calendar.getTimeInMillis());
         return localCalendar;

@@ -19,29 +19,48 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.NullArgumentException;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  * 
  */
-public class CalendarConversionUtilTest extends TestCase {
+public class CalendarConversionUtilTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    /**
+     * @throws Exception
+     */
+    @Before
+    public void setUp() throws Exception {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        TimeZone.setDefault(null);
-        super.tearDown();
     }
 
     /**
      * @throws Exception
      */
+    @After
+    public void tearDown() throws Exception {
+        TimeZone.setDefault(null);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testToCalendar() throws Exception {
         Date date = new Date();
         Calendar cal = CalendarConversionUtil.toCalendar(date);
@@ -52,9 +71,22 @@ public class CalendarConversionUtilTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testLocalize() throws Exception {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("JST"));
         Calendar local = CalendarConversionUtil.localize(calendar);
         assertEquals(TimeZone.getDefault(), local.getTimeZone());
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.convert.CalendarConversionUtil#localize(Calendar)}
+     * .
+     */
+    @Test
+    public void testCreateAndCopySrcNull() {
+        exception.expect(NullArgumentException.class);
+        exception.expectMessage(is("[EUTL0008]引数[calendar]がnullです。"));
+        CalendarConversionUtil.localize(null);
     }
 }

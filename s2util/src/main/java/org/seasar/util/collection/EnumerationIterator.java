@@ -18,6 +18,8 @@ package org.seasar.util.collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Enumeration}を {@link Iterator}にするためのアダブタです。
  * 
@@ -50,14 +52,12 @@ public class EnumerationIterator<T> implements Iterator<T> {
     /**
      * {@link Enumeration}をラップした{@link Iterator}のインスタンスを構築します。
      * 
-     * @param e
+     * @param enumeration
      *            {@link Enumeration}
      */
-    public EnumerationIterator(final Enumeration<T> e) {
-        if (e == null) {
-            throw new NullPointerException("Enumeration");
-        }
-        this.enumeration = e;
+    public EnumerationIterator(final Enumeration<T> enumeration) {
+        assertArgumentNotNull("enumeration", enumeration);
+        this.enumeration = enumeration;
     }
 
     @Override
