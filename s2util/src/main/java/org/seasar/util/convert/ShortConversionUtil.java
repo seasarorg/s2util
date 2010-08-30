@@ -80,7 +80,7 @@ public class ShortConversionUtil {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        return new Short(DecimalFormatUtil.normalize(s));
+        return Short.valueOf(DecimalFormatUtil.normalize(s));
     }
 
     /**

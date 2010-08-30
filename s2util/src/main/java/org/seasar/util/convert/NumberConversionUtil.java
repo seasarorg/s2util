@@ -126,7 +126,7 @@ public class NumberConversionUtil {
      * @param locale
      * @return デリミタを削除した結果
      */
-    public static String removeDelimeter(String value, Locale locale) {
+    public static String removeDelimeter(String value, final Locale locale) {
         String groupingSeparator = findGroupingSeparator(locale);
         if (groupingSeparator != null) {
             value = StringUtil.replace(value, groupingSeparator, "");

@@ -133,12 +133,8 @@ public class StringConversionUtil {
         char ch;
         for (int i = 0; i < source.length(); i++) {
             ch = source.charAt(i);
-            switch (ch) {
-            case WAVE_DASH:
+            if (ch == WAVE_DASH) {
                 ch = FULLWIDTH_TILDE;
-                break;
-            default:
-                break;
             }
             result.append(ch);
         }

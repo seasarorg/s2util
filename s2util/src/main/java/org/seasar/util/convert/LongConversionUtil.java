@@ -62,7 +62,7 @@ public class LongConversionUtil {
             return toLong((String) o);
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
-                return new Long(new SimpleDateFormat(pattern).format(o));
+                return Long.valueOf(new SimpleDateFormat(pattern).format(o));
             }
             return Long.valueOf(((java.util.Date) o).getTime());
         } else if (o instanceof Boolean) {
@@ -77,7 +77,7 @@ public class LongConversionUtil {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        return new Long(DecimalFormatUtil.normalize(s));
+        return Long.valueOf(DecimalFormatUtil.normalize(s));
     }
 
     /**

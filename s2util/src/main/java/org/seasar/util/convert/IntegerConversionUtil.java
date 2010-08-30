@@ -77,7 +77,7 @@ public class IntegerConversionUtil {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        return new Integer(DecimalFormatUtil.normalize(s));
+        return Integer.valueOf(DecimalFormatUtil.normalize(s));
     }
 
     /**

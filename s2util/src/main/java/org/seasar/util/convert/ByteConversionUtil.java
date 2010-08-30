@@ -77,7 +77,7 @@ public class ByteConversionUtil {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        return new Byte(DecimalFormatUtil.normalize(s));
+        return Byte.valueOf(DecimalFormatUtil.normalize(s));
     }
 
     /**
