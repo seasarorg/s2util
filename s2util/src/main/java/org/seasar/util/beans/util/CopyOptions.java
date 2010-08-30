@@ -19,17 +19,13 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.Converter;
-import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.converter.DateConverter;
 import org.seasar.util.beans.converter.NumberConverter;
 import org.seasar.util.beans.converter.SqlDateConverter;
 import org.seasar.util.beans.converter.TimeConverter;
 import org.seasar.util.beans.converter.TimestampConverter;
-import org.seasar.util.beans.factory.BeanDescFactory;
 import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
@@ -38,24 +34,23 @@ import org.seasar.util.exception.ConverterRuntimeException;
 import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
- * JavaBeansやMapに対して操作を行う抽象クラスです。
+ * {@link BeanUtil}でJavaBeansや{@link Map}をコピーする際に指定するオプションです。
  * 
  * @author higa
- * @param <S>
- *            JavaBeansに対して操作を行うサブタイプです。
  */
-public abstract class AbstractCopy<S extends AbstractCopy<S>> {
-
-    /**
-     * 空文字列の配列です。
-     */
-    protected static final String[] EMPTY_STRING_ARRAY = new String[0];
+public class CopyOptions {
 
     /**
      * 日付用のデフォルトコンバータです。
      */
     protected static final Converter DEFAULT_DATE_CONVERTER =
         new DateConverter(DateConversionUtil.getY4Pattern(Locale.getDefault()));
+
+    /**
+     * 時間用のデフォルトコンバータです。
+     */
+    protected static final Converter DEFAULT_TIME_CONVERTER =
+        new DateConverter(TimeConversionUtil.getPattern(Locale.getDefault()));
 
     /**
      * 日時用のデフォルトコンバータです。
@@ -65,20 +60,14 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
             .getDefault()));
 
     /**
-     * 時間用のデフォルトコンバータです。
-     */
-    protected static final Converter DEFAULT_TIME_CONVERTER =
-        new DateConverter(TimeConversionUtil.getPattern(Locale.getDefault()));
-
-    /**
      * 操作の対象に含めるプロパティ名の配列です。
      */
-    protected String[] includePropertyNames = EMPTY_STRING_ARRAY;
+    protected final List<String> includePropertyNames = newArrayList();
 
     /**
      * 操作の対象に含めないプロパティ名の配列です。
      */
-    protected String[] excludePropertyNames = EMPTY_STRING_ARRAY;
+    protected final List<String> excludePropertyNames = newArrayList();
 
     /**
      * null値のプロパティを操作の対象外にするかどうかです。
@@ -86,7 +75,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
     protected boolean excludesNull = false;
 
     /**
-     * 空白を操作の対象外にするかどうかです。
+     * 空白のみの文字列を操作の対象外にするかどうかです。
      */
     protected boolean excludesWhitespace = false;
 
@@ -108,54 +97,35 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
     /**
      * 特定のプロパティに関連付けられたコンバータです。
      */
-    protected Map<String, Converter> converterMap = newHashMap();
+    protected final Map<String, Converter> converterMap = newHashMap();
 
     /**
      * 特定のプロパティに関連付けられていないコンバータです。
      */
-    protected List<Converter> converters = newArrayList();
+    protected final List<Converter> converters = newArrayList();
 
     /**
-     * CharSequenceの配列をStringの配列に変換します。
-     * 
-     * @param charSequenceArray
-     *            CharSequenceの配列
-     * @return Stringの配列
-     */
-    protected static String[] toStringArray(
-            final CharSequence[] charSequenceArray) {
-        final int length = charSequenceArray.length;
-        final String[] stringArray = new String[length];
-        for (int index = 0; index < length; index++) {
-            stringArray[index] = charSequenceArray[index].toString();
-        }
-        return stringArray;
-    }
-
-    /**
-     * 操作の対象に含めるプロパティ名を指定します。
+     * 操作の対象に含めるプロパティ名を追加します。
      * 
      * @param propertyNames
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S includes(final CharSequence... propertyNames) {
-        this.includePropertyNames = toStringArray(propertyNames);
-        return (S) this;
+    public CopyOptions include(final CharSequence... propertyNames) {
+        this.includePropertyNames.addAll(toStringList(propertyNames));
+        return this;
     }
 
     /**
-     * 操作の対象に含めないプロパティ名を指定します。
+     * 操作の対象に含めないプロパティ名を追加します。
      * 
      * @param propertyNames
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S excludes(final CharSequence... propertyNames) {
-        this.excludePropertyNames = toStringArray(propertyNames);
-        return (S) this;
+    public CopyOptions exclude(final CharSequence... propertyNames) {
+        this.excludePropertyNames.addAll(toStringList(propertyNames));
+        return this;
     }
 
     /**
@@ -163,10 +133,9 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      * 
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S excludesNull() {
+    public CopyOptions excludeNull() {
         this.excludesNull = true;
-        return (S) this;
+        return this;
     }
 
     /**
@@ -174,10 +143,9 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      * 
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S excludesWhitespace() {
+    public CopyOptions excludeWhitespace() {
         this.excludesWhitespace = true;
-        return (S) this;
+        return this;
     }
 
     /**
@@ -187,10 +155,9 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プレフィックス
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S prefix(final CharSequence prefix) {
+    public CopyOptions prefix(final CharSequence prefix) {
         this.prefix = prefix.toString();
-        return (S) this;
+        return this;
     }
 
     /**
@@ -200,10 +167,9 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            JavaBeansのデリミタ
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S beanDelimiter(final char beanDelimiter) {
+    public CopyOptions beanDelimiter(final char beanDelimiter) {
         this.beanDelimiter = beanDelimiter;
-        return (S) this;
+        return this;
     }
 
     /**
@@ -213,10 +179,9 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            Mapのデリミタ
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S mapDelimiter(final char mapDelimiter) {
+    public CopyOptions mapDelimiter(final char mapDelimiter) {
         this.mapDelimiter = mapDelimiter;
-        return (S) this;
+        return this;
     }
 
     /**
@@ -226,17 +191,16 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      * @param propertyNames
      * @return このインスタンス自身
      */
-    @SuppressWarnings("unchecked")
-    public S converter(final Converter converter,
+    public CopyOptions converter(final Converter converter,
             final CharSequence... propertyNames) {
-        if (propertyNames.length == 0) {
+        if (propertyNames == null || propertyNames.length == 0) {
             converters.add(converter);
         } else {
             for (final CharSequence name : propertyNames) {
                 converterMap.put(name.toString(), converter);
             }
         }
-        return (S) this;
+        return this;
     }
 
     /**
@@ -248,7 +212,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    public S dateConverter(final String pattern,
+    public CopyOptions dateConverter(final String pattern,
             final CharSequence... propertyNames) {
         return converter(new DateConverter(pattern), propertyNames);
     }
@@ -262,7 +226,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    public S sqlDateConverter(final String pattern,
+    public CopyOptions sqlDateConverter(final String pattern,
             final CharSequence... propertyNames) {
         return converter(new SqlDateConverter(pattern), propertyNames);
     }
@@ -276,7 +240,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    public S timeConverter(final String pattern,
+    public CopyOptions timeConverter(final String pattern,
             final CharSequence... propertyNames) {
         return converter(new TimeConverter(pattern), propertyNames);
     }
@@ -290,7 +254,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    public S timestampConverter(final String pattern,
+    public CopyOptions timestampConverter(final String pattern,
             final CharSequence... propertyNames) {
         return converter(new TimestampConverter(pattern), propertyNames);
     }
@@ -304,9 +268,24 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
      *            プロパティ名の配列
      * @return このインスタンス自身
      */
-    public S numberConverter(final String pattern,
+    public CopyOptions numberConverter(final String pattern,
             final CharSequence... propertyNames) {
         return converter(new NumberConverter(pattern), propertyNames);
+    }
+
+    /**
+     * {@literal CharSequence}の配列を{@literal String}の{@literal List}に変換します。
+     * 
+     * @param array
+     *            {@literal CharSequence}の配列
+     * @return {@literal String}の{@literal List}
+     */
+    protected static List<String> toStringList(final CharSequence[] array) {
+        final List<String> list = newArrayList(array.length);
+        for (final CharSequence element : array) {
+            list.add(element.toString());
+        }
+        return list;
     }
 
     /**
@@ -320,7 +299,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
         if (prefix != null && !name.startsWith(prefix)) {
             return false;
         }
-        if (includePropertyNames.length > 0) {
+        if (!includePropertyNames.isEmpty()) {
             for (final String includeName : includePropertyNames) {
                 if (includeName.equals(name)) {
                     for (final String excludeName : excludePropertyNames) {
@@ -333,7 +312,7 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
             }
             return false;
         }
-        if (excludePropertyNames.length > 0) {
+        if (!excludePropertyNames.isEmpty()) {
             for (final String excludeName : excludePropertyNames) {
                 if (excludeName.equals(name)) {
                     return false;
@@ -345,160 +324,43 @@ public abstract class AbstractCopy<S extends AbstractCopy<S>> {
     }
 
     /**
-     * BeanからBeanにコピーを行います。
+     * 値がコピーの対象なら{@literal true}を返します。
      * 
-     * @param src
-     *            コピー元
-     * @param dest
-     *            コピー先
+     * @param value
+     *            コピー元の値
+     * @return 値がコピーの対象なら{@literal true}
      */
-    protected void copyBeanToBean(final Object src, final Object dest) {
-        final BeanDesc srcBeanDesc =
-            BeanDescFactory.getBeanDesc(src.getClass());
-        final BeanDesc destBeanDesc =
-            BeanDescFactory.getBeanDesc(dest.getClass());
-        final int size = srcBeanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; i++) {
-            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
-            final String srcPropertyName = srcPropertyDesc.getPropertyName();
-            if (!srcPropertyDesc.isReadable()
-                || !isTargetProperty(srcPropertyName)) {
-                continue;
-            }
-            final String destPropertyName = trimPrefix(srcPropertyName);
-            if (!destBeanDesc.hasPropertyDesc(destPropertyName)) {
-                continue;
-            }
-            final PropertyDesc destPropertyDesc =
-                destBeanDesc.getPropertyDesc(destPropertyName);
-            if (!destPropertyDesc.isWritable()) {
-                continue;
-            }
-            final Object value = srcPropertyDesc.getValue(src);
-            if (value instanceof String && excludesWhitespace
-                && ((String) value).trim().length() == 0) {
-                continue;
-            }
-            if (value == null && excludesNull) {
-                continue;
-            }
-            final Object convertedValue =
-                convertValue(
-                    value,
-                    destPropertyName,
-                    destPropertyDesc.getPropertyType());
-            destPropertyDesc.setValue(dest, convertedValue);
+    protected boolean isTargetValue(final Object value) {
+        if (value == null) {
+            return !excludesNull;
         }
+        if (value instanceof String && excludesWhitespace
+            && ((String) value).trim().isEmpty()) {
+            return !excludesWhitespace;
+        }
+        return true;
     }
 
     /**
-     * BeanからMapにコピーを行います。
+     * コピー元のプロパティ名をコピー先となる{@literal Map}用のプロパティ名に変換して返します。
      * 
-     * @param src
-     *            コピー元
-     * @param dest
-     *            コピー先
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @return コピー先のプロパティ名
      */
-    protected void copyBeanToMap(final Object src,
-            final Map<String, Object> dest) {
-        final BeanDesc srcBeanDesc =
-            BeanDescFactory.getBeanDesc(src.getClass());
-        final int size = srcBeanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; i++) {
-            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
-            final String srcPropertyName = srcPropertyDesc.getPropertyName();
-            if (!srcPropertyDesc.isReadable()
-                || !isTargetProperty(srcPropertyName)) {
-                continue;
-            }
-            final Object value = srcPropertyDesc.getValue(src);
-            if (value instanceof String && excludesWhitespace
-                && ((String) value).trim().length() == 0) {
-                continue;
-            }
-            if (value == null && excludesNull) {
-                continue;
-            }
-            final String destPropertyName =
-                trimPrefix(srcPropertyName.replace(beanDelimiter, mapDelimiter));
-            final Object convertedValue =
-                convertValue(value, destPropertyName, null);
-            dest.put(destPropertyName, convertedValue);
-        }
+    protected String toMapDestPropertyName(final String srcPropertyName) {
+        return trimPrefix(srcPropertyName.replace(beanDelimiter, mapDelimiter));
     }
 
     /**
-     * MapからBeanにコピーを行います。
+     * コピー元のプロパティ名をコピー先となるBean用のプロパティ名に変換して返します。
      * 
-     * @param src
-     *            コピー元
-     * @param dest
-     *            コピー先
+     * @param srcPropertyName
+     *            コピー元のプロパティ名
+     * @return コピー先のプロパティ名
      */
-    protected void copyMapToBean(final Map<String, Object> src,
-            final Object dest) {
-        final BeanDesc destBeanDesc =
-            BeanDescFactory.getBeanDesc(dest.getClass());
-        for (final Entry<String, Object> entry : src.entrySet()) {
-            final String srcPropertyName = entry.getKey();
-            if (!isTargetProperty(srcPropertyName)) {
-                continue;
-            }
-            final String destPropertyName =
-                trimPrefix(srcPropertyName.replace(mapDelimiter, beanDelimiter));
-            if (!destBeanDesc.hasPropertyDesc(destPropertyName)) {
-                continue;
-            }
-            final PropertyDesc destPropertyDesc =
-                destBeanDesc.getPropertyDesc(destPropertyName);
-            if (!destPropertyDesc.isWritable()) {
-                continue;
-            }
-            final Object value = entry.getValue();
-            if (value instanceof String && excludesWhitespace
-                && ((String) value).trim().length() == 0) {
-                continue;
-            }
-            if (value == null && excludesNull) {
-                continue;
-            }
-            final Object convertedValue =
-                convertValue(
-                    value,
-                    destPropertyName,
-                    destPropertyDesc.getPropertyType());
-            destPropertyDesc.setValue(dest, convertedValue);
-        }
-    }
-
-    /**
-     * MapからMapにコピーを行います。
-     * 
-     * @param src
-     *            コピー元
-     * @param dest
-     *            コピー先
-     */
-    protected void copyMapToMap(final Map<String, Object> src,
-            final Map<String, Object> dest) {
-        for (final Entry<String, Object> entry : src.entrySet()) {
-            final String srcPropertyName = entry.getKey();
-            if (!isTargetProperty(srcPropertyName)) {
-                continue;
-            }
-            final String destPropertyName = trimPrefix(srcPropertyName);
-            final Object value = entry.getValue();
-            if (value instanceof String && excludesWhitespace
-                && ((String) value).trim().length() == 0) {
-                continue;
-            }
-            if (value == null && excludesNull) {
-                continue;
-            }
-            final Object convertedValue =
-                convertValue(value, destPropertyName, null);
-            dest.put(destPropertyName, convertedValue);
-        }
+    protected String toBeanDestPropertyName(final String srcPropertyName) {
+        return trimPrefix(srcPropertyName.replace(mapDelimiter, beanDelimiter));
     }
 
     /**

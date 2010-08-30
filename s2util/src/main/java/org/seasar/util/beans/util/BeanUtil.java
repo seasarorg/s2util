@@ -21,9 +21,10 @@ import java.util.Map.Entry;
 import org.seasar.util.beans.BeanDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
-import org.seasar.util.lang.StringUtil;
+import org.seasar.util.lang.ClassUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * JavaBeans用のユーティリティです。
@@ -33,150 +34,459 @@ import static org.seasar.util.collection.CollectionsUtil.*;
  */
 public abstract class BeanUtil {
 
+    /** デフォルトのオプション */
+    protected static final CopyOptions DEFAULT_OPTIONS = new CopyOptions();
+
     /**
-     * マップの値をJavaBeansにコピーします。
+     * BeanからBeanにコピーを行います。
      * 
      * @param src
-     *            ソース
+     *            コピー元のBean
      * @param dest
-     *            あて先
+     *            コピー先のBean
      */
-    public static void copyProperties(final Map<String, ?> src,
-            final Object dest) {
-        if (src == null || dest == null) {
-            return;
-        }
-        final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
-        for (final Entry<String, ?> entry : src.entrySet()) {
-            final String key = entry.getKey();
-            if (!beanDesc.hasPropertyDesc(key)) {
-                continue;
-            }
-            final PropertyDesc pd = beanDesc.getPropertyDesc(key);
-            if (pd.isWritable()) {
-                pd.setValue(dest, entry.getValue());
-            }
-        }
+    public static void copyBeanToBean(final Object src, final Object dest) {
+        copyBeanToBean(src, dest, DEFAULT_OPTIONS);
     }
 
     /**
-     * JavaBeansの値をマップにコピーします。
+     * BeanからBeanにコピーを行います。
      * 
      * @param src
-     *            ソース
+     *            コピー元のBean
      * @param dest
-     *            あて先
+     *            コピー先のBean
+     * @param options
+     *            コピーのオプション
+     * @see CopyOptionsUtil
      */
-    public static void copyProperties(final Object src,
-            final Map<String, Object> dest) {
-        if (src == null || dest == null) {
-            return;
-        }
-        final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(src.getClass());
-        final int size = beanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; ++i) {
-            final PropertyDesc pd = beanDesc.getPropertyDesc(i);
-            if (pd.isReadable()) {
-                final Object value = pd.getValue(src);
-                dest.put(pd.getPropertyName(), value);
-            }
-        }
-    }
+    public static void copyBeanToBean(final Object src, final Object dest,
+            final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("dest", dest);
+        assertArgumentNotNull("options", options);
 
-    /**
-     * JavaBeansの値をJavaBeansにコピーします。
-     * 
-     * @param src
-     *            ソース
-     * @param dest
-     *            あて先
-     */
-    public static void copyProperties(final Object src, final Object dest) {
-        copyProperties(src, dest, true);
-    }
-
-    /**
-     * JavaBeansの値をJavaBeansにコピーします。
-     * 
-     * @param src
-     *            ソース
-     * @param dest
-     *            あて先
-     * @param includesNull
-     *            <code>null</code>を含めるかどうか
-     */
-    public static void copyProperties(final Object src, final Object dest,
-            final boolean includesNull) {
         final BeanDesc srcBeanDesc =
             BeanDescFactory.getBeanDesc(src.getClass());
         final BeanDesc destBeanDesc =
             BeanDescFactory.getBeanDesc(dest.getClass());
-
-        final int propertyDescSize = destBeanDesc.getPropertyDescSize();
-        for (int i = 0; i < propertyDescSize; i++) {
+        final int size = srcBeanDesc.getPropertyDescSize();
+        for (int i = 0; i < size; i++) {
+            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
+            final String srcPropertyName = srcPropertyDesc.getPropertyName();
+            if (!srcPropertyDesc.isReadable()
+                || !options.isTargetProperty(srcPropertyName)) {
+                continue;
+            }
+            final String destPropertyName = options.trimPrefix(srcPropertyName);
+            if (!destBeanDesc.hasPropertyDesc(destPropertyName)) {
+                continue;
+            }
             final PropertyDesc destPropertyDesc =
-                destBeanDesc.getPropertyDesc(i);
+                destBeanDesc.getPropertyDesc(destPropertyName);
             if (!destPropertyDesc.isWritable()) {
                 continue;
             }
-            final String propertyName = destPropertyDesc.getPropertyName();
-            if (!srcBeanDesc.hasPropertyDesc(propertyName)) {
+            final Object value = srcPropertyDesc.getValue(src);
+            if (!options.isTargetValue(value)) {
                 continue;
             }
-            final PropertyDesc srcPropertyDesc =
-                srcBeanDesc.getPropertyDesc(propertyName);
-            if (!srcPropertyDesc.isReadable()) {
+            final Object convertedValue =
+                options.convertValue(
+                    value,
+                    destPropertyName,
+                    destPropertyDesc.getPropertyType());
+            destPropertyDesc.setValue(dest, convertedValue);
+        }
+    }
+
+    /**
+     * Beanから{@literal Map}にコピーを行います。
+     * 
+     * @param src
+     *            コピー元のBean
+     * @param dest
+     *            コピー先の{@literal Map}
+     */
+    public static void copyBeanToMap(final Object src,
+            final Map<String, Object> dest) {
+        copyBeanToMap(src, dest, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * Beanから{@literal Map}にコピーを行います。
+     * 
+     * @param src
+     *            コピー元のBean
+     * @param dest
+     *            コピー先の{@literal Map}
+     * @param options
+     *            コピーのオプション
+     * @see CopyOptionsUtil
+     */
+    public static void copyBeanToMap(final Object src,
+            final Map<String, Object> dest, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("dest", dest);
+        assertArgumentNotNull("options", options);
+
+        final BeanDesc srcBeanDesc =
+            BeanDescFactory.getBeanDesc(src.getClass());
+        final int size = srcBeanDesc.getPropertyDescSize();
+        for (int i = 0; i < size; i++) {
+            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
+            final String srcPropertyName = srcPropertyDesc.getPropertyName();
+            if (!srcPropertyDesc.isReadable()
+                || !options.isTargetProperty(srcPropertyName)) {
                 continue;
             }
             final Object value = srcPropertyDesc.getValue(src);
-            if (value != null || includesNull) {
-                destPropertyDesc.setValue(dest, srcPropertyDesc.getValue(src));
-            }
-        }
-    }
-
-    /**
-     * JavaBeansの値からマップを作成します。
-     * 
-     * @param src
-     *            ソース
-     * @return JavaBeansの値を持つマップ
-     */
-    public static Map<String, Object> createProperties(final Object src) {
-        return createProperties(src, null);
-    }
-
-    /**
-     * JavaBeansの値からマップを作成します。
-     * 
-     * @param src
-     *            ソース
-     * @param prefix
-     *            プレフィックス
-     * @return JavaBeansの値を持つマップ
-     */
-    public static Map<String, Object> createProperties(final Object src,
-            final String prefix) {
-        final Map<String, Object> map = newHashMap();
-        if (src == null) {
-            return map;
-        }
-        final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(src.getClass());
-        final int size = beanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; ++i) {
-            final PropertyDesc pd = beanDesc.getPropertyDesc(i);
-            if (!pd.isReadable()) {
+            if (!options.isTargetValue(value)) {
                 continue;
             }
-            final Object value = pd.getValue(src);
-            final String destName = pd.getPropertyName().replace('$', '.');
-            if (StringUtil.isEmpty(prefix)) {
-                map.put(destName, value);
-            } else if (destName.startsWith(prefix)) {
-                map.put(destName.substring(prefix.length()), value);
-            }
+            final String destPropertyName =
+                options.toMapDestPropertyName(srcPropertyName);
+            final Object convertedValue =
+                options.convertValue(value, destPropertyName, null);
+            dest.put(destPropertyName, convertedValue);
         }
-        return map;
+    }
+
+    /**
+     * {@literal Map}からBeanにコピーを行います。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param dest
+     *            コピー先のBean
+     */
+    public static void copyMapToBean(final Map<String, ? extends Object> src,
+            final Object dest) {
+        copyMapToBean(src, dest, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * {@literal Map}からBeanにコピーを行います。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param dest
+     *            コピー先のBean
+     * @param options
+     *            コピーのオプション
+     * @see CopyOptionsUtil
+     */
+    public static void copyMapToBean(final Map<String, ? extends Object> src,
+            final Object dest, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("dest", dest);
+        assertArgumentNotNull("options", options);
+
+        final BeanDesc destBeanDesc =
+            BeanDescFactory.getBeanDesc(dest.getClass());
+        for (final Entry<String, ? extends Object> entry : src.entrySet()) {
+            final String srcPropertyName = entry.getKey();
+            if (!options.isTargetProperty(srcPropertyName)) {
+                continue;
+            }
+            final String destPropertyName =
+                options.toBeanDestPropertyName(srcPropertyName);
+            if (!destBeanDesc.hasPropertyDesc(destPropertyName)) {
+                continue;
+            }
+            final PropertyDesc destPropertyDesc =
+                destBeanDesc.getPropertyDesc(destPropertyName);
+            if (!destPropertyDesc.isWritable()) {
+                continue;
+            }
+            final Object value = entry.getValue();
+            if (!options.isTargetValue(value)) {
+                continue;
+            }
+            final Object convertedValue =
+                options.convertValue(
+                    value,
+                    destPropertyName,
+                    destPropertyDesc.getPropertyType());
+            destPropertyDesc.setValue(dest, convertedValue);
+        }
+    }
+
+    /**
+     * {@literal Map}から{@literal Map}にコピーを行います。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param dest
+     *            コピー先の{@literal Map}
+     */
+    public static void copyMapToMap(final Map<String, ? extends Object> src,
+            final Map<String, Object> dest) {
+        copyMapToMap(src, dest, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * {@literal Map}から{@literal Map}にコピーを行います。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param dest
+     *            コピー先の{@literal Map}
+     * @param options
+     *            コピーのオプション
+     * @see CopyOptionsUtil
+     */
+    public static void copyMapToMap(final Map<String, ? extends Object> src,
+            final Map<String, Object> dest, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("dest", dest);
+        assertArgumentNotNull("options", options);
+
+        for (final Entry<String, ? extends Object> entry : src.entrySet()) {
+            final String srcPropertyName = entry.getKey();
+            if (!options.isTargetProperty(srcPropertyName)) {
+                continue;
+            }
+            final Object value = src.get(srcPropertyName);
+            if (!options.isTargetValue(value)) {
+                continue;
+            }
+            final String destPropertyName = options.trimPrefix(srcPropertyName);
+            final Object convertedValue =
+                options.convertValue(value, destPropertyName, null);
+            dest.put(destPropertyName, convertedValue);
+        }
+    }
+
+    /**
+     * コピー元のBeanを新しいBeanのインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となるBeanの型
+     * @param src
+     *            コピー元のBean
+     * @param destClass
+     *            コピー先となるBeanの型
+     * @return コピーされた新しいBean
+     */
+    public static <T> T copyBeanToNewBean(final Object src,
+            final Class<T> destClass) {
+        return copyBeanToNewBean(src, destClass, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元のBeanを新しいBeanのインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となるBeanの型
+     * @param src
+     *            コピー元のBean
+     * @param destClass
+     *            コピー先となるBeanの型
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しいBean
+     * @see CopyOptionsUtil
+     */
+    public static <T> T copyBeanToNewBean(final Object src,
+            final Class<T> destClass, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("destClass", destClass);
+        assertArgumentNotNull("options", options);
+
+        final T dest = ClassUtil.newInstance(destClass);
+        copyBeanToBean(src, dest, options);
+        return dest;
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しいBeanのインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となるBeanの型
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param destClass
+     *            コピー先となるBeanの型
+     * @return コピーされた新しい{@literal Map}
+     */
+    public static <T> T copyMapToNewBean(
+            final Map<String, ? extends Object> src, final Class<T> destClass) {
+        return copyMapToNewBean(src, destClass, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しいBeanのインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となるBeanの型
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param destClass
+     *            コピー先となるBeanの型
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しい{@literal Map}
+     * @see CopyOptionsUtil
+     */
+    public static <T> T copyMapToNewBean(
+            final Map<String, ? extends Object> src, final Class<T> destClass,
+            final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("destClass", destClass);
+        assertArgumentNotNull("options", options);
+
+        final T dest = ClassUtil.newInstance(destClass);
+        copyMapToBean(src, dest, options);
+        return dest;
+    }
+
+    /**
+     * コピー元のBeanを新しい{@literal LinkedHashMap}のインスタンスにコピーして返します。
+     * 
+     * @param src
+     *            コピー元のBean
+     * @return コピーされた新しいBean
+     */
+    public static Map<String, Object> copyBeanToNewMap(final Object src) {
+        return copyBeanToNewMap(src, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元のBeanを新しい{@literal LinkedHashMap}のインスタンスにコピーして返します。
+     * 
+     * @param src
+     *            コピー元のBean
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しいBean
+     * @see CopyOptionsUtil
+     */
+    public static Map<String, Object> copyBeanToNewMap(final Object src,
+            final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("options", options);
+
+        final Map<String, Object> dest = newLinkedHashMap();
+        copyBeanToMap(src, dest, options);
+        return dest;
+    }
+
+    /**
+     * コピー元のBeanを新しい{@literal Map}のインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となる{@literal Map}の型
+     * @param src
+     *            コピー元のBean
+     * @param destClass
+     *            コピー先となる{@literal Map}の型
+     * @return コピーされた新しい{@literal Map}
+     */
+    public static <T extends Map<String, Object>> T copyBeanToNewMap(
+            final Object src, final Class<? extends T> destClass) {
+        return copyBeanToNewMap(src, destClass, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元のBeanを新しい{@literal Map}のインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となる{@literal Map}の型
+     * @param src
+     *            コピー元のBean
+     * @param destClass
+     *            コピー先となる{@literal Map}の型
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しい{@literal Map}
+     * @see CopyOptionsUtil
+     */
+    public static <T extends Map<String, Object>> T copyBeanToNewMap(
+            final Object src, final Class<? extends T> destClass,
+            final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("destClass", destClass);
+        assertArgumentNotNull("options", options);
+
+        final T dest = ClassUtil.newInstance(destClass);
+        copyBeanToMap(src, dest, options);
+        return dest;
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しい{@literal LinkedHashMap}のインスタンスにコピーして返します。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @return コピーされた新しい{@literal Map}
+     */
+    public static Map<String, Object> copyMapToNewMap(
+            final Map<String, ? extends Object> src) {
+        return copyMapToNewMap(src, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しい{@literal LinkedHashMap}のインスタンスにコピーして返します。
+     * 
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しい{@literal Map}
+     * @see CopyOptionsUtil
+     */
+    public static Map<String, Object> copyMapToNewMap(
+            final Map<String, ? extends Object> src, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("options", options);
+
+        final Map<String, Object> dest = newLinkedHashMap();
+        copyMapToMap(src, dest, options);
+        return dest;
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しい{@literal Map}のインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となる{@literal Map}の型
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param destClass
+     *            コピー先となる{@literal Map}の型
+     * @return コピーされた新しい{@literal Map}
+     */
+    public static <T extends Map<String, Object>> T copyMapToNewMap(
+            final Map<String, ? extends Object> src,
+            final Class<? extends T> destClass) {
+        return copyMapToNewMap(src, destClass, DEFAULT_OPTIONS);
+    }
+
+    /**
+     * コピー元の{@literal Map}を新しい{@literal Map}のインスタンスにコピーして返します。
+     * 
+     * @param <T>
+     *            コピー先となる{@literal Map}の型
+     * @param src
+     *            コピー元の{@literal Map}
+     * @param destClass
+     *            コピー先となる{@literal Map}の型
+     * @param options
+     *            コピーのオプション
+     * @return コピーされた新しい{@literal Map}
+     * @see CopyOptionsUtil
+     */
+    public static <T extends Map<String, Object>> T copyMapToNewMap(
+            final Map<String, ? extends Object> src,
+            final Class<? extends T> destClass, final CopyOptions options) {
+        assertArgumentNotNull("src", src);
+        assertArgumentNotNull("destClass", destClass);
+        assertArgumentNotNull("options", options);
+
+        final T dest = ClassUtil.newInstance(destClass);
+        copyMapToMap(src, dest, options);
+        return dest;
     }
 
 }
