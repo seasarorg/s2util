@@ -15,6 +15,8 @@
  */
 package org.seasar.util.convert;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * byte配列用の変換ユーティリティです。
  * 
@@ -41,10 +43,8 @@ public class BinaryConversionUtil {
         } else if (o == null) {
             return null;
         } else {
-            if (o instanceof String) {
-                return ((String) o).getBytes();
-            }
-            throw new IllegalArgumentException(o.getClass().toString());
+            assertArgument("o", o instanceof String, o.getClass().toString());
+            return ((String) o).getBytes();
         }
     }
 }
