@@ -87,19 +87,4 @@ public class AssertionUtil {
         }
     }
 
-    /**
-     * <code>int</code>が負でないことを表明します。
-     * 
-     * @param message
-     * @param num
-     * @throws IllegalArgumentException
-     *             <code>int</code>が負の場合。
-     */
-    public static void assertIntegerNotNegative(String message, int num)
-            throws IllegalArgumentException {
-        if (num < 0) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
 }
