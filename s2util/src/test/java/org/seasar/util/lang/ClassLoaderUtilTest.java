@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author koichik
@@ -66,7 +66,7 @@ public class ClassLoaderUtilTest {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Class<?> clazz =
             ClassLoaderUtil.findLoadedClass(loader, getClass().getName());
-        assertThat(clazz, isSameClass(getClass()));
+        assertThat(clazz, is(sameClass(getClass())));
     }
 
     /**

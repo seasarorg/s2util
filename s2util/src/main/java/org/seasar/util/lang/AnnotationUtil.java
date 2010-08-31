@@ -16,10 +16,10 @@
 package org.seasar.util.lang;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.MethodDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
@@ -64,11 +64,11 @@ public abstract class AnnotationUtil {
      */
     protected static Object getProperty(final BeanDesc beanDesc,
             final Annotation annotation, final String name) {
-        final Method method = beanDesc.getMethodNoException(name);
-        if (method == null) {
+        final MethodDesc methodDesc = beanDesc.getMethodDescNoException(name);
+        if (methodDesc == null) {
             return null;
         }
-        final Object value = MethodUtil.invoke(method, annotation);
+        final Object value = methodDesc.invoke(annotation);
         if (value == null || "".equals(value)) {
             return null;
         }

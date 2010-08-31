@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.FieldDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SRuntimeException;
-import org.seasar.util.lang.FieldUtil;
 
 import static org.seasar.util.collection.ArrayUtil.*;
 
@@ -188,7 +188,8 @@ public class URLUtil {
      */
     public static void disableURLCaches() {
         BeanDesc bd = BeanDescFactory.getBeanDesc(URLConnection.class);
-        FieldUtil.set(bd.getField("defaultUseCaches"), null, Boolean.FALSE);
+        FieldDesc fd = bd.getFieldDesc("defaultUseCaches");
+        fd.setStaticFieldValue(false);
     }
 
 }

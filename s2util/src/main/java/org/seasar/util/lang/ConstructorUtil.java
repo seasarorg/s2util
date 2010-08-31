@@ -17,6 +17,7 @@ package org.seasar.util.lang;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.InstantiationRuntimeException;
@@ -65,6 +66,17 @@ public abstract class ConstructorUtil {
                 constructor.getDeclaringClass(),
                 e);
         }
+    }
+
+    /**
+     * <code>public</code>かどうかを返します。
+     * 
+     * @param constructor
+     *            コンストラクタ
+     * @return <code>public</code>かどうか
+     */
+    public static boolean isPublic(final Constructor<?> constructor) {
+        return Modifier.isPublic(constructor.getModifiers());
     }
 
 }

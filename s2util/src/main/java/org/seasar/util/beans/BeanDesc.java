@@ -16,8 +16,6 @@
 package org.seasar.util.beans;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
@@ -80,84 +78,38 @@ public interface BeanDesc {
     int getPropertyDescSize();
 
     /**
-     * {@link Field}を持っているかどうかを返します。
+     * {@link FieldDesc}を持っているかどうかを返します。
      * 
      * @param fieldName
      *            フィールド名
-     * @return {@link Field}を持っているかどうか
+     * @return {@link FieldDesc}を持っているかどうか
      */
-    boolean hasField(String fieldName);
+    boolean hasFieldDesc(String fieldName);
 
     /**
-     * {@link Field}を返します。
+     * {@link FieldDesc}を返します。
      * 
      * @param fieldName
      *            フィールド名
-     * @return {@link Field}
+     * @return {@link FieldDesc}
      */
-    Field getField(String fieldName);
+    FieldDesc getFieldDesc(String fieldName);
 
     /**
-     * {@link Field}の値を返します。
-     * 
-     * @param <T>
-     *            フィールドの型
-     * @param fieldName
-     *            フィールド名
-     * @param target
-     *            対象のオブジェクト
-     * @return {@link Field}の値
-     */
-    <T> T getFieldValue(String fieldName, Object target);
-
-    /**
-     * staticな{@link Field}の値を返します。
-     * 
-     * @param <T>
-     *            フィールドの型
-     * @param fieldName
-     *            フィールド名
-     * @return {@link Field}の値
-     */
-    <T> T getStaticFieldValue(String fieldName);
-
-    /**
-     * {@link Field}の値を設定します。
-     * 
-     * @param fieldName
-     *            フィールド名
-     * @param target
-     *            対象のオブジェクト
-     * @param value
-     *            {@link Field}の値
-     */
-    void setFieldValue(String fieldName, Object target, Object value);
-
-    /**
-     * staticな{@link Field}の値を設定します。
-     * 
-     * @param fieldName
-     *            フィールド名
-     * @param value
-     *            {@link Field}の値
-     */
-    void setStaticFieldValue(String fieldName, Object value);
-
-    /**
-     * {@link Field}を返します。
+     * {@link FieldDesc}を返します。
      * 
      * @param index
-     *            {@link Field}のインデックス
-     * @return {@link Field}
+     *            {@link FieldDesc}のインデックス
+     * @return {@link FieldDesc}
      */
-    Field getField(int index);
+    FieldDesc getFieldDesc(int index);
 
     /**
-     * {@link Field}の数を返します。
+     * {@link FieldDesc}の数を返します。
      * 
-     * @return {@link Field}の数
+     * @return {@link FieldDesc}の数
      */
-    int getFieldSize();
+    int getFieldDescSize();
 
     /**
      * 新しいインスタンスを作成します。
@@ -171,104 +123,73 @@ public interface BeanDesc {
     <T> T newInstance(Object... args);
 
     /**
-     * 引数に応じた{@link Constructor}を返します。
+     * 引数の型に応じた{@link ConstructorDesc}を返します。
      * 
-     * @param <T>
-     *            Beanクラスの型
-     * @param args
-     *            コンストラクタに渡す引数の並び
-     * @return 引数に応じた{@link Constructor}
-     */
-    <T> Constructor<T> getSuitableConstructor(Object... args);
-
-    /**
-     * 引数の型に応じた{@link Constructor}を返します。
-     * 
-     * @param <T>
-     *            Beanクラスの型
      * @param paramTypes
      *            コンストラクタに渡す引数型の並び
-     * @return 型に応じた{@link Constructor}
+     * @return 引数の型に応じた{@link ConstructorDesc}
      */
-    <T> Constructor<T> getConstructor(Class<?>... paramTypes);
+    ConstructorDesc getConstructorDesc(Class<?>... paramTypes);
 
     /**
-     * ターゲットのメソッドを呼び出します。
+     * 引数に適合する{@link ConstructorDesc}を返します。
      * 
-     * @param <T>
-     *            メソッドの戻り値の型
-     * @param target
-     *            ターゲットオブジェクト
-     * @param methodName
-     *            メソッド名
      * @param args
-     *            メソッドに渡す引数の並び
-     * @return メソッドの戻り値
+     *            コンストラクタに渡す引数の並び
+     * @return 引数に適合する{@link Constructor}
      */
-    <T> T invoke(Object target, String methodName, Object... args);
+    ConstructorDesc getSuitableConstructorDesc(Object... args);
 
     /**
-     * staticなメソッドを呼び出します。
-     * 
-     * @param <T>
-     *            メソッドの戻り値の型
-     * @param methodName
-     *            メソッド名
-     * @param args
-     *            メソッドに渡す引数の並び
-     * @return メソッドの戻り値
-     */
-    <T> T invokeStatic(String methodName, Object... args);
-
-    /**
-     * 引数に応じた{@link Method}を返します。
-     * 
-     * @param methodName
-     *            メソッド名
-     * @param args
-     *            メソッドの引数の並び
-     * @return {@link Method} メソッド
-     */
-    Method getSuitableMethod(String methodName, Object... args);
-
-    /**
-     * 引数の型に応じた{@link Method}を返します。
+     * 引数の型に応じた{@link MethodDesc}を返します。
      * 
      * @param methodName
      *            メソッド名
      * @param paramTypes
      *            メソッドの引数型の並び
-     * @return {@link Method} メソッド
+     * @return 引数の型に応じた{@link MethodDesc} メソッド
      */
-    Method getMethod(String methodName, Class<?>... paramTypes);
+    MethodDesc getMethodDesc(String methodName, Class<?>... paramTypes);
 
     /**
-     * {@link Method}を返します。見つからない場合は、nullを返します。
+     * 引数の型に応じた{@link MethodDesc}を返します。見つからない場合は、{@literal null}を返します。
      * 
      * @param methodName
      *            メソッド
      * @param paramTypes
      *            メソッドの引数型の並び
-     * @return {@link Method}
+     * @return 引数の型に応じた{@link MethodDesc}
      */
-    Method getMethodNoException(String methodName, Class<?>... paramTypes);
+    MethodDesc getMethodDescNoException(String methodName,
+            Class<?>... paramTypes);
 
     /**
-     * {@link Method}の配列を返します。
-     * 
-     * @param methodName
-     * @return メソッドの配列
-     */
-    Method[] getMethods(String methodName);
-
-    /**
-     * {@link Method}があるかどうか返します。
+     * 引数に適合する{@link MethodDesc}を返します。
      * 
      * @param methodName
      *            メソッド名
-     * @return {@link Method}があるかどうか
+     * @param args
+     *            メソッドの引数の並び
+     * @return 引数に適合する{@link MethodDesc} メソッド
      */
-    boolean hasMethod(String methodName);
+    MethodDesc getSuitableMethodDesc(String methodName, Object... args);
+
+    /**
+     * {@link MethodDesc}があるかどうか返します。
+     * 
+     * @param methodName
+     *            メソッド名
+     * @return {@link MethodDesc}があるかどうか
+     */
+    boolean hasMethodDesc(String methodName);
+
+    /**
+     * {@link MethodDesc}の配列を返します。
+     * 
+     * @param methodName
+     * @return {@link MethodDesc}の配列
+     */
+    MethodDesc[] getMethodDescs(String methodName);
 
     /**
      * メソッド名の配列を返します。

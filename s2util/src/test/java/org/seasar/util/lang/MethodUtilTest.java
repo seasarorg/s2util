@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author higa
@@ -79,7 +79,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericList", List.class);
         assertThat(
             MethodUtil.getElementTypeOfCollectionFromParameterType(m, 0),
-            isSameClass(Integer.class));
+            is(sameClass(Integer.class)));
     }
 
     /**
@@ -95,7 +95,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericList", List.class);
         assertThat(
             MethodUtil.getElementTypeOfCollectionFromReturnType(m),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -111,7 +111,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericMap", Map.class);
         assertThat(
             MethodUtil.getKeyTypeOfMapFromParameterType(m, 0),
-            isSameClass(Integer.class));
+            is(sameClass(Integer.class)));
     }
 
     /**
@@ -125,7 +125,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericMap", Map.class);
         assertThat(
             MethodUtil.getKeyTypeOfMapFromReturnType(m),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -141,7 +141,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericMap", Map.class);
         assertThat(
             MethodUtil.getValueTypeOfMapFromParameterType(m, 0),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -157,7 +157,7 @@ public class MethodUtilTest {
         m = Baz.class.getMethod("genericMap", Map.class);
         assertThat(
             MethodUtil.getValueTypeOfMapFromReturnType(m),
-            isSameClass(Class.class));
+            is(sameClass(Class.class)));
     }
 
     /**

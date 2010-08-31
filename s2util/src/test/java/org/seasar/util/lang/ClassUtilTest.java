@@ -15,7 +15,6 @@
  */
 package org.seasar.util.lang;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.NoSuchConstructorRuntimeException;
@@ -23,6 +22,7 @@ import org.seasar.util.exception.NoSuchFieldRuntimeException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author higa
@@ -63,11 +63,11 @@ public class ClassUtilTest {
     public void testGetPrimitiveClass() {
         assertThat(
             ClassUtil.getPrimitiveClass(Integer.class),
-            isSameClass(int.class));
+            is(sameClass(int.class)));
         assertThat(ClassUtil.getPrimitiveClass(String.class), is(nullValue()));
         assertThat(
             ClassUtil.getPrimitiveClass(Byte.class),
-            isSameClass(byte.class));
+            is(sameClass(byte.class)));
     }
 
     /**
@@ -77,13 +77,13 @@ public class ClassUtilTest {
     public void testGetPrimitiveClassIfWrapper() {
         assertThat(
             ClassUtil.getPrimitiveClassIfWrapper(Integer.class),
-            isSameClass(int.class));
+            is(sameClass(int.class)));
         assertThat(
             ClassUtil.getPrimitiveClassIfWrapper(String.class),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
         assertThat(
             ClassUtil.getPrimitiveClassIfWrapper(Byte.class),
-            isSameClass(byte.class));
+            is(sameClass(byte.class)));
     }
 
     /**
@@ -93,11 +93,11 @@ public class ClassUtilTest {
     public void testGetWrapperClass() {
         assertThat(
             ClassUtil.getWrapperClass(int.class),
-            isSameClass(Integer.class));
+            is(sameClass(Integer.class)));
         assertThat(ClassUtil.getWrapperClass(String.class), is(nullValue()));
         assertThat(
             ClassUtil.getWrapperClass(byte.class),
-            isSameClass(Byte.class));
+            is(sameClass(Byte.class)));
     }
 
     /**
@@ -107,13 +107,13 @@ public class ClassUtilTest {
     public void testGetWrapperClassIfWrapper() {
         assertThat(
             ClassUtil.getWrapperClassIfPrimitive(int.class),
-            isSameClass(Integer.class));
+            is(sameClass(Integer.class)));
         assertThat(
             ClassUtil.getWrapperClassIfPrimitive(String.class),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
         assertThat(
             ClassUtil.getWrapperClassIfPrimitive(byte.class),
-            isSameClass(Byte.class));
+            is(sameClass(Byte.class)));
     }
 
     /**
@@ -228,18 +228,10 @@ public class ClassUtilTest {
      */
     @Test
     public void testConvertClass() {
-        assertThat(ClassUtil.convertClass("int"), isSameClass(int.class));
+        assertThat(ClassUtil.convertClass("int"), is(sameClass(int.class)));
         assertThat(
             ClassUtil.convertClass("java.lang.String"),
-            isSameClass(String.class));
-    }
-
-    /**
-     * @param clazz
-     * @return クラスをチェックする{@link Matcher}
-     */
-    public static Matcher<Object> isSameClass(Class<?> clazz) {
-        return is((Object) clazz);
+            is(sameClass(String.class)));
     }
 
 }

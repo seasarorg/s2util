@@ -27,6 +27,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.ConstructorDesc;
+import org.seasar.util.beans.FieldDesc;
+import org.seasar.util.beans.MethodDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.collection.ArrayMap;
@@ -43,9 +46,7 @@ import org.seasar.util.exception.FieldNotFoundRuntimeException;
 import org.seasar.util.exception.MethodNotFoundRuntimeException;
 import org.seasar.util.exception.PropertyNotFoundRuntimeException;
 import org.seasar.util.lang.ClassUtil;
-import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
-import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.lang.StringUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
@@ -70,19 +71,19 @@ public class BeanDescImpl implements BeanDesc {
     /** 型引数と型変数のマップ */
     protected final Map<TypeVariable<?>, Type> typeVariables;
 
-    /** コンストラクタの配列 */
-    protected final Constructor<?>[] constructors;
-
     /** プロパティ名から{@link PropertyDesc}へのマップ */
-    protected final CaseInsensitiveMap<PropertyDesc> propertyDescCache =
-        new CaseInsensitiveMap<PropertyDesc>();
+    protected final CaseInsensitiveMap<PropertyDescImpl> propertyDescCache =
+        new CaseInsensitiveMap<PropertyDescImpl>();
 
-    /** メソッド名からメソッド配列へのマップ */
-    protected final Map<String, Method[]> methodsCache = newHashMap();
+    /** フィールド名から{@link FieldDescImpl}へのマップ */
+    protected final ArrayMap<String, FieldDescImpl> fieldDescCache =
+        new ArrayMap<String, FieldDescImpl>();
 
-    /** フィールド名からフィールドへのマップ */
-    protected final ArrayMap<String, Field> fieldCache =
-        new ArrayMap<String, Field>();
+    /** {@link ConstructorDesc}の配列 */
+    protected final List<ConstructorDesc> constructorDescs = newArrayList();
+
+    /** メソッド名から{@link MethodDesc}配列へのマップ */
+    protected final Map<String, MethodDesc[]> methodDescsCache = newHashMap();
 
     /** 不正なプロパティ名のセット */
     protected final Set<String> invalidPropertyNames = newHashSet();
@@ -99,10 +100,10 @@ public class BeanDescImpl implements BeanDesc {
         }
         this.beanClass = beanClass;
         typeVariables = getTypeVariableMap(beanClass);
-        constructors = beanClass.getConstructors();
+        setupConstructorDescs();
         setupPropertyDescs();
-        setupMethods();
-        setupFields();
+        setupMethodDescs();
+        setupFieldDescs();
     }
 
     @SuppressWarnings("unchecked")
@@ -142,120 +143,67 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     @Override
-    public boolean hasField(final String fieldName) {
-        return fieldCache.get(fieldName) != null;
+    public boolean hasFieldDesc(final String fieldName) {
+        return fieldDescCache.containsKey(fieldName);
     }
 
     @Override
-    public Field getField(final String fieldName) {
-        final Field field = fieldCache.get(fieldName);
-        if (field == null) {
+    public FieldDesc getFieldDesc(final String fieldName) {
+        final FieldDesc fieldDesc = fieldDescCache.get(fieldName);
+        if (fieldDesc == null) {
             throw new FieldNotFoundRuntimeException(beanClass, fieldName);
         }
-        return field;
+        return fieldDesc;
     }
 
     @Override
-    public Field getField(final int index) {
-        return fieldCache.getAt(index);
+    public FieldDesc getFieldDesc(final int index) {
+        return fieldDescCache.getAt(index);
+    }
+
+    @Override
+    public int getFieldDescSize() {
+        return fieldDescCache.size();
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getFieldValue(final String fieldName, final Object target) {
-        final Field field = getField(fieldName);
-        return (T) FieldUtil.get(field, target);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getStaticFieldValue(String fieldName) {
-        final Field field = getField(fieldName);
-        return (T) FieldUtil.get(field);
-    }
-
-    @Override
-    public void setFieldValue(String fieldName, Object target, Object value) {
-        final Field field = getField(fieldName);
-        FieldUtil.set(field, target, value);
-    }
-
-    @Override
-    public void setStaticFieldValue(String fieldName, Object value) {
-        final Field field = getField(fieldName);
-        FieldUtil.set(field, value);
-    }
-
-    @Override
-    public int getFieldSize() {
-        return fieldCache.size();
-    }
-
     @Override
     public <T> T newInstance(final Object... args) {
-        final Constructor<T> constructor = getSuitableConstructor(args);
-        return ConstructorUtil.newInstance(constructor, args);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T invoke(final Object target, final String methodName,
-            final Object... args) {
-        final Method method = getSuitableMethod(methodName, args);
-        return (T) MethodUtil.invoke(method, target, args);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T invokeStatic(final String methodName, final Object... args) {
-        final Method method = getSuitableMethod(methodName, args);
-        return (T) MethodUtil.invokeStatic(method, args);
+        final ConstructorDesc constructorDesc =
+            getSuitableConstructorDesc(args);
+        return (T) constructorDesc.newInstance(args);
     }
 
     @Override
-    public <T> Constructor<T> getSuitableConstructor(Object... args) {
-        Constructor<T> constructor = findSuitableConstructor(args);
-        if (constructor != null) {
-            return constructor;
-        }
-        constructor = findSuitableConstructorAdjustNumber(args);
-        if (constructor != null) {
-            return constructor;
-        }
-        throw new ConstructorNotFoundRuntimeException(beanClass, args);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> Constructor<T> getConstructor(final Class<?>... paramTypes) {
-        for (final Constructor<?> constructor : constructors) {
-            if (Arrays.equals(paramTypes, constructor.getParameterTypes())) {
-                return (Constructor<T>) constructor;
+    public ConstructorDesc getConstructorDesc(final Class<?>... paramTypes) {
+        for (final ConstructorDesc constructorDesc : constructorDescs) {
+            if (Arrays.equals(paramTypes, constructorDesc.getParameterTypes())) {
+                return constructorDesc;
             }
         }
         throw new ConstructorNotFoundRuntimeException(beanClass, paramTypes);
     }
 
     @Override
-    public Method getSuitableMethod(final String methodName, Object... args) {
-        final Method[] methods = getMethods(methodName);
-        Method method = findSuitableMethod(methods, args);
-        if (method != null) {
-            return method;
+    public ConstructorDesc getSuitableConstructorDesc(final Object... args) {
+        ConstructorDesc constructorDesc = findSuitableConstructorDesc(args);
+        if (constructorDesc != null) {
+            return constructorDesc;
         }
-        method = findSuitableMethodAdjustNumber(methods, args);
-        if (method != null) {
-            return method;
+        constructorDesc = findSuitableConstructorDescAdjustNumber(args);
+        if (constructorDesc != null) {
+            return constructorDesc;
         }
-        throw new MethodNotFoundRuntimeException(beanClass, methodName, args);
+        throw new ConstructorNotFoundRuntimeException(beanClass, args);
     }
 
     @Override
-    public Method getMethod(final String methodName,
+    public MethodDesc getMethodDesc(final String methodName,
             final Class<?>... paramTypes) {
-        final Method method = getMethodNoException(methodName, paramTypes);
-        if (method != null) {
-            return method;
+        final MethodDesc methodDesc =
+            getMethodDescNoException(methodName, paramTypes);
+        if (methodDesc != null) {
+            return methodDesc;
         }
         throw new MethodNotFoundRuntimeException(
             beanClass,
@@ -264,43 +212,56 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     @Override
-    public Method getMethodNoException(final String methodName,
+    public MethodDesc getMethodDescNoException(final String methodName,
             final Class<?>... paramTypes) {
-        final Method[] methods = methodsCache.get(methodName);
-        if (methods == null) {
+        final MethodDesc[] methodDescs = methodDescsCache.get(methodName);
+        if (methodDescs == null) {
             return null;
         }
-        for (final Method method : methods) {
-            if (Arrays.equals(paramTypes, method.getParameterTypes())) {
-                return method;
+        for (final MethodDesc methodDesc : methodDescs) {
+            if (Arrays.equals(paramTypes, methodDesc.getParameterTypes())) {
+                return methodDesc;
             }
         }
         return null;
     }
 
-    /**
-     * @see org.seasar.util.beans.BeanDesc#getMethods(java.lang.String)
-     */
     @Override
-    public Method[] getMethods(final String methodName) {
-        final Method[] methods = methodsCache.get(methodName);
-        if (methods == null) {
+    public MethodDesc getSuitableMethodDesc(final String methodName,
+            final Object... args) {
+        final MethodDesc[] methodDescs = getMethodDescs(methodName);
+        MethodDesc methodDesc = findSuitableMethod(methodDescs, args);
+        if (methodDesc != null) {
+            return methodDesc;
+        }
+        methodDesc = findSuitableMethodDescAdjustNumber(methodDescs, args);
+        if (methodDesc != null) {
+            return methodDesc;
+        }
+        throw new MethodNotFoundRuntimeException(beanClass, methodName, args);
+    }
+
+    @Override
+    public MethodDesc[] getMethodDescs(final String methodName) {
+        final MethodDesc[] methodDescs = methodDescsCache.get(methodName);
+        if (methodDescs == null) {
             throw new MethodNotFoundRuntimeException(
                 beanClass,
                 methodName,
                 null);
         }
-        return methods;
+        return methodDescs;
     }
 
     @Override
-    public boolean hasMethod(final String methodName) {
-        return methodsCache.get(methodName) != null;
+    public boolean hasMethodDesc(final String methodName) {
+        return methodDescsCache.containsKey(methodName);
     }
 
     @Override
     public String[] getMethodNames() {
-        return methodsCache.keySet().toArray(new String[methodsCache.size()]);
+        return methodDescsCache.keySet().toArray(
+            new String[methodDescsCache.size()]);
     }
 
     /**
@@ -315,83 +276,77 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     /**
-     * 引数に適合するコンストラクタを返します。
+     * 引数に適合する{@link ConstructorDesc}を返します。
      * 
-     * @param <T>
-     *            ビーンのクラス
      * @param args
      *            コンストラクタ引数の並び
-     * @return 引数に適合するコンストラクタ。存在しない場合は{@literal null}
+     * @return 引数に適合する{@link ConstructorDesc}。存在しない場合は{@literal null}
      */
-    @SuppressWarnings("unchecked")
-    protected <T> Constructor<T> findSuitableConstructor(final Object... args) {
-        for (final Constructor<?> constructor : constructors) {
-            if (isSuitable(constructor.getParameterTypes(), args, false)) {
-                return (Constructor<T>) constructor;
+    protected ConstructorDesc findSuitableConstructorDesc(final Object... args) {
+        for (final ConstructorDesc constructorDesc : constructorDescs) {
+            if (isSuitable(constructorDesc.getParameterTypes(), args, false)) {
+                return constructorDesc;
             }
         }
         return null;
     }
 
     /**
-     * 引数に適合するコンストラクタを返します。
+     * 引数に適合する{@link ConstructorDesc}を返します。
      * <p>
      * 引数の型が数値の場合、引数を数値に変換することが出来れば適合するとみなします。
      * </p>
      * 
-     * @param <T>
-     *            ビーンのクラス
      * @param args
      *            コンストラクタ引数の並び
-     * @return 引数に適合するコンストラクタ。存在しない場合は{@literal null}
+     * @return 引数に適合する{@link ConstructorDesc}。存在しない場合は{@literal null}
      */
-    @SuppressWarnings("unchecked")
-    protected <T> Constructor<T> findSuitableConstructorAdjustNumber(
+    protected ConstructorDesc findSuitableConstructorDescAdjustNumber(
             final Object... args) {
-        for (final Constructor<?> constructor : constructors) {
-            if (isSuitable(constructor.getParameterTypes(), args, true)) {
-                return (Constructor<T>) constructor;
+        for (final ConstructorDesc constructorDesc : constructorDescs) {
+            if (isSuitable(constructorDesc.getParameterTypes(), args, true)) {
+                return constructorDesc;
             }
         }
         return null;
     }
 
     /**
-     * 引数に適合するメソッドを返します。
+     * 引数に適合する{@link MethodDesc}を返します。
      * 
-     * @param methods
+     * @param methodDescs
      *            メソッドの配列
      * @param args
      *            メソッド引数の並び
-     * @return 引数に適合するメソッド。存在しない場合は{@literal null}
+     * @return 引数に適合する{@link MethodDesc}。存在しない場合は{@literal null}
      */
-    protected Method findSuitableMethod(final Method[] methods,
+    protected MethodDesc findSuitableMethod(final MethodDesc[] methodDescs,
             final Object[] args) {
-        for (final Method method : methods) {
-            if (isSuitable(method.getParameterTypes(), args, false)) {
-                return method;
+        for (final MethodDesc methodDesc : methodDescs) {
+            if (isSuitable(methodDesc.getParameterTypes(), args, false)) {
+                return methodDesc;
             }
         }
         return null;
     }
 
     /**
-     * 引数に適合するメソッドを返します。
+     * 引数に適合する{@link MethodDesc}を返します。
      * <p>
      * 引数の型が数値の場合、引数を数値に変換することが出来れば適合するとみなします。
      * </p>
      * 
-     * @param methods
+     * @param methodDescs
      *            メソッドの配列
      * @param args
      *            メソッド引数の並び
-     * @return 引数に適合するメソッド。存在しない場合は{@literal null}
+     * @return 引数に適合する{@link MethodDesc}。存在しない場合は{@literal null}
      */
-    protected Method findSuitableMethodAdjustNumber(final Method[] methods,
-            final Object[] args) {
-        for (final Method method : methods) {
-            if (isSuitable(method.getParameterTypes(), args, true)) {
-                return method;
+    protected MethodDesc findSuitableMethodDescAdjustNumber(
+            final MethodDesc[] methodDescs, final Object[] args) {
+        for (final MethodDesc methodDesc : methodDescs) {
+            if (isSuitable(methodDesc.getParameterTypes(), args, true)) {
+                return methodDesc;
             }
         }
         return null;
@@ -409,7 +364,7 @@ public class BeanDescImpl implements BeanDesc {
      * @return 引数が引数型に適合する場合は{@literal true}
      */
     protected boolean isSuitable(final Class<?>[] paramTypes,
-            final Object[] args, boolean adjustNumber) {
+            final Object[] args, final boolean adjustNumber) {
         if (args == null) {
             return paramTypes.length == 0;
         }
@@ -543,7 +498,7 @@ public class BeanDescImpl implements BeanDesc {
     protected void setupReadMethod(final Method readMethod,
             final String propertyName) {
         final Class<?> propertyType = readMethod.getReturnType();
-        PropertyDesc propDesc = getPropertyDescNoException(propertyName);
+        PropertyDescImpl propDesc = propertyDescCache.get(propertyName);
         if (propDesc == null) {
             propDesc =
                 new PropertyDescImpl(
@@ -572,7 +527,7 @@ public class BeanDescImpl implements BeanDesc {
     protected void setupWriteMethod(final Method writeMethod,
             final String propertyName) {
         final Class<?> propertyType = writeMethod.getParameterTypes()[0];
-        PropertyDesc propDesc = getPropertyDescNoException(propertyName);
+        PropertyDescImpl propDesc = propertyDescCache.get(propertyName);
         if (propDesc == null) {
             propDesc =
                 new PropertyDescImpl(
@@ -596,7 +551,7 @@ public class BeanDescImpl implements BeanDesc {
      * @param propertyDesc
      *            {@link PropertyDesc}
      */
-    protected void addPropertyDesc(final PropertyDesc propertyDesc) {
+    protected void addPropertyDesc(final PropertyDescImpl propertyDesc) {
         if (propertyDesc == null) {
             throw new EmptyRuntimeException("propertyDesc");
         }
@@ -604,39 +559,48 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     /**
+     * コンストラクタを準備します。
+     */
+    protected void setupConstructorDescs() {
+        for (final Constructor<?> constructor : beanClass.getConstructors()) {
+            constructorDescs.add(new ConstructorDescImpl(this, constructor));
+        }
+    }
+
+    /**
      * メソッドを準備します。
      */
-    protected void setupMethods() {
-        final ArrayMap<String, List<Method>> methodListMap =
-            new ArrayMap<String, List<Method>>();
+    protected void setupMethodDescs() {
+        final ArrayMap<String, List<MethodDesc>> methodDescListMap =
+            new ArrayMap<String, List<MethodDesc>>();
         for (final Method method : beanClass.getMethods()) {
             if (method.isBridge() || method.isSynthetic()) {
                 continue;
             }
             final String methodName = method.getName();
-            List<Method> list = methodListMap.get(methodName);
+            List<MethodDesc> list = methodDescListMap.get(methodName);
             if (list == null) {
-                list = new ArrayList<Method>();
-                methodListMap.put(methodName, list);
+                list = new ArrayList<MethodDesc>();
+                methodDescListMap.put(methodName, list);
             }
-            list.add(method);
+            list.add(new MethodDescImpl(this, method));
         }
-        for (int i = 0; i < methodListMap.size(); ++i) {
-            final List<Method> methodList = methodListMap.getAt(i);
-            methodsCache.put(
-                methodListMap.getKeyAt(i),
-                methodList.toArray(new Method[methodList.size()]));
+        for (int i = 0; i < methodDescListMap.size(); ++i) {
+            final List<MethodDesc> methodDescList = methodDescListMap.getAt(i);
+            methodDescsCache.put(
+                methodDescListMap.getKeyAt(i),
+                methodDescList.toArray(new MethodDesc[methodDescList.size()]));
         }
     }
 
     /**
      * フィールドを準備します。
      */
-    protected void setupFields() {
+    protected void setupFieldDescs() {
         if (beanClass.isInterface()) {
-            setupFieldsByInterface(beanClass);
+            setupFieldDescsByInterface(beanClass);
         } else {
-            setupFieldsByClass(beanClass);
+            setupFieldDescsByClass(beanClass);
         }
     }
 
@@ -646,11 +610,11 @@ public class BeanDescImpl implements BeanDesc {
      * @param interfaceClass
      *            対象のインターフェース
      */
-    protected void setupFieldsByInterface(final Class<?> interfaceClass) {
-        addFields(interfaceClass);
+    protected void setupFieldDescsByInterface(final Class<?> interfaceClass) {
+        addFieldDescs(interfaceClass);
         final Class<?>[] interfaces = interfaceClass.getInterfaces();
         for (int i = 0; i < interfaces.length; ++i) {
-            setupFieldsByInterface(interfaces[i]);
+            setupFieldDescsByInterface(interfaces[i]);
         }
     }
 
@@ -660,14 +624,14 @@ public class BeanDescImpl implements BeanDesc {
      * @param targetClass
      *            対象のクラス
      */
-    private void setupFieldsByClass(final Class<?> targetClass) {
-        addFields(targetClass);
+    private void setupFieldDescsByClass(final Class<?> targetClass) {
+        addFieldDescs(targetClass);
         for (final Class<?> intf : targetClass.getInterfaces()) {
-            setupFieldsByInterface(intf);
+            setupFieldDescsByInterface(intf);
         }
         final Class<?> superClass = targetClass.getSuperclass();
         if (superClass != Object.class && superClass != null) {
-            setupFieldsByClass(superClass);
+            setupFieldDescsByClass(superClass);
         }
     }
 
@@ -677,24 +641,26 @@ public class BeanDescImpl implements BeanDesc {
      * @param clazz
      *            対象のクラスまたはインターフェース
      */
-    protected void addFields(final Class<?> clazz) {
+    protected void addFieldDescs(final Class<?> clazz) {
         for (final Field field : clazz.getDeclaredFields()) {
             final String fname = field.getName();
-            if (fieldCache.containsKey(fname)) {
+            if (fieldDescCache.containsKey(fname)) {
                 continue;
             }
             field.setAccessible(true);
-            fieldCache.put(fname, field);
+            final FieldDescImpl fieldDesc = new FieldDescImpl(this, field);
+            fieldDescCache.put(fname, fieldDesc);
             if (!FieldUtil.isInstanceField(field)) {
                 continue;
             }
             if (hasPropertyDesc(fname)) {
-                final PropertyDesc pd = getPropertyDesc(field.getName());
+                final PropertyDescImpl pd =
+                    propertyDescCache.get(field.getName());
                 pd.setField(field);
                 continue;
             }
             if (FieldUtil.isPublicField(field)) {
-                final PropertyDesc pd =
+                final PropertyDescImpl pd =
                     new PropertyDescImpl(
                         field.getName(),
                         field.getType(),

@@ -24,7 +24,7 @@ import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author y-komori
@@ -131,8 +131,8 @@ public class FieldUtilTest {
      */
     public void testGetKeyTypeOfMap() throws Exception {
         Field f = ClassUtil.getField(Baz.class, "map");
-        assertThat(FieldUtil.getKeyTypeOfMap(f), isSameClass(String.class));
-        assertThat(FieldUtil.getValueTypeOfMap(f), isSameClass(Integer.class));
+        assertThat(FieldUtil.getKeyTypeOfMap(f), is(sameClass(String.class)));
+        assertThat(FieldUtil.getValueTypeOfMap(f), is(sameClass(Integer.class)));
     }
 
     /**

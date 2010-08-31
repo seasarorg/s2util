@@ -51,14 +51,6 @@ public interface PropertyDesc {
     Method getReadMethod();
 
     /**
-     * getterメソッドを設定します。
-     * 
-     * @param readMethod
-     *            getterメソッド
-     */
-    void setReadMethod(Method readMethod);
-
-    /**
      * getterメソッドを持っているかどうか返します。
      * 
      * @return getterメソッドを持っているかどうか
@@ -71,14 +63,6 @@ public interface PropertyDesc {
      * @return setterメソッド
      */
     Method getWriteMethod();
-
-    /**
-     * setterメソッドを設定します。
-     * 
-     * @param writeMethod
-     *            setterメソッド
-     */
-    void setWriteMethod(Method writeMethod);
 
     /**
      * setterメソッドを持っているかどうか返します。
@@ -107,14 +91,6 @@ public interface PropertyDesc {
      * @return プロパティとして認識するpublicフィールド
      */
     Field getField();
-
-    /**
-     * プロパティとして認識しているpublicフィールドを設定します。
-     * 
-     * @param field
-     *            プロパティとして認識するpublicフィールド
-     */
-    void setField(Field field);
 
     /**
      * プロパティの値を返します。
@@ -156,37 +132,38 @@ public interface PropertyDesc {
     BeanDesc getBeanDesc();
 
     /**
-     * このプロパティがパラメタ化された型の場合に<code>true</code>を返します。
+     * このプロパティがパラメタ化された型の場合は{@literal true}を返します。
      * 
-     * @return このプロパティがパラメタ化された型の場合に<code>true</code>
+     * @return このプロパティがパラメタ化された型の場合は{@literal true}
      */
     boolean isParameterized();
 
     /**
      * このプロパティがパラメタ化された型の場合、その情報を返します。
      * 
-     * @return このプロパティがパラメタ化された型の場合、その情報
+     * @return このプロパティがパラメタ化された型の場合はその情報、そうでない場合は{@literal null}
      */
     ParameterizedClassDesc getParameterizedClassDesc();
 
     /**
      * このプロパティがパラメタ化された{@link Collection}の場合、その要素型を返します。
      * 
-     * @return このプロパティがパラメタ化された{@link Collection}の場合、その要素型
+     * @return このプロパティがパラメタ化された{@link Collection}の場合はその要素型、そうでない場合は
+     *         {@literal null}
      */
     Class<?> getElementClassOfCollection();
 
     /**
      * このプロパティがパラメタ化された{@link Map}の場合、そのキー型を返します。
      * 
-     * @return このプロパティがパラメタ化された{@link Map}の場合、そのキー型
+     * @return このプロパティがパラメタ化された{@link Map}の場合はそのキー型、そうでない場合は{@literal null}
      */
     Class<?> getKeyClassOfMap();
 
     /**
      * このプロパティがパラメタ化された{@link Map}の場合、その値型を返します。
      * 
-     * @return このプロパティがパラメタ化された{@link Map}の場合、その値型
+     * @return このプロパティがパラメタ化された{@link Map}の場合はその値型、そうでない場合は{@literal null}
      */
     Class<?> getValueClassOfMap();
 

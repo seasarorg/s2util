@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author koichik
@@ -47,7 +47,7 @@ public class GenericsUtilTest {
         assertThat(map.isEmpty(), is(false));
         assertThat(
             map.get(Foo.class.getTypeParameters()[0]),
-            isSameClass(Object.class));
+            is(sameClass(Object.class)));
     }
 
     /**
@@ -61,7 +61,7 @@ public class GenericsUtilTest {
         Method m = Fuga.class.getMethod("getFuga");
         Class<?> returnClass =
             GenericsUtil.getActualClass(m.getGenericReturnType(), map);
-        assertThat(returnClass, isSameClass(Object.class));
+        assertThat(returnClass, is(sameClass(Object.class)));
     }
 
     /**
@@ -71,10 +71,10 @@ public class GenericsUtilTest {
         Method m1 = ArrayType.class.getMethod("arrayOfStringClass");
         Type t1 = m1.getGenericReturnType();
         Type t2 = GenericsUtil.getElementTypeOfArray(t1);
-        assertThat(GenericsUtil.getRawClass(t2), isSameClass(Class.class));
+        assertThat(GenericsUtil.getRawClass(t2), is(sameClass(Class.class)));
         assertThat(
             GenericsUtil.getGenericParameter(t2, 0),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -86,7 +86,7 @@ public class GenericsUtilTest {
         assertThat(GenericsUtil.isTypeOf(t1, List.class), is(true));
         assertThat(
             GenericsUtil.getElementTypeOfList(t1),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
 
         Method m2 = ListType.class.getMethod("listOfClass");
         Type t2 = m2.getGenericReturnType();
@@ -98,9 +98,8 @@ public class GenericsUtilTest {
         Method m3 = ListType.class.getMethod("listOfWildcard");
         Type t3 = m3.getGenericReturnType();
         assertThat(GenericsUtil.isTypeOf(t3, List.class), is(true));
-        assertThat(
-            WildcardType.class.isInstance(GenericsUtil.getElementTypeOfList(t3)),
-            is(true));
+        assertThat(WildcardType.class.isInstance(GenericsUtil
+            .getElementTypeOfList(t3)), is(true));
     }
 
     /**
@@ -112,7 +111,7 @@ public class GenericsUtilTest {
         assertThat(GenericsUtil.isTypeOf(t1, Set.class), is(true));
         assertThat(
             GenericsUtil.getElementTypeOfSet(t1),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
 
         Method m2 = SetType.class.getMethod("setOfClass");
         Type t2 = m2.getGenericReturnType();
@@ -136,16 +135,22 @@ public class GenericsUtilTest {
         Method m1 = MapType.class.getMethod("mapOfStringToObject");
         Type t1 = m1.getGenericReturnType();
         assertThat(GenericsUtil.isTypeOf(t1, Map.class), is(true));
-        assertThat(GenericsUtil.getKeyTypeOfMap(t1), isSameClass(String.class));
-        assertThat(GenericsUtil.getValueTypeOfMap(t1), isSameClass(Object.class));
+        assertThat(
+            GenericsUtil.getKeyTypeOfMap(t1),
+            is(sameClass(String.class)));
+        assertThat(
+            GenericsUtil.getValueTypeOfMap(t1),
+            is(sameClass(Object.class)));
 
         Method m2 = MapType.class.getMethod("mapOfClassToString");
         Type t2 = m2.getGenericReturnType();
         assertThat(GenericsUtil.isTypeOf(t2, Map.class), is(true));
+        assertThat(GenericsUtil.isTypeOf(
+            GenericsUtil.getKeyTypeOfMap(t2),
+            Class.class), is(true));
         assertThat(
-            GenericsUtil.isTypeOf(GenericsUtil.getKeyTypeOfMap(t2), Class.class),
-            is(true));
-        assertThat(GenericsUtil.getValueTypeOfMap(t2), isSameClass(String.class));
+            GenericsUtil.getValueTypeOfMap(t2),
+            is(sameClass(String.class)));
 
         Method m3 = MapType.class.getMethod("mapOfWildcard");
         Type t3 = m3.getGenericReturnType();
@@ -168,16 +173,16 @@ public class GenericsUtilTest {
         Iterator<Entry<TypeVariable<?>, Type>> it = map.entrySet().iterator();
         Entry<TypeVariable<?>, Type> entry = it.next();
         assertThat(entry.getKey().getName(), is("T1"));
-        assertThat(entry.getValue(), isSameClass(Integer.class));
+        assertThat(entry.getValue(), is(sameClass(Integer.class)));
         entry = it.next();
         assertThat(entry.getKey().getName(), is("T2"));
-        assertThat(entry.getValue(), isSameClass(Long.class));
+        assertThat(entry.getValue(), is(sameClass(Long.class)));
         entry = it.next();
         assertThat(entry.getKey().getName(), is("T1"));
-        assertThat(entry.getValue(), isSameClass(String.class));
+        assertThat(entry.getValue(), is(sameClass(String.class)));
         entry = it.next();
         assertThat(entry.getKey().getName(), is("T2"));
-        assertThat(entry.getValue(), isSameClass(Boolean.class));
+        assertThat(entry.getValue(), is(sameClass(Boolean.class)));
     }
 
     /**
@@ -190,30 +195,30 @@ public class GenericsUtilTest {
         Method method = Hoge.class.getMethod("foo", Object.class);
         assertThat(GenericsUtil.getActualClass(
             method.getGenericParameterTypes()[0],
-            map), isSameClass(Integer.class));
+            map), is(sameClass(Integer.class)));
         assertThat(
             GenericsUtil.getActualClass(method.getGenericReturnType(), map),
-            isSameClass(Long.class));
+            is(sameClass(Long.class)));
 
         method = Hoge.class.getMethod("array");
         assertThat(
             GenericsUtil.getActualClass(method.getGenericReturnType(), map),
-            isSameClass(String[].class));
+            is(sameClass(String[].class)));
 
         method = Hoge.class.getMethod("list");
         assertThat(
             GenericsUtil.getActualClass(method.getGenericReturnType(), map),
-            isSameClass(List.class));
+            is(sameClass(List.class)));
 
         method = Hoge.class.getMethod("set");
         assertThat(
             GenericsUtil.getActualClass(method.getGenericReturnType(), map),
-            isSameClass(Set.class));
+            is(sameClass(Set.class)));
 
         method = Hoge.class.getMethod("map");
         assertThat(
             GenericsUtil.getActualClass(method.getGenericReturnType(), map),
-            isSameClass(Map.class));
+            is(sameClass(Map.class)));
     }
 
     /**
@@ -227,7 +232,7 @@ public class GenericsUtilTest {
             GenericsUtil.getActualElementClassOfArray(
                 method.getGenericReturnType(),
                 map),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -241,7 +246,7 @@ public class GenericsUtilTest {
             GenericsUtil.getActualElementClassOfList(
                 method.getGenericReturnType(),
                 map),
-            isSameClass(Boolean.class));
+            is(sameClass(Boolean.class)));
     }
 
     /**
@@ -255,7 +260,7 @@ public class GenericsUtilTest {
             GenericsUtil.getActualElementClassOfSet(
                 method.getGenericReturnType(),
                 map),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -267,7 +272,7 @@ public class GenericsUtilTest {
         Method method = Hoge.class.getMethod("map");
         assertThat(GenericsUtil.getActualKeyClassOfMap(
             method.getGenericReturnType(),
-            map), isSameClass(String.class));
+            map), is(sameClass(String.class)));
     }
 
     /**
@@ -279,7 +284,7 @@ public class GenericsUtilTest {
         Method method = Hoge.class.getMethod("map");
         assertThat(GenericsUtil.getActualValueClassOfMap(
             method.getGenericReturnType(),
-            map), isSameClass(Boolean.class));
+            map), is(sameClass(Boolean.class)));
     }
 
     /**

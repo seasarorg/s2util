@@ -15,8 +15,6 @@
  */
 package org.seasar.util.beans.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +23,8 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.FieldDesc;
+import org.seasar.util.beans.MethodDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
@@ -32,7 +32,7 @@ import org.seasar.util.exception.MethodNotFoundRuntimeException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author higa
@@ -49,86 +49,29 @@ public class BeanDescImplTest {
         assertThat(beanDesc.getPropertyDescSize(), is(5));
         PropertyDesc propDesc = beanDesc.getPropertyDesc("aaa");
         assertThat(propDesc.getPropertyName(), is("aaa"));
-        assertThat(propDesc.getPropertyType(), isSameClass(String.class));
+        assertThat(propDesc.getPropertyType(), is(sameClass(String.class)));
         assertThat(propDesc.getReadMethod(), is(notNullValue()));
         assertThat(propDesc.getWriteMethod(), is(nullValue()));
         assertThat(propDesc.getField(), is(notNullValue()));
 
         propDesc = beanDesc.getPropertyDesc("CCC");
         assertThat(propDesc.getPropertyName(), is("CCC"));
-        assertThat(propDesc.getPropertyType(), isSameClass(boolean.class));
+        assertThat(propDesc.getPropertyType(), is(sameClass(boolean.class)));
         assertThat(propDesc.getReadMethod(), is(notNullValue()));
         assertThat(propDesc.getWriteMethod(), is(nullValue()));
 
         propDesc = beanDesc.getPropertyDesc("eee");
         assertThat(propDesc.getPropertyName(), is("eee"));
-        assertThat(propDesc.getPropertyType(), isSameClass(String.class));
+        assertThat(propDesc.getPropertyType(), is(sameClass(String.class)));
         assertThat(propDesc.getReadMethod(), is(notNullValue()));
         assertThat(propDesc.getWriteMethod(), is(notNullValue()));
 
         propDesc = beanDesc.getPropertyDesc("fff");
         assertThat(propDesc.getPropertyName(), is("fff"));
-        assertThat(propDesc.getPropertyType(), isSameClass(Boolean.class));
+        assertThat(propDesc.getPropertyType(), is(sameClass(Boolean.class)));
 
         assertThat(beanDesc.hasPropertyDesc("hhh"), is(not(true)));
         assertThat(beanDesc.hasPropertyDesc("iii"), is(not(true)));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testInvoke() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat((Integer) beanDesc.invoke(new MyBean(), "add", 1, 2), is(3));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testInvoke2() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat((Integer) beanDesc.invoke(new MyBean(), "add2", 1, 2), is(3));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testInvoke3() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(Math.class);
-        assertThat((Integer) beanDesc.invokeStatic("max", 1, 3), is(3));
-        assertThat((Long) beanDesc.invokeStatic("max", 1L, 2L), is(2L));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testInvoke4() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(Math.class);
-        assertThat(
-            (Double) beanDesc.invokeStatic("ceil", new BigDecimal(2.1)),
-            is(3d));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testInvoke5() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat((Integer) beanDesc.invoke(new MyBean(), "echo", 3d), is(3));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test(expected = IllegalStateException.class)
-    public void testInvokeForException() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        beanDesc.invoke(new MyBean(), "throwException");
     }
 
     /**
@@ -154,58 +97,35 @@ public class BeanDescImplTest {
      * @throws Exception
      */
     @Test
-    public void testGetFields() throws Exception {
+    public void testGetFieldDescs() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat(beanDesc.hasField("HOGE"), is(true));
-        Field field = beanDesc.getField("HOGE");
-        assertThat((String) field.get(null), is("hoge2"));
-        assertThat(beanDesc.hasField("aaa"), is(true));
-        assertThat(beanDesc.hasField("aaA"), is(not(true)));
+        assertThat(beanDesc.hasFieldDesc("HOGE"), is(true));
+        FieldDesc fieldDesc = beanDesc.getFieldDesc("HOGE");
+        assertThat(fieldDesc.getFieldName(), is("HOGE"));
+        assertThat(beanDesc.hasFieldDesc("aaa"), is(true));
+        assertThat(beanDesc.hasFieldDesc("aaA"), is(not(true)));
     }
 
     /**
      * @throws Exception
      */
     @Test
-    public void testGetFieldValue() throws Exception {
+    public void testHasMethodDesc() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        MyBean bean = new MyBean();
-        assertThat(beanDesc.hasField("HOGE"), is(true));
-        assertThat(beanDesc.getFieldValue("aaa", bean), is(nullValue()));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testSetFieldValue() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat(beanDesc.hasField("aaa"), is(true));
-        MyBean bean = new MyBean();
-        beanDesc.setFieldValue("aaa", bean, "MOGE");
-        assertThat(beanDesc.getFieldValue("aaa", bean), is((Object) "MOGE"));
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testHasMethod() throws Exception {
-        BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        assertThat(beanDesc.hasMethod("getAaa"), is(true));
-        assertThat(beanDesc.hasMethod("getaaa"), is(not(true)));
+        assertThat(beanDesc.hasMethodDesc("getAaa"), is(true));
+        assertThat(beanDesc.hasMethodDesc("getaaa"), is(not(true)));
     }
 
     /**
      * @throws Exception
      */
     @Test(expected = MethodNotFoundRuntimeException.class)
-    public void testGetMethod() throws Exception {
+    public void testGetMethodDesc() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        Method method = beanDesc.getMethod("getAaa");
-        assertThat(method, is(notNullValue()));
-        assertThat(method.getName(), is("getAaa"));
-        beanDesc.getMethod("getaaa");
+        MethodDesc methodDesc = beanDesc.getMethodDesc("getAaa");
+        assertThat(methodDesc, is(notNullValue()));
+        assertThat(methodDesc.getMethodName(), is("getAaa"));
+        beanDesc.getMethodDesc("getaaa");
     }
 
     /**
@@ -214,11 +134,11 @@ public class BeanDescImplTest {
     @Test
     public void testGetMethodNoException() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        Method method = beanDesc.getMethodNoException("getAaa");
-        assertThat(method, is(notNullValue()));
-        assertThat(method.getName(), is("getAaa"));
-        method = beanDesc.getMethodNoException("getaaa");
-        assertThat(method, is(nullValue()));
+        MethodDesc methodDesc = beanDesc.getMethodDescNoException("getAaa");
+        assertThat(methodDesc, is(notNullValue()));
+        assertThat(methodDesc.getMethodName(), is("getAaa"));
+        methodDesc = beanDesc.getMethodDescNoException("getaaa");
+        assertThat(methodDesc, is(nullValue()));
     }
 
     /**
@@ -249,12 +169,12 @@ public class BeanDescImplTest {
     @Test
     public void testAddFields() throws Exception {
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
-        Field eee = beanDesc.getField("eee");
-        assertThat(eee.isAccessible(), is(true));
+        FieldDesc eee = beanDesc.getFieldDesc("eee");
+        assertThat(eee.getField().isAccessible(), is(true));
         PropertyDesc pd = beanDesc.getPropertyDesc("ggg");
         assertThat(pd, is(notNullValue()));
         assertThat(pd.getPropertyName(), is("ggg"));
-        assertThat(pd.getPropertyType(), isSameClass(String.class));
+        assertThat(pd.getPropertyType(), is(sameClass(String.class)));
     }
 
     /**
@@ -264,37 +184,43 @@ public class BeanDescImplTest {
         BeanDesc bd = BeanDescFactory.getBeanDesc(Hoge.class);
         PropertyDesc pd = bd.getPropertyDesc("foo");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getElementClassOfCollection(), isSameClass(String.class));
+        assertThat(
+            pd.getElementClassOfCollection(),
+            is(sameClass(String.class)));
 
         ParameterizedClassDesc pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(List.class));
+        assertThat(pcd.getRawClass(), is(sameClass(List.class)));
         assertThat(pcd.getArguments().length, is(1));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
 
         pd = bd.getPropertyDesc("hoge");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getElementClassOfCollection(), isSameClass(Object.class));
+        assertThat(
+            pd.getElementClassOfCollection(),
+            is(sameClass(Object.class)));
 
         pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(List.class));
+        assertThat(pcd.getRawClass(), is(sameClass(List.class)));
         assertThat(pcd.getArguments().length, is(1));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(Object.class));
+            is(sameClass(Object.class)));
 
         bd = BeanDescFactory.getBeanDesc(Bar.class);
         pd = bd.getPropertyDesc("list");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getElementClassOfCollection(), isSameClass(String.class));
+        assertThat(
+            pd.getElementClassOfCollection(),
+            is(sameClass(String.class)));
 
         pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(List.class));
+        assertThat(pcd.getRawClass(), is(sameClass(List.class)));
         assertThat(pcd.getArguments().length, is(1));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
     }
 
     /**
@@ -304,23 +230,27 @@ public class BeanDescImplTest {
         BeanDesc bd = BeanDescFactory.getBeanDesc(Hoge.class);
         PropertyDesc pd = bd.getPropertyDesc("bar");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getElementClassOfCollection(), isSameClass(Integer.class));
+        assertThat(
+            pd.getElementClassOfCollection(),
+            is(sameClass(Integer.class)));
 
         ParameterizedClassDesc pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(Set.class));
+        assertThat(pcd.getRawClass(), is(sameClass(Set.class)));
         assertThat(pcd.getArguments().length, is(1));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(Integer.class));
+            is(sameClass(Integer.class)));
 
         pd = bd.getPropertyDesc("fuga");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getElementClassOfCollection(), isSameClass(Enum.class));
+        assertThat(pd.getElementClassOfCollection(), is(sameClass(Enum.class)));
 
         pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(Set.class));
+        assertThat(pcd.getRawClass(), is(sameClass(Set.class)));
         assertThat(pcd.getArguments().length, is(1));
-        assertThat(pcd.getArguments()[0].getRawClass(), isSameClass(Enum.class));
+        assertThat(
+            pcd.getArguments()[0].getRawClass(),
+            is(sameClass(Enum.class)));
     }
 
     /**
@@ -330,31 +260,33 @@ public class BeanDescImplTest {
         BeanDesc bd = BeanDescFactory.getBeanDesc(Hoge.class);
         PropertyDesc pd = bd.getPropertyDesc("baz");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getKeyClassOfMap(), isSameClass(String.class));
-        assertThat(pd.getValueClassOfMap(), isSameClass(Date.class));
+        assertThat(pd.getKeyClassOfMap(), is(sameClass(String.class)));
+        assertThat(pd.getValueClassOfMap(), is(sameClass(Date.class)));
 
         ParameterizedClassDesc pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(Map.class));
+        assertThat(pcd.getRawClass(), is(sameClass(Map.class)));
         assertThat(pcd.getArguments().length, is(2));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(String.class));
-        assertThat(pcd.getArguments()[1].getRawClass(), isSameClass(Date.class));
+            is(sameClass(String.class)));
+        assertThat(
+            pcd.getArguments()[1].getRawClass(),
+            is(sameClass(Date.class)));
 
         pd = bd.getPropertyDesc("hege");
         assertThat(pd.isParameterized(), is(true));
-        assertThat(pd.getKeyClassOfMap(), isSameClass(String.class));
-        assertThat(pd.getValueClassOfMap(), isSameClass(Number.class));
+        assertThat(pd.getKeyClassOfMap(), is(sameClass(String.class)));
+        assertThat(pd.getValueClassOfMap(), is(sameClass(Number.class)));
 
         pcd = pd.getParameterizedClassDesc();
-        assertThat(pcd.getRawClass(), isSameClass(Map.class));
+        assertThat(pcd.getRawClass(), is(sameClass(Map.class)));
         assertThat(pcd.getArguments().length, is(2));
         assertThat(
             pcd.getArguments()[0].getRawClass(),
-            isSameClass(String.class));
+            is(sameClass(String.class)));
         assertThat(
             pcd.getArguments()[1].getRawClass(),
-            isSameClass(Number.class));
+            is(sameClass(Number.class)));
     }
 
     /**
@@ -364,7 +296,6 @@ public class BeanDescImplTest {
         /**
          * 
          */
-        @SuppressWarnings("hiding")
         String HOGE = "hoge";
     }
 
@@ -375,7 +306,6 @@ public class BeanDescImplTest {
         /**
          * 
          */
-        @SuppressWarnings("hiding")
         String HOGE = "hoge2";
     }
 

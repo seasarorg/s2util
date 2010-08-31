@@ -136,7 +136,7 @@ public abstract class MethodUtil {
      * @return <code>final </code>かどうか
      */
     public static boolean isFinal(final Method method) {
-        return Modifier.isPublic(method.getModifiers());
+        return Modifier.isFinal(method.getModifiers());
     }
 
     /**
@@ -279,7 +279,8 @@ public abstract class MethodUtil {
      */
     public static Class<?> getKeyTypeOfMapFromReturnType(final Method method) {
         final Type returnType = method.getGenericReturnType();
-        return GenericsUtil.getRawClass(GenericsUtil.getKeyTypeOfMap(returnType));
+        return GenericsUtil.getRawClass(GenericsUtil
+            .getKeyTypeOfMap(returnType));
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.seasar.util.beans.factory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -50,10 +51,7 @@ public abstract class ParameterizedClassDescFactory {
     }
 
     /**
-     * フィールドの型をを表現する{@link ParameterizedClassDesc}を作成して返します。
-     * <p>
-     * フィールドがパラメタ化されていない場合は<code>null</code>を返します。
-     * </p>
+     * フィールドの型を表現する{@link ParameterizedClassDesc}を作成して返します。
      * 
      * @param field
      *            フィールド
@@ -67,10 +65,26 @@ public abstract class ParameterizedClassDescFactory {
     }
 
     /**
+     * コンストラクタの引数型を表現する{@link ParameterizedClassDesc}を作成して返します。
+     * 
+     * @param constructor
+     *            コンストラクタ
+     * @param index
+     *            引数の位置
+     * @param map
+     *            パラメータ化された型が持つ型変数をキー、型引数を値とする{@link Map}
+     * @return メソッドの引数型を表現する{@link ParameterizedClassDesc}
+     */
+    public static ParameterizedClassDesc createParameterizedClassDesc(
+            final Constructor<?> constructor, final int index,
+            final Map<TypeVariable<?>, Type> map) {
+        return createParameterizedClassDesc(
+            constructor.getGenericParameterTypes()[index],
+            map);
+    }
+
+    /**
      * メソッドの引数型を表現する{@link ParameterizedClassDesc}を作成して返します。
-     * <p>
-     * メソッドの引数がパラメタ化されていない場合は<code>null</code>を返します。
-     * </p>
      * 
      * @param method
      *            メソッド
@@ -90,9 +104,6 @@ public abstract class ParameterizedClassDescFactory {
 
     /**
      * メソッドの戻り値型を表現する{@link ParameterizedClassDesc}を作成して返します。
-     * <p>
-     * メソッドの戻り値型がパラメタ化されていない場合は<code>null</code>を返します。
-     * </p>
      * 
      * @param method
      *            メソッド

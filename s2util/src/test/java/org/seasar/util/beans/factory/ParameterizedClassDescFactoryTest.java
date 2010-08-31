@@ -28,7 +28,7 @@ import org.seasar.util.beans.ParameterizedClassDesc;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.seasar.util.lang.ClassUtilTest.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author koichik
@@ -47,23 +47,23 @@ public class ParameterizedClassDescFactoryTest {
             ParameterizedClassDescFactory.createParameterizedClassDesc(
                 field,
                 map);
-        assertThat(desc.getRawClass(), isSameClass(Map.class));
+        assertThat(desc.getRawClass(), is(sameClass(Map.class)));
 
         ParameterizedClassDesc[] args = desc.getArguments();
         assertThat(args.length, is(2));
 
         ParameterizedClassDesc arg1 = args[0];
-        assertThat(arg1.getRawClass(), isSameClass(String.class));
+        assertThat(arg1.getRawClass(), is(sameClass(String.class)));
         assertThat(arg1.getArguments(), is(nullValue()));
 
         ParameterizedClassDesc arg2 = args[1];
-        assertThat(arg2.getRawClass(), isSameClass(Set[].class));
+        assertThat(arg2.getRawClass(), is(sameClass(Set[].class)));
 
         ParameterizedClassDesc[] args2 = arg2.getArguments();
         assertThat(args2.length, is(1));
 
         ParameterizedClassDesc arg2_1 = args2[0];
-        assertThat(arg2_1.getRawClass(), isSameClass(Integer.class));
+        assertThat(arg2_1.getRawClass(), is(sameClass(Integer.class)));
     }
 
     /**
@@ -79,22 +79,22 @@ public class ParameterizedClassDescFactoryTest {
                 method,
                 0,
                 map);
-        assertThat(desc.getRawClass(), isSameClass(Set.class));
+        assertThat(desc.getRawClass(), is(sameClass(Set.class)));
         ParameterizedClassDesc[] args = desc.getArguments();
         assertThat(args.length, is(1));
-        assertThat(args[0].getRawClass(), isSameClass(Integer.class));
+        assertThat(args[0].getRawClass(), is(sameClass(Integer.class)));
 
         desc =
             ParameterizedClassDescFactory.createParameterizedClassDesc(
                 method,
                 1,
                 map);
-        assertThat(desc.getRawClass(), isSameClass(Map.class));
+        assertThat(desc.getRawClass(), is(sameClass(Map.class)));
         args = desc.getArguments();
         assertThat(args.length, is(2));
-        assertThat(args[0].getRawClass(), isSameClass(String.class));
+        assertThat(args[0].getRawClass(), is(sameClass(String.class)));
         assertThat(args[0].getArguments(), is(nullValue()));
-        assertThat(args[1].getRawClass(), isSameClass(Integer.class));
+        assertThat(args[1].getRawClass(), is(sameClass(Integer.class)));
         assertThat(args[1].getArguments(), is(nullValue()));
     }
 
@@ -110,10 +110,10 @@ public class ParameterizedClassDescFactoryTest {
             ParameterizedClassDescFactory.createParameterizedClassDesc(
                 method,
                 map);
-        assertThat(desc.getRawClass(), isSameClass(List.class));
+        assertThat(desc.getRawClass(), is(sameClass(List.class)));
         ParameterizedClassDesc[] args = desc.getArguments();
         assertThat(args.length, is(1));
-        assertThat(args[0].getRawClass(), isSameClass(String.class));
+        assertThat(args[0].getRawClass(), is(sameClass(String.class)));
         assertThat(args[0].getArguments(), is(nullValue()));
     }
 

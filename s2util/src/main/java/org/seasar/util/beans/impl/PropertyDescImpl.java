@@ -189,8 +189,13 @@ public class PropertyDescImpl implements PropertyDesc {
         return readMethod;
     }
 
-    @Override
-    public final void setReadMethod(final Method readMethod) {
+    /**
+     * getterメソッドを設定します。
+     * 
+     * @param readMethod
+     *            getterメソッド
+     */
+    protected final void setReadMethod(final Method readMethod) {
         this.readMethod = readMethod;
         if (readMethod != null) {
             readable = true;
@@ -208,8 +213,13 @@ public class PropertyDescImpl implements PropertyDesc {
         return writeMethod;
     }
 
-    @Override
-    public final void setWriteMethod(final Method writeMethod) {
+    /**
+     * setterメソッドを設定します。
+     * 
+     * @param writeMethod
+     *            setterメソッド
+     */
+    protected final void setWriteMethod(final Method writeMethod) {
         this.writeMethod = writeMethod;
         if (writeMethod != null) {
             writable = true;
@@ -227,7 +237,12 @@ public class PropertyDescImpl implements PropertyDesc {
         return field;
     }
 
-    @Override
+    /**
+     * プロパティとして認識しているpublicフィールドを設定します。
+     * 
+     * @param field
+     *            プロパティとして認識するpublicフィールド
+     */
     public void setField(final Field field) {
         this.field = field;
         if (field != null && ModifierUtil.isPublic(field)) {
