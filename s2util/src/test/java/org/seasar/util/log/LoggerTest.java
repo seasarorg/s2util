@@ -15,7 +15,10 @@
  */
 package org.seasar.util.log;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -26,6 +29,12 @@ import static org.seasar.util.log.Logger.*;
  * 
  */
 public class LoggerTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private Logger logger = Logger.getLogger(getClass());
 
@@ -130,4 +139,18 @@ public class LoggerTest {
         System.out.println("System.out:" + sysout);
         System.out.println("logger:" + logger);
     }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.log.Logger#format(String, Object...)} .
+     */
+    @SuppressWarnings("static-access")
+    @Test
+    public void testFormat() {
+        exception.expect(SIllegalArgumentException.class);
+        exception
+            .expectMessage(is("[EUTL0009]引数[AUTL0009]が不正です。理由はmessageCode : AUTL0009"));
+        logger.format("AUTL0009", "hoge");
+    }
+
 }

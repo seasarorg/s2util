@@ -17,6 +17,7 @@ package org.seasar.util.log;
 
 import java.util.Map;
 
+import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.message.MessageFormatter;
 import org.seasar.util.misc.Disposable;
 import org.seasar.util.misc.DisposableUtil;
@@ -103,7 +104,8 @@ public class Logger {
         case 'F':
             return new LogMessage(LogLevel.FATAL, message);
         default:
-            throw new IllegalArgumentException("messageCode : " + messageCode);
+            throw new SIllegalArgumentException("EUTL0009", new Object[] {
+                messageCode, "messageCode : " + messageCode });
         }
     }
 
@@ -376,7 +378,8 @@ public class Logger {
         case FATAL:
             return log.isFatalEnabled();
         default:
-            throw new IllegalArgumentException("logLevel : " + logLevel);
+            throw new SIllegalArgumentException("EUTL0009", new Object[] {
+                logLevel, "logLevel : " + logLevel });
         }
     }
 
