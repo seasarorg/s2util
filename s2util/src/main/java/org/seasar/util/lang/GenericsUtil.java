@@ -99,19 +99,27 @@ public abstract class GenericsUtil {
     /**
      * <code>type</code>の型引数の配列を返します。
      * <p>
+     * <code>type</code>が配列型の場合はその要素型(それが配列の場合はさらにその要素型)を対象とします。
+     * </p>
+     * <p>
+     * <code>type</code>がパラメータ化された型であっても、直接型引数を持たない場合は空の配列を返します。
+     * パラメータ化された型の中にネストされた、型引数を持たない型などがその例です。
+     * </p>
+     * <p>
      * <code>type</code>がパラメータ化された型でない場合は<code>null</code>を返します。
      * </p>
      * 
      * @param type
      *            タイプ
      * @return <code>type</code>の型引数の配列
+     * @see ParameterizedType#getActualTypeArguments()
      */
-    public static Type[] getGenericParameter(final Type type) {
+    public static Type[] getGenericParameters(final Type type) {
         if (ParameterizedType.class.isInstance(type)) {
             return ParameterizedType.class.cast(type).getActualTypeArguments();
         }
         if (GenericArrayType.class.isInstance(type)) {
-            return getGenericParameter(GenericArrayType.class
+            return getGenericParameters(GenericArrayType.class
                 .cast(type)
                 .getGenericComponentType());
         }
@@ -134,7 +142,7 @@ public abstract class GenericsUtil {
         if (!ParameterizedType.class.isInstance(type)) {
             return null;
         }
-        final Type[] genericParameter = getGenericParameter(type);
+        final Type[] genericParameter = getGenericParameters(type);
         if (genericParameter == null) {
             return null;
         }

@@ -122,7 +122,7 @@ public abstract class ParameterizedClassDescFactory {
         }
         final ParameterizedClassDescImpl desc =
             new ParameterizedClassDescImpl(rowClass);
-        final Type[] parameterTypes = getGenericParameter(type);
+        final Type[] parameterTypes = getGenericParameters(type);
         if (parameterTypes == null) {
             return desc;
         }
