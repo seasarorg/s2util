@@ -396,9 +396,12 @@ public class CopyOptions {
         }
         Converter converter = converterMap.get(destPropertyName);
         if (converter == null) {
-            final Class<?> targetClass =
-                value.getClass() != String.class ? value.getClass()
-                    : destPropertyClass;
+            final Class<?> targetClass;
+            if (value.getClass() != String.class) {
+                targetClass = value.getClass();
+            } else {
+                targetClass = destPropertyClass;
+            }
             if (targetClass == null) {
                 return value;
             }

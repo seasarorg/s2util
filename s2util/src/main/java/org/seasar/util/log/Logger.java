@@ -136,8 +136,8 @@ public class Logger {
             Class.forName("org.apache.commons.logging.LogFactory");
             return new JclLoggerAdapterFactory();
         } catch (final Throwable ignore) {
+            return new JulLoggerAdapterFactory();
         }
-        return new JulLoggerAdapterFactory();
     }
 
     /**

@@ -73,9 +73,10 @@ public abstract class MessageFormatter {
             if (pattern != null) {
                 return MessageFormat.format(pattern, args);
             }
+            return getNoPatternMessage(args);
         } catch (final Throwable ignore) {
+            return getNoPatternMessage(args);
         }
-        return getNoPatternMessage(args);
     }
 
     /**
