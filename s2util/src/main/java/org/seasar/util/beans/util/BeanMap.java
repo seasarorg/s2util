@@ -17,6 +17,8 @@ package org.seasar.util.beans.util;
 
 import java.util.LinkedHashMap;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * Stringがキーで、存在しないキーにアクセスする(get)と例外を投げるマップです。
  * 
@@ -28,10 +30,8 @@ public class BeanMap extends LinkedHashMap<String, Object> {
 
     @Override
     public Object get(final Object key) {
-        if (!containsKey(key)) {
-            throw new IllegalArgumentException(key + " is not found in "
-                + keySet());
-        }
+        assertArgument("key", containsKey(key), key + " is not found in "
+            + keySet());
         return super.get(key);
     }
 

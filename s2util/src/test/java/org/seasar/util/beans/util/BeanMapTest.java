@@ -15,7 +15,10 @@
  */
 package org.seasar.util.beans.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -24,6 +27,12 @@ import static org.junit.Assert.*;
  * @author higa
  */
 public class BeanMapTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * @throws Exception
@@ -39,8 +48,11 @@ public class BeanMapTest {
     /**
      * @throws Exception
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGet_NotContains() throws Exception {
+        exception.expect(SIllegalArgumentException.class);
+        exception
+            .expectMessage(is("[EUTL0009]引数[key]が不正です。理由はxxx is not found in [aaa, bbb]"));
         BeanMap map = new BeanMap();
         map.put("aaa", 1);
         map.put("bbb", 2);
