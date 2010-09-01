@@ -21,46 +21,46 @@ import java.io.Reader;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Reader}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class ReaderUtil {
+public abstract class ReaderUtil {
 
     private static final int BUF_SIZE = 8192;
 
     /**
-     * インスタンスを構築します。
-     */
-    protected ReaderUtil() {
-    }
-
-    /**
-     * テキストを読み込みます。
+     * {@link Reader}からテキストを読み込みます。
+     * <p>
+     * {@link Reader}はクローズされます。
+     * </p>
      * 
      * @param reader
+     *            読み込み文字ストリーム
      * @return テキスト
-     * @throws IORuntimeException
      */
-    public static String readText(Reader reader) throws IORuntimeException {
-        BufferedReader in = new BufferedReader(reader);
-        StringBuilder out = new StringBuilder(100);
+    public static String readText(final Reader reader) {
+        assertArgumentNotNull("reader", reader);
+
+        final StringBuilder out = new StringBuilder(BUF_SIZE);
         try {
+            final BufferedReader in = new BufferedReader(reader);
             try {
-                char[] buf = new char[BUF_SIZE];
+                final char[] buf = new char[BUF_SIZE];
                 int n;
                 while ((n = in.read(buf)) >= 0) {
                     out.append(buf, 0, n);
                 }
             } finally {
-                in.close();
+                CloseableUtil.close(in);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
-        return out.toString();
+        return new String(out);
     }
 
 }

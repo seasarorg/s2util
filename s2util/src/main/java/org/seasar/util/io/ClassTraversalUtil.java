@@ -25,6 +25,7 @@ import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
 
 import static org.seasar.util.collection.EnumerationIterator.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * クラスを横断して処理するためのハンドラです。
@@ -55,6 +56,9 @@ public abstract class ClassTraversalUtil {
      *            クラスを処理するハンドラ
      */
     public static void forEach(final File rootDir, final ClassHandler handler) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("handler", handler);
+
         forEach(rootDir, null, handler);
     }
 
@@ -70,6 +74,9 @@ public abstract class ClassTraversalUtil {
      */
     public static void forEach(final File rootDir, final String rootPackage,
             final ClassHandler handler) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("handler", handler);
+
         final File packageDir = getPackageDir(rootDir, rootPackage);
         if (packageDir.exists()) {
             traverseFileSystem(packageDir, rootPackage, handler);
@@ -92,6 +99,9 @@ public abstract class ClassTraversalUtil {
      *            クラスを処理するハンドラ
      */
     public static void forEach(final JarFile jarFile, final ClassHandler handler) {
+        assertArgumentNotNull("jarFile", jarFile);
+        assertArgumentNotNull("handler", handler);
+
         if (jarFile.getName().toLowerCase().endsWith(WAR_FILE_EXTENSION)) {
             forEach(jarFile, WEB_INF_CLASSES_PATH, handler);
         } else {
@@ -117,6 +127,10 @@ public abstract class ClassTraversalUtil {
      */
     public static void forEach(final JarFile jarFile, final String prefix,
             final ClassHandler handler) {
+        assertArgumentNotNull("jarFile", jarFile);
+        assertArgumentNotNull("prefix", prefix);
+        assertArgumentNotNull("handler", handler);
+
         final int startPos = prefix.length();
         for (final JarEntry entry : iterable(jarFile.entries())) {
             final String entryName = entry.getName().replace('\\', '/');
@@ -148,6 +162,9 @@ public abstract class ClassTraversalUtil {
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final ClassHandler handler) {
+        assertArgumentNotNull("zipInputStream", zipInputStream);
+        assertArgumentNotNull("handler", handler);
+
         forEach(zipInputStream, "", handler);
     }
 
@@ -169,6 +186,10 @@ public abstract class ClassTraversalUtil {
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final String prefix, final ClassHandler handler) {
+        assertArgumentNotNull("zipInputStream", zipInputStream);
+        assertArgumentNotNull("prefix", prefix);
+        assertArgumentNotNull("handler", handler);
+
         final int startPos = prefix.length();
         ZipEntry entry = null;
         while ((entry = ZipInputStreamUtil.getNextEntry(zipInputStream)) != null) {
@@ -207,6 +228,9 @@ public abstract class ClassTraversalUtil {
      */
     protected static void traverseFileSystem(final File dir,
             final String packageName, final ClassHandler handler) {
+        assertArgumentNotNull("dir", dir);
+        assertArgumentNotNull("handler", handler);
+
         for (final File file : dir.listFiles()) {
             final String fileName = file.getName();
             if (file.isDirectory()) {
@@ -235,6 +259,8 @@ public abstract class ClassTraversalUtil {
      */
     protected static File getPackageDir(final File rootDir,
             final String rootPackage) {
+        assertArgumentNotNull("rootDir", rootDir);
+
         File packageDir = rootDir;
         if (rootPackage != null) {
             for (final String name : rootPackage.split("\\.")) {

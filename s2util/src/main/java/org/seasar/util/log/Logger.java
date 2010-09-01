@@ -22,6 +22,7 @@ import org.seasar.util.message.MessageFormatter;
 import org.seasar.util.misc.Disposable;
 import org.seasar.util.misc.DisposableUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
@@ -104,8 +105,10 @@ public class Logger {
         case 'F':
             return new LogMessage(LogLevel.FATAL, message);
         default:
-            throw new SIllegalArgumentException("EUTL0009", new Object[] {
-                messageCode, "messageCode : " + messageCode });
+            throw new SIllegalArgumentException(
+                "messageCode",
+                "EUTL0009",
+                asArray(messageCode, "messageCode : " + messageCode));
         }
     }
 
@@ -378,8 +381,10 @@ public class Logger {
         case FATAL:
             return log.isFatalEnabled();
         default:
-            throw new SIllegalArgumentException("EUTL0009", new Object[] {
-                logLevel, "logLevel : " + logLevel });
+            throw new SIllegalArgumentException(
+                "logLevel",
+                "EUTL0009",
+                asArray(logLevel, logLevel));
         }
     }
 

@@ -449,6 +449,94 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final boolean[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final byte[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final short[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final int[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final long[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final float[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final double[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isEmpty(final char[] arrays) {
+        return (arrays == null || arrays.length == 0);
+    }
+
+    /**
      * 配列にオブジェクトが含まれていれば{@literal true}を返します。
      * 
      * @param <T>

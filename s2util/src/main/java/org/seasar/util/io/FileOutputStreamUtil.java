@@ -21,34 +21,31 @@ import java.io.IOException;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link FileOutputStream}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class FileOutputStreamUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected FileOutputStreamUtil() {
-    }
+public abstract class FileOutputStreamUtil {
 
     /**
      * {@link FileOutputStream}を作成します。
      * 
      * @param file
-     * @return {@link FileOutputStream}
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
+     *            ファイル
+     * @return ファイルへ出力する{@link FileOutputStream}
      * @see FileOutputStream#FileOutputStream(File)
      */
-    public static FileOutputStream create(File file) throws IORuntimeException {
+    public static FileOutputStream create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new FileOutputStream(file);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }

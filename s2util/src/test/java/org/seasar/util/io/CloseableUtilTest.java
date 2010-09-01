@@ -18,43 +18,41 @@ package org.seasar.util.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import org.seasar.util.exception.IORuntimeException;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author shot
  */
-public class OutputStreamUtilTest extends TestCase {
+public class CloseableUtilTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testClose() throws Exception {
         NotifyOutputStream out = new NotifyOutputStream();
-        OutputStreamUtil.close(out);
-        assertEquals("closed", out.getNotify());
+        CloseableUtil.close(out);
+        assertThat(out.getNotify(), is("closed"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testCloseNull() throws Exception {
-        OutputStreamUtil.close((OutputStream) null);
-        assertTrue(true);
+        CloseableUtil.close((OutputStream) null);
     }
 
     /**
      * @throws Exception
      */
-    public void testClose_throwIOException() throws Exception {
+    @Test
+    public void testClose_noThrowIOException() throws Exception {
         OutputStream out = new IOExceptionOccurOutputStream();
-        try {
-            OutputStreamUtil.close(out);
-            fail();
-        } catch (IORuntimeException e) {
-            assertTrue(true);
-        }
+        CloseableUtil.close(out);
     }
 
     private static class NotifyOutputStream extends OutputStream {

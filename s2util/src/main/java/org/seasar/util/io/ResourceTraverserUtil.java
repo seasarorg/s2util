@@ -36,7 +36,9 @@ import org.seasar.util.log.Logger;
 import org.seasar.util.zip.ZipFileUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * ファイルシステム上やJarファイル中に展開されているリソースの集まりを扱うユーティリティクラスです。
@@ -123,6 +125,9 @@ public abstract class ResourceTraverserUtil {
      */
     public static void addResourcesFactory(final String protocol,
             final ResourceTraverserFactory factory) {
+        assertArgumentNotEmpty("protocol", protocol);
+        assertArgumentNotNull("factory", factory);
+
         resourcesTypeFactories.put(protocol, factory);
     }
 
@@ -141,6 +146,8 @@ public abstract class ResourceTraverserUtil {
      */
     public static ResourceTraverser getResourceTraverser(
             final Class<?> referenceClass) {
+        assertArgumentNotNull("referenceClass", referenceClass);
+
         final URL url =
             ResourceUtil.getResource(toClassFile(referenceClass.getName()));
         final String path[] = referenceClass.getName().split("\\.");
@@ -160,6 +167,8 @@ public abstract class ResourceTraverserUtil {
      * @return 指定のディレクトリを基点とするリソースの集まりを扱う{@link ResourceTraverser}
      */
     public static ResourceTraverser getResourceTraverser(final String rootDir) {
+        assertArgumentNotEmpty("rootDir", rootDir);
+
         final URL url =
             ResourceUtil.getResource(rootDir.endsWith("/") ? rootDir
                 : rootDir + '/');
@@ -180,8 +189,7 @@ public abstract class ResourceTraverserUtil {
         }
 
         final String baseName = toDirectoryName(rootPackage);
-        final List<ResourceTraverser> list =
-            new ArrayList<ResourceTraverser>();
+        final List<ResourceTraverser> list = new ArrayList<ResourceTraverser>();
         for (final Iterator<URL> it = ClassLoaderUtil.getResources(baseName); it
             .hasNext();) {
             final URL url = it.next();
@@ -214,13 +222,15 @@ public abstract class ResourceTraverserUtil {
      */
     protected static ResourceTraverser getResourceTraverser(final URL url,
             final String rootPackage, final String rootDir) {
+        assertArgumentNotNull("url", url);
+
         final ResourceTraverserFactory factory =
             resourcesTypeFactories.get(URLUtil.toCanonicalProtocol(url
                 .getProtocol()));
         if (factory != null) {
             return factory.create(url, rootPackage, rootDir);
         }
-        logger.log("WUTL0013", new Object[] { rootPackage, url });
+        logger.log("WUTL0013", asArray(rootPackage, url));
         return null;
     }
 
@@ -246,6 +256,8 @@ public abstract class ResourceTraverserUtil {
      * @return クラスファイルのパス名
      */
     protected static String toClassFile(final String className) {
+        assertArgumentNotNull("className", className);
+
         return className.replace('.', '/') + ".class";
     }
 
@@ -259,6 +271,8 @@ public abstract class ResourceTraverserUtil {
      * @return ルートパッケージの上位となるベースディレクトリ
      */
     protected static File getBaseDir(final URL url, final String baseName) {
+        assertArgumentNotNull("url", url);
+
         File file = URLUtil.toFile(url);
         final String[] paths = StringUtil.split(baseName, "/");
         for (int i = 0; i < paths.length; ++i) {
@@ -486,8 +500,8 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public VfsZipResourceTraverser(final URL url,
-                final String rootPackage, final String rootDir) {
+        public VfsZipResourceTraverser(final URL url, final String rootPackage,
+                final String rootDir) {
             URL zipUrl = url;
             String prefix = "";
             if (rootPackage != null) {
@@ -529,7 +543,7 @@ public abstract class ResourceTraverserUtil {
                     ZipInputStreamUtil.closeEntry(zis);
                 }
             } finally {
-                InputStreamUtil.close(zis);
+                CloseableUtil.close(zis);
             }
         }
 
@@ -558,7 +572,7 @@ public abstract class ResourceTraverserUtil {
                     }
                 });
             } finally {
-                InputStreamUtil.close(zis);
+                CloseableUtil.close(zis);
             }
         }
 
@@ -580,7 +594,7 @@ public abstract class ResourceTraverserUtil {
                         }
                     });
             } finally {
-                InputStreamUtil.close(zis);
+                CloseableUtil.close(zis);
             }
         }
 

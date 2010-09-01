@@ -33,13 +33,14 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SRuntimeException;
 
 import static org.seasar.util.collection.ArrayUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link URL}を扱うユーティリティ・クラスです。
  * 
  * @author higa
  */
-public class URLUtil {
+public abstract class URLUtil {
 
     /** プロトコルを正規化するためのマップ */
     protected static final Map<String, String> CANONICAL_PROTOCOLS =
@@ -56,12 +57,14 @@ public class URLUtil {
      *            URL
      * @return URLが表すリソースを読み込むための{@link InputStream}
      */
-    public static InputStream openStream(URL url) {
+    public static InputStream openStream(final URL url) {
+        assertArgumentNotNull("url", url);
+
         try {
-            URLConnection connection = url.openConnection();
+            final URLConnection connection = url.openConnection();
             connection.setUseCaches(false);
             return connection.getInputStream();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -73,12 +76,14 @@ public class URLUtil {
      *            URL
      * @return URLへの{@link URLConnection}オブジェクト
      */
-    public static URLConnection openConnection(URL url) {
+    public static URLConnection openConnection(final URL url) {
+        assertArgumentNotNull("url", url);
+
         try {
-            URLConnection connection = url.openConnection();
+            final URLConnection connection = url.openConnection();
             connection.setUseCaches(false);
             return connection;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -90,10 +95,12 @@ public class URLUtil {
      *            <code>URL</code>として構文解析される<code>String</code>
      * @return <code>URL</code>
      */
-    public static URL create(String spec) {
+    public static URL create(final String spec) {
+        assertArgumentNotEmpty("spec", spec);
+
         try {
             return new URL(spec);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -107,10 +114,13 @@ public class URLUtil {
      *            <code>URL</code>として構文解析される<code>String</code>
      * @return <code>URL</code>
      */
-    public static URL create(URL context, String spec) {
+    public static URL create(final URL context, final String spec) {
+        assertArgumentNotNull("context", context);
+        assertArgumentNotEmpty("spec", spec);
+
         try {
             return new URL(context, spec);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -125,6 +135,9 @@ public class URLUtil {
      * @return 変換後の<code>String</code>
      */
     public static String encode(final String s, final String enc) {
+        assertArgumentNotEmpty("s", s);
+        assertArgumentNotEmpty("enc", enc);
+
         try {
             return URLEncoder.encode(s, enc);
         } catch (final UnsupportedEncodingException e) {
@@ -142,6 +155,9 @@ public class URLUtil {
      * @return 新しくデコードされた String
      */
     public static String decode(final String s, final String enc) {
+        assertArgumentNotEmpty("s", s);
+        assertArgumentNotEmpty("enc", enc);
+
         try {
             return URLDecoder.decode(s, enc);
         } catch (final UnsupportedEncodingException e) {
@@ -157,6 +173,8 @@ public class URLUtil {
      * @return 正規化されたプロトコル
      */
     public static String toCanonicalProtocol(final String protocol) {
+        assertArgumentNotEmpty("protocol", protocol);
+
         final String canonicalProtocol = CANONICAL_PROTOCOLS.get(protocol);
         if (canonicalProtocol != null) {
             return canonicalProtocol;
@@ -172,6 +190,8 @@ public class URLUtil {
      * @return Jarファイルの{@link File}
      */
     public static File toFile(final URL fileUrl) {
+        assertArgumentNotNull("fileUrl", fileUrl);
+
         try {
             final String path = URLDecoder.decode(fileUrl.getPath(), "UTF-8");
             return new File(path).getAbsoluteFile();
@@ -187,8 +207,8 @@ public class URLUtil {
      * 
      */
     public static void disableURLCaches() {
-        BeanDesc bd = BeanDescFactory.getBeanDesc(URLConnection.class);
-        FieldDesc fd = bd.getFieldDesc("defaultUseCaches");
+        final BeanDesc bd = BeanDescFactory.getBeanDesc(URLConnection.class);
+        final FieldDesc fd = bd.getFieldDesc("defaultUseCaches");
         fd.setStaticFieldValue(false);
     }
 

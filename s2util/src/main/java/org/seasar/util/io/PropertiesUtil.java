@@ -21,34 +21,36 @@ import java.util.Properties;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Properties}用のユーティリティクラスです。
  * 
  * @author higa
  * 
  */
-public class PropertiesUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected PropertiesUtil() {
-    }
+public abstract class PropertiesUtil {
 
     /**
      * {@link Properties#load(InputStream)}の例外処理をラップします。
+     * <p>
+     * 入力ストリームはクローズされません。
+     * </p>
      * 
      * @param props
+     *            プロパティセット
      * @param in
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
+     *            入力ストリーム
      */
-    public static void load(Properties props, InputStream in)
-            throws IORuntimeException {
+    public static void load(final Properties props, final InputStream in) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("in", in);
+
         try {
             props.load(in);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }

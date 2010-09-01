@@ -24,56 +24,53 @@ import java.io.ObjectOutputStream;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * オブジェクトをシリアライズするためのユーティリティです。
  * 
  * @author higa
- * 
  */
-public class SerializeUtil {
+public abstract class SerializeUtil {
 
     private static final int BYTE_ARRAY_SIZE = 8 * 1024;
 
     /**
-     * インスタンスを構築します。
-     */
-    protected SerializeUtil() {
-    }
-
-    /**
      * オブジェクトをシリアライズできるかテストします。
      * 
-     * @param o
+     * @param obj
      * @return シリアライズして復元したオブジェクト
      * @throws IORuntimeException
      * @throws ClassNotFoundRuntimeException
      */
-    public static Object serialize(final Object o) throws IORuntimeException,
+    public static Object serialize(final Object obj) throws IORuntimeException,
             ClassNotFoundRuntimeException {
+        assertArgumentNotNull("obj", obj);
 
-        byte[] binary = fromObjectToBinary(o);
+        final byte[] binary = fromObjectToBinary(obj);
         return fromBinaryToObject(binary);
     }
 
     /**
      * オブジェクトをbyteの配列に変換します。
      * 
-     * @param o
+     * @param obj
      * @return オブジェクトのbyte配列
      */
-    public static byte[] fromObjectToBinary(Object o) {
+    public static byte[] fromObjectToBinary(final Object obj) {
+        assertArgumentNotNull("obj", obj);
 
         try {
-            ByteArrayOutputStream baos =
+            final ByteArrayOutputStream baos =
                 new ByteArrayOutputStream(BYTE_ARRAY_SIZE);
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            final ObjectOutputStream oos = new ObjectOutputStream(baos);
             try {
-                oos.writeObject(o);
+                oos.writeObject(obj);
             } finally {
                 oos.close();
             }
             return baos.toByteArray();
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IORuntimeException(ex);
         }
     }
@@ -81,21 +78,23 @@ public class SerializeUtil {
     /**
      * byteの配列をオブジェクトに変換します。
      * 
-     * @param binary
+     * @param bytes
      * @return 復元したオブジェクト
      */
-    public static Object fromBinaryToObject(byte[] binary) {
+    public static Object fromBinaryToObject(final byte[] bytes) {
+        assertArgumentNotEmpty("bytes", bytes);
+
         try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(binary);
-            ObjectInputStream ois = new ObjectInputStream(bais);
+            final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+            final ObjectInputStream ois = new ObjectInputStream(bais);
             try {
                 return ois.readObject();
             } finally {
-                ois.close();
+                CloseableUtil.close(ois);
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IORuntimeException(ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             throw new ClassNotFoundRuntimeException(ex);
         }
     }

@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.net.URLConnection;
 
 import org.seasar.util.exception.IORuntimeException;
-import org.seasar.util.io.InputStreamUtil;
+import org.seasar.util.io.CloseableUtil;
 import org.seasar.util.io.ResourceUtil;
 
 import static org.seasar.util.misc.AssertionUtil.*;
@@ -52,7 +52,7 @@ public abstract class MimeTypeUtil {
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         } finally {
-            InputStreamUtil.close(is);
+            CloseableUtil.close(is);
         }
     }
 

@@ -19,33 +19,29 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * テキスト用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class TextUtil {
+public abstract class TextUtil {
 
     private static final String UTF8 = "UTF-8";
 
     /**
-     * インスタンスを構築します。
-     */
-    protected TextUtil() {
-    }
-
-    /**
      * テキストを読み込みます。
      * 
      * @param path
      *            パス
      * @return 読み込んだテキスト
      */
-    public static String readText(String path) {
-        InputStream is = ResourceUtil.getResourceAsStream(path);
-        Reader reader = InputStreamReaderUtil.create(is);
+    public static String readText(final String path) {
+        assertArgumentNotEmpty("path", path);
+
+        final InputStream is = ResourceUtil.getResourceAsStream(path);
+        final Reader reader = InputStreamReaderUtil.create(is);
         return ReaderUtil.readText(reader);
     }
 
@@ -56,9 +52,11 @@ public class TextUtil {
      *            ファイル
      * @return 読み込んだテキスト
      */
-    public static String readText(File file) {
-        InputStream is = FileInputStreamUtil.create(file);
-        Reader reader = InputStreamReaderUtil.create(is);
+    public static String readText(final File file) {
+        assertArgumentNotNull("file", file);
+
+        final InputStream is = FileInputStreamUtil.create(file);
+        final Reader reader = InputStreamReaderUtil.create(is);
         return ReaderUtil.readText(reader);
     }
 
@@ -69,9 +67,11 @@ public class TextUtil {
      *            パス
      * @return 読み込んだテキスト
      */
-    public static String readUTF8(String path) {
-        InputStream is = ResourceUtil.getResourceAsStream(path);
-        Reader reader = InputStreamReaderUtil.create(is, UTF8);
+    public static String readUTF8(final String path) {
+        assertArgumentNotEmpty("path", path);
+
+        final InputStream is = ResourceUtil.getResourceAsStream(path);
+        final Reader reader = InputStreamReaderUtil.create(is, UTF8);
         return ReaderUtil.readText(reader);
     }
 
@@ -82,9 +82,12 @@ public class TextUtil {
      *            ファイル
      * @return 読み込んだテキスト
      */
-    public static String readUTF8(File file) {
-        InputStream is = FileInputStreamUtil.create(file);
-        Reader reader = InputStreamReaderUtil.create(is, UTF8);
+    public static String readUTF8(final File file) {
+        assertArgumentNotNull("file", file);
+
+        final InputStream is = FileInputStreamUtil.create(file);
+        final Reader reader = InputStreamReaderUtil.create(is, UTF8);
         return ReaderUtil.readText(reader);
     }
+
 }

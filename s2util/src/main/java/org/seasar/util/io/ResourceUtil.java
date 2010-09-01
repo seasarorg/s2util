@@ -25,11 +25,12 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.ResourceNotFoundRuntimeException;
 import org.seasar.util.jar.JarFileUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * リソース用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
 public abstract class ResourceUtil {
 
@@ -40,11 +41,14 @@ public abstract class ResourceUtil {
      * @param extension
      * @return リソースパス
      */
-    public static String getResourcePath(final String path, String extension) {
+    public static String getResourcePath(final String path,
+            final String extension) {
+        assertArgumentNotNull("path", path);
+
         if (extension == null) {
             return path;
         }
-        String ext = "." + extension;
+        final String ext = "." + extension;
         if (path.endsWith(ext)) {
             return path;
         }
@@ -57,7 +61,9 @@ public abstract class ResourceUtil {
      * @param clazz
      * @return リソースパス
      */
-    public static String getResourcePath(Class<?> clazz) {
+    public static String getResourcePath(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return clazz.getName().replace('.', '/') + ".class";
     }
 
@@ -77,7 +83,9 @@ public abstract class ResourceUtil {
      * @return リソース
      * @see #getResource(String, String)
      */
-    public static URL getResource(String path) {
+    public static URL getResource(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResource(path, null);
     }
 
@@ -90,9 +98,11 @@ public abstract class ResourceUtil {
      * @throws ResourceNotFoundRuntimeException
      *             リソースが見つからなかった場合
      */
-    public static URL getResource(String path, String extension)
+    public static URL getResource(final String path, final String extension)
             throws ResourceNotFoundRuntimeException {
-        URL url = getResourceNoException(path, extension);
+        assertArgumentNotEmpty("path", path);
+
+        final URL url = getResourceNoException(path, extension);
         if (url != null) {
             return url;
         }
@@ -108,7 +118,9 @@ public abstract class ResourceUtil {
      * @return リソース
      * @see #getResourceNoException(String, String)
      */
-    public static URL getResourceNoException(String path) {
+    public static URL getResourceNoException(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceNoException(path, null);
     }
 
@@ -120,7 +132,10 @@ public abstract class ResourceUtil {
      * @return リソース
      * @see #getResourceNoException(String, String, ClassLoader)
      */
-    public static URL getResourceNoException(String path, String extension) {
+    public static URL getResourceNoException(final String path,
+            final String extension) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceNoException(path, extension, Thread
             .currentThread()
             .getContextClassLoader());
@@ -135,12 +150,14 @@ public abstract class ResourceUtil {
      * @return リソース
      * @see #getResourcePath(String, String)
      */
-    public static URL getResourceNoException(String path, String extension,
-            ClassLoader loader) {
+    public static URL getResourceNoException(final String path,
+            final String extension, final ClassLoader loader) {
+        assertArgumentNotNull("loader", loader);
+
         if (path == null || loader == null) {
             return null;
         }
-        String p = getResourcePath(path, extension);
+        final String p = getResourcePath(path, extension);
         return loader.getResource(p);
     }
 
@@ -151,7 +168,9 @@ public abstract class ResourceUtil {
      * @return ストリーム
      * @see #getResourceAsStream(String, String)
      */
-    public static InputStream getResourceAsStream(String path) {
+    public static InputStream getResourceAsStream(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceAsStream(path, null);
     }
 
@@ -163,8 +182,11 @@ public abstract class ResourceUtil {
      * @return ストリーム
      * @see #getResource(String, String)
      */
-    public static InputStream getResourceAsStream(String path, String extension) {
-        URL url = getResource(path, extension);
+    public static InputStream getResourceAsStream(final String path,
+            final String extension) {
+        assertArgumentNotEmpty("path", path);
+
+        final URL url = getResource(path, extension);
         return URLUtil.openStream(url);
     }
 
@@ -175,7 +197,9 @@ public abstract class ResourceUtil {
      * @return ストリーム
      * @see #getResourceAsStreamNoException(String, String)
      */
-    public static InputStream getResourceAsStreamNoException(String path) {
+    public static InputStream getResourceAsStreamNoException(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceAsStreamNoException(path, null);
     }
 
@@ -187,9 +211,11 @@ public abstract class ResourceUtil {
      * @return ストリーム
      * @see #getResourceNoException(String, String)
      */
-    public static InputStream getResourceAsStreamNoException(String path,
-            String extension) {
-        URL url = getResourceNoException(path, extension);
+    public static InputStream getResourceAsStreamNoException(final String path,
+            final String extension) {
+        assertArgumentNotEmpty("path", path);
+
+        final URL url = getResourceNoException(path, extension);
         if (url == null) {
             return null;
         }
@@ -207,7 +233,9 @@ public abstract class ResourceUtil {
      * @return リソースが存在するかどうか
      * @see #getResourceNoException(String)
      */
-    public static boolean isExist(String path) {
+    public static boolean isExist(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceNoException(path) != null;
     }
 
@@ -216,20 +244,19 @@ public abstract class ResourceUtil {
      * 
      * @param path
      * @return プロパティファイル
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
      */
-    public static Properties getProperties(String path)
-            throws IORuntimeException {
-        Properties props = new Properties();
-        InputStream is = getResourceAsStream(path);
+    public static Properties getProperties(final String path) {
+        assertArgumentNotEmpty("path", path);
+
+        final Properties props = new Properties();
+        final InputStream is = getResourceAsStream(path);
         try {
             props.load(is);
             return props;
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IORuntimeException(ex);
         } finally {
-            InputStreamUtil.closeSilently(is);
+            CloseableUtil.close(is);
         }
     }
 
@@ -239,8 +266,10 @@ public abstract class ResourceUtil {
      * @param path
      * @return 拡張子
      */
-    public static String getExtension(String path) {
-        int extPos = path.lastIndexOf(".");
+    public static String getExtension(final String path) {
+        assertArgumentNotNull("path", path);
+
+        final int extPos = path.lastIndexOf(".");
         if (extPos >= 0) {
             return path.substring(extPos + 1);
         }
@@ -253,8 +282,10 @@ public abstract class ResourceUtil {
      * @param path
      * @return 取り除いた後の結果
      */
-    public static String removeExtension(String path) {
-        int extPos = path.lastIndexOf(".");
+    public static String removeExtension(final String path) {
+        assertArgumentNotNull("path", path);
+
+        final int extPos = path.lastIndexOf(".");
         if (extPos >= 0) {
             return path.substring(0, extPos);
         }
@@ -268,7 +299,9 @@ public abstract class ResourceUtil {
      * @return ルートディレクトリ
      * @see #getBuildDir(String)
      */
-    public static File getBuildDir(Class<?> clazz) {
+    public static File getBuildDir(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return getBuildDir(getResourcePath(clazz));
     }
 
@@ -278,13 +311,16 @@ public abstract class ResourceUtil {
      * @param path
      * @return ルートディレクトリ
      */
-    public static File getBuildDir(String path) {
+    public static File getBuildDir(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         File dir = null;
-        URL url = getResource(path);
+        final URL url = getResource(path);
         if ("file".equals(url.getProtocol())) {
-            int num = path.split("/").length;
+            final int num = path.split("/").length;
             dir = new File(getFileName(url));
-            for (int i = 0; i < num; ++i, dir = dir.getParentFile()) {
+            for (int i = 0; i < num; ++i) {
+                dir = dir.getParentFile();
             }
         } else {
             dir = new File(JarFileUtil.toJarFilePath(url));
@@ -298,8 +334,10 @@ public abstract class ResourceUtil {
      * @param url
      * @return 外部形式
      */
-    public static String toExternalForm(URL url) {
-        String s = url.toExternalForm();
+    public static String toExternalForm(final URL url) {
+        assertArgumentNotNull("url", url);
+
+        final String s = url.toExternalForm();
         return URLUtil.decode(s, "UTF8");
     }
 
@@ -309,8 +347,10 @@ public abstract class ResourceUtil {
      * @param url
      * @return ファイル名
      */
-    public static String getFileName(URL url) {
-        String s = url.getFile();
+    public static String getFileName(final URL url) {
+        assertArgumentNotNull("url", url);
+
+        final String s = url.getFile();
         return URLUtil.decode(s, "UTF8");
     }
 
@@ -320,8 +360,10 @@ public abstract class ResourceUtil {
      * @param url
      * @return ファイル
      */
-    public static File getFile(URL url) {
-        File file = new File(getFileName(url));
+    public static File getFile(final URL url) {
+        assertArgumentNotNull("url", url);
+
+        final File file = new File(getFileName(url));
         if (file != null && file.exists()) {
             return file;
         }
@@ -335,7 +377,9 @@ public abstract class ResourceUtil {
      * @return ファイル
      * @see #getResourceAsFile(String, String)
      */
-    public static File getResourceAsFile(String path) {
+    public static File getResourceAsFile(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         return getResourceAsFile(path, null);
     }
 
@@ -347,7 +391,10 @@ public abstract class ResourceUtil {
      * @return ファイル
      * @see #getFile(URL)
      */
-    public static File getResourceAsFile(String path, String extension) {
+    public static File getResourceAsFile(final String path,
+            final String extension) {
+        assertArgumentNotEmpty("path", path);
+
         return getFile(getResource(path, extension));
     }
 
@@ -358,7 +405,9 @@ public abstract class ResourceUtil {
      * @return ファイル
      * @see #getResourceAsFileNoException(String)
      */
-    public static File getResourceAsFileNoException(Class<?> clazz) {
+    public static File getResourceAsFileNoException(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return getResourceAsFileNoException(getResourcePath(clazz));
     }
 
@@ -369,8 +418,10 @@ public abstract class ResourceUtil {
      * @return ファイル
      * @see #getResourceNoException(String)
      */
-    public static File getResourceAsFileNoException(String path) {
-        URL url = getResourceNoException(path);
+    public static File getResourceAsFileNoException(final String path) {
+        assertArgumentNotEmpty("path", path);
+
+        final URL url = getResourceNoException(path);
         if (url == null) {
             return null;
         }
@@ -384,13 +435,15 @@ public abstract class ResourceUtil {
      * @param clazz
      * @return 変換された結果
      */
-    public static String convertPath(String path, Class<?> clazz) {
+    public static String convertPath(final String path, final Class<?> clazz) {
+        assertArgumentNotEmpty("path", path);
+
         if (isExist(path)) {
             return path;
         }
-        String prefix =
+        final String prefix =
             clazz.getName().replace('.', '/').replaceFirst("/[^/]+$", "");
-        String extendedPath = prefix + "/" + path;
+        final String extendedPath = prefix + "/" + path;
         if (ResourceUtil.getResourceNoException(extendedPath) != null) {
             return extendedPath;
         }

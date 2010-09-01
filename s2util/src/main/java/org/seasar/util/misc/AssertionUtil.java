@@ -15,37 +15,278 @@
  */
 package org.seasar.util.misc;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.seasar.util.collection.ArrayUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * 表明についてのユーティリティクラスです。
  * 
  * @author shot
  */
-public class AssertionUtil {
+public abstract class AssertionUtil {
 
     /**
-     * インスタンスを構築します。
-     */
-    protected AssertionUtil() {
-    }
-
-    /**
-     * <code>null</code>でないことを表明します。
+     * 引数が<code>null</code>でないことを表明します。
      * 
      * @param argName
      *            {@code null} であってはならない引数の名前
-     * @param obj
+     * @param argValue
+     *            引数の値
      * @throws NullArgumentException
-     *             <code>null</code>の場合。
+     *             引数が<code>null</code>の場合。
      */
-    public static void assertArgumentNotNull(String argName, Object obj)
-            throws NullArgumentException {
-        if (obj == null) {
+    public static void assertArgumentNotNull(final String argName,
+            final Object argValue) throws NullArgumentException {
+        if (argValue == null) {
             throw new NullArgumentException(argName);
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空文字列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空文字列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final String argValue) throws SIllegalArgumentException {
+        if (StringUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0010",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final Object[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final boolean[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final byte[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final short[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final int[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final long[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final float[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final double[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の配列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の配列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final char[] argValue) throws SIllegalArgumentException {
+        if (ArrayUtil.isEmpty(argValue)) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0011",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の{@link Collection}でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の{@link Collection}の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final Collection<?> argValue) throws SIllegalArgumentException {
+        if (argValue == null || argValue.isEmpty()) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0012",
+                asArray(argValue));
+        }
+    }
+
+    /**
+     * 引数が<code>null</code>でも空の{@link Map}でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空の{@link Map}の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final Map<?, ?> argValue) throws SIllegalArgumentException {
+        if (argValue == null || argValue.isEmpty()) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0013",
+                asArray(argValue));
         }
     }
 
@@ -64,11 +305,13 @@ public class AssertionUtil {
      * @throws SIllegalArgumentException
      *             {@code expression}がfalseの場合。
      */
-    public static void assertArgument(String argName, boolean expression,
-            String description) throws SIllegalArgumentException {
+    public static void assertArgument(final String argName,
+            final boolean expression, final String description)
+            throws SIllegalArgumentException {
         if (!expression) {
-            throw new SIllegalArgumentException("EUTL0009", new Object[] {
-                argName, description });
+            throw new SIllegalArgumentException(argName, "EUTL0009", asArray(
+                argName,
+                description));
         }
     }
 
@@ -80,7 +323,7 @@ public class AssertionUtil {
      * @throws EmptyRuntimeException
      *             文字列が空あるいは<code>null</code>の場合。
      */
-    public static void assertNotEmpty(String message, String s)
+    public static void assertNotEmpty(final String message, final String s)
             throws EmptyRuntimeException {
         if (StringUtil.isEmpty(s)) {
             throw new EmptyRuntimeException(message);

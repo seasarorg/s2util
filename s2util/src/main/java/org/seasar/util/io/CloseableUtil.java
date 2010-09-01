@@ -15,31 +15,37 @@
  */
 package org.seasar.util.io;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.OutputStream;
 
-import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.log.Logger;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
- * {@link OutputStream}用のユーティリティクラスです。
+ * {@link Closeable}用のユーティリティクラスです。
  * 
- * @author shot
+ * @author koichik
  */
-public abstract class OutputStreamUtil {
+public abstract class CloseableUtil {
+
+    private static final Logger logger = Logger.getLogger(CloseableUtil.class);
 
     /**
-     * {@link OutputStream}をflushします。
+     * {@link Closeable}を閉じます。
      * 
-     * @param out
+     * @param closeable
+     *            クローズ可能なオブジェクト
+     * @see Closeable#close()
      */
-    public static void flush(final OutputStream out) {
-        if (out == null) {
+    public static void close(final Closeable closeable) {
+        if (closeable == null) {
             return;
         }
         try {
-            out.flush();
+            closeable.close();
         } catch (final IOException e) {
-            throw new IORuntimeException(e);
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

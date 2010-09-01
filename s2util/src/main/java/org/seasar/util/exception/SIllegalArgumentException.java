@@ -26,26 +26,35 @@ public class SIllegalArgumentException extends IllegalArgumentException {
 
     private static final long serialVersionUID = -3701473506893554853L;
 
-    private final String messageCode;
+    /** {@code null} である引数の名前 */
+    protected final String argName;
 
-    private final Object[] args;
+    /** メッセージコード */
+    protected final String messageCode;
+
+    /** メッセージの引数 */
+    protected final Object[] args;
 
     /**
      * {@link SIllegalArgumentException}を作成します。
      * 
+     * @param argName
+     *            引数の名前
      * @param messageCode
      *            メッセージコード
      * @param args
      *            引数の配列
      */
-    public SIllegalArgumentException(final String messageCode,
-            final Object[] args) {
-        this(messageCode, args, null);
+    public SIllegalArgumentException(final String argName,
+            final String messageCode, final Object[] args) {
+        this(argName, messageCode, args, null);
     }
 
     /**
      * {@link SIllegalArgumentException}を作成します。
      * 
+     * @param argName
+     *            引数の名前
      * @param messageCode
      *            メッセージコード
      * @param args
@@ -53,11 +62,21 @@ public class SIllegalArgumentException extends IllegalArgumentException {
      * @param cause
      *            原因となった例外
      */
-    public SIllegalArgumentException(final String messageCode,
-            final Object[] args, Throwable cause) {
+    public SIllegalArgumentException(final String argName,
+            final String messageCode, final Object[] args, Throwable cause) {
         super(MessageFormatter.getMessage(messageCode, args), cause);
+        this.argName = argName;
         this.messageCode = messageCode;
         this.args = args;
+    }
+
+    /**
+     * 引数の名前を返します。
+     * 
+     * @return 引数の名前
+     */
+    public String getArgName() {
+        return argName;
     }
 
     /**

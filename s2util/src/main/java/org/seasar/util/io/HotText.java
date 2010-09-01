@@ -19,6 +19,8 @@ import java.io.File;
 
 import org.seasar.util.exception.EmptyRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * ファイルをHOTに読み込むクラスです。
  * 
@@ -46,7 +48,9 @@ public class HotText {
      * 
      * @param path
      */
-    public HotText(String path) {
+    public HotText(final String path) {
+        assertArgumentNotEmpty("path", path);
+
         setPath(path);
     }
 
@@ -66,10 +70,9 @@ public class HotText {
      * @throws EmptyRuntimeException
      *             パスが<code>null</code>の場合
      */
-    public void setPath(String path) throws EmptyRuntimeException {
-        if (path == null) {
-            throw new EmptyRuntimeException("path");
-        }
+    public void setPath(final String path) throws EmptyRuntimeException {
+        assertArgumentNotEmpty("path", path);
+
         this.path = path;
         file = ResourceUtil.getResourceAsFileNoException(path);
         if (file != null) {
@@ -96,7 +99,7 @@ public class HotText {
      * 
      * @param value
      */
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
     }
 
@@ -123,4 +126,5 @@ public class HotText {
     protected void updateValueByPath() {
         value = TextUtil.readUTF8(path);
     }
+
 }

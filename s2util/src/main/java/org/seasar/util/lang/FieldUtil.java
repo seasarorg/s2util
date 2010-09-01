@@ -194,7 +194,7 @@ public abstract class FieldUtil {
             final Class<?> valueClass = value == null ? null : value.getClass();
             final Class<?> targetClass =
                 target == null ? field.getDeclaringClass() : target.getClass();
-            throw new SIllegalArgumentException("EUTL0094", asArray(
+            throw new SIllegalArgumentException("field", "EUTL0094", asArray(
                 clazz.getName(),
                 clazz.getClassLoader(),
                 fieldClass.getName(),

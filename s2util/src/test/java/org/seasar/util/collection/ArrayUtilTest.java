@@ -170,7 +170,7 @@ public class ArrayUtilTest {
      */
     @Test
     public void testIsEmpty() {
-        assertTrue(ArrayUtil.isEmpty(null));
+        assertTrue(ArrayUtil.isEmpty((Object[]) null));
         assertTrue(ArrayUtil.isEmpty(new Object[] {}));
         assertFalse(ArrayUtil.isEmpty(new Object[] { "" }));
         assertFalse(ArrayUtil.isEmpty(new Object[] { "aaa" }));

@@ -68,7 +68,7 @@ public class ResourceTraversalTest {
                         assertThat(is, is(notNullValue()));
                         count++;
                     } finally {
-                        InputStreamUtil.close(is);
+                        CloseableUtil.close(is);
                     }
                 }
             });
@@ -105,7 +105,7 @@ public class ResourceTraversalTest {
                     assertThat(is, is(notNullValue()));
                     count++;
                 } finally {
-                    InputStreamUtil.close(is);
+                    CloseableUtil.close(is);
                 }
             }
         });
@@ -136,7 +136,7 @@ public class ResourceTraversalTest {
                         assertThat(is, is(notNullValue()));
                         count++;
                     } finally {
-                        InputStreamUtil.close(is);
+                        CloseableUtil.close(is);
                     }
                 }
             });
@@ -174,7 +174,7 @@ public class ResourceTraversalTest {
                         assertThat(is, is(notNullValue()));
                         count++;
                     } finally {
-                        InputStreamUtil.close(is);
+                        CloseableUtil.close(is);
                     }
                 }
             });
@@ -206,7 +206,7 @@ public class ResourceTraversalTest {
                         assertThat(is, is(notNullValue()));
                         count++;
                     } finally {
-                        InputStreamUtil.close(is);
+                        CloseableUtil.close(is);
                     }
                 }
             });

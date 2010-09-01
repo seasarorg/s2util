@@ -15,7 +15,7 @@
  */
 package org.seasar.util.exception;
 
-import org.seasar.util.message.MessageFormatter;
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * 引数がnullだった場合にthrowする例外です。
@@ -23,14 +23,10 @@ import org.seasar.util.message.MessageFormatter;
  * {@link NullPointerException}をthrowする代わりに使うことを想定しています。
  * 
  * @author wyukawa
- * 
  */
-public class NullArgumentException extends RuntimeException {
+public class NullArgumentException extends SIllegalArgumentException {
 
     private static final long serialVersionUID = 1L;
-
-    /** {@code null} である引数の名前 */
-    protected final String argName;
 
     /**
      * {@link NullArgumentException}を作成します。
@@ -39,17 +35,7 @@ public class NullArgumentException extends RuntimeException {
      *            {@code null} である引数の名前
      */
     public NullArgumentException(String argName) {
-        super(MessageFormatter.getMessage("EUTL0008", argName));
-        this.argName = argName;
-    }
-
-    /**
-     * {@code null} である引数の名前を返します。
-     * 
-     * @return {@code null} である引数の名前
-     */
-    public String getArgName() {
-        return argName;
+        super(argName, "EUTL0008", asArray(argName));
     }
 
 }

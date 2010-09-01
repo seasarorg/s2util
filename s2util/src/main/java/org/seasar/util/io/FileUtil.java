@@ -26,6 +26,8 @@ import java.net.URL;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.NullArgumentException;
 
+import static org.seasar.util.io.CloseableUtil.*;
+import static org.seasar.util.message.MessageFormatter.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -33,13 +35,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * 
  * @author higa
  */
-public class FileUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected FileUtil() {
-    }
+public abstract class FileUtil {
 
     /**
      * この抽象パス名の正規の形式を返します。
@@ -48,10 +44,12 @@ public class FileUtil {
      *            ファイル
      * @return この抽象パス名と同じファイルまたはディレクトリを示す正規パス名文字列
      */
-    public static String getCanonicalPath(File file) {
+    public static String getCanonicalPath(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return file.getCanonicalPath();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -64,6 +62,8 @@ public class FileUtil {
      * @return ファイルURLを表すURLオブジェクト
      */
     public static URL toURL(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return file.toURI().toURL();
         } catch (final IOException e) {
@@ -78,7 +78,9 @@ public class FileUtil {
      *            ファイル
      * @return ファイルの内容を読み込んだバイト配列
      */
-    public static byte[] getBytes(File file) {
+    public static byte[] getBytes(final File file) {
+        assertArgumentNotNull("file", file);
+
         return InputStreamUtil.getBytes(FileInputStreamUtil.create(file));
     }
 
@@ -90,26 +92,30 @@ public class FileUtil {
      * @param dest
      *            コピー先のファイル
      */
-    public static void copy(File src, File dest) {
-        if (dest.exists() && !dest.canWrite()) {
-            return;
-        }
-        BufferedInputStream in = null;
-        BufferedOutputStream out = null;
+    public static void copy(final File src, final File dest) {
+        assertArgumentNotNull("src", src);
+        assertArgument(
+            "src",
+            src.exists() && src.canRead(),
+            getMessage("EUTL0101", src));
+        assertArgumentNotNull("dest", dest);
+        assertArgument(
+            "dest",
+            !dest.exists() || dest.canWrite(),
+            getMessage("EUTL0102", src));
+
+        final BufferedInputStream in =
+            new BufferedInputStream(FileInputStreamUtil.create(src));
         try {
-            in = new BufferedInputStream(FileInputStreamUtil.create(src));
-            out = new BufferedOutputStream(FileOutputStreamUtil.create(dest));
-            byte[] buf = new byte[1024];
-            int length;
-            while (-1 < (length = in.read(buf))) {
-                out.write(buf, 0, length);
-                out.flush();
+            final BufferedOutputStream out =
+                new BufferedOutputStream(FileOutputStreamUtil.create(dest));
+            try {
+                InputStreamUtil.copy(in, out);
+            } finally {
+                close(out);
             }
-        } catch (IOException e) {
-            throw new IORuntimeException(e);
         } finally {
-            InputStreamUtil.close(in);
-            OutputStreamUtil.close(out);
+            close(in);
         }
     }
 
@@ -124,9 +130,10 @@ public class FileUtil {
      * @throws NullArgumentException
      *             pathやdataがnullの場合。
      */
-    public static void write(String path, byte[] data) {
+    public static void write(final String path, final byte[] data) {
         assertArgumentNotNull("path", path);
         assertArgumentNotNull("data", data);
+
         write(path, data, 0, data.length);
     }
 
@@ -144,19 +151,22 @@ public class FileUtil {
      * @throws NullArgumentException
      *             pathやdataがnullの場合。
      */
-    public static void write(String path, byte[] data, int offset, int length) {
+    public static void write(final String path, final byte[] data,
+            final int offset, final int length) {
         assertArgumentNotNull("path", path);
         assertArgumentNotNull("data", data);
+
         try {
-            OutputStream out =
+            final OutputStream out =
                 new BufferedOutputStream(new FileOutputStream(path));
             try {
                 out.write(data, offset, length);
             } finally {
-                out.close();
+                close(out);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }

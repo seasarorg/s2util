@@ -28,6 +28,7 @@ import org.seasar.util.jar.JarFileUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
 
 import static org.seasar.util.collection.EnumerationIterator.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * リソースをトラバースするためのクラスです。
@@ -49,6 +50,9 @@ public abstract class ResourceTraversalUtil {
      *            リソースを処理するハンドラ
      */
     public static void forEach(final File rootDir, final ResourceHandler handler) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("handler", handler);
+
         forEach(rootDir, null, handler);
     }
 
@@ -71,6 +75,9 @@ public abstract class ResourceTraversalUtil {
      */
     public static void forEach(final File rootDir, final String baseDirectory,
             final ResourceHandler handler) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("handler", handler);
+
         final File baseDir = getBaseDir(rootDir, baseDirectory);
         if (baseDir.exists()) {
             traverseFileSystem(rootDir, baseDir, handler);
@@ -87,6 +94,9 @@ public abstract class ResourceTraversalUtil {
      */
     public static void forEach(final JarFile jarFile,
             final ResourceHandler handler) {
+        assertArgumentNotNull("jarFile", jarFile);
+        assertArgumentNotNull("handler", handler);
+
         forEach(jarFile, "", handler);
     }
 
@@ -108,6 +118,10 @@ public abstract class ResourceTraversalUtil {
      */
     public static void forEach(final JarFile jarFile, final String prefix,
             final ResourceHandler handler) {
+        assertArgumentNotNull("jarFile", jarFile);
+        assertArgumentNotNull("prefix", prefix);
+        assertArgumentNotNull("handler", handler);
+
         final int pos = prefix.length();
         for (final JarEntry entry : iterable(jarFile.entries())) {
             if (!entry.isDirectory()) {
@@ -120,7 +134,7 @@ public abstract class ResourceTraversalUtil {
                 try {
                     handler.processResource(entryName.substring(pos), is);
                 } finally {
-                    InputStreamUtil.close(is);
+                    CloseableUtil.close(is);
                 }
             }
         }
@@ -136,6 +150,9 @@ public abstract class ResourceTraversalUtil {
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final ResourceHandler handler) {
+        assertArgumentNotNull("zipInputStream", zipInputStream);
+        assertArgumentNotNull("handler", handler);
+
         forEach(zipInputStream, "", handler);
     }
 
@@ -157,6 +174,10 @@ public abstract class ResourceTraversalUtil {
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final String prefix, final ResourceHandler handler) {
+        assertArgumentNotNull("zipInputStream", zipInputStream);
+        assertArgumentNotNull("prefix", prefix);
+        assertArgumentNotNull("handler", handler);
+
         final int pos = prefix.length();
         ZipEntry entry = null;
         while ((entry = ZipInputStreamUtil.getNextEntry(zipInputStream)) != null) {
@@ -189,6 +210,10 @@ public abstract class ResourceTraversalUtil {
      */
     protected static void traverseFileSystem(final File rootDir,
             final File baseDir, final ResourceHandler handler) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("baseDir", baseDir);
+        assertArgumentNotNull("handler", handler);
+
         for (final File file : baseDir.listFiles()) {
             if (file.isDirectory()) {
                 traverseFileSystem(rootDir, file, handler);
@@ -201,7 +226,7 @@ public abstract class ResourceTraversalUtil {
                 try {
                     handler.processResource(resourcePath, is);
                 } finally {
-                    InputStreamUtil.close(is);
+                    CloseableUtil.close(is);
                 }
             }
         }
@@ -218,6 +243,9 @@ public abstract class ResourceTraversalUtil {
      */
     protected static File getBaseDir(final File rootDir,
             final String baseDirectory) {
+        assertArgumentNotNull("rootDir", rootDir);
+        assertArgumentNotNull("baseDirectory", baseDirectory);
+
         File baseDir = rootDir;
         if (baseDirectory != null) {
             for (final String name : baseDirectory.split("/")) {

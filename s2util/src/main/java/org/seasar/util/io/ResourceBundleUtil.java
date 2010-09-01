@@ -22,35 +22,36 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link ResourceBundle}用のユーティリティクラスです。
  * 
  * @author higa
  * 
  */
-public class ResourceBundleUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ResourceBundleUtil() {
-    }
+public abstract class ResourceBundleUtil {
 
     /**
      * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
      * 
      * @param name
+     *            リソースバンドの名前
      * @param locale
+     *            ロケール
      * @return {@link ResourceBundle}
      * @see ResourceBundle#getBundle(String, Locale)
      */
-    public static final ResourceBundle getBundle(String name, Locale locale) {
+    public static final ResourceBundle getBundle(final String name,
+            Locale locale) {
+        assertArgumentNotEmpty("name", name);
+
         if (locale == null) {
             locale = Locale.getDefault();
         }
         try {
             return ResourceBundle.getBundle(name, locale);
-        } catch (MissingResourceException ignore) {
+        } catch (final MissingResourceException ignore) {
             return null;
         }
     }
@@ -59,49 +60,65 @@ public class ResourceBundleUtil {
      * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
      * 
      * @param name
+     *            リソースバンドルの名前
      * @param locale
+     *            ロケール
      * @param classLoader
+     *            クラスローダ
      * @return {@link ResourceBundle}
      * @see ResourceBundle#getBundle(String, Locale, ClassLoader)
      */
-    public static final ResourceBundle getBundle(String name, Locale locale,
-            ClassLoader classLoader) {
+    public static final ResourceBundle getBundle(final String name,
+            Locale locale, final ClassLoader classLoader) {
+        assertArgumentNotNull("name", name);
+        assertArgumentNotNull("classLoader", classLoader);
+
         if (locale == null) {
             locale = Locale.getDefault();
         }
         try {
             return ResourceBundle.getBundle(name, locale, classLoader);
-        } catch (MissingResourceException ignore) {
+        } catch (final MissingResourceException ignore) {
             return null;
         }
     }
 
     /**
-     * {@link Map}に変換します。
+     * リソースバンドルを{@link Map}に変換します。
      * 
      * @param bundle
+     *            リソースバンドル
      * @return {@link Map}
      */
-    public static final Map<String, String> convertMap(ResourceBundle bundle) {
-        Map<String, String> ret = new HashMap<String, String>();
-        for (Enumeration<String> e = bundle.getKeys(); e.hasMoreElements();) {
-            String key = e.nextElement();
-            String value = bundle.getString(key);
+    public static final Map<String, String> convertMap(
+            final ResourceBundle bundle) {
+        assertArgumentNotNull("bundle", bundle);
+
+        final Map<String, String> ret = new HashMap<String, String>();
+        for (final Enumeration<String> e = bundle.getKeys(); e
+            .hasMoreElements();) {
+            final String key = e.nextElement();
+            final String value = bundle.getString(key);
             ret.put(key, value);
         }
         return ret;
     }
 
     /**
-     * {@link Map}に変換します。
+     * リソースバンドルを{@link Map}に変換して返します。
      * 
      * @param name
+     *            リソースバンドルの名前
      * @param locale
+     *            ロケール
      * @return {@link Map}
      */
-    public static final Map<String, String> convertMap(String name,
-            Locale locale) {
-        ResourceBundle bundle = getBundle(name, locale);
+    public static final Map<String, String> convertMap(final String name,
+            final Locale locale) {
+        assertArgumentNotNull("name", name);
+
+        final ResourceBundle bundle = getBundle(name, locale);
         return convertMap(bundle);
     }
+
 }

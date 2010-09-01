@@ -21,19 +21,14 @@ import java.io.InputStreamReader;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link InputStreamReader}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class InputStreamReaderUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected InputStreamReaderUtil() {
-    }
+public abstract class InputStreamReaderUtil {
 
     /**
      * {@link InputStreamReader}を作成します。
@@ -43,6 +38,8 @@ public class InputStreamReaderUtil {
      * @see #create(InputStream, String)
      */
     public static InputStreamReader create(InputStream is) {
+        assertArgumentNotNull("is", is);
+
         return create(is, "JISAutoDetect");
     }
 
@@ -52,16 +49,17 @@ public class InputStreamReaderUtil {
      * @param is
      * @param encoding
      * @return {@link InputStreamReader}
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
      * @see InputStreamReader#InputStreamReader(InputStream, String)
      */
-    public static InputStreamReader create(InputStream is, String encoding)
-            throws IORuntimeException {
+    public static InputStreamReader create(InputStream is, String encoding) {
+        assertArgumentNotNull("is", is);
+        assertArgumentNotEmpty("encoding", encoding);
+
         try {
             return new InputStreamReader(is, encoding);
         } catch (IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }

@@ -22,97 +22,66 @@ import java.io.OutputStream;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.io.CloseableUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link InputStream}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class InputStreamUtil {
-
-    /**
-     * {@link InputStream}を閉じます。
-     * 
-     * @param is
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
-     * @see InputStream#close()
-     */
-    public static void close(InputStream is) throws IORuntimeException {
-        if (is == null) {
-            return;
-        }
-        try {
-            is.close();
-        } catch (IOException e) {
-            throw new IORuntimeException(e);
-        }
-    }
-
-    /**
-     * {@link InputStream}を閉じます。
-     * 
-     * @param is
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
-     * @see InputStream#close()
-     */
-    public static void closeSilently(InputStream is) throws IORuntimeException {
-        if (is == null) {
-            return;
-        }
-        try {
-            is.close();
-        } catch (IOException e) {
-        }
-    }
+public abstract class InputStreamUtil {
 
     /**
      * {@link InputStream}からbyteの配列を取得します。
+     * <p>
+     * 入力ストリームはクローズされます。
+     * <p>
      * 
      * @param is
+     *            入力ストリーム
      * @return byteの配列
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
      */
-    public static final byte[] getBytes(InputStream is)
-            throws IORuntimeException {
-        byte[] bytes = null;
-        byte[] buf = new byte[8192];
+    public static final byte[] getBytes(final InputStream is) {
+        assertArgumentNotNull("is", is);
+
+        final byte[] buf = new byte[8192];
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream(8192);
             int n = 0;
             while ((n = is.read(buf, 0, buf.length)) != -1) {
                 baos.write(buf, 0, n);
             }
-            bytes = baos.toByteArray();
-        } catch (IOException e) {
+            return baos.toByteArray();
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         } finally {
-            if (is != null) {
-                close(is);
-            }
+            close(is);
         }
-        return bytes;
     }
 
     /**
      * {@link InputStream}の内容を {@link OutputStream}にコピーします。
+     * <p>
+     * 入力ストリームおよび出力ストリームはクローズされません。
+     * </p>
      * 
      * @param is
+     *            入力ストリーム
      * @param os
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
+     *            出力ストリーム
      */
-    public static final void copy(InputStream is, OutputStream os)
-            throws IORuntimeException {
-        byte[] buf = new byte[8192];
+    public static final void copy(final InputStream is, final OutputStream os) {
+        assertArgumentNotNull("is", is);
+        assertArgumentNotNull("os", os);
+
+        final byte[] buf = new byte[8192];
         try {
             int n = 0;
             while ((n = is.read(buf, 0, buf.length)) != -1) {
                 os.write(buf, 0, n);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -121,14 +90,15 @@ public class InputStreamUtil {
      * {@link InputStream#available()}の例外処理をラップしたメソッドです。
      * 
      * @param is
+     *            入力ストリーム
      * @return 可能なサイズ
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
      */
-    public static int available(InputStream is) throws IORuntimeException {
+    public static int available(final InputStream is) {
+        assertArgumentNotNull("is", is);
+
         try {
             return is.available();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
@@ -137,14 +107,15 @@ public class InputStreamUtil {
      * {@link InputStream}をリセットします。
      * 
      * @param is
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
+     *            入力ストリーム
      * @see InputStream#reset()
      */
-    public static void reset(InputStream is) throws IORuntimeException {
+    public static void reset(final InputStream is) {
+        assertArgumentNotNull("is", is);
+
         try {
             is.reset();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }

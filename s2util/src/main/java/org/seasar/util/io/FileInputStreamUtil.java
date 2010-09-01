@@ -21,34 +21,31 @@ import java.io.IOException;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link FileInputStream}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class FileInputStreamUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected FileInputStreamUtil() {
-    }
+public abstract class FileInputStreamUtil {
 
     /**
      * {@link FileInputStream}を作成します。
      * 
      * @param file
-     * @return {@link FileInputStream}
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
+     *            ファイル
+     * @return ファイルから入力する{@link FileInputStream}
      * @see FileInputStream#FileInputStream(File)
      */
-    public static FileInputStream create(File file) throws IORuntimeException {
+    public static FileInputStream create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new FileInputStream(file);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }
