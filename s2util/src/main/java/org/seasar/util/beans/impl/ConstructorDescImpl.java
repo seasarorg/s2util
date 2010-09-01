@@ -61,7 +61,8 @@ public class ConstructorDescImpl implements ConstructorDesc {
         parameterTypes = constructor.getParameterTypes();
         parameterizedClassDescs =
             new ParameterizedClassDesc[parameterTypes.length];
-        Map<TypeVariable<?>, Type> typeVariables = beanDesc.getTypeVariables();
+        final Map<TypeVariable<?>, Type> typeVariables =
+            beanDesc.getTypeVariables();
         for (int i = 0; i < parameterTypes.length; ++i) {
             parameterizedClassDescs[i] =
                 ParameterizedClassDescFactory.createParameterizedClassDesc(
@@ -93,7 +94,7 @@ public class ConstructorDescImpl implements ConstructorDesc {
     }
 
     @Override
-    public boolean isParameterized(int index) {
+    public boolean isParameterized(final int index) {
         return parameterizedClassDescs[index].isParameterizedClass();
     }
 

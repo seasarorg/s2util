@@ -40,7 +40,7 @@ public class BigDecimalConversionUtil {
      * @param o
      * @return {@link BigDecimal}に変換されたデータ
      */
-    public static BigDecimal toBigDecimal(Object o) {
+    public static BigDecimal toBigDecimal(final Object o) {
         return toBigDecimal(o, null);
     }
 
@@ -51,7 +51,7 @@ public class BigDecimalConversionUtil {
      * @param pattern
      * @return {@link BigDecimal}に変換されたデータ
      */
-    public static BigDecimal toBigDecimal(Object o, String pattern) {
+    public static BigDecimal toBigDecimal(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof BigDecimal) {
@@ -62,7 +62,7 @@ public class BigDecimalConversionUtil {
             }
             return new BigDecimal(Long.toString(((java.util.Date) o).getTime()));
         } else if (o instanceof String) {
-            String s = (String) o;
+            final String s = (String) o;
             if (StringUtil.isEmpty(s)) {
                 return null;
             }
@@ -78,7 +78,7 @@ public class BigDecimalConversionUtil {
      * @param dec
      * @return 文字列に変換されたデータ
      */
-    public static String toString(BigDecimal dec) {
+    public static String toString(final BigDecimal dec) {
         return dec.toPlainString();
     }
 

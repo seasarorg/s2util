@@ -17,7 +17,6 @@ package org.seasar.util.convert;
 
 import java.sql.Date;
 
-
 /**
  * {@link Date}用の変換ユーティリティです。
  * 
@@ -38,7 +37,7 @@ public class SqlDateConversionUtil {
      * @param o
      * @return {@link Date}
      */
-    public static Date toDate(Object o) {
+    public static Date toDate(final Object o) {
         return toDate(o, null);
     }
 
@@ -49,11 +48,11 @@ public class SqlDateConversionUtil {
      * @param pattern
      * @return {@link Date}
      */
-    public static Date toDate(Object o, String pattern) {
+    public static Date toDate(final Object o, final String pattern) {
         if (o instanceof Date) {
             return (Date) o;
         }
-        java.util.Date date = DateConversionUtil.toDate(o, pattern);
+        final java.util.Date date = DateConversionUtil.toDate(o, pattern);
         if (date != null) {
             return new Date(date.getTime());
         }

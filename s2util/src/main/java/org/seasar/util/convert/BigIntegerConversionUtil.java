@@ -17,7 +17,6 @@ package org.seasar.util.convert;
 
 import java.math.BigInteger;
 
-
 /**
  * {@link BigInteger}用の変換ユーティリティです。
  * 
@@ -38,7 +37,7 @@ public class BigIntegerConversionUtil {
      * @param o
      * @return {@link BigInteger}
      */
-    public static BigInteger toBigInteger(Object o) {
+    public static BigInteger toBigInteger(final Object o) {
         return toBigInteger(o, null);
     }
 
@@ -49,13 +48,13 @@ public class BigIntegerConversionUtil {
      * @param pattern
      * @return {@link BigInteger}
      */
-    public static BigInteger toBigInteger(Object o, String pattern) {
+    public static BigInteger toBigInteger(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof BigInteger) {
             return (BigInteger) o;
         } else {
-            Long l = LongConversionUtil.toLong(o, pattern);
+            final Long l = LongConversionUtil.toLong(o, pattern);
             if (l == null) {
                 return null;
             }

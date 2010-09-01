@@ -77,7 +77,7 @@ public class CaseInsensitiveMap<V> extends ArrayMap<String, V> {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return super.containsKey(convertKey(key));
     }
 

@@ -34,7 +34,7 @@ public class NullArgumentException extends SIllegalArgumentException {
      * @param argName
      *            {@code null} である引数の名前
      */
-    public NullArgumentException(String argName) {
+    public NullArgumentException(final String argName) {
         super(argName, "EUTL0008", asArray(argName));
     }
 

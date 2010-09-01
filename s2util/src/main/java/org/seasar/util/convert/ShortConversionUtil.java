@@ -41,7 +41,7 @@ public class ShortConversionUtil {
      *            変換するオブジェクト
      * @return 変換後のオブジェクト
      */
-    public static Short toShort(Object o) {
+    public static Short toShort(final Object o) {
         return toShort(o, null);
     }
 
@@ -54,7 +54,7 @@ public class ShortConversionUtil {
      *            パターン
      * @return 変換後のオブジェクト
      */
-    public static Short toShort(Object o, String pattern) {
+    public static Short toShort(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Short) {
@@ -76,7 +76,7 @@ public class ShortConversionUtil {
         }
     }
 
-    private static Short toShort(String s) {
+    private static Short toShort(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -90,7 +90,7 @@ public class ShortConversionUtil {
      *            変換するオブジェクト
      * @return 変換されたshort
      */
-    public static short toPrimitiveShort(Object o) {
+    public static short toPrimitiveShort(final Object o) {
         return toPrimitiveShort(o, null);
     }
 
@@ -103,7 +103,7 @@ public class ShortConversionUtil {
      *            パターン
      * @return 変換されたshort
      */
-    public static short toPrimitiveShort(Object o, String pattern) {
+    public static short toPrimitiveShort(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -123,7 +123,7 @@ public class ShortConversionUtil {
         }
     }
 
-    private static short toPrimitiveShort(String s) {
+    private static short toPrimitiveShort(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

@@ -42,13 +42,14 @@ public class ResultSetUtil {
      * @throws SQLRuntimeException
      *             SQL例外が起こった場合。
      */
-    public static void close(ResultSet resultSet) throws SQLRuntimeException {
+    public static void close(final ResultSet resultSet)
+            throws SQLRuntimeException {
         if (resultSet == null) {
             return;
         }
         try {
             resultSet.close();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -62,10 +63,10 @@ public class ResultSetUtil {
      * @throws SQLRuntimeException
      *             SQL例外が起こった場合。
      */
-    public static boolean next(ResultSet resultSet) {
+    public static boolean next(final ResultSet resultSet) {
         try {
             return resultSet.next();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -81,11 +82,11 @@ public class ResultSetUtil {
      * @throws SQLRuntimeException
      *             SQL例外が起こった場合。
      */
-    public static boolean absolute(ResultSet resultSet, int index)
+    public static boolean absolute(final ResultSet resultSet, final int index)
             throws SQLRuntimeException {
         try {
             return resultSet.absolute(index);
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }

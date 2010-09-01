@@ -40,10 +40,10 @@ public class MessageDigestUtil {
      * @throws RuntimeException
      *             {@link NoSuchAlgorithmException}が発生した場合
      */
-    public static MessageDigest getInstance(String algorithm) {
+    public static MessageDigest getInstance(final String algorithm) {
         try {
             return MessageDigest.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             throw new NoSuchAlgorithmRuntimeException(e);
         }
     }

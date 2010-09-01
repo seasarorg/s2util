@@ -95,11 +95,8 @@ public abstract class ResourceUtil {
      * @param path
      * @param extension
      * @return リソース
-     * @throws ResourceNotFoundRuntimeException
-     *             リソースが見つからなかった場合
      */
-    public static URL getResource(final String path, final String extension)
-            throws ResourceNotFoundRuntimeException {
+    public static URL getResource(final String path, final String extension) {
         assertArgumentNotEmpty("path", path);
 
         final URL url = getResourceNoException(path, extension);

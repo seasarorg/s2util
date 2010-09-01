@@ -39,7 +39,7 @@ public abstract class DriverManagerUtil {
      * @since 2.4.10
      */
     public static void registerDriver(final String driverClassName) {
-        Class<Driver> clazz = ClassUtil.forName(driverClassName);
+        final Class<Driver> clazz = ClassUtil.forName(driverClassName);
         registerDriver(clazz);
     }
 

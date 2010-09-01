@@ -44,7 +44,7 @@ public class NumberConversionUtil {
      * @param o
      * @return 適切な {@link Number}
      */
-    public static Object convertNumber(Class<?> type, Object o) {
+    public static Object convertNumber(final Class<?> type, final Object o) {
         if (type == Integer.class) {
             return IntegerConversionUtil.toInteger(o);
         } else if (type == BigDecimal.class) {
@@ -72,45 +72,46 @@ public class NumberConversionUtil {
      * @param o
      * @return Wrapper
      */
-    public static Object convertPrimitiveWrapper(Class<?> type, Object o) {
+    public static Object convertPrimitiveWrapper(final Class<?> type,
+            final Object o) {
         if (type == int.class) {
-            Integer i = IntegerConversionUtil.toInteger(o);
+            final Integer i = IntegerConversionUtil.toInteger(o);
             if (i != null) {
                 return i;
             }
             return Integer.valueOf(0);
         } else if (type == double.class) {
-            Double d = DoubleConversionUtil.toDouble(o);
+            final Double d = DoubleConversionUtil.toDouble(o);
             if (d != null) {
                 return d;
             }
             return new Double(0);
         } else if (type == long.class) {
-            Long l = LongConversionUtil.toLong(o);
+            final Long l = LongConversionUtil.toLong(o);
             if (l != null) {
                 return l;
             }
             return Long.valueOf(0);
         } else if (type == float.class) {
-            Float f = FloatConversionUtil.toFloat(o);
+            final Float f = FloatConversionUtil.toFloat(o);
             if (f != null) {
                 return f;
             }
             return new Float(0);
         } else if (type == short.class) {
-            Short s = ShortConversionUtil.toShort(o);
+            final Short s = ShortConversionUtil.toShort(o);
             if (s != null) {
                 return s;
             }
             return Short.valueOf((short) 0);
         } else if (type == boolean.class) {
-            Boolean b = BooleanConversionUtil.toBoolean(o);
+            final Boolean b = BooleanConversionUtil.toBoolean(o);
             if (b != null) {
                 return b;
             }
             return Boolean.FALSE;
         } else if (type == byte.class) {
-            Byte b = ByteConversionUtil.toByte(o);
+            final Byte b = ByteConversionUtil.toByte(o);
             if (b != null) {
                 return b;
             }
@@ -127,7 +128,7 @@ public class NumberConversionUtil {
      * @return デリミタを削除した結果
      */
     public static String removeDelimeter(String value, final Locale locale) {
-        String groupingSeparator = findGroupingSeparator(locale);
+        final String groupingSeparator = findGroupingSeparator(locale);
         if (groupingSeparator != null) {
             value = StringUtil.replace(value, groupingSeparator, "");
         }
@@ -140,8 +141,8 @@ public class NumberConversionUtil {
      * @param locale
      * @return グルーピング用のセパレータ
      */
-    public static String findGroupingSeparator(Locale locale) {
-        DecimalFormatSymbols symbol = getDecimalFormatSymbols(locale);
+    public static String findGroupingSeparator(final Locale locale) {
+        final DecimalFormatSymbols symbol = getDecimalFormatSymbols(locale);
         return Character.toString(symbol.getGroupingSeparator());
     }
 
@@ -151,12 +152,13 @@ public class NumberConversionUtil {
      * @param locale
      * @return 数値のセパレータ
      */
-    public static String findDecimalSeparator(Locale locale) {
-        DecimalFormatSymbols symbol = getDecimalFormatSymbols(locale);
+    public static String findDecimalSeparator(final Locale locale) {
+        final DecimalFormatSymbols symbol = getDecimalFormatSymbols(locale);
         return Character.toString(symbol.getDecimalSeparator());
     }
 
-    private static DecimalFormatSymbols getDecimalFormatSymbols(Locale locale) {
+    private static DecimalFormatSymbols getDecimalFormatSymbols(
+            final Locale locale) {
         DecimalFormatSymbols symbol;
         if (locale != null) {
             symbol = DecimalFormatSymbolsUtil.getDecimalFormatSymbols(locale);

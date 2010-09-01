@@ -49,9 +49,9 @@ public class UUID {
      * @return UUIDの文字列
      */
     public static String create() {
-        StringBuffer buf = new StringBuffer(BASE.length() * 2);
+        final StringBuffer buf = new StringBuffer(BASE.length() * 2);
         buf.append(BASE);
-        int lowTime = (int) (System.currentTimeMillis() >> 32);
+        final int lowTime = (int) (System.currentTimeMillis() >> 32);
         StringUtil.appendHex(buf, lowTime);
         StringUtil.appendHex(buf, RANDOM.nextInt());
         return buf.toString();
@@ -60,7 +60,7 @@ public class UUID {
     private static byte[] getAddress() {
         try {
             return InetAddress.getLocalHost().getAddress();
-        } catch (UnknownHostException ignore) {
+        } catch (final UnknownHostException ignore) {
             return DEFAULT_ADDRESS;
         }
     }

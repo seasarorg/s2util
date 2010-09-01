@@ -31,8 +31,9 @@ public class InputStreamUtilTest extends TestCase {
      * 
      */
     public void testGetBytes() {
-        InputStream is = ResourceUtil.getResourceAsStream(StringUtil.replace(
-                getClass().getName(), ".", "/")
+        InputStream is =
+            ResourceUtil.getResourceAsStream(StringUtil.replace(getClass()
+                .getName(), ".", "/")
                 + ".class");
         assertNotNull("1", InputStreamUtil.getBytes(is));
     }

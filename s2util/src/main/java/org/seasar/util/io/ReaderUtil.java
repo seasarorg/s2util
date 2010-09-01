@@ -30,7 +30,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class ReaderUtil {
 
-    private static final int BUF_SIZE = 8192;
+    private static final int BUF_SIZE = 4096;
 
     /**
      * {@link Reader}からテキストを読み込みます。

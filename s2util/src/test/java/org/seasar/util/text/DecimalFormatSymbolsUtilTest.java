@@ -30,10 +30,10 @@ public class DecimalFormatSymbolsUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetDecimalFormatSymbols() throws Exception {
-        DecimalFormatSymbols symbols = DecimalFormatSymbolsUtil
-                .getDecimalFormatSymbols(Locale.GERMAN);
+        DecimalFormatSymbols symbols =
+            DecimalFormatSymbolsUtil.getDecimalFormatSymbols(Locale.GERMAN);
         System.out.println("DecimalSeparator:" + symbols.getDecimalSeparator());
         System.out.println("GroupingSeparator:"
-                + symbols.getGroupingSeparator());
+            + symbols.getGroupingSeparator());
     }
 }

@@ -37,7 +37,7 @@ public abstract class InputStreamReaderUtil {
      * @return {@link InputStreamReader}
      * @see #create(InputStream, String)
      */
-    public static InputStreamReader create(InputStream is) {
+    public static InputStreamReader create(final InputStream is) {
         assertArgumentNotNull("is", is);
 
         return create(is, "JISAutoDetect");
@@ -51,13 +51,14 @@ public abstract class InputStreamReaderUtil {
      * @return {@link InputStreamReader}
      * @see InputStreamReader#InputStreamReader(InputStream, String)
      */
-    public static InputStreamReader create(InputStream is, String encoding) {
+    public static InputStreamReader create(final InputStream is,
+            final String encoding) {
         assertArgumentNotNull("is", is);
         assertArgumentNotEmpty("encoding", encoding);
 
         try {
             return new InputStreamReader(is, encoding);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }

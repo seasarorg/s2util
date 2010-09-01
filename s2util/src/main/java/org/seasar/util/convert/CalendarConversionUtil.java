@@ -41,7 +41,7 @@ public class CalendarConversionUtil {
      * @param o
      * @return {@link Calendar}
      */
-    public static Calendar toCalendar(Object o) {
+    public static Calendar toCalendar(final Object o) {
         return toCalendar(o, null);
     }
 
@@ -52,13 +52,13 @@ public class CalendarConversionUtil {
      * @param pattern
      * @return {@link Calendar}
      */
-    public static Calendar toCalendar(Object o, String pattern) {
+    public static Calendar toCalendar(final Object o, final String pattern) {
         if (o instanceof Calendar) {
             return (Calendar) o;
         }
-        java.util.Date date = DateConversionUtil.toDate(o, pattern);
+        final java.util.Date date = DateConversionUtil.toDate(o, pattern);
         if (date != null) {
-            Calendar cal = Calendar.getInstance();
+            final Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             return cal;
         }
@@ -72,9 +72,9 @@ public class CalendarConversionUtil {
      *            {@link Calendar}
      * @return カレンダー
      */
-    public static Calendar localize(Calendar calendar) {
+    public static Calendar localize(final Calendar calendar) {
         assertArgumentNotNull("calendar", calendar);
-        Calendar localCalendar = Calendar.getInstance();
+        final Calendar localCalendar = Calendar.getInstance();
         localCalendar.setTimeInMillis(calendar.getTimeInMillis());
         return localCalendar;
     }

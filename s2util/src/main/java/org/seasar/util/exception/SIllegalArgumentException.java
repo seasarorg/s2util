@@ -63,7 +63,7 @@ public class SIllegalArgumentException extends IllegalArgumentException {
      *            原因となった例外
      */
     public SIllegalArgumentException(final String argName,
-            final String messageCode, final Object[] args, Throwable cause) {
+            final String messageCode, final Object[] args, final Throwable cause) {
         super(MessageFormatter.getMessage(messageCode, args), cause);
         this.argName = argName;
         this.messageCode = messageCode;

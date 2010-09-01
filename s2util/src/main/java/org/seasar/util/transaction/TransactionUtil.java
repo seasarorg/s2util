@@ -59,12 +59,13 @@ public class TransactionUtil {
      * @param tx
      * @param xaResource
      */
-    public static void enlistResource(Transaction tx, XAResource xaResource) {
+    public static void enlistResource(final Transaction tx,
+            final XAResource xaResource) {
         try {
             tx.enlistResource(xaResource);
-        } catch (SystemException e) {
+        } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
-        } catch (RollbackException e) {
+        } catch (final RollbackException e) {
             throw new RollbackRuntimeException(e);
         }
     }
@@ -75,14 +76,14 @@ public class TransactionUtil {
      * @param tx
      * @param sync
      */
-    public static void registerSynchronization(Transaction tx,
-            Synchronization sync) {
+    public static void registerSynchronization(final Transaction tx,
+            final Synchronization sync) {
 
         try {
             tx.registerSynchronization(sync);
-        } catch (SystemException e) {
+        } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
-        } catch (RollbackException e) {
+        } catch (final RollbackException e) {
             throw new RollbackRuntimeException(e);
         }
     }

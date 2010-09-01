@@ -40,7 +40,7 @@ public class DoubleConversionUtil {
      * @param o
      * @return {@link Double}
      */
-    public static Double toDouble(Object o) {
+    public static Double toDouble(final Object o) {
         return toDouble(o, null);
     }
 
@@ -51,7 +51,7 @@ public class DoubleConversionUtil {
      * @param pattern
      * @return {@link Double}
      */
-    public static Double toDouble(Object o, String pattern) {
+    public static Double toDouble(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Double) {
@@ -70,7 +70,7 @@ public class DoubleConversionUtil {
         }
     }
 
-    private static Double toDouble(String s) {
+    private static Double toDouble(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -83,7 +83,7 @@ public class DoubleConversionUtil {
      * @param o
      * @return double
      */
-    public static double toPrimitiveDouble(Object o) {
+    public static double toPrimitiveDouble(final Object o) {
         return toPrimitiveDouble(o, null);
     }
 
@@ -94,7 +94,7 @@ public class DoubleConversionUtil {
      * @param pattern
      * @return double
      */
-    public static double toPrimitiveDouble(Object o, String pattern) {
+    public static double toPrimitiveDouble(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -104,7 +104,7 @@ public class DoubleConversionUtil {
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
                 return Double.parseDouble(new SimpleDateFormat(pattern)
-                        .format(o));
+                    .format(o));
             }
             return ((java.util.Date) o).getTime();
         } else {
@@ -112,7 +112,7 @@ public class DoubleConversionUtil {
         }
     }
 
-    private static double toPrimitiveDouble(String s) {
+    private static double toPrimitiveDouble(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

@@ -50,7 +50,7 @@ public class DomUtil {
      * @param contents
      * @return {@link InputStream}
      */
-    public static InputStream getContentsAsStream(String contents) {
+    public static InputStream getContentsAsStream(final String contents) {
         return getContentsAsStream(contents, null);
     }
 
@@ -61,15 +61,15 @@ public class DomUtil {
      * @param encoding
      * @return {@link InputStream}
      */
-    public static InputStream getContentsAsStream(String contents,
-            String encoding) {
+    public static InputStream getContentsAsStream(final String contents,
+            final String encoding) {
 
         if (encoding == null) {
             return new ByteArrayInputStream(contents.getBytes());
         }
         try {
             return new ByteArrayInputStream(contents.getBytes(encoding));
-        } catch (UnsupportedEncodingException ex) {
+        } catch (final UnsupportedEncodingException ex) {
             throw new IORuntimeException(ex);
         }
     }
@@ -84,8 +84,8 @@ public class DomUtil {
         if (s == null) {
             return null;
         }
-        char[] content = s.toCharArray();
-        StringBuilder buf = new StringBuilder();
+        final char[] content = s.toCharArray();
+        final StringBuilder buf = new StringBuilder();
         for (int i = 0; i < content.length; i++) {
             switch (content[i]) {
             case '<':
@@ -117,8 +117,8 @@ public class DomUtil {
         if (s == null) {
             return null;
         }
-        char[] content = s.toCharArray();
-        StringBuilder buf = new StringBuilder();
+        final char[] content = s.toCharArray();
+        final StringBuilder buf = new StringBuilder();
         for (int i = 0; i < content.length; i++) {
             switch (content[i]) {
             case '<':
@@ -143,8 +143,8 @@ public class DomUtil {
      * @param document
      * @return 変換された文字列
      */
-    public static String toString(Document document) {
-        StringBuffer buf = new StringBuffer();
+    public static String toString(final Document document) {
+        final StringBuffer buf = new StringBuffer();
         appendElement(document.getDocumentElement(), buf);
         return buf.toString();
     }
@@ -155,8 +155,8 @@ public class DomUtil {
      * @param element
      * @return 変換された文字列
      */
-    public static String toString(Element element) {
-        StringBuffer buf = new StringBuffer();
+    public static String toString(final Element element) {
+        final StringBuffer buf = new StringBuffer();
         appendElement(element, buf);
         return buf.toString();
     }
@@ -167,8 +167,9 @@ public class DomUtil {
      * @param element
      * @param buf
      */
-    public static void appendElement(Element element, StringBuffer buf) {
-        String tag = element.getTagName();
+    public static void appendElement(final Element element,
+            final StringBuffer buf) {
+        final String tag = element.getTagName();
         buf.append('<');
         buf.append(tag);
         appendAttrs(element.getAttributes(), buf);
@@ -185,8 +186,9 @@ public class DomUtil {
      * @param children
      * @param buf
      */
-    public static void appendChildren(NodeList children, StringBuffer buf) {
-        int length = children.getLength();
+    public static void appendChildren(final NodeList children,
+            final StringBuffer buf) {
+        final int length = children.getLength();
         for (int i = 0; i < length; ++i) {
             appendNode(children.item(i), buf);
         }
@@ -198,10 +200,11 @@ public class DomUtil {
      * @param attrs
      * @param buf
      */
-    public static void appendAttrs(NamedNodeMap attrs, StringBuffer buf) {
-        int length = attrs.getLength();
+    public static void appendAttrs(final NamedNodeMap attrs,
+            final StringBuffer buf) {
+        final int length = attrs.getLength();
         for (int i = 0; i < length; ++i) {
-            Attr attr = (Attr) attrs.item(i);
+            final Attr attr = (Attr) attrs.item(i);
             buf.append(' ');
             appendAttr(attr, buf);
         }
@@ -213,7 +216,7 @@ public class DomUtil {
      * @param attr
      * @param buf
      */
-    public static void appendAttr(Attr attr, StringBuffer buf) {
+    public static void appendAttr(final Attr attr, final StringBuffer buf) {
         buf.append(attr.getName());
         buf.append("=\"");
         buf.append(encodeAttrQuot(attr.getValue()));
@@ -226,7 +229,7 @@ public class DomUtil {
      * @param text
      * @param buf
      */
-    public static void appendText(Text text, StringBuffer buf) {
+    public static void appendText(final Text text, final StringBuffer buf) {
         buf.append(encodeText(text.getData()));
     }
 
@@ -236,8 +239,8 @@ public class DomUtil {
      * @param cdataSection
      * @param buf
      */
-    public static void appendCDATASection(CDATASection cdataSection,
-            StringBuffer buf) {
+    public static void appendCDATASection(final CDATASection cdataSection,
+            final StringBuffer buf) {
         buf.append("<![CDATA[");
         buf.append(cdataSection.getData());
         buf.append("]]>");
@@ -249,8 +252,8 @@ public class DomUtil {
      * @param entityReference
      * @param buf
      */
-    public static void appendEntityReference(EntityReference entityReference,
-            StringBuffer buf) {
+    public static void appendEntityReference(
+            final EntityReference entityReference, final StringBuffer buf) {
         buf.append('&');
         buf.append(entityReference.getNodeName());
         buf.append(';');
@@ -262,7 +265,7 @@ public class DomUtil {
      * @param node
      * @param buf
      */
-    public static void appendNode(Node node, StringBuffer buf) {
+    public static void appendNode(final Node node, final StringBuffer buf) {
         switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:
             appendElement((Element) node, buf);

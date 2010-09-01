@@ -44,7 +44,7 @@ public class ModifierUtil {
      *            メソッド
      * @return パブリックかどうか
      */
-    public static boolean isPublic(Method m) {
+    public static boolean isPublic(final Method m) {
         return isPublic(m.getModifiers());
     }
 
@@ -55,7 +55,7 @@ public class ModifierUtil {
      *            フィールド
      * @return パブリックかどうか
      */
-    public static boolean isPublic(Field f) {
+    public static boolean isPublic(final Field f) {
         return isPublic(f.getModifiers());
     }
 
@@ -66,7 +66,7 @@ public class ModifierUtil {
      *            フィールド
      * @return <code>public</code>,<code>static</code>,<code>final</code>かどうか
      */
-    public static boolean isPublicStaticFinalField(Field f) {
+    public static boolean isPublicStaticFinalField(final Field f) {
         return isPublicStaticFinal(f.getModifiers());
     }
 
@@ -77,7 +77,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>public</code>,<code>static</code>,<code>final</code>かどうか
      */
-    public static boolean isPublicStaticFinal(int modifier) {
+    public static boolean isPublicStaticFinal(final int modifier) {
         return isPublic(modifier) && isStatic(modifier) && isFinal(modifier);
     }
 
@@ -88,7 +88,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>public</code>かどうか
      */
-    public static boolean isPublic(int modifier) {
+    public static boolean isPublic(final int modifier) {
         return Modifier.isPublic(modifier);
     }
 
@@ -99,7 +99,7 @@ public class ModifierUtil {
      *            クラス
      * @return <code>abstract</code>かどうか
      */
-    public static boolean isAbstract(Class<?> clazz) {
+    public static boolean isAbstract(final Class<?> clazz) {
         return isAbstract(clazz.getModifiers());
     }
 
@@ -110,7 +110,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>abstract</code>かどうか
      */
-    public static boolean isAbstract(int modifier) {
+    public static boolean isAbstract(final int modifier) {
         return Modifier.isAbstract(modifier);
     }
 
@@ -121,7 +121,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>static</code>かどうか
      */
-    public static boolean isStatic(int modifier) {
+    public static boolean isStatic(final int modifier) {
         return Modifier.isStatic(modifier);
     }
 
@@ -132,7 +132,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>final</code>かどうか
      */
-    public static boolean isFinal(int modifier) {
+    public static boolean isFinal(final int modifier) {
         return Modifier.isFinal(modifier);
     }
 
@@ -143,7 +143,7 @@ public class ModifierUtil {
      *            メソッド
      * @return <code>final</code>かどうか
      */
-    public static boolean isFinal(Method method) {
+    public static boolean isFinal(final Method method) {
         return isFinal(method.getModifiers());
     }
 
@@ -155,7 +155,7 @@ public class ModifierUtil {
      * @return <code>transient</code>かどうか
      * @see #isTransient(int)
      */
-    public static boolean isTransient(Field field) {
+    public static boolean isTransient(final Field field) {
         return isTransient(field.getModifiers());
     }
 
@@ -166,7 +166,7 @@ public class ModifierUtil {
      *            モディファイヤ
      * @return <code>transient</code>かどうか
      */
-    public static boolean isTransient(int modifier) {
+    public static boolean isTransient(final int modifier) {
         return Modifier.isTransient(modifier);
     }
 
@@ -177,8 +177,8 @@ public class ModifierUtil {
      *            フィールド
      * @return インスタンスフィールドかどうか
      */
-    public static boolean isInstanceField(Field field) {
-        int m = field.getModifiers();
+    public static boolean isInstanceField(final Field field) {
+        final int m = field.getModifiers();
         return !isStatic(m) && !isFinal(m);
     }
 }

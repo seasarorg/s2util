@@ -32,6 +32,8 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class InputStreamUtil {
 
+    private static final int BUF_SIZE = 4096;
+
     /**
      * {@link InputStream}からbyteの配列を取得します。
      * <p>
@@ -47,7 +49,8 @@ public abstract class InputStreamUtil {
 
         final byte[] buf = new byte[8192];
         try {
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream(8192);
+            final ByteArrayOutputStream baos =
+                new ByteArrayOutputStream(BUF_SIZE);
             int n = 0;
             while ((n = is.read(buf, 0, buf.length)) != -1) {
                 baos.write(buf, 0, n);
@@ -75,7 +78,7 @@ public abstract class InputStreamUtil {
         assertArgumentNotNull("is", is);
         assertArgumentNotNull("os", os);
 
-        final byte[] buf = new byte[8192];
+        final byte[] buf = new byte[BUF_SIZE];
         try {
             int n = 0;
             while ((n = is.read(buf, 0, buf.length)) != -1) {

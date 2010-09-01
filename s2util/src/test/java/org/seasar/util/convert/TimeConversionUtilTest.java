@@ -37,16 +37,18 @@ public class TimeConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testToTime_default() throws Exception {
-        assertEquals(new SimpleDateFormat("HH:mm:ss").parse("12:34:56"),
-                TimeConversionUtil.toTime("12:34:56", null, Locale.JAPANESE));
+        assertEquals(
+            new SimpleDateFormat("HH:mm:ss").parse("12:34:56"),
+            TimeConversionUtil.toTime("12:34:56", null, Locale.JAPANESE));
     }
 
     /**
      * @throws Exception
      */
     public void testToTime_short() throws Exception {
-        assertEquals(new SimpleDateFormat("HH:mm:ss").parse("12:34:56"),
-                TimeConversionUtil.toTime("123456", null, Locale.JAPANESE));
+        assertEquals(
+            new SimpleDateFormat("HH:mm:ss").parse("12:34:56"),
+            TimeConversionUtil.toTime("123456", null, Locale.JAPANESE));
     }
 
     /**

@@ -46,12 +46,13 @@ public class DocumentBuilderUtil {
      * @param is
      * @return {@link Document}
      */
-    public static Document parse(DocumentBuilder builder, InputStream is) {
+    public static Document parse(final DocumentBuilder builder,
+            final InputStream is) {
         try {
             return builder.parse(is);
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             throw new SAXRuntimeException(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }

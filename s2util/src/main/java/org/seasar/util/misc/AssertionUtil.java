@@ -44,7 +44,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>の場合。
      */
     public static void assertArgumentNotNull(final String argName,
-            final Object argValue) throws NullArgumentException {
+            final Object argValue) {
         if (argValue == null) {
             throw new NullArgumentException(argName);
         }
@@ -61,7 +61,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空文字列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final String argValue) throws SIllegalArgumentException {
+            final String argValue) {
         if (StringUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -81,7 +81,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final Object[] argValue) throws SIllegalArgumentException {
+            final Object[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -101,7 +101,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final boolean[] argValue) throws SIllegalArgumentException {
+            final boolean[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -121,7 +121,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final byte[] argValue) throws SIllegalArgumentException {
+            final byte[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -141,7 +141,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final short[] argValue) throws SIllegalArgumentException {
+            final short[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -161,7 +161,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final int[] argValue) throws SIllegalArgumentException {
+            final int[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -181,7 +181,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final long[] argValue) throws SIllegalArgumentException {
+            final long[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -201,7 +201,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final float[] argValue) throws SIllegalArgumentException {
+            final float[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -221,7 +221,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final double[] argValue) throws SIllegalArgumentException {
+            final double[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -241,7 +241,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final char[] argValue) throws SIllegalArgumentException {
+            final char[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
             throw new SIllegalArgumentException(
                 argName,
@@ -261,7 +261,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の{@link Collection}の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final Collection<?> argValue) throws SIllegalArgumentException {
+            final Collection<?> argValue) {
         if (argValue == null || argValue.isEmpty()) {
             throw new SIllegalArgumentException(
                 argName,
@@ -281,7 +281,7 @@ public abstract class AssertionUtil {
      *             引数が<code>null</code>または空の{@link Map}の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
-            final Map<?, ?> argValue) throws SIllegalArgumentException {
+            final Map<?, ?> argValue) {
         if (argValue == null || argValue.isEmpty()) {
             throw new SIllegalArgumentException(
                 argName,
@@ -306,8 +306,7 @@ public abstract class AssertionUtil {
      *             {@code expression}がfalseの場合。
      */
     public static void assertArgument(final String argName,
-            final boolean expression, final String description)
-            throws SIllegalArgumentException {
+            final boolean expression, final String description) {
         if (!expression) {
             throw new SIllegalArgumentException(argName, "EUTL0009", asArray(
                 argName,
@@ -323,8 +322,7 @@ public abstract class AssertionUtil {
      * @throws EmptyRuntimeException
      *             文字列が空あるいは<code>null</code>の場合。
      */
-    public static void assertNotEmpty(final String message, final String s)
-            throws EmptyRuntimeException {
+    public static void assertNotEmpty(final String message, final String s) {
         if (StringUtil.isEmpty(s)) {
             throw new EmptyRuntimeException(message);
         }

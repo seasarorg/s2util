@@ -41,8 +41,10 @@ public class TextUtilTest extends TestCase {
      * @throws Exception
      */
     public void testReadTextCrLf() throws Exception {
-        assertEquals("1", "aaa\r\nbbb", TextUtil
-                .readText(getPath("hoge_crlf.txt")));
+        assertEquals(
+            "1",
+            "aaa\r\nbbb",
+            TextUtil.readText(getPath("hoge_crlf.txt")));
     }
 
     /**
@@ -53,7 +55,9 @@ public class TextUtilTest extends TestCase {
     }
 
     private String getPath(String fileName) {
-        return getClass().getName().replace('.', '/').replaceFirst(
-                "TextUtilTest", fileName);
+        return getClass()
+            .getName()
+            .replace('.', '/')
+            .replaceFirst("TextUtilTest", fileName);
     }
 }

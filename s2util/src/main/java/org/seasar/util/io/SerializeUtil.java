@@ -40,11 +40,8 @@ public abstract class SerializeUtil {
      * 
      * @param obj
      * @return シリアライズして復元したオブジェクト
-     * @throws IORuntimeException
-     * @throws ClassNotFoundRuntimeException
      */
-    public static Object serialize(final Object obj) throws IORuntimeException,
-            ClassNotFoundRuntimeException {
+    public static Object serialize(final Object obj) {
         assertArgumentNotNull("obj", obj);
 
         final byte[] binary = fromObjectToBinary(obj);

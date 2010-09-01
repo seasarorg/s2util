@@ -43,11 +43,11 @@ public class JarURLConnectionUtil {
      * @throws IORuntimeException
      *             {@link IOException}が発生した場合
      */
-    public static JarFile getJarFile(JarURLConnection conn)
+    public static JarFile getJarFile(final JarURLConnection conn)
             throws IORuntimeException {
         try {
             return conn.getJarFile();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }

@@ -45,7 +45,7 @@ public class TimeConversionUtil {
      *            変換したいオブジェクト
      * @return タイム
      */
-    public static Time toTime(Object o) {
+    public static Time toTime(final Object o) {
         return toTime(o, null);
     }
 
@@ -58,7 +58,7 @@ public class TimeConversionUtil {
      *            パターン
      * @return タイム
      */
-    public static Time toTime(Object o, String pattern) {
+    public static Time toTime(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof String) {
@@ -81,7 +81,7 @@ public class TimeConversionUtil {
      *            パターン
      * @return 変換した値
      */
-    public static Time toTime(String s, String pattern) {
+    public static Time toTime(final String s, final String pattern) {
         return toTime(s, pattern, Locale.getDefault());
     }
 
@@ -96,14 +96,15 @@ public class TimeConversionUtil {
      *            ロケール
      * @return 変換した値
      */
-    public static Time toTime(String s, String pattern, Locale locale) {
+    public static Time toTime(final String s, final String pattern,
+            final Locale locale) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        SimpleDateFormat sdf = getDateFormat(s, pattern, locale);
+        final SimpleDateFormat sdf = getDateFormat(s, pattern, locale);
         try {
             return new Time(sdf.parse(s).getTime());
-        } catch (ParseException ex) {
+        } catch (final ParseException ex) {
             throw new ParseRuntimeException(ex);
         }
     }
@@ -119,8 +120,8 @@ public class TimeConversionUtil {
      *            ロケール
      * @return 日付フォーマット
      */
-    public static SimpleDateFormat getDateFormat(String s, String pattern,
-            Locale locale) {
+    public static SimpleDateFormat getDateFormat(final String s,
+            final String pattern, final Locale locale) {
         if (pattern != null) {
             return new SimpleDateFormat(pattern);
         }
@@ -136,12 +137,13 @@ public class TimeConversionUtil {
      *            ロケール
      * @return 日付フォーマット
      */
-    public static SimpleDateFormat getDateFormat(String s, Locale locale) {
-        String pattern = getPattern(locale);
+    public static SimpleDateFormat getDateFormat(final String s,
+            final Locale locale) {
+        final String pattern = getPattern(locale);
         if (s.length() == pattern.length()) {
             return new SimpleDateFormat(pattern);
         }
-        String shortPattern = convertShortPattern(pattern);
+        final String shortPattern = convertShortPattern(pattern);
         if (s.length() == shortPattern.length()) {
             return new SimpleDateFormat(shortPattern);
         }
@@ -154,7 +156,7 @@ public class TimeConversionUtil {
      * @param locale
      * @return 日付パターン
      */
-    public static String getPattern(Locale locale) {
+    public static String getPattern(final Locale locale) {
         return "HH:mm:ss";
     }
 
@@ -165,10 +167,10 @@ public class TimeConversionUtil {
      *            パターン
      * @return 短いパターン
      */
-    public static String convertShortPattern(String pattern) {
-        StringBuilder buf = new StringBuilder();
+    public static String convertShortPattern(final String pattern) {
+        final StringBuilder buf = new StringBuilder();
         for (int i = 0; i < pattern.length(); ++i) {
-            char c = pattern.charAt(i);
+            final char c = pattern.charAt(i);
             if (c == 'h' || c == 'H' || c == 'm' || c == 's') {
                 buf.append(c);
             }

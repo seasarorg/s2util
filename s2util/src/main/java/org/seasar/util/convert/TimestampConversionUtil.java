@@ -19,7 +19,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Locale;
 
-
 /**
  * {@link Timestamp}用の変換ユーティリティです。
  * 
@@ -40,7 +39,7 @@ public class TimestampConversionUtil {
      * @param o
      * @return {@link Timestamp}
      */
-    public static Timestamp toTimestamp(Object o) {
+    public static Timestamp toTimestamp(final Object o) {
         return toTimestamp(o, null);
     }
 
@@ -51,11 +50,11 @@ public class TimestampConversionUtil {
      * @param pattern
      * @return {@link Timestamp}
      */
-    public static Timestamp toTimestamp(Object o, String pattern) {
+    public static Timestamp toTimestamp(final Object o, final String pattern) {
         if (o instanceof Timestamp) {
             return (Timestamp) o;
         }
-        Date date = DateConversionUtil.toDate(o, pattern);
+        final Date date = DateConversionUtil.toDate(o, pattern);
         if (date != null) {
             return new Timestamp(date.getTime());
         }
@@ -68,8 +67,8 @@ public class TimestampConversionUtil {
      * @param locale
      * @return 日付パターン
      */
-    public static String getPattern(Locale locale) {
+    public static String getPattern(final Locale locale) {
         return DateConversionUtil.getY4Pattern(locale) + " "
-                + TimeConversionUtil.getPattern(locale);
+            + TimeConversionUtil.getPattern(locale);
     }
 }

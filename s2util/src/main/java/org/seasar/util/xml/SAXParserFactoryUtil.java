@@ -70,12 +70,12 @@ public class SAXParserFactoryUtil {
      * @throws SAXRuntimeException
      *             {@link SAXParser}の作成中に{@link SAXException}がスローされた場合
      */
-    public static SAXParser newSAXParser(SAXParserFactory factory) {
+    public static SAXParser newSAXParser(final SAXParserFactory factory) {
         try {
             return factory.newSAXParser();
-        } catch (ParserConfigurationException e) {
+        } catch (final ParserConfigurationException e) {
             throw new ParserConfigurationRuntimeException(e);
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             throw new SAXRuntimeException(e);
         }
     }
@@ -92,14 +92,14 @@ public class SAXParserFactoryUtil {
     public static boolean setXIncludeAware(final SAXParserFactory spf,
             final boolean state) {
         try {
-            Method method =
+            final Method method =
                 ClassUtil.getMethod(
                     spf.getClass(),
                     "setXIncludeAware",
                     boolean.class);
             MethodUtil.invoke(method, spf, state);
             return true;
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             return false;
         }
     }

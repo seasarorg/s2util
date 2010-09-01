@@ -17,8 +17,6 @@ package org.seasar.util.io;
 
 import java.io.File;
 
-import org.seasar.util.exception.EmptyRuntimeException;
-
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -67,10 +65,8 @@ public class HotText {
      * パスを設定します。
      * 
      * @param path
-     * @throws EmptyRuntimeException
-     *             パスが<code>null</code>の場合
      */
-    public void setPath(final String path) throws EmptyRuntimeException {
+    public void setPath(final String path) {
         assertArgumentNotEmpty("path", path);
 
         this.path = path;

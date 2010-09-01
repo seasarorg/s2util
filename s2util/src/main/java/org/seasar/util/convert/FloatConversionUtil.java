@@ -40,7 +40,7 @@ public class FloatConversionUtil {
      * @param o
      * @return {@link Float}
      */
-    public static Float toFloat(Object o) {
+    public static Float toFloat(final Object o) {
         return toFloat(o, null);
     }
 
@@ -51,7 +51,7 @@ public class FloatConversionUtil {
      * @param pattern
      * @return {@link Float}
      */
-    public static Float toFloat(Object o, String pattern) {
+    public static Float toFloat(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Float) {
@@ -70,7 +70,7 @@ public class FloatConversionUtil {
         }
     }
 
-    private static Float toFloat(String s) {
+    private static Float toFloat(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -83,7 +83,7 @@ public class FloatConversionUtil {
      * @param o
      * @return float
      */
-    public static float toPrimitiveFloat(Object o) {
+    public static float toPrimitiveFloat(final Object o) {
         return toPrimitiveFloat(o, null);
     }
 
@@ -94,7 +94,7 @@ public class FloatConversionUtil {
      * @param pattern
      * @return float
      */
-    public static float toPrimitiveFloat(Object o, String pattern) {
+    public static float toPrimitiveFloat(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -104,7 +104,7 @@ public class FloatConversionUtil {
         } else if (o instanceof java.util.Date) {
             if (pattern != null) {
                 return Float
-                        .parseFloat(new SimpleDateFormat(pattern).format(o));
+                    .parseFloat(new SimpleDateFormat(pattern).format(o));
             }
             return ((java.util.Date) o).getTime();
         } else {
@@ -112,7 +112,7 @@ public class FloatConversionUtil {
         }
     }
 
-    private static float toPrimitiveFloat(String s) {
+    private static float toPrimitiveFloat(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

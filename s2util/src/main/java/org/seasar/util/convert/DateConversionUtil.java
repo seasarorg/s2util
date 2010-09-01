@@ -45,7 +45,7 @@ public class DateConversionUtil {
      * @param o
      * @return {@link Date}
      */
-    public static Date toDate(Object o) {
+    public static Date toDate(final Object o) {
         return toDate(o, null);
     }
 
@@ -56,7 +56,7 @@ public class DateConversionUtil {
      * @param pattern
      * @return {@link Date}
      */
-    public static Date toDate(Object o, String pattern) {
+    public static Date toDate(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof String) {
@@ -77,7 +77,7 @@ public class DateConversionUtil {
      * @param pattern
      * @return {@link Date}
      */
-    public static Date toDate(String s, String pattern) {
+    public static Date toDate(final String s, final String pattern) {
         return toDate(s, pattern, Locale.getDefault());
     }
 
@@ -87,14 +87,15 @@ public class DateConversionUtil {
      * @param locale
      * @return 日付
      */
-    public static Date toDate(String s, String pattern, Locale locale) {
+    public static Date toDate(final String s, final String pattern,
+            final Locale locale) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
-        SimpleDateFormat sdf = getDateFormat(s, pattern, locale);
+        final SimpleDateFormat sdf = getDateFormat(s, pattern, locale);
         try {
             return sdf.parse(s);
-        } catch (ParseException ex) {
+        } catch (final ParseException ex) {
             throw new ParseRuntimeException(ex);
         }
     }
@@ -107,8 +108,8 @@ public class DateConversionUtil {
      * @param locale
      * @return {@link SimpleDateFormat}
      */
-    public static SimpleDateFormat getDateFormat(String s, String pattern,
-            Locale locale) {
+    public static SimpleDateFormat getDateFormat(final String s,
+            final String pattern, final Locale locale) {
         if (pattern != null) {
             return new SimpleDateFormat(pattern);
         }
@@ -122,10 +123,11 @@ public class DateConversionUtil {
      * @param locale
      * @return {@link SimpleDateFormat}
      */
-    public static SimpleDateFormat getDateFormat(String s, Locale locale) {
+    public static SimpleDateFormat getDateFormat(final String s,
+            final Locale locale) {
         String pattern = getPattern(locale);
-        String shortPattern = removeDelimiter(pattern);
-        String delimitor = findDelimiter(s);
+        final String shortPattern = removeDelimiter(pattern);
+        final String delimitor = findDelimiter(s);
         if (delimitor == null) {
             if (s.length() == shortPattern.length()) {
                 return new SimpleDateFormat(shortPattern);
@@ -137,7 +139,7 @@ public class DateConversionUtil {
                     "yyyy"));
             }
         } else {
-            String[] array = StringUtil.split(s, delimitor);
+            final String[] array = StringUtil.split(s, delimitor);
             for (int i = 0; i < array.length; ++i) {
                 if (array[i].length() == 4) {
                     pattern = StringUtil.replace(pattern, "yy", "yyyy");
@@ -155,7 +157,7 @@ public class DateConversionUtil {
      * @param locale
      * @return {@link SimpleDateFormat}
      */
-    public static SimpleDateFormat getDateFormat(Locale locale) {
+    public static SimpleDateFormat getDateFormat(final Locale locale) {
         return new SimpleDateFormat(getPattern(locale));
     }
 
@@ -165,7 +167,7 @@ public class DateConversionUtil {
      * @param locale
      * @return 年4桁用の{@link SimpleDateFormat}
      */
-    public static SimpleDateFormat getY4DateFormat(Locale locale) {
+    public static SimpleDateFormat getY4DateFormat(final Locale locale) {
         return new SimpleDateFormat(getY4Pattern(locale));
     }
 
@@ -175,7 +177,7 @@ public class DateConversionUtil {
      * @param locale
      * @return 年4桁用の日付パターン
      */
-    public static String getY4Pattern(Locale locale) {
+    public static String getY4Pattern(final Locale locale) {
         String pattern = getPattern(locale);
         if (pattern.indexOf("yyyy") < 0) {
             pattern = StringUtil.replace(pattern, "yy", "yyyy");
@@ -189,13 +191,13 @@ public class DateConversionUtil {
      * @param locale
      * @return 日付パターン
      */
-    public static String getPattern(Locale locale) {
-        SimpleDateFormat df =
+    public static String getPattern(final Locale locale) {
+        final SimpleDateFormat df =
             (SimpleDateFormat) DateFormat.getDateInstance(
                 DateFormat.SHORT,
                 locale);
         String pattern = df.toPattern();
-        int index = pattern.indexOf(' ');
+        final int index = pattern.indexOf(' ');
         if (index > 0) {
             pattern = pattern.substring(0, index);
         }
@@ -214,9 +216,9 @@ public class DateConversionUtil {
      * @param value
      * @return 日付のデリミタ
      */
-    public static String findDelimiter(String value) {
+    public static String findDelimiter(final String value) {
         for (int i = 0; i < value.length(); ++i) {
-            char c = value.charAt(i);
+            final char c = value.charAt(i);
             if (Character.isDigit(c)) {
                 continue;
             }
@@ -231,10 +233,10 @@ public class DateConversionUtil {
      * @param pattern
      * @return 日付のデリミタ
      */
-    public static String findDelimiterFromPattern(String pattern) {
+    public static String findDelimiterFromPattern(final String pattern) {
         String ret = null;
         for (int i = 0; i < pattern.length(); ++i) {
-            char c = pattern.charAt(i);
+            final char c = pattern.charAt(i);
             if (c != 'y' && c != 'M' && c != 'd') {
                 ret = String.valueOf(c);
                 break;
@@ -250,10 +252,10 @@ public class DateConversionUtil {
      *            パターン
      * @return 日付のデリミタを取り除いた後のパターン
      */
-    public static String removeDelimiter(String pattern) {
-        StringBuilder buf = new StringBuilder();
+    public static String removeDelimiter(final String pattern) {
+        final StringBuilder buf = new StringBuilder();
         for (int i = 0; i < pattern.length(); ++i) {
-            char c = pattern.charAt(i);
+            final char c = pattern.charAt(i);
             if (c == 'y' || c == 'M' || c == 'd') {
                 buf.append(c);
             }

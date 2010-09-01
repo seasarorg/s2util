@@ -40,7 +40,7 @@ public class IntegerConversionUtil {
      * @param o
      * @return {@link Integer}
      */
-    public static Integer toInteger(Object o) {
+    public static Integer toInteger(final Object o) {
         return toInteger(o, null);
     }
 
@@ -51,7 +51,7 @@ public class IntegerConversionUtil {
      * @param pattern
      * @return {@link Integer}
      */
-    public static Integer toInteger(Object o, String pattern) {
+    public static Integer toInteger(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Integer) {
@@ -73,7 +73,7 @@ public class IntegerConversionUtil {
         }
     }
 
-    private static Integer toInteger(String s) {
+    private static Integer toInteger(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -86,7 +86,7 @@ public class IntegerConversionUtil {
      * @param o
      * @return int
      */
-    public static int toPrimitiveInt(Object o) {
+    public static int toPrimitiveInt(final Object o) {
         return toPrimitiveInt(o, null);
     }
 
@@ -97,7 +97,7 @@ public class IntegerConversionUtil {
      * @param pattern
      * @return int
      */
-    public static int toPrimitiveInt(Object o, String pattern) {
+    public static int toPrimitiveInt(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -117,7 +117,7 @@ public class IntegerConversionUtil {
         }
     }
 
-    private static int toPrimitiveInt(String s) {
+    private static int toPrimitiveInt(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

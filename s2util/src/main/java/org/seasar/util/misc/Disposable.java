@@ -15,7 +15,6 @@
  */
 package org.seasar.util.misc;
 
-
 /**
  * 破棄可能なリソースを表現します。
  * <p>

@@ -77,7 +77,7 @@ public class StringUtil {
         if (text == null || fromText == null || toText == null) {
             return null;
         }
-        StringBuilder buf = new StringBuilder(100);
+        final StringBuilder buf = new StringBuilder(100);
         int pos = 0;
         int pos2 = 0;
         while (true) {
@@ -110,8 +110,8 @@ public class StringUtil {
         if (isEmpty(str)) {
             return EMPTY_STRINGS;
         }
-        List<String> list = new ArrayList<String>();
-        StringTokenizer st = new StringTokenizer(str, delim);
+        final List<String> list = new ArrayList<String>();
+        final StringTokenizer st = new StringTokenizer(str, delim);
         while (st.hasMoreElements()) {
             list.add(st.nextElement().toString());
         }
@@ -245,7 +245,7 @@ public class StringUtil {
         if (isEmpty(name)) {
             return name;
         }
-        char chars[] = name.toCharArray();
+        final char[] chars = name.toCharArray();
         if (chars.length >= 2 && Character.isUpperCase(chars[0])
             && Character.isUpperCase(chars[1])) {
             return name;
@@ -265,7 +265,7 @@ public class StringUtil {
         if (isEmpty(name)) {
             return name;
         }
-        char chars[] = name.toCharArray();
+        final char[] chars = name.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
     }
@@ -375,12 +375,12 @@ public class StringUtil {
         if (target1 == null || target2 == null) {
             return false;
         }
-        int length1 = target1.length();
-        int length2 = target2.length();
+        final int length1 = target1.length();
+        final int length2 = target2.length();
         if (length1 < length2) {
             return false;
         }
-        String s1 = target1.substring(length1 - length2);
+        final String s1 = target1.substring(length1 - length2);
         return s1.equalsIgnoreCase(target2);
     }
 
@@ -398,12 +398,12 @@ public class StringUtil {
         if (target1 == null || target2 == null) {
             return false;
         }
-        int length1 = target1.length();
-        int length2 = target2.length();
+        final int length1 = target1.length();
+        final int length2 = target2.length();
         if (length1 < length2) {
             return false;
         }
-        String s1 = target1.substring(0, target2.length());
+        final String s1 = target1.substring(0, target2.length());
         return s1.equalsIgnoreCase(target2);
     }
 
@@ -421,7 +421,7 @@ public class StringUtil {
         if (isEmpty(str) || isEmpty(separator)) {
             return str;
         }
-        int pos = str.lastIndexOf(separator);
+        final int pos = str.lastIndexOf(separator);
         if (pos == -1) {
             return str;
         }
@@ -442,7 +442,7 @@ public class StringUtil {
         if (isEmpty(str) || isEmpty(separator)) {
             return str;
         }
-        int pos = str.lastIndexOf(separator);
+        final int pos = str.lastIndexOf(separator);
         if (pos == -1) {
             return str;
         }
@@ -460,7 +460,7 @@ public class StringUtil {
         if (bytes == null) {
             return "";
         }
-        StringBuffer sb = new StringBuffer(bytes.length * 2);
+        final StringBuffer sb = new StringBuffer(bytes.length * 2);
         for (int i = 0; i < bytes.length; ++i) {
             appendHex(sb, bytes[i]);
         }
@@ -475,7 +475,7 @@ public class StringUtil {
      * @return 16進数の文字列
      */
     public static String toHex(final int i) {
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
         appendHex(buf, i);
         return buf.toString();
     }
@@ -520,11 +520,11 @@ public class StringUtil {
             return null;
         }
         s = s.toLowerCase();
-        String[] array = StringUtil.split(s, "_");
+        final String[] array = StringUtil.split(s, "_");
         if (array.length == 1) {
             return StringUtil.capitalize(s);
         }
-        StringBuilder buf = new StringBuilder(40);
+        final StringBuilder buf = new StringBuilder(40);
         for (int i = 0; i < array.length; ++i) {
             buf.append(StringUtil.capitalize(array[i]));
         }
@@ -545,7 +545,7 @@ public class StringUtil {
         if (s.length() == 1) {
             return s.toUpperCase();
         }
-        StringBuilder buf = new StringBuilder(40);
+        final StringBuilder buf = new StringBuilder(40);
         int pos = 0;
         for (int i = 1; i < s.length(); ++i) {
             if (Character.isUpperCase(s.charAt(i))) {
@@ -575,9 +575,9 @@ public class StringUtil {
             return false;
         }
 
-        int size = s.length();
+        final int size = s.length();
         for (int i = 0; i < size; i++) {
-            char chr = s.charAt(i);
+            final char chr = s.charAt(i);
             if (chr < '0' || '9' < chr) {
                 return false;
             }

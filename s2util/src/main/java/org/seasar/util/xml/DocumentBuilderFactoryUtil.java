@@ -52,7 +52,7 @@ public class DocumentBuilderFactoryUtil {
     public static DocumentBuilder newDocumentBuilder() {
         try {
             return newInstance().newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
+        } catch (final ParserConfigurationException e) {
             throw new ParserConfigurationRuntimeException(e);
         }
     }

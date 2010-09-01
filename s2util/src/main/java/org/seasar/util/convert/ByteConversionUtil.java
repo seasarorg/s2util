@@ -40,7 +40,7 @@ public class ByteConversionUtil {
      * @param o
      * @return {@link Byte}
      */
-    public static Byte toByte(Object o) {
+    public static Byte toByte(final Object o) {
         return toByte(o, null);
     }
 
@@ -51,7 +51,7 @@ public class ByteConversionUtil {
      * @param pattern
      * @return {@link Byte}
      */
-    public static Byte toByte(Object o, String pattern) {
+    public static Byte toByte(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Byte) {
@@ -73,7 +73,7 @@ public class ByteConversionUtil {
         }
     }
 
-    private static Byte toByte(String s) {
+    private static Byte toByte(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -86,7 +86,7 @@ public class ByteConversionUtil {
      * @param o
      * @return byte
      */
-    public static byte toPrimitiveByte(Object o) {
+    public static byte toPrimitiveByte(final Object o) {
         return toPrimitiveByte(o, null);
     }
 
@@ -97,7 +97,7 @@ public class ByteConversionUtil {
      * @param pattern
      * @return byte
      */
-    public static byte toPrimitiveByte(Object o, String pattern) {
+    public static byte toPrimitiveByte(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -116,7 +116,7 @@ public class ByteConversionUtil {
         }
     }
 
-    private static byte toPrimitiveByte(String s) {
+    private static byte toPrimitiveByte(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

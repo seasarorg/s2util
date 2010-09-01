@@ -130,7 +130,7 @@ public class MethodDescImpl implements MethodDesc {
     }
 
     @Override
-    public boolean isParameterized(int index) {
+    public boolean isParameterized(final int index) {
         return parameterizedClassDescs[index].isParameterizedClass();
     }
 

@@ -37,7 +37,7 @@ public class BinaryConversionUtil {
      * @param o
      * @return byteの配列
      */
-    public static byte[] toBinary(Object o) {
+    public static byte[] toBinary(final Object o) {
         if (o instanceof byte[]) {
             return (byte[]) o;
         } else if (o == null) {

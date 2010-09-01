@@ -76,7 +76,7 @@ public class Tokenizer {
      * @param str
      *            文字列
      */
-    public Tokenizer(String str) {
+    public Tokenizer(final String str) {
         this(str, defaultCtype);
     }
 
@@ -88,7 +88,7 @@ public class Tokenizer {
      * @param ctype
      *            文字のタイプの配列
      */
-    public Tokenizer(String str, byte[] ctype) {
+    public Tokenizer(final String str, final byte[] ctype) {
         this.str = str;
         this.ctype = ctype;
     }
@@ -97,7 +97,7 @@ public class Tokenizer {
      * @param ctype2
      *            文字のタイプの配列
      */
-    protected static void setup(byte[] ctype2) {
+    protected static void setup(final byte[] ctype2) {
         wordChars(ctype2, 'a', 'z');
         wordChars(ctype2, 'A', 'Z');
         wordChars(ctype2, '0', '9');
@@ -126,7 +126,7 @@ public class Tokenizer {
      * @param low
      * @param hi
      */
-    protected static void wordChars(byte[] ctype2, int low, int hi) {
+    protected static void wordChars(final byte[] ctype2, int low, int hi) {
         if (low < 0) {
             low = 0;
         }
@@ -146,7 +146,7 @@ public class Tokenizer {
      * @param val
      *            文字コード
      */
-    protected static void wordChar(byte[] ctype2, int val) {
+    protected static void wordChar(final byte[] ctype2, final int val) {
         ctype2[val] |= CT_ALPHA;
     }
 
@@ -160,7 +160,7 @@ public class Tokenizer {
      * @param hi
      *            最大の文字コード
      */
-    protected static void whitespaceChars(byte[] ctype2, int low, int hi) {
+    protected static void whitespaceChars(final byte[] ctype2, int low, int hi) {
         if (low < 0) {
             low = 0;
         }
@@ -180,7 +180,7 @@ public class Tokenizer {
      * @param ch
      *            文字コード
      */
-    protected static void ordinaryChar(byte[] ctype2, int ch) {
+    protected static void ordinaryChar(final byte[] ctype2, final int ch) {
         if (ch >= 0 && ch < ctype2.length) {
             ctype2[ch] = 0;
         }
@@ -280,7 +280,7 @@ public class Tokenizer {
             int i = 0;
             do {
                 if (i >= buf.length) {
-                    char nb[] = new char[buf.length * 2];
+                    final char[] nb = new char[buf.length * 2];
                     System.arraycopy(buf, 0, nb, 0, buf.length);
                     buf = nb;
                 }
@@ -305,7 +305,7 @@ public class Tokenizer {
             int c = d;
             while (d >= 0) {
                 if (d == QUOTE) {
-                    int d2 = read();
+                    final int d2 = read();
                     if (d2 == QUOTE) {
                         c = QUOTE;
                     } else {
@@ -316,7 +316,7 @@ public class Tokenizer {
                     c = d;
                 }
                 if (i >= buf.length) {
-                    char nb[] = new char[buf.length * 2];
+                    final char[] nb = new char[buf.length * 2];
                     System.arraycopy(buf, 0, nb, 0, buf.length);
                     buf = nb;
                 }

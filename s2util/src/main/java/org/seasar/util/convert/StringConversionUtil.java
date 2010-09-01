@@ -51,7 +51,7 @@ public class StringConversionUtil {
      *            値
      * @return 変換された結果
      */
-    public static String toString(Object value) {
+    public static String toString(final Object value) {
         return toString(value, null);
     }
 
@@ -64,7 +64,7 @@ public class StringConversionUtil {
      *            パターン
      * @return 変換された結果
      */
-    public static String toString(Object value, String pattern) {
+    public static String toString(final Object value, final String pattern) {
         if (value == null) {
             return null;
         } else if (value instanceof String) {
@@ -89,7 +89,7 @@ public class StringConversionUtil {
      *            パターン
      * @return 変換された結果
      */
-    public static String toString(Number value, String pattern) {
+    public static String toString(final Number value, final String pattern) {
         if (value != null) {
             if (pattern != null) {
                 return new DecimalFormat(pattern).format(value);
@@ -108,7 +108,8 @@ public class StringConversionUtil {
      *            パターン
      * @return 変換された結果
      */
-    public static String toString(java.util.Date value, String pattern) {
+    public static String toString(final java.util.Date value,
+            final String pattern) {
         if (value != null) {
             if (pattern != null) {
                 return new SimpleDateFormat(pattern).format(value);
@@ -125,11 +126,11 @@ public class StringConversionUtil {
      *            ソース
      * @return 変換結果
      */
-    public static String fromWaveDashToFullwidthTilde(String source) {
+    public static String fromWaveDashToFullwidthTilde(final String source) {
         if (source == null) {
             return null;
         }
-        StringBuffer result = new StringBuffer(source.length());
+        final StringBuffer result = new StringBuffer(source.length());
         char ch;
         for (int i = 0; i < source.length(); i++) {
             ch = source.charAt(i);

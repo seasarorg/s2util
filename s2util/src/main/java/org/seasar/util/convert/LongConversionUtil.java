@@ -40,7 +40,7 @@ public class LongConversionUtil {
      * @param o
      * @return {@link Long}
      */
-    public static Long toLong(Object o) {
+    public static Long toLong(final Object o) {
         return toLong(o, null);
     }
 
@@ -51,7 +51,7 @@ public class LongConversionUtil {
      * @param pattern
      * @return {@link Long}
      */
-    public static Long toLong(Object o, String pattern) {
+    public static Long toLong(final Object o, final String pattern) {
         if (o == null) {
             return null;
         } else if (o instanceof Long) {
@@ -73,7 +73,7 @@ public class LongConversionUtil {
         }
     }
 
-    private static Long toLong(String s) {
+    private static Long toLong(final String s) {
         if (StringUtil.isEmpty(s)) {
             return null;
         }
@@ -86,7 +86,7 @@ public class LongConversionUtil {
      * @param o
      * @return long
      */
-    public static long toPrimitiveLong(Object o) {
+    public static long toPrimitiveLong(final Object o) {
         return toPrimitiveLong(o, null);
     }
 
@@ -97,7 +97,7 @@ public class LongConversionUtil {
      * @param pattern
      * @return long
      */
-    public static long toPrimitiveLong(Object o, String pattern) {
+    public static long toPrimitiveLong(final Object o, final String pattern) {
         if (o == null) {
             return 0;
         } else if (o instanceof Number) {
@@ -116,7 +116,7 @@ public class LongConversionUtil {
         }
     }
 
-    private static long toPrimitiveLong(String s) {
+    private static long toPrimitiveLong(final String s) {
         if (StringUtil.isEmpty(s)) {
             return 0;
         }

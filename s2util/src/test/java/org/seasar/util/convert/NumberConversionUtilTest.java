@@ -30,18 +30,21 @@ public class NumberConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testConvertNumber_byte() throws Exception {
-        assertEquals(new Byte("1"), NumberConversionUtil.convertNumber(
-                Byte.class, "1"));
+        assertEquals(
+            new Byte("1"),
+            NumberConversionUtil.convertNumber(Byte.class, "1"));
     }
 
     /**
      * @throws Exception
      */
     public void testConvertNumber_primitiveWrapper() throws Exception {
-        assertEquals(new Byte("1"), NumberConversionUtil
-                .convertPrimitiveWrapper(byte.class, "1"));
-        assertEquals(new Byte("0"), NumberConversionUtil
-                .convertPrimitiveWrapper(byte.class, null));
+        assertEquals(
+            new Byte("1"),
+            NumberConversionUtil.convertPrimitiveWrapper(byte.class, "1"));
+        assertEquals(
+            new Byte("0"),
+            NumberConversionUtil.convertPrimitiveWrapper(byte.class, null));
     }
 
     /**
@@ -65,8 +68,8 @@ public class NumberConversionUtilTest extends TestCase {
      */
     public void testFindFractionDelimeter3() throws Exception {
         String delim = NumberConversionUtil.findDecimalSeparator(null);
-        char c = new DecimalFormatSymbols(Locale.getDefault())
-                .getDecimalSeparator();
+        char c =
+            new DecimalFormatSymbols(Locale.getDefault()).getDecimalSeparator();
         assertEquals(Character.toString(c), delim);
     }
 
@@ -82,8 +85,8 @@ public class NumberConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFindIntegerDelimeter2() throws Exception {
-        String delim = NumberConversionUtil
-                .findGroupingSeparator(Locale.GERMANY);
+        String delim =
+            NumberConversionUtil.findGroupingSeparator(Locale.GERMANY);
         assertEquals(".", delim);
     }
 
@@ -92,7 +95,8 @@ public class NumberConversionUtilTest extends TestCase {
      */
     public void testFindIntegerDelimeter3() throws Exception {
         String delim = NumberConversionUtil.findGroupingSeparator(null);
-        char c = new DecimalFormatSymbols(Locale.getDefault())
+        char c =
+            new DecimalFormatSymbols(Locale.getDefault())
                 .getGroupingSeparator();
         assertEquals(Character.toString(c), delim);
     }
@@ -101,7 +105,8 @@ public class NumberConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testRemoveDelimeter() throws Exception {
-        assertEquals("1000000.234", NumberConversionUtil.removeDelimeter(
-                "1,000,000.234", Locale.JAPAN));
+        assertEquals(
+            "1000000.234",
+            NumberConversionUtil.removeDelimeter("1,000,000.234", Locale.JAPAN));
     }
 }

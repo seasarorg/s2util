@@ -46,7 +46,8 @@ public abstract class ParameterizedClassDescFactory {
      *            パラメータ化された型(クラスまたはインタフェース)
      * @return パラメータ化された型が持つ型変数をキー、型引数を値とする{@link Map}
      */
-    public static Map<TypeVariable<?>, Type> getTypeVariables(Class<?> beanClass) {
+    public static Map<TypeVariable<?>, Type> getTypeVariables(
+            final Class<?> beanClass) {
         return getTypeVariableMap(beanClass);
     }
 

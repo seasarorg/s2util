@@ -43,11 +43,11 @@ public class PreparedStatementUtil {
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
-    public static ResultSet executeQuery(PreparedStatement ps)
+    public static ResultSet executeQuery(final PreparedStatement ps)
             throws SQLRuntimeException {
         try {
             return ps.executeQuery();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -60,11 +60,11 @@ public class PreparedStatementUtil {
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
-    public static int executeUpdate(PreparedStatement ps)
+    public static int executeUpdate(final PreparedStatement ps)
             throws SQLRuntimeException {
         try {
             return ps.executeUpdate();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -78,11 +78,11 @@ public class PreparedStatementUtil {
      *             {@link SQLException}が発生した場合
      * @see PreparedStatement#execute()
      */
-    public static boolean execute(PreparedStatement ps)
+    public static boolean execute(final PreparedStatement ps)
             throws SQLRuntimeException {
         try {
             return ps.execute();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -95,11 +95,11 @@ public class PreparedStatementUtil {
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
-    public static int[] executeBatch(PreparedStatement ps)
+    public static int[] executeBatch(final PreparedStatement ps)
             throws SQLRuntimeException {
         try {
             return ps.executeBatch();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -111,11 +111,11 @@ public class PreparedStatementUtil {
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
-    public static void addBatch(PreparedStatement ps)
+    public static void addBatch(final PreparedStatement ps)
             throws SQLRuntimeException {
         try {
             ps.addBatch();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }

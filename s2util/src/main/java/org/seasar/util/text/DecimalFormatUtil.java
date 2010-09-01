@@ -40,7 +40,7 @@ public class DecimalFormatUtil {
      * @return 正規化された文字列
      * @see #normalize(String, Locale)
      */
-    public static String normalize(String s) {
+    public static String normalize(final String s) {
         return normalize(s, Locale.getDefault());
     }
 
@@ -51,15 +51,15 @@ public class DecimalFormatUtil {
      * @param locale
      * @return 正規化された文字列
      */
-    public static String normalize(String s, Locale locale) {
+    public static String normalize(final String s, final Locale locale) {
         if (s == null) {
             return null;
         }
-        DecimalFormatSymbols symbols =
+        final DecimalFormatSymbols symbols =
             DecimalFormatSymbolsUtil.getDecimalFormatSymbols(locale);
-        char decimalSep = symbols.getDecimalSeparator();
-        char groupingSep = symbols.getGroupingSeparator();
-        StringBuilder buf = new StringBuilder(20);
+        final char decimalSep = symbols.getDecimalSeparator();
+        final char groupingSep = symbols.getGroupingSeparator();
+        final StringBuilder buf = new StringBuilder(20);
         for (int i = 0; i < s.length(); ++i) {
             char c = s.charAt(i);
             if (c == groupingSep) {

@@ -29,9 +29,11 @@ import org.seasar.util.lang.StringUtil;
  */
 public class HotTextTest extends TestCase {
 
-    private static final String PATH = StringUtil.replace(ClassUtil
-            .getPackageName(HotTextTest.class), ".", "/")
-            + "/HotTextTest.txt";
+    private static final String PATH = StringUtil.replace(
+        ClassUtil.getPackageName(HotTextTest.class),
+        ".",
+        "/")
+        + "/HotTextTest.txt";
 
     /**
      * @throws Exception

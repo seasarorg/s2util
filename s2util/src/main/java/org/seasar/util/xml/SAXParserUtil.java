@@ -40,7 +40,8 @@ public class SAXParserUtil {
     }
 
     /**
-     * 指定された{@link InputSource}のコンテンツを、指定された{@link DefaultHandler}を使用してXMLとして構文解析します。
+     * 指定された{@link InputSource}のコンテンツを、指定された{@link DefaultHandler}
+     * を使用してXMLとして構文解析します。
      * 
      * @param parser
      *            使用する{@link SAXParser}
@@ -49,13 +50,13 @@ public class SAXParserUtil {
      * @param handler
      *            使用するSAX {@link DefaultHandler}
      */
-    public static void parse(SAXParser parser, InputSource inputSource,
-            DefaultHandler handler) {
+    public static void parse(final SAXParser parser,
+            final InputSource inputSource, final DefaultHandler handler) {
         try {
             parser.parse(inputSource, handler);
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             throw new SAXRuntimeException(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }

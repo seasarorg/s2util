@@ -52,7 +52,8 @@ public class DecimalFormatSymbolsUtil {
      * @param locale
      * @return {@link DecimalFormatSymbols}
      */
-    public static DecimalFormatSymbols getDecimalFormatSymbols(Locale locale) {
+    public static DecimalFormatSymbols getDecimalFormatSymbols(
+            final Locale locale) {
         DecimalFormatSymbols symbols = CACHE.get(locale);
         if (symbols == null) {
             symbols = new DecimalFormatSymbols(locale);

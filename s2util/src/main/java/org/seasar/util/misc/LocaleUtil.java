@@ -37,15 +37,15 @@ public class LocaleUtil {
      * @param localeStr
      * @return {@link Locale}
      */
-    public static Locale getLocale(String localeStr) {
+    public static Locale getLocale(final String localeStr) {
         Locale locale = Locale.getDefault();
         if (localeStr != null) {
-            int index = localeStr.indexOf('_');
+            final int index = localeStr.indexOf('_');
             if (index < 0) {
                 locale = new Locale(localeStr);
             } else {
-                String language = localeStr.substring(0, index);
-                String country = localeStr.substring(index + 1);
+                final String language = localeStr.substring(0, index);
+                final String country = localeStr.substring(index + 1);
                 locale = new Locale(language, country);
             }
         }

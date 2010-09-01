@@ -150,7 +150,7 @@ public abstract class ResourceTraverserUtil {
 
         final URL url =
             ResourceUtil.getResource(toClassFile(referenceClass.getName()));
-        final String path[] = referenceClass.getName().split("\\.");
+        final String[] path = referenceClass.getName().split("\\.");
         String baseUrl = url.toExternalForm();
         for (int i = 0; i < path.length; ++i) {
             final int pos = baseUrl.lastIndexOf('/');

@@ -24,9 +24,11 @@ import org.seasar.util.lang.StringUtil;
  */
 public class HotTextMain {
 
-    private static final String PATH = StringUtil.replace(ClassUtil
-            .getPackageName(HotTextTest.class), ".", "/")
-            + "/HotTextMain.txt";
+    private static final String PATH = StringUtil.replace(
+        ClassUtil.getPackageName(HotTextTest.class),
+        ".",
+        "/")
+        + "/HotTextMain.txt";
 
     /**
      * @param args

@@ -106,7 +106,7 @@ public abstract class MessageResourceBundleFactory {
         final String[] bundleNames = calcurateBundleNames(base, locale);
         MessageResourceBundleFacade descendantFacade = null;
         for (final String bundleName : bundleNames) {
-            MessageResourceBundleFacade facade =
+            final MessageResourceBundleFacade facade =
                 loadFacade(bundleName + PROPERTIES_EXT);
             if (facade != null) {
                 facade.setParent(descendantFacade);

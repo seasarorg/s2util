@@ -37,16 +37,18 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testRemoveDelimiter() throws Exception {
-        assertEquals("1", "yyyyMMdd", DateConversionUtil
-                .removeDelimiter("yyyy/MM/dd"));
+        assertEquals(
+            "1",
+            "yyyyMMdd",
+            DateConversionUtil.removeDelimiter("yyyy/MM/dd"));
     }
 
     /**
      * @throws Exception
      */
     public void testGetDateFormat() throws Exception {
-        SimpleDateFormat sdf = DateConversionUtil.getDateFormat("2004/11/7",
-                Locale.JAPAN);
+        SimpleDateFormat sdf =
+            DateConversionUtil.getDateFormat("2004/11/7", Locale.JAPAN);
         assertEquals("1", "yyyy/MM/dd", sdf.toPattern());
     }
 
@@ -54,8 +56,8 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetDateFormat2() throws Exception {
-        SimpleDateFormat sdf = DateConversionUtil.getDateFormat("04/11/7",
-                Locale.JAPAN);
+        SimpleDateFormat sdf =
+            DateConversionUtil.getDateFormat("04/11/7", Locale.JAPAN);
         assertEquals("1", "yy/MM/dd", sdf.toPattern());
     }
 
@@ -63,8 +65,8 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetDateFormat3() throws Exception {
-        SimpleDateFormat sdf = DateConversionUtil.getDateFormat("20041107",
-                Locale.JAPAN);
+        SimpleDateFormat sdf =
+            DateConversionUtil.getDateFormat("20041107", Locale.JAPAN);
         assertEquals("1", "yyyyMMdd", sdf.toPattern());
     }
 
@@ -72,8 +74,8 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testGetDateFormat4() throws Exception {
-        SimpleDateFormat sdf = DateConversionUtil.getDateFormat("041107",
-                Locale.JAPAN);
+        SimpleDateFormat sdf =
+            DateConversionUtil.getDateFormat("041107", Locale.JAPAN);
         assertEquals("1", "yyMMdd", sdf.toPattern());
     }
 
@@ -81,8 +83,8 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFindDelimeterFromPattern1() throws Exception {
-        String delim = DateConversionUtil
-                .findDelimiterFromPattern("yyyy/MM/dd");
+        String delim =
+            DateConversionUtil.findDelimiterFromPattern("yyyy/MM/dd");
         assertEquals("/", delim);
     }
 
@@ -90,8 +92,8 @@ public class DateConversionUtilTest extends TestCase {
      * @throws Exception
      */
     public void testFindDelimeterFromPattern2() throws Exception {
-        String delim = DateConversionUtil
-                .findDelimiterFromPattern("yyyy/MM-dd");
+        String delim =
+            DateConversionUtil.findDelimiterFromPattern("yyyy/MM-dd");
         assertEquals("/", delim);
     }
 

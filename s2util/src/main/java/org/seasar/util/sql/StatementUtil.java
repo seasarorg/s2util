@@ -45,11 +45,11 @@ public class StatementUtil {
      *             {@link SQLException}が発生した場合
      * @see Statement#execute(String)
      */
-    public static boolean execute(Statement statement, String sql)
+    public static boolean execute(final Statement statement, final String sql)
             throws SQLRuntimeException {
         try {
             return statement.execute(sql);
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -63,11 +63,11 @@ public class StatementUtil {
      *             {@link SQLException}が発生した場合
      * @see Statement#setFetchSize(int)
      */
-    public static void setFetchSize(Statement statement, int fetchSize)
-            throws SQLRuntimeException {
+    public static void setFetchSize(final Statement statement,
+            final int fetchSize) throws SQLRuntimeException {
         try {
             statement.setFetchSize(fetchSize);
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -81,11 +81,11 @@ public class StatementUtil {
      *             {@link SQLException}が発生した場合
      * @see Statement#setMaxRows(int)
      */
-    public static void setMaxRows(Statement statement, int maxRows)
+    public static void setMaxRows(final Statement statement, final int maxRows)
             throws SQLRuntimeException {
         try {
             statement.setMaxRows(maxRows);
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -99,11 +99,11 @@ public class StatementUtil {
      *             {@link SQLException}が発生した場合
      * @see Statement#setQueryTimeout(int)
      */
-    public static void setQueryTimeout(Statement statement, int queryTimeout)
-            throws SQLRuntimeException {
+    public static void setQueryTimeout(final Statement statement,
+            final int queryTimeout) throws SQLRuntimeException {
         try {
             statement.setQueryTimeout(queryTimeout);
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -116,13 +116,14 @@ public class StatementUtil {
      *             {@link SQLException}が発生した場合
      * @see Statement#close()
      */
-    public static void close(Statement statement) throws SQLRuntimeException {
+    public static void close(final Statement statement)
+            throws SQLRuntimeException {
         if (statement == null) {
             return;
         }
         try {
             statement.close();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -134,11 +135,11 @@ public class StatementUtil {
      * @return 結果セット
      * @throws SQLRuntimeException
      */
-    public static ResultSet getResultSet(Statement statement)
+    public static ResultSet getResultSet(final Statement statement)
             throws SQLRuntimeException {
         try {
             return statement.getResultSet();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
@@ -151,10 +152,10 @@ public class StatementUtil {
      * @return 更新カウント
      * @see Statement#getUpdateCount()
      */
-    public static int getUpdateCount(Statement statement) {
+    public static int getUpdateCount(final Statement statement) {
         try {
             return statement.getUpdateCount();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }

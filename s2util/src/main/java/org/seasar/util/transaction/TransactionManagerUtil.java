@@ -45,11 +45,11 @@ public class TransactionManagerUtil {
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
-    public static Transaction getTransaction(TransactionManager tm)
+    public static Transaction getTransaction(final TransactionManager tm)
             throws SystemRuntimeException {
         try {
             return tm.getTransaction();
-        } catch (SystemException e) {
+        } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
         }
     }
@@ -61,7 +61,7 @@ public class TransactionManagerUtil {
      *            トランザクションマネージャ
      * @return トランザクションがアクティブかどうか
      */
-    public static boolean isActive(TransactionManager tm) {
+    public static boolean isActive(final TransactionManager tm) {
         return getStatus(tm) != Status.STATUS_NO_TRANSACTION;
     }
 
@@ -74,11 +74,11 @@ public class TransactionManagerUtil {
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
-    public static int getStatus(TransactionManager tm)
+    public static int getStatus(final TransactionManager tm)
             throws SystemRuntimeException {
         try {
             return tm.getStatus();
-        } catch (SystemException e) {
+        } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
         }
     }
@@ -91,11 +91,11 @@ public class TransactionManagerUtil {
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
-    public static void setRollbackOnly(TransactionManager tm)
+    public static void setRollbackOnly(final TransactionManager tm)
             throws SystemRuntimeException {
         try {
             tm.setRollbackOnly();
-        } catch (SystemException e) {
+        } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
         }
     }
