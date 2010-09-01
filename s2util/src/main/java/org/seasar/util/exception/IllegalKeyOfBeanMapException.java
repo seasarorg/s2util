@@ -13,27 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.beans.util;
+package org.seasar.util.exception;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
-import org.seasar.util.exception.IllegalKeyOfBeanMapException;
+import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
- * Stringがキーで、存在しないキーにアクセスする(get)と例外を投げるマップです。
+ * {@literal BeanMap}に含まれていないキーを使用した場合にスローされる例外です。
  * 
- * @author higa
+ * @author koichik
  */
-public class BeanMap extends LinkedHashMap<String, Object> {
+public class IllegalKeyOfBeanMapException extends SIllegalArgumentException {
 
-    private static final long serialVersionUID = 1;
-
-    @Override
-    public Object get(final Object key) {
-        if (!containsKey(key)) {
-            throw new IllegalKeyOfBeanMapException(key, this);
-        }
-        return super.get(key);
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param key
+     *            マップのキー
+     * @param map
+     *            マップ
+     */
+    public IllegalKeyOfBeanMapException(final Object key, final Map<?, ?> map) {
+        super("key", "EUTL0016", asArray(key, map));
     }
 
 }

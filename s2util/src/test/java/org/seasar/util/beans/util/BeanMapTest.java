@@ -18,7 +18,7 @@ package org.seasar.util.beans.util;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.seasar.util.exception.SIllegalArgumentException;
+import org.seasar.util.exception.IllegalKeyOfBeanMapException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -50,9 +50,9 @@ public class BeanMapTest {
      */
     @Test
     public void testGet_NotContains() throws Exception {
-        exception.expect(SIllegalArgumentException.class);
+        exception.expect(IllegalKeyOfBeanMapException.class);
         exception
-            .expectMessage(is("[EUTL0009]引数[key]が不正です。理由はxxx is not found in [aaa, bbb]"));
+            .expectMessage(is("[EUTL0016]キー[xxx]はBeanMapに含まれていません。BeanMap : {aaa=1, bbb=2}"));
         BeanMap map = new BeanMap();
         map.put("aaa", 1);
         map.put("bbb", 2);
