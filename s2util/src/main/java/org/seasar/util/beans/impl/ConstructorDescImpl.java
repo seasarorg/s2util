@@ -27,6 +27,8 @@ import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.util.lang.ConstructorUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link ConstructorDesc}の実装クラスです。
  * 
@@ -56,6 +58,9 @@ public class ConstructorDescImpl implements ConstructorDesc {
      */
     public ConstructorDescImpl(final BeanDesc beanDesc,
             final Constructor<?> constructor) {
+        assertArgumentNotNull("beanDesc", beanDesc);
+        assertArgumentNotNull("constructor", constructor);
+
         this.beanDesc = beanDesc;
         this.constructor = constructor;
         parameterTypes = constructor.getParameterTypes();
@@ -95,6 +100,8 @@ public class ConstructorDescImpl implements ConstructorDesc {
 
     @Override
     public boolean isParameterized(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         return parameterizedClassDescs[index].isParameterizedClass();
     }
 
@@ -105,6 +112,8 @@ public class ConstructorDescImpl implements ConstructorDesc {
 
     @Override
     public Class<?> getElementClassOfCollection(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Collection.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;
@@ -119,6 +128,8 @@ public class ConstructorDescImpl implements ConstructorDesc {
 
     @Override
     public Class<?> getKeyClassOfMap(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Map.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;
@@ -133,6 +144,8 @@ public class ConstructorDescImpl implements ConstructorDesc {
 
     @Override
     public Class<?> getValueClassOfMap(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Map.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;

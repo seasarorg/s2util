@@ -27,6 +27,7 @@ import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.impl.ParameterizedClassDescImpl;
 
 import static org.seasar.util.lang.GenericsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * フィールの型やメソッドの引数型、戻り値型を表現する{@link ParameterizedClassDesc}を作成するファクトリです。
@@ -48,6 +49,8 @@ public abstract class ParameterizedClassDescFactory {
      */
     public static Map<TypeVariable<?>, Type> getTypeVariables(
             final Class<?> beanClass) {
+        assertArgumentNotNull("beanClass", beanClass);
+
         return getTypeVariableMap(beanClass);
     }
 
@@ -62,6 +65,9 @@ public abstract class ParameterizedClassDescFactory {
      */
     public static ParameterizedClassDesc createParameterizedClassDesc(
             final Field field, final Map<TypeVariable<?>, Type> map) {
+        assertArgumentNotNull("field", field);
+        assertArgumentNotNull("map", map);
+
         return createParameterizedClassDesc(field.getGenericType(), map);
     }
 
@@ -79,6 +85,9 @@ public abstract class ParameterizedClassDescFactory {
     public static ParameterizedClassDesc createParameterizedClassDesc(
             final Constructor<?> constructor, final int index,
             final Map<TypeVariable<?>, Type> map) {
+        assertArgumentNotNull("constructor", constructor);
+        assertArgumentNotNull("map", map);
+
         return createParameterizedClassDesc(
             constructor.getGenericParameterTypes()[index],
             map);
@@ -98,6 +107,13 @@ public abstract class ParameterizedClassDescFactory {
     public static ParameterizedClassDesc createParameterizedClassDesc(
             final Method method, final int index,
             final Map<TypeVariable<?>, Type> map) {
+        assertArgumentNotNull("method", method);
+        assertArgumentArrayIndex(
+            "index",
+            index,
+            method.getParameterTypes().length);
+        assertArgumentNotNull("map", map);
+
         return createParameterizedClassDesc(
             method.getGenericParameterTypes()[index],
             map);
@@ -114,6 +130,9 @@ public abstract class ParameterizedClassDescFactory {
      */
     public static ParameterizedClassDesc createParameterizedClassDesc(
             final Method method, final Map<TypeVariable<?>, Type> map) {
+        assertArgumentNotNull("method", method);
+        assertArgumentNotNull("map", map);
+
         return createParameterizedClassDesc(method.getGenericReturnType(), map);
     }
 

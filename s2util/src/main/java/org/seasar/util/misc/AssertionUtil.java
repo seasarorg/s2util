@@ -71,6 +71,26 @@ public abstract class AssertionUtil {
     }
 
     /**
+     * 引数が<code>null</code>でも空文字列でもないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            引数の値
+     * @throws SIllegalArgumentException
+     *             引数が<code>null</code>または空文字列の場合。
+     */
+    public static void assertArgumentNotEmpty(final String argName,
+            final CharSequence argValue) {
+        if (argValue == null || argValue.length() == 0) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0010",
+                asArray(argValue));
+        }
+    }
+
+    /**
      * 引数が<code>null</code>でも空の配列でもないことを表明します。
      * 
      * @param argName
@@ -291,17 +311,41 @@ public abstract class AssertionUtil {
     }
 
     /**
+     * インデックスが不正でないことを表明します。
+     * 
+     * @param argName
+     *            {@code null} であってはならない引数の名前
+     * @param argValue
+     *            インデックスの値
+     * @param arraySize
+     *            インデックスが参照する配列の長さ
+     * @throws SIllegalArgumentException
+     *             引数が配列のインデックスとして不正な場合場合。
+     */
+    public static void assertArgumentArrayIndex(final String argName,
+            final int argValue, final int arraySize) {
+        if (argValue < 0) {
+            throw new SIllegalArgumentException(
+                argName,
+                "EUTL0014",
+                asArray(argName));
+        }
+        if (argValue >= arraySize) {
+            throw new SIllegalArgumentException(argName, "EUTL0015", asArray(
+                argName,
+                arraySize));
+        }
+    }
+
+    /**
      * 引数が不正でないことを表明します。
      * 
      * @param argName
      *            不正であってはならない引数の名前
-     * 
      * @param expression
      *            事前条件
-     * 
      * @param description
      *            不正な引数であることの説明
-     * 
      * @throws SIllegalArgumentException
      *             {@code expression}がfalseの場合。
      */

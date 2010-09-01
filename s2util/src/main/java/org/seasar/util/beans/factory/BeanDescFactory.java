@@ -23,6 +23,7 @@ import org.seasar.util.misc.Disposable;
 import org.seasar.util.misc.DisposableUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link BeanDesc}を生成するクラスです。
@@ -48,6 +49,8 @@ public abstract class BeanDescFactory {
      * @return {@link BeanDesc}
      */
     public static BeanDesc getBeanDesc(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         initialize();
         BeanDesc beanDesc = beanDescCache.get(clazz);
         if (beanDesc == null) {

@@ -36,13 +36,14 @@ import org.seasar.util.convert.NumberConversionUtil;
 import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
-import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.IllegalPropertyRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.lang.MethodUtil;
 import org.seasar.util.lang.ModifierUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link PropertyDesc}の実装クラスです。
@@ -109,12 +110,10 @@ public class PropertyDescImpl implements PropertyDesc {
     public PropertyDescImpl(final String propertyName,
             final Class<?> propertyType, final Method readMethod,
             final Method writeMethod, final Field field, final BeanDesc beanDesc) {
-        if (propertyName == null) {
-            throw new EmptyRuntimeException("propertyName");
-        }
-        if (propertyType == null) {
-            throw new EmptyRuntimeException("propertyType");
-        }
+        assertArgumentNotEmpty("propertyName", propertyName);
+        assertArgumentNotNull("propertyType", propertyType);
+        assertArgumentNotNull("beanDesc", beanDesc);
+
         this.propertyName = propertyName;
         this.propertyType = propertyType;
         setReadMethod(readMethod);
@@ -264,6 +263,8 @@ public class PropertyDescImpl implements PropertyDesc {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getValue(final Object target) {
+        assertArgumentNotNull("target", target);
+
         try {
             if (!readable) {
                 throw new IllegalStateException(propertyName
@@ -283,6 +284,8 @@ public class PropertyDescImpl implements PropertyDesc {
 
     @Override
     public void setValue(final Object target, Object value) {
+        assertArgumentNotNull("target", target);
+
         try {
             value = convertIfNeed(value);
             if (!writable) {

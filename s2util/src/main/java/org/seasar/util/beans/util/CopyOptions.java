@@ -32,6 +32,7 @@ import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.ConverterRuntimeException;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link BeanUtil}でJavaBeansや{@link Map}をコピーする際に指定するオプションです。
@@ -112,6 +113,8 @@ public class CopyOptions {
      * @return このインスタンス自身
      */
     public CopyOptions include(final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("propertyNames", propertyNames);
+
         this.includePropertyNames.addAll(toStringList(propertyNames));
         return this;
     }
@@ -124,6 +127,8 @@ public class CopyOptions {
      * @return このインスタンス自身
      */
     public CopyOptions exclude(final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("propertyNames", propertyNames);
+
         this.excludePropertyNames.addAll(toStringList(propertyNames));
         return this;
     }
@@ -156,6 +161,8 @@ public class CopyOptions {
      * @return このインスタンス自身
      */
     public CopyOptions prefix(final CharSequence prefix) {
+        assertArgumentNotEmpty("propertyNames", prefix);
+
         this.prefix = prefix.toString();
         return this;
     }
@@ -193,6 +200,8 @@ public class CopyOptions {
      */
     public CopyOptions converter(final Converter converter,
             final CharSequence... propertyNames) {
+        assertArgumentNotNull("converter", converter);
+
         if (propertyNames == null || propertyNames.length == 0) {
             converters.add(converter);
         } else {
@@ -214,6 +223,8 @@ public class CopyOptions {
      */
     public CopyOptions dateConverter(final String pattern,
             final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("pattern", pattern);
+
         return converter(new DateConverter(pattern), propertyNames);
     }
 
@@ -228,6 +239,8 @@ public class CopyOptions {
      */
     public CopyOptions sqlDateConverter(final String pattern,
             final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("pattern", pattern);
+
         return converter(new SqlDateConverter(pattern), propertyNames);
     }
 
@@ -242,6 +255,8 @@ public class CopyOptions {
      */
     public CopyOptions timeConverter(final String pattern,
             final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("pattern", pattern);
+
         return converter(new TimeConverter(pattern), propertyNames);
     }
 
@@ -256,6 +271,8 @@ public class CopyOptions {
      */
     public CopyOptions timestampConverter(final String pattern,
             final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("pattern", pattern);
+
         return converter(new TimestampConverter(pattern), propertyNames);
     }
 
@@ -270,6 +287,8 @@ public class CopyOptions {
      */
     public CopyOptions numberConverter(final String pattern,
             final CharSequence... propertyNames) {
+        assertArgumentNotEmpty("pattern", pattern);
+
         return converter(new NumberConverter(pattern), propertyNames);
     }
 

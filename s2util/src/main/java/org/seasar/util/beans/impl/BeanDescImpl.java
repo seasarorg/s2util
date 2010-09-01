@@ -51,6 +51,7 @@ import org.seasar.util.lang.StringUtil;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.lang.GenericsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link BeanDesc}の実装クラスです。
@@ -95,9 +96,8 @@ public class BeanDescImpl implements BeanDesc {
      *            ビーンのクラス
      */
     public BeanDescImpl(final Class<?> beanClass) {
-        if (beanClass == null) {
-            throw new EmptyRuntimeException("beanClass");
-        }
+        assertArgumentNotNull("beanClass", beanClass);
+
         this.beanClass = beanClass;
         typeVariables = getTypeVariableMap(beanClass);
         setupConstructorDescs();
@@ -119,12 +119,16 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public boolean hasPropertyDesc(final String propertyName) {
+        assertArgumentNotEmpty("propertyName", propertyName);
+
         return propertyDescCache.get(propertyName) != null;
     }
 
     @Override
     public PropertyDesc getPropertyDesc(final String propertyName)
             throws PropertyNotFoundRuntimeException {
+        assertArgumentNotEmpty("propertyName", propertyName);
+
         final PropertyDesc pd = propertyDescCache.get(propertyName);
         if (pd == null) {
             throw new PropertyNotFoundRuntimeException(beanClass, propertyName);
@@ -134,6 +138,8 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public PropertyDesc getPropertyDesc(final int index) {
+        assertArgumentArrayIndex("index", index, getPropertyDescSize());
+
         return propertyDescCache.getAt(index);
     }
 
@@ -144,11 +150,15 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public boolean hasFieldDesc(final String fieldName) {
+        assertArgumentNotEmpty("fieldName", fieldName);
+
         return fieldDescCache.containsKey(fieldName);
     }
 
     @Override
     public FieldDesc getFieldDesc(final String fieldName) {
+        assertArgumentNotEmpty("fieldName", fieldName);
+
         final FieldDesc fieldDesc = fieldDescCache.get(fieldName);
         if (fieldDesc == null) {
             throw new FieldNotFoundRuntimeException(beanClass, fieldName);
@@ -158,6 +168,8 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public FieldDesc getFieldDesc(final int index) {
+        assertArgumentArrayIndex("index", index, getFieldDescSize());
+
         return fieldDescCache.getAt(index);
     }
 
@@ -200,6 +212,8 @@ public class BeanDescImpl implements BeanDesc {
     @Override
     public MethodDesc getMethodDesc(final String methodName,
             final Class<?>... paramTypes) {
+        assertArgumentNotEmpty("methodName", methodName);
+
         final MethodDesc methodDesc =
             getMethodDescNoException(methodName, paramTypes);
         if (methodDesc != null) {
@@ -214,6 +228,8 @@ public class BeanDescImpl implements BeanDesc {
     @Override
     public MethodDesc getMethodDescNoException(final String methodName,
             final Class<?>... paramTypes) {
+        assertArgumentNotEmpty("methodName", methodName);
+
         final MethodDesc[] methodDescs = methodDescsCache.get(methodName);
         if (methodDescs == null) {
             return null;
@@ -229,6 +245,8 @@ public class BeanDescImpl implements BeanDesc {
     @Override
     public MethodDesc getSuitableMethodDesc(final String methodName,
             final Object... args) {
+        assertArgumentNotEmpty("methodName", methodName);
+
         final MethodDesc[] methodDescs = getMethodDescs(methodName);
         MethodDesc methodDesc = findSuitableMethod(methodDescs, args);
         if (methodDesc != null) {
@@ -243,6 +261,8 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public MethodDesc[] getMethodDescs(final String methodName) {
+        assertArgumentNotEmpty("methodName", methodName);
+
         final MethodDesc[] methodDescs = methodDescsCache.get(methodName);
         if (methodDescs == null) {
             throw new MethodNotFoundRuntimeException(
@@ -255,6 +275,8 @@ public class BeanDescImpl implements BeanDesc {
 
     @Override
     public boolean hasMethodDesc(final String methodName) {
+        assertArgumentNotEmpty("methodName", methodName);
+
         return methodDescsCache.containsKey(methodName);
     }
 

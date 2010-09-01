@@ -17,6 +17,8 @@ package org.seasar.util.beans.impl;
 
 import org.seasar.util.beans.ParameterizedClassDesc;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link ParameterizedClassDesc}の実装クラスです。
  * 
@@ -33,17 +35,13 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
 
     /**
      * インスタンスを構築します。
-     */
-    public ParameterizedClassDescImpl() {
-    }
-
-    /**
-     * インスタンスを構築します。
      * 
      * @param rawClass
      *            原型となるクラス
      */
     public ParameterizedClassDescImpl(final Class<?> rawClass) {
+        assertArgumentNotNull("rawClass", rawClass);
+
         this.rawClass = rawClass;
     }
 
@@ -57,6 +55,8 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      */
     public ParameterizedClassDescImpl(final Class<?> rawClass,
             final ParameterizedClassDesc[] arguments) {
+        assertArgumentNotNull("rawClass", rawClass);
+
         this.rawClass = rawClass;
         this.arguments = arguments;
     }
@@ -79,6 +79,8 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      *            原型となるクラス
      */
     public void setRawClass(final Class<?> rawClass) {
+        assertArgumentNotNull("rawClass", rawClass);
+
         this.rawClass = rawClass;
     }
 

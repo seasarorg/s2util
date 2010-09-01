@@ -26,6 +26,8 @@ import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.util.exception.MethodNotStaticRuntimeException;
 import org.seasar.util.lang.MethodUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link MethodDesc}の実装クラスです。
  * 
@@ -63,6 +65,9 @@ public class MethodDescImpl implements MethodDesc {
      *            メソッド
      */
     public MethodDescImpl(final BeanDesc beanDesc, final Method method) {
+        assertArgumentNotNull("beanDesc", beanDesc);
+        assertArgumentNotNull("method", method);
+
         this.beanDesc = beanDesc;
         this.method = method;
         methodName = method.getName();
@@ -131,6 +136,8 @@ public class MethodDescImpl implements MethodDesc {
 
     @Override
     public boolean isParameterized(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         return parameterizedClassDescs[index].isParameterizedClass();
     }
 
@@ -151,6 +158,8 @@ public class MethodDescImpl implements MethodDesc {
 
     @Override
     public Class<?> getElementClassOfCollection(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Collection.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;
@@ -165,6 +174,8 @@ public class MethodDescImpl implements MethodDesc {
 
     @Override
     public Class<?> getKeyClassOfMap(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Map.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;
@@ -179,6 +190,8 @@ public class MethodDescImpl implements MethodDesc {
 
     @Override
     public Class<?> getValueClassOfMap(final int index) {
+        assertArgumentArrayIndex("index", index, parameterTypes.length);
+
         if (!Map.class.isAssignableFrom(parameterTypes[index])
             || !isParameterized(index)) {
             return null;
@@ -234,6 +247,8 @@ public class MethodDescImpl implements MethodDesc {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T invoke(final Object target, final Object... args) {
+        assertArgumentNotNull("target", target);
+
         return (T) MethodUtil.invoke(method, target, args);
     }
 

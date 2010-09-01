@@ -26,6 +26,8 @@ import org.seasar.util.beans.factory.ParameterizedClassDescFactory;
 import org.seasar.util.exception.FieldNotStaticRuntimeException;
 import org.seasar.util.lang.FieldUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link FieldDesc}の実装クラスです。
  * 
@@ -57,6 +59,9 @@ public class FieldDescImpl implements FieldDesc {
      *            フィールド
      */
     public FieldDescImpl(final BeanDesc beanDesc, final Field field) {
+        assertArgumentNotNull("beanDesc", beanDesc);
+        assertArgumentNotNull("field", field);
+
         this.beanDesc = beanDesc;
         this.field = field;
         fieldName = field.getName();
@@ -156,6 +161,8 @@ public class FieldDescImpl implements FieldDesc {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getFieldValue(final Object target) {
+        assertArgumentNotNull("target", target);
+
         return (T) FieldUtil.get(field, target);
     }
 
@@ -172,6 +179,8 @@ public class FieldDescImpl implements FieldDesc {
 
     @Override
     public void setFieldValue(final Object target, final Object value) {
+        assertArgumentNotNull("target", target);
+
         FieldUtil.set(field, target, value);
     }
 

@@ -64,7 +64,7 @@ public abstract class BeanUtil {
             final CopyOptions options) {
         assertArgumentNotNull("src", src);
         assertArgumentNotNull("dest", dest);
-        assertArgumentNotNull("options", options);
+        assertArgumentNotNull("option", options);
 
         final BeanDesc srcBeanDesc =
             BeanDescFactory.getBeanDesc(src.getClass());
