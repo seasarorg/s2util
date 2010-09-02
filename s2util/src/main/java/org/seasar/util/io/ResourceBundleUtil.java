@@ -37,6 +37,24 @@ public abstract class ResourceBundleUtil {
      * 
      * @param name
      *            リソースバンドの名前
+     * @return {@link ResourceBundle}
+     * @see ResourceBundle#getBundle(String)
+     */
+    public static final ResourceBundle getBundle(final String name) {
+        assertArgumentNotEmpty("name", name);
+
+        try {
+            return ResourceBundle.getBundle(name);
+        } catch (final MissingResourceException ignore) {
+            return null;
+        }
+    }
+
+    /**
+     * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
+     * 
+     * @param name
+     *            リソースバンドの名前
      * @param locale
      *            ロケール
      * @return {@link ResourceBundle}
@@ -79,6 +97,24 @@ public abstract class ResourceBundleUtil {
         try {
             return ResourceBundle.getBundle(name, locale, classLoader);
         } catch (final MissingResourceException ignore) {
+            return null;
+        }
+    }
+
+    /**
+     * リソースバンドルから指定されたキーの文字列を返します。
+     * 
+     * @param bundle
+     *            リソースバンドル
+     * @param key
+     *            キー
+     * @return 指定されたキーの文字列
+     * @see ResourceBundle#getString(String)
+     */
+    public static String getString(final ResourceBundle bundle, final String key) {
+        try {
+            return bundle.getString(key);
+        } catch (final Throwable t) {
             return null;
         }
     }

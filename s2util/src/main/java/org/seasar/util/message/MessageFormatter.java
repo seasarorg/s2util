@@ -16,16 +16,23 @@
 package org.seasar.util.message;
 
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
+import org.seasar.util.io.ResourceBundleUtil;
+import org.seasar.util.misc.Disposable;
+import org.seasar.util.misc.DisposableUtil;
 
 /**
  * メッセージコードと引数からメッセージを組み立てるクラスです。
  * 
  * @author higa
  */
-
 public abstract class MessageFormatter {
 
     private static final String MESSAGES = "Messages";
+
+    /** 初期化済みを示すフラグ */
+    protected static volatile boolean initialized;
 
     /**
      * メッセージを返します。
@@ -87,8 +94,8 @@ public abstract class MessageFormatter {
      * @return パターン文字列
      */
     protected static String getPattern(final String messageCode) {
-        final MessageResourceBundle resourceBundle =
-            getMessages(getSystemName(messageCode));
+        final ResourceBundle resourceBundle =
+            getResourceBundle(getSystemName(messageCode));
         if (resourceBundle == null) {
             return null;
         }
@@ -97,12 +104,13 @@ public abstract class MessageFormatter {
         if (length > 4) {
             final String key =
                 messageCode.charAt(0) + messageCode.substring(length - 4);
-            final String pattern = resourceBundle.get(key);
+            final String pattern =
+                ResourceBundleUtil.getString(resourceBundle, key);
             if (pattern != null) {
                 return pattern;
             }
         }
-        return resourceBundle.get(messageCode);
+        return resourceBundle.getString(messageCode);
     }
 
     /**
@@ -117,14 +125,17 @@ public abstract class MessageFormatter {
     }
 
     /**
-     * メッセージリソースバンドルを返します。
+     * リソースバンドルを返します。
      * 
      * @param systemName
      *            システム名
-     * @return メッセージリソースバンドル
+     * @return リソースバンドル
      */
-    protected static MessageResourceBundle getMessages(final String systemName) {
-        return MessageResourceBundleFactory.getBundle(systemName + MESSAGES);
+    protected static ResourceBundle getResourceBundle(final String systemName) {
+        if (!initialized) {
+            initialize();
+        }
+        return ResourceBundleUtil.getBundle(systemName + MESSAGES);
     }
 
     /**
@@ -144,6 +155,20 @@ public abstract class MessageFormatter {
         }
         buffer.setLength(buffer.length() - 2);
         return new String(buffer);
+    }
+
+    /**
+     * 初期化します。
+     */
+    protected synchronized static void initialize() {
+        if (!initialized) {
+            DisposableUtil.add(new Disposable() {
+                @Override
+                public void dispose() {
+                    ResourceBundle.clearCache();
+                }
+            });
+        }
     }
 
 }

@@ -18,35 +18,49 @@ package org.seasar.util.io;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  * 
  */
-public class ResourceBundleUtilTest extends TestCase {
+public class ResourceBundleUtilTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testConvertMap() throws Exception {
         ResourceBundle bundle =
             ResourceBundleUtil.getBundle("UTLMessages", null);
         Map<String, String> map = ResourceBundleUtil.convertMap(bundle);
         String value = map.get("EUTL0001");
         System.out.println(value);
-        assertNotNull("1", value);
+        assertThat(value, is(notNullValue()));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testGetBundle() throws Exception {
         ResourceBundle bundle =
             ResourceBundleUtil.getBundle("UTLMessages", null, this
                 .getClass()
                 .getClassLoader());
-        assertNotNull(bundle);
+        assertThat(bundle, is(notNullValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testGetString() throws Exception {
+        ResourceBundle bundle = ResourceBundleUtil.getBundle("UTLMessages");
+        assertThat(bundle.getString("EUTL0001"), is(notNullValue()));
     }
 
 }
