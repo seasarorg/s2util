@@ -21,7 +21,10 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.io.SerializeUtil;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -32,6 +35,12 @@ import static org.junit.Assert.*;
  * 
  */
 public class ArrayMapTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     ArrayMap<String, String> map;
 
@@ -235,6 +244,19 @@ public class ArrayMapTest {
         assertThat(i.next().getKey(), is(nullValue()));
         assertThat(i.next().getKey(), is("1"));
         assertThat(i.next().getKey(), is("2"));
+    }
+
+    /**
+     * Test method for {@link org.seasar.util.collection.ArrayIterator#remove()}
+     * .
+     */
+    @Test
+    public void testArrayIteratorRemoveException() {
+        exception.expect(SIllegalStateException.class);
+        exception.expectMessage(is("last == -1"));
+        ArrayMap<String, String> m = new ArrayMap<String, String>();
+        Iterator<Map.Entry<String, String>> i = m.entrySet().iterator();
+        i.remove();
     }
 
     /**

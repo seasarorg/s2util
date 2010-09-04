@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalArgumentException;
+import org.seasar.util.exception.SIllegalStateException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.seasar.util.misc.AssertionUtil.*;
@@ -58,6 +59,17 @@ public class AssertionUtilTest {
         exception.expect(SIllegalArgumentException.class);
         exception.expectMessage(is("[EUTL0009]引数[hoge]が不正です。理由はhogeだからです。"));
         assertArgument("hoge", false, "hogeだからです。");
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.misc.AssertionUtil#assertState(boolean, String)} .
+     */
+    @Test
+    public void testAssertState() {
+        exception.expect(SIllegalStateException.class);
+        exception.expectMessage(is("hogeだからです。"));
+        assertState(false, "hogeだからです。");
     }
 
 }

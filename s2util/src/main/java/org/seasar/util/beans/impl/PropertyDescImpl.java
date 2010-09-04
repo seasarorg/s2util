@@ -266,10 +266,8 @@ public class PropertyDescImpl implements PropertyDesc {
         assertArgumentNotNull("target", target);
 
         try {
-            if (!readable) {
-                throw new IllegalStateException(propertyName
-                    + " is not readable.");
-            } else if (hasReadMethod()) {
+            assertState(readable, propertyName + " is not readable.");
+            if (hasReadMethod()) {
                 return (T) MethodUtil.invoke(readMethod, target, EMPTY_ARGS);
             } else {
                 return (T) FieldUtil.get(field, target);
@@ -288,10 +286,8 @@ public class PropertyDescImpl implements PropertyDesc {
 
         try {
             value = convertIfNeed(value);
-            if (!writable) {
-                throw new IllegalStateException(propertyName
-                    + " is not writable.");
-            } else if (hasWriteMethod()) {
+            assertState(writable, propertyName + " is not writable.");
+            if (hasWriteMethod()) {
                 try {
                     MethodUtil.invoke(
                         writeMethod,

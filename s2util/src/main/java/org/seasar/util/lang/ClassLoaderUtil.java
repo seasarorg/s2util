@@ -24,6 +24,7 @@ import java.util.Iterator;
 import org.seasar.util.collection.EnumerationIterator;
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.message.MessageFormatter;
 
 /**
@@ -126,7 +127,7 @@ public abstract class ClassLoaderUtil {
             return systemClassLoader;
         }
 
-        throw new IllegalStateException(MessageFormatter.getMessage(
+        throw new SIllegalStateException(MessageFormatter.getMessage(
             "EUTL0001",
             "ClassLoader"));
     }

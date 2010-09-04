@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * 配列の性質を併せ持つ {@link Map}です。
  * 
@@ -577,9 +579,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
 
         @Override
         public void remove() {
-            if (last == -1) {
-                throw new IllegalStateException();
-            }
+            assertState(last != -1, "last == -1");
             ArrayMap.this.remove(last);
             if (last < current) {
                 current--;
