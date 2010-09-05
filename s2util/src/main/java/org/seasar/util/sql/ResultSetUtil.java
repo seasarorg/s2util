@@ -35,6 +35,26 @@ public class ResultSetUtil {
     }
 
     /**
+     * 結果セットを閉じます。
+     * 
+     * @param resultSet
+     *            結果セット
+     * @throws SQLRuntimeException
+     *             SQL例外が起こった場合。
+     */
+    public static void close(final ResultSet resultSet)
+            throws SQLRuntimeException {
+        if (resultSet == null) {
+            return;
+        }
+        try {
+            resultSet.close();
+        } catch (final SQLException ex) {
+            throw new SQLRuntimeException(ex);
+        }
+    }
+
+    /**
      * 結果セットを次に進めます。
      * 
      * @param resultSet
