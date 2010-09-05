@@ -18,6 +18,7 @@ package org.seasar.util.io;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.log.Logger;
 
 import static org.seasar.util.log.Logger.*;
@@ -38,6 +39,28 @@ public abstract class CloseableUtil {
      *            クローズ可能なオブジェクト
      * @see Closeable#close()
      */
+    public static void closeSilently(final Closeable closeable) {
+        if (closeable == null) {
+            return;
+        }
+        try {
+            closeable.close();
+        } catch (final IOException e) {
+            logger.log(format("EUTL0040", e.getMessage()), e);
+        }
+    }
+
+    /**
+     * {@link Closeable}を閉じます。
+     * 
+     * @param closeable
+     *            クローズ可能なオブジェクト
+     * @see Closeable#close()
+     * 
+     * @throws IORuntimeException
+     *             {@link IOException} closeに失敗したときにthrowされる例外
+     * 
+     */
     public static void close(final Closeable closeable) {
         if (closeable == null) {
             return;
@@ -45,7 +68,7 @@ public abstract class CloseableUtil {
         try {
             closeable.close();
         } catch (final IOException e) {
-            logger.log(format("EUTL0017", e.getMessage()), e);
+            throw new IORuntimeException(e);
         }
     }
 
