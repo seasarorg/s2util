@@ -16,7 +16,9 @@
 package org.seasar.util.collection;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+import org.seasar.util.exception.SNoSuchElementException;
+import org.seasar.util.exception.SUnsupportedOperationException;
 
 /**
  * 配列を{@link Iterator}にするAdaptorです。
@@ -55,13 +57,13 @@ public class ArrayIterator<T> implements Iterator<T> {
             index++;
             return o;
         } catch (final IndexOutOfBoundsException e) {
-            throw new NoSuchElementException("index=" + index);
+            throw new SNoSuchElementException("index=" + index);
         }
     }
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("remove");
+        throw new SUnsupportedOperationException("remove");
     }
 
 }

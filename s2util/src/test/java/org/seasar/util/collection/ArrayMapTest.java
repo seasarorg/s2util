@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.SIllegalStateException;
+import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.io.SerializeUtil;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -257,6 +258,19 @@ public class ArrayMapTest {
         ArrayMap<String, String> m = new ArrayMap<String, String>();
         Iterator<Map.Entry<String, String>> i = m.entrySet().iterator();
         i.remove();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testArrayMapIteratorNextException() {
+        exception.expect(SNoSuchElementException.class);
+        exception.expectMessage(is("current=1"));
+        ArrayMap<String, String> m = new ArrayMap<String, String>(1);
+        Iterator<Map.Entry<String, String>> i = m.entrySet().iterator();
+        i.next();
+        i.next();
     }
 
     /**

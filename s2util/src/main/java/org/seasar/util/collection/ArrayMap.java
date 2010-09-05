@@ -25,8 +25,9 @@ import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.seasar.util.exception.SNoSuchElementException;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -573,7 +574,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
                 last = current++;
                 return n;
             } catch (final IndexOutOfBoundsException e) {
-                throw new NoSuchElementException();
+                throw new SNoSuchElementException("current=" + current);
             }
         }
 

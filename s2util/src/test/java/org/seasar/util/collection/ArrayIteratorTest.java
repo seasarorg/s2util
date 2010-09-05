@@ -15,9 +15,11 @@
  */
 package org.seasar.util.collection;
 
-import java.util.NoSuchElementException;
-
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.seasar.util.exception.SNoSuchElementException;
+import org.seasar.util.exception.SUnsupportedOperationException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -27,6 +29,12 @@ import static org.junit.Assert.*;
  * @author manhole
  */
 public class ArrayIteratorTest {
+
+    /**
+     * @see org.junit.rules.ExpectedException
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * 
@@ -42,8 +50,10 @@ public class ArrayIteratorTest {
     /**
      * 
      */
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testNoSuchElement() {
+        exception.expect(SNoSuchElementException.class);
+        exception.expectMessage(is("index=2"));
         ArrayIterator<Integer> itr =
             new ArrayIterator<Integer>(new Integer[] { 1, 2 });
         itr.next();
@@ -67,8 +77,10 @@ public class ArrayIteratorTest {
     /**
      * @throws Exception
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testRemove() throws Exception {
+        exception.expect(SUnsupportedOperationException.class);
+        exception.expectMessage(is("remove"));
         ArrayIterator<String> itr = new ArrayIterator<String>("1", "2");
         itr.remove();
     }

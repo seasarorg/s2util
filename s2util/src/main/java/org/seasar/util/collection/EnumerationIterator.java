@@ -18,6 +18,8 @@ package org.seasar.util.collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import org.seasar.util.exception.SUnsupportedOperationException;
+
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -62,7 +64,7 @@ public class EnumerationIterator<T> implements Iterator<T> {
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("remove");
+        throw new SUnsupportedOperationException("remove");
     }
 
     @Override

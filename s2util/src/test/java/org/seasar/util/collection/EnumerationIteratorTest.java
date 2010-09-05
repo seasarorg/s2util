@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.NullArgumentException;
+import org.seasar.util.exception.SUnsupportedOperationException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -56,8 +57,10 @@ public class EnumerationIteratorTest {
     /**
      * @throws Exception
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testRemove() throws Exception {
+        exception.expect(SUnsupportedOperationException.class);
+        exception.expectMessage(is("remove"));
         Vector<String> vector = new Vector<String>();
         vector.add("a");
         EnumerationIterator<String> itr =

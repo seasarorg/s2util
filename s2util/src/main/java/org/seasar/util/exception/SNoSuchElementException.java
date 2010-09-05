@@ -13,40 +13,34 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.collection;
+package org.seasar.util.exception;
 
-import java.util.Iterator;
-
-import org.seasar.util.exception.SUnsupportedOperationException;
+import java.util.NoSuchElementException;
 
 /**
- * 空の {@link Iterator}です。
+ * {@link NoSuchElementException}をラップする例外です。
  * 
- * @author higa
- * @param <T>
- *            反復する要素の型
+ * @author wyukawa
  */
-public class EmptyIterator<T> implements Iterator<T> {
+public class SNoSuchElementException extends NoSuchElementException {
+
+    private static final long serialVersionUID = 1632854460852262479L;
 
     /**
-     * {@link EmptyIterator}を作成します。
+     * {@link SNoSuchElementException}を作成します。
      */
-    public EmptyIterator() {
+    public SNoSuchElementException() {
+        super();
     }
 
-    @Override
-    public void remove() {
-        throw new SUnsupportedOperationException("remove");
-    }
-
-    @Override
-    public boolean hasNext() {
-        return false;
-    }
-
-    @Override
-    public T next() {
-        throw new SUnsupportedOperationException("next");
+    /**
+     * {@link SNoSuchElementException}を作成します。
+     * 
+     * @param message
+     *            メッセージ
+     */
+    public SNoSuchElementException(String message) {
+        super(message);
     }
 
 }

@@ -15,9 +15,8 @@
  */
 package org.seasar.util.collection;
 
-import java.util.NoSuchElementException;
-
 import org.junit.Test;
+import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.io.SerializeUtil;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -48,7 +47,7 @@ public class SLinkedListTest {
         try {
             list.getFirst();
             fail();
-        } catch (NoSuchElementException ex) {
+        } catch (SNoSuchElementException ex) {
             System.out.println(ex);
         }
         list.addFirst("1");
@@ -73,7 +72,7 @@ public class SLinkedListTest {
         try {
             list.getLast();
             fail();
-        } catch (NoSuchElementException ex) {
+        } catch (SNoSuchElementException ex) {
             System.out.println(ex);
         }
         list.addLast("1");
