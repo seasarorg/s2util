@@ -16,6 +16,7 @@
 package org.seasar.util.collection;
 
 import org.junit.Test;
+import org.seasar.util.exception.SIndexOutOfBoundsException;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.io.SerializeUtil;
 
@@ -212,13 +213,13 @@ public class SLinkedListTest {
         try {
             list.getEntry(-1);
             fail();
-        } catch (IndexOutOfBoundsException ex) {
+        } catch (SIndexOutOfBoundsException ex) {
             System.out.println(ex);
         }
         try {
             list.getEntry(3);
             fail();
-        } catch (IndexOutOfBoundsException ex) {
+        } catch (SIndexOutOfBoundsException ex) {
             System.out.println(ex);
         }
     }

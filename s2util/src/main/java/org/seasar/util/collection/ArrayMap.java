@@ -209,10 +209,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
      * @return indexに対応する {@link java.util.Map.Entry}
      */
     public Entry<K, V> getEntryAt(final int index) {
-        if (index >= size) {
-            throw new IndexOutOfBoundsException("Index:" + index + ", Size:"
-                + size);
-        }
+        assertIndex(index < size, "Index:" + index + ", Size:" + size);
         return listTable[index];
     }
 

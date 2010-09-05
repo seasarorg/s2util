@@ -23,6 +23,8 @@ import java.lang.reflect.Array;
 
 import org.seasar.util.exception.SNoSuchElementException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * Seasar2用の連結リストです。
  * 
@@ -236,10 +238,8 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
      * @return エントリ
      */
     public Entry getEntry(final int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
-                + size);
-        }
+        assertIndex(0 <= index && index < size, "Index: " + index + ", Size: "
+            + size);
         Entry e = header;
         if (index < size / 2) {
             for (int i = 0; i <= index; i++) {

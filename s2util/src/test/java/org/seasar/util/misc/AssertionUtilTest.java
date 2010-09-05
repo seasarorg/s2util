@@ -21,6 +21,7 @@ import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.exception.SIllegalStateException;
+import org.seasar.util.exception.SIndexOutOfBoundsException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.seasar.util.misc.AssertionUtil.*;
@@ -70,6 +71,17 @@ public class AssertionUtilTest {
         exception.expect(SIllegalStateException.class);
         exception.expectMessage(is("hogeだからです。"));
         assertState(false, "hogeだからです。");
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.misc.AssertionUtil#assertIndex(boolean, String)} .
+     */
+    @Test
+    public void testAssertIndex() {
+        exception.expect(SIndexOutOfBoundsException.class);
+        exception.expectMessage(is("hogeだからです。"));
+        assertIndex(false, "hogeだからです。");
     }
 
 }

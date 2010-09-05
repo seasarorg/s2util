@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.SIllegalStateException;
+import org.seasar.util.exception.SIndexOutOfBoundsException;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.io.SerializeUtil;
 
@@ -271,6 +272,17 @@ public class ArrayMapTest {
         Iterator<Map.Entry<String, String>> i = m.entrySet().iterator();
         i.next();
         i.next();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testArrayMapGetEntryException() {
+        exception.expect(SIndexOutOfBoundsException.class);
+        exception.expectMessage(is("Index:1, Size:0"));
+        ArrayMap<String, String> m = new ArrayMap<String, String>(1);
+        m.getEntryAt(1);
     }
 
     /**

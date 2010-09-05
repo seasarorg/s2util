@@ -23,6 +23,7 @@ import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.exception.SIllegalStateException;
+import org.seasar.util.exception.SIndexOutOfBoundsException;
 import org.seasar.util.lang.StringUtil;
 
 import static org.seasar.util.collection.ArrayUtil.*;
@@ -387,6 +388,23 @@ public abstract class AssertionUtil {
             final String description) {
         if (!expression) {
             throw new SIllegalStateException(description);
+        }
+    }
+
+    /**
+     * indexが不正でないことを表明します。
+     * 
+     * @param expression
+     *            事前条件
+     * @param description
+     *            不正なindexであることの説明
+     * @throws SIndexOutOfBoundsException
+     *             {@code expression}がfalseの場合。
+     */
+    public static void assertIndex(final boolean expression,
+            final String description) {
+        if (!expression) {
+            throw new SIndexOutOfBoundsException(description);
         }
     }
 
