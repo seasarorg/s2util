@@ -17,11 +17,15 @@ package org.seasar.util.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.ResultSet;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SQLRuntimeException;
+import org.seasar.util.sql.DummyResultSet;
+import org.seasar.util.sql.SQLExceptionOccurResultSet;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -123,5 +127,63 @@ public class CloseableUtilTest {
             throw new IOException("close failed");
         }
 
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testCloseResultSet() throws Exception {
+        DummyResultSet dummyResultSet = new DummyResultSet();
+        CloseableUtil.close(dummyResultSet);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testCloseResultSetNull() throws Exception {
+        CloseableUtil.close((ResultSet) null);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testResultSetClose_ThrowSQLException() throws Exception {
+        exception.expect(SQLRuntimeException.class);
+        exception
+            .expectMessage(is("[EUTL0072]SQLで例外(SQL=[], Message=[close failed], ErrorCode=0, SQLState=null)が発生しました"));
+        SQLExceptionOccurResultSet sqlExceptionOccurResultSet =
+            new SQLExceptionOccurResultSet();
+        CloseableUtil.close(sqlExceptionOccurResultSet);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testCloseSilentlyResultSet() throws Exception {
+        DummyResultSet dummyResultSet = new DummyResultSet();
+        CloseableUtil.closeSilently(dummyResultSet);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testCloseSilentlyResultSetNull() throws Exception {
+        CloseableUtil.closeSilently((ResultSet) null);
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testResultSetCloseSilently_noThrowSQLException()
+            throws Exception {
+        SQLExceptionOccurResultSet sqlExceptionOccurResultSet =
+            new SQLExceptionOccurResultSet();
+        CloseableUtil.closeSilently(sqlExceptionOccurResultSet);
     }
 }

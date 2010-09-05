@@ -17,8 +17,11 @@ package org.seasar.util.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.exception.SQLRuntimeException;
 import org.seasar.util.log.Logger;
 
 import static org.seasar.util.log.Logger.*;
@@ -69,6 +72,51 @@ public abstract class CloseableUtil {
             closeable.close();
         } catch (final IOException e) {
             throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * {@link ResultSet}を閉じます。
+     * 
+     * @param resultSet
+     *            結果セット
+     * @see ResultSet#close()
+     * 
+     * @throws SQLRuntimeException
+     *             {@link SQLException} closeに失敗したときにthrowされる例外
+     * 
+     */
+    public static void close(final ResultSet resultSet) {
+        if (resultSet == null) {
+            return;
+        }
+        try {
+            if (resultSet.isClosed() == false) {
+                resultSet.close();
+            }
+        } catch (final SQLException e) {
+            throw new SQLRuntimeException(e);
+        }
+    }
+
+    /**
+     * {@link ResultSet}を閉じます。
+     * 
+     * @param resultSet
+     *            結果セット
+     * @see ResultSet#close()
+     * 
+     */
+    public static void closeSilently(final ResultSet resultSet) {
+        if (resultSet == null) {
+            return;
+        }
+        try {
+            if (resultSet.isClosed() == false) {
+                resultSet.close();
+            }
+        } catch (final SQLException e) {
+            logger.log(format("EUTL0072", e.getMessage()), e);
         }
     }
 
