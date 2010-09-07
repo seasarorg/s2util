@@ -389,7 +389,7 @@ public abstract class ResourceTraverserUtil {
         protected final String rootPackage;
 
         /** ルートディレクトリです。 */
-        final protected String rootDir;
+        protected final String rootDir;
 
         /**
          * インスタンスを構築します。
@@ -479,7 +479,7 @@ public abstract class ResourceTraverserUtil {
         protected final String rootPackage;
 
         /** ルートディレクトリです。 */
-        final protected String rootDir;
+        protected final String rootDir;
 
         /** ZipのURLです。 */
         protected final URL zipUrl;
