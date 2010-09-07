@@ -25,15 +25,8 @@ import org.seasar.util.exception.ParserConfigurationRuntimeException;
  * {@link DocumentBuilderFactory}の用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class DocumentBuilderFactoryUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DocumentBuilderFactoryUtil() {
-    }
+public abstract class DocumentBuilderFactoryUtil {
 
     /**
      * 新しい {@link DocumentBuilderFactory}のインスタンスを返します。

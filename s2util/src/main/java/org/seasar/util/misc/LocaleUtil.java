@@ -21,15 +21,8 @@ import java.util.Locale;
  * {@link Locale}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class LocaleUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected LocaleUtil() {
-    }
+public abstract class LocaleUtil {
 
     /**
      * {@link Locale}を返します。

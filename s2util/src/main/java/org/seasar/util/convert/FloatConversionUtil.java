@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Float}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class FloatConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected FloatConversionUtil() {
-    }
+public abstract class FloatConversionUtil {
 
     /**
      * {@link Float}に変換します。

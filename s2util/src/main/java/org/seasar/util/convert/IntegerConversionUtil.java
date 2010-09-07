@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Integer}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class IntegerConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected IntegerConversionUtil() {
-    }
+public abstract class IntegerConversionUtil {
 
     /**
      * {@link Integer}に変換します。

@@ -26,7 +26,7 @@ import org.seasar.util.exception.IORuntimeException;
  * 
  * @author koichik
  */
-public class ZipInputStreamUtil {
+public abstract class ZipInputStreamUtil {
 
     /**
      * {@link ZipInputStream#getNextEntry()}の例外処理をラップするメソッドです。

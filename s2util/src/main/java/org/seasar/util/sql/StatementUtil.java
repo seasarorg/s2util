@@ -25,15 +25,8 @@ import org.seasar.util.exception.SQLRuntimeException;
  * {@link Statement}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class StatementUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected StatementUtil() {
-    }
+public abstract class StatementUtil {
 
     /**
      * SQLを実行します。

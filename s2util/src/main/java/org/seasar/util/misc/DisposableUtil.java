@@ -28,7 +28,7 @@ import java.util.LinkedList;
  * 
  * @author koichik
  */
-public class DisposableUtil {
+public abstract class DisposableUtil {
 
     /** 登録済みの{@link Disposable} */
     protected static final Deque<Disposable> disposables =

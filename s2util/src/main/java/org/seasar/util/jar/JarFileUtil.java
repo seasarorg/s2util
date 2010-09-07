@@ -34,13 +34,7 @@ import org.seasar.util.net.JarURLConnectionUtil;
  * 
  * @author higa
  */
-public class JarFileUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected JarFileUtil() {
-    }
+public abstract class JarFileUtil {
 
     /**
      * 指定されたJarファイルを読み取るための<code>JarFile</code>を作成して返します。

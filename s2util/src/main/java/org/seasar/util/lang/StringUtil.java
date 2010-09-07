@@ -23,20 +23,13 @@ import java.util.StringTokenizer;
  * {@link String}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class StringUtil {
+public abstract class StringUtil {
 
     /**
      * 空の文字列の配列です。
      */
     public static final String[] EMPTY_STRINGS = new String[0];
-
-    /**
-     * 
-     */
-    protected StringUtil() {
-    }
 
     /**
      * 文字列が<code>null</code>または空文字列なら<code>true</code>を返します。
@@ -501,7 +494,35 @@ public class StringUtil {
      * @param i
      *            数値
      */
+    public static void appendHex(final StringBuilder buf, final byte i) {
+        buf.append(Character.forDigit((i & 0xf0) >> 4, 16));
+        buf.append(Character.forDigit((i & 0x0f), 16));
+    }
+
+    /**
+     * 文字列に、数値を16進数に変換した文字列を追加します。
+     * 
+     * @param buf
+     *            追加先の文字列
+     * @param i
+     *            数値
+     */
     public static void appendHex(final StringBuffer buf, final int i) {
+        buf.append(Integer.toHexString((i >> 24) & 0xff));
+        buf.append(Integer.toHexString((i >> 16) & 0xff));
+        buf.append(Integer.toHexString((i >> 8) & 0xff));
+        buf.append(Integer.toHexString(i & 0xff));
+    }
+
+    /**
+     * 文字列に、数値を16進数に変換した文字列を追加します。
+     * 
+     * @param buf
+     *            追加先の文字列
+     * @param i
+     *            数値
+     */
+    public static void appendHex(final StringBuilder buf, final int i) {
         buf.append(Integer.toHexString((i >> 24) & 0xff));
         buf.append(Integer.toHexString((i >> 16) & 0xff));
         buf.append(Integer.toHexString((i >> 8) & 0xff));

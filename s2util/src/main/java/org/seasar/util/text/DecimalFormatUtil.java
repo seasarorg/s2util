@@ -23,15 +23,8 @@ import java.util.Locale;
  * {@link DecimalFormat}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class DecimalFormatUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DecimalFormatUtil() {
-    }
+public abstract class DecimalFormatUtil {
 
     /**
      * 数値の文字列での表記を正規化します。

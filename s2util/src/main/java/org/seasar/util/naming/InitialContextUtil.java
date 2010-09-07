@@ -27,13 +27,7 @@ import org.seasar.util.exception.NamingRuntimeException;
  * 
  * @author higa
  */
-public class InitialContextUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected InitialContextUtil() {
-    }
+public abstract class InitialContextUtil {
 
     /**
      * 初期コンテキストを作成して返します。

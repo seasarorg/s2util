@@ -27,13 +27,7 @@ import org.seasar.util.exception.IORuntimeException;
  * 
  * @author koichik
  */
-public class JarInputStreamUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected JarInputStreamUtil() {
-    }
+public abstract class JarInputStreamUtil {
 
     /**
      * {@link JarInputStream}を作成します。

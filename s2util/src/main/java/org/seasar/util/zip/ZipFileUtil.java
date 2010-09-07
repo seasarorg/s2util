@@ -31,13 +31,7 @@ import org.seasar.util.io.URLUtil;
  * 
  * @author higa
  */
-public class ZipFileUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ZipFileUtil() {
-    }
+public abstract class ZipFileUtil {
 
     /**
      * 指定されたZipファイルを読み取るための<code>ZipFile</code>を作成して返します。

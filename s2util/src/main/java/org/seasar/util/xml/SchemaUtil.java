@@ -29,7 +29,6 @@ import org.xml.sax.SAXException;
  * {@link Schema}のためのユーティリティ・クラスです。
  * 
  * @author koichik
- * 
  */
 public abstract class SchemaUtil {
 

@@ -29,15 +29,8 @@ import org.xml.sax.SAXException;
  * {@link DocumentBuilder}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class DocumentBuilderUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DocumentBuilderUtil() {
-    }
+public abstract class DocumentBuilderUtil {
 
     /**
      * XMLを解析します。

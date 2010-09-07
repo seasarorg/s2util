@@ -31,15 +31,8 @@ import org.xml.sax.SAXException;
  * {@link SAXParser}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class SAXParserFactoryUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected SAXParserFactoryUtil() {
-    }
+public abstract class SAXParserFactoryUtil {
 
     /**
      * {@link SAXParserFactory}の新しいインスタンスを作成します。

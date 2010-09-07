@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Short}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class ShortConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ShortConversionUtil() {
-    }
+public abstract class ShortConversionUtil {
 
     /**
      * {@link Short}に変換します。

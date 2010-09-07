@@ -21,15 +21,8 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * byte配列用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class BinaryConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected BinaryConversionUtil() {
-    }
+public abstract class BinaryConversionUtil {
 
     /**
      * byteの配列に変換します。

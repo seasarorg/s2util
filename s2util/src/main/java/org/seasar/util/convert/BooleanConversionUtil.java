@@ -19,15 +19,8 @@ package org.seasar.util.convert;
  * {@link Boolean}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class BooleanConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected BooleanConversionUtil() {
-    }
+public abstract class BooleanConversionUtil {
 
     /**
      * {@link Boolean}に変換します。

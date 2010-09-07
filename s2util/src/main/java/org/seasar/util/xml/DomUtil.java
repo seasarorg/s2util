@@ -34,15 +34,8 @@ import org.w3c.dom.Text;
  * DOM用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class DomUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DomUtil() {
-    }
+public abstract class DomUtil {
 
     /**
      * XMLの内容を {@link InputStream}として取得します。

@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Double}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class DoubleConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DoubleConversionUtil() {
-    }
+public abstract class DoubleConversionUtil {
 
     /**
      * {@link Double}に変換します。

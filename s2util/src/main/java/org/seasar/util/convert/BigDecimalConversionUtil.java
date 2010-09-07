@@ -24,15 +24,8 @@ import org.seasar.util.lang.StringUtil;
  * {@link BigDecimal}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class BigDecimalConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected BigDecimalConversionUtil() {
-    }
+public abstract class BigDecimalConversionUtil {
 
     /**
      * {@link BigDecimal}に変換します。

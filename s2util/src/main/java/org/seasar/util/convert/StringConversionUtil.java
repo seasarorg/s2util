@@ -24,9 +24,8 @@ import org.seasar.util.misc.Base64Util;
  * {@link String}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class StringConversionUtil {
+public abstract class StringConversionUtil {
 
     /**
      * WAVE DASHです。
@@ -37,12 +36,6 @@ public class StringConversionUtil {
      * FULLWIDTH TILDEです。
      */
     public static final int FULLWIDTH_TILDE = 0xff5e;
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected StringConversionUtil() {
-    }
 
     /**
      * 文字列に変換します。

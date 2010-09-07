@@ -22,15 +22,8 @@ import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
 
 /**
  * @author higa
- * 
  */
-public class MessageDigestUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected MessageDigestUtil() {
-    }
+public abstract class MessageDigestUtil {
 
     /**
      * {@link MessageDigest#getInstance(String)}の例外処理をラップします。

@@ -24,18 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * {@link DecimalFormatSymbols}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class DecimalFormatSymbolsUtil {
+public abstract class DecimalFormatSymbolsUtil {
 
     private static final Map<Locale, DecimalFormatSymbols> CACHE =
         new ConcurrentHashMap<Locale, DecimalFormatSymbols>();
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected DecimalFormatSymbolsUtil() {
-    }
 
     /**
      * {@link DecimalFormatSymbols}を返します。

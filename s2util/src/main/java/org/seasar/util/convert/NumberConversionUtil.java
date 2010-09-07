@@ -27,15 +27,8 @@ import org.seasar.util.text.DecimalFormatSymbolsUtil;
  * {@link Number}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class NumberConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected NumberConversionUtil() {
-    }
+public abstract class NumberConversionUtil {
 
     /**
      * 適切な {@link Number}に変換します。

@@ -25,17 +25,11 @@ import java.lang.reflect.Modifier;
  * @author shot
  * 
  */
-public class ModifierUtil {
+public abstract class ModifierUtil {
 
     static final int BRIDGE = 0x00000040;
 
     static final int SYNTHETIC = 0x00001000;
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ModifierUtil() {
-    }
 
     /**
      * <code>public</code>かどうか返します。

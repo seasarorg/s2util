@@ -25,15 +25,8 @@ import org.seasar.util.exception.SQLRuntimeException;
  * {@link PreparedStatement}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class PreparedStatementUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected PreparedStatementUtil() {
-    }
+public abstract class PreparedStatementUtil {
 
     /**
      * クエリを実行します。

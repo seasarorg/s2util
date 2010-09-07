@@ -25,15 +25,8 @@ import org.seasar.util.exception.IORuntimeException;
  * {@link JarURLConnection}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class JarURLConnectionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected JarURLConnectionUtil() {
-    }
+public abstract class JarURLConnectionUtil {
 
     /**
      * {@link JarURLConnection#getJarFile()}の例外処理をラップするメソッドです。

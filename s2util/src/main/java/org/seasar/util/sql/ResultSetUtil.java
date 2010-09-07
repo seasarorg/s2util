@@ -24,15 +24,8 @@ import org.seasar.util.exception.SQLRuntimeException;
  * {@link ResultSet}のためのユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class ResultSetUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ResultSetUtil() {
-    }
+public abstract class ResultSetUtil {
 
     /**
      * 結果セットを閉じます。

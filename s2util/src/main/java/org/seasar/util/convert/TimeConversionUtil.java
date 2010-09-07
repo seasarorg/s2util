@@ -98,7 +98,7 @@ import static org.seasar.util.lang.StringUtil.*;
  * @see DateConversionUtil
  * @see TimestampConversionUtil
  */
-public class TimeConversionUtil {
+public abstract class TimeConversionUtil {
 
     /** {@link DateFormat}が持つスタイルの配列 */
     protected static final int[] STYLES =

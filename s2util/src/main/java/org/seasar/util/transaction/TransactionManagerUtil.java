@@ -26,15 +26,8 @@ import org.seasar.util.exception.SystemRuntimeException;
  * {@link TransactionManager}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
-public class TransactionManagerUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected TransactionManagerUtil() {
-    }
+public abstract class TransactionManagerUtil {
 
     /**
      * トランザクションを返します。

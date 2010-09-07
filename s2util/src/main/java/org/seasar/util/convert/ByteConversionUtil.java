@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Byte}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class ByteConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected ByteConversionUtil() {
-    }
+public abstract class ByteConversionUtil {
 
     /**
      * {@link Byte}に変換します。

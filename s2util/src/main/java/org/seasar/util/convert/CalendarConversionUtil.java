@@ -25,15 +25,8 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * {@link Calendar}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class CalendarConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected CalendarConversionUtil() {
-    }
+public abstract class CalendarConversionUtil {
 
     /**
      * {@link Calendar}に変換します。

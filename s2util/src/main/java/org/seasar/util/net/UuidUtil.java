@@ -25,9 +25,8 @@ import org.seasar.util.lang.StringUtil;
  * UUIDを作成するユーティリティです。
  * 
  * @author higa
- * 
  */
-public class UUID {
+public abstract class UuidUtil {
 
     private static final byte[] DEFAULT_ADDRESS = new byte[] { (byte) 127,
         (byte) 0, (byte) 0, (byte) 1 };
@@ -38,18 +37,12 @@ public class UUID {
         + StringUtil.toHex(System.identityHashCode(RANDOM));
 
     /**
-     * インスタンスを構築します。
-     */
-    protected UUID() {
-    }
-
-    /**
      * UUIDを作成します。
      * 
      * @return UUIDの文字列
      */
     public static String create() {
-        final StringBuffer buf = new StringBuffer(BASE.length() * 2);
+        final StringBuilder buf = new StringBuilder(BASE.length() * 2);
         buf.append(BASE);
         final int lowTime = (int) (System.currentTimeMillis() >> 32);
         StringUtil.appendHex(buf, lowTime);

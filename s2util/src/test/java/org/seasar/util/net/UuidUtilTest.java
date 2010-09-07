@@ -21,15 +21,15 @@ import junit.framework.TestCase;
  * @author higa
  * 
  */
-public class UUIDTest extends TestCase {
+public class UuidUtilTest extends TestCase {
 
     /**
-     * Test method for {@link org.seasar.util.net.UUID#create()}.
+     * Test method for {@link org.seasar.util.net.UuidUtil#create()}.
      */
     public void testCreate() {
-        String uuid = UUID.create();
+        String uuid = UuidUtil.create();
         System.out.println(uuid);
-        String uuid2 = UUID.create();
+        String uuid2 = UuidUtil.create();
         System.out.println(uuid2);
         assertFalse(uuid.equals(uuid2));
     }

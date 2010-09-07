@@ -21,15 +21,8 @@ import java.math.BigInteger;
  * {@link BigInteger}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class BigIntegerConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected BigIntegerConversionUtil() {
-    }
+public abstract class BigIntegerConversionUtil {
 
     /**
      * {@link BigInteger}に変換します。

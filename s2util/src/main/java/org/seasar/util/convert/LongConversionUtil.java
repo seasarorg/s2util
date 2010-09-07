@@ -24,15 +24,8 @@ import org.seasar.util.text.DecimalFormatUtil;
  * {@link Long}用の変換ユーティリティです。
  * 
  * @author higa
- * 
  */
-public class LongConversionUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected LongConversionUtil() {
-    }
+public abstract class LongConversionUtil {
 
     /**
      * {@link Long}に変換します。

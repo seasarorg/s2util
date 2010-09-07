@@ -31,13 +31,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author higa
  */
-public class SAXParserUtil {
-
-    /**
-     * インスタンスを構築します。
-     */
-    protected SAXParserUtil() {
-    }
+public abstract class SAXParserUtil {
 
     /**
      * 指定された{@link InputSource}のコンテンツを、指定された{@link DefaultHandler}
