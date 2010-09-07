@@ -106,7 +106,7 @@
  * <p>
  * デフォルトではプロパティファイルは最初に必要になった時点で読み込まれ、そのままキャッシュされます。
  * アプリケーションの開発中など、プロパティファイルの変更をリアルタイムに反映させたい場合は、
- * {@link org.seasar.util.message.MessageResourceBundleFacade#setEager(boolean)}を引数に{@literal true}を指定することでキャッシュされなくなります。
+ * {@link java.util.ResourceBundle#clearCache()}を呼び出すことでキャッシュがクリアされます。
  * </p>
  */
 package org.seasar.util.message;
