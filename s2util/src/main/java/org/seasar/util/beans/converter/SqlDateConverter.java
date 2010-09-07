@@ -18,7 +18,7 @@ package org.seasar.util.beans.converter;
 import java.util.Date;
 
 import org.seasar.util.beans.Converter;
-import org.seasar.util.convert.SqlDateConversionUtil;
+import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.StringUtil;
@@ -53,7 +53,7 @@ public class SqlDateConverter implements Converter {
         if (StringUtil.isEmpty(value)) {
             return null;
         }
-        return SqlDateConversionUtil.toDate(value, pattern);
+        return DateConversionUtil.toSqlDate(value, pattern);
     }
 
     @Override

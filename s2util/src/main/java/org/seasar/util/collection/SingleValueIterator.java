@@ -1,0 +1,84 @@
+/*
+ * Copyright 2004-2010 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.util.collection;
+
+import java.util.Iterator;
+
+import org.seasar.util.exception.SNoSuchElementException;
+import org.seasar.util.exception.SUnsupportedOperationException;
+
+/**
+ * 一つの値を返す{@link Iterator}です。
+ * 
+ * @author koichik
+ * @param <E>
+ *            要素の型
+ */
+public class SingleValueIterator<E> implements Iterator<E> {
+
+    /** 反復子が返す唯一の値 */
+    protected final E value;
+
+    /** 反復子がさらに要素を持つ場合は{@literal true} */
+    protected boolean hasNext = true;
+
+    /**
+     * for each構文で使用するために{@link SingleValueIterator}をラップした{@link Iterable}を返します。
+     * 
+     * @param <E>
+     *            要素の型
+     * @param value
+     *            反復子が返す唯一の値
+     * @return {@link SingleValueIterator}をラップした{@link Iterable}
+     */
+    public static <E> Iterable<E> iterable(final E value) {
+        return new Iterable<E>() {
+            @Override
+            public Iterator<E> iterator() {
+                return new SingleValueIterator<E>(value);
+            }
+        };
+    }
+
+    /**
+     * インスタンスを構築します。
+     * 
+     * @param value
+     *            反復子が返す唯一の値
+     */
+    public SingleValueIterator(final E value) {
+        this.value = value;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return hasNext;
+    }
+
+    @Override
+    public E next() {
+        if (!hasNext) {
+            throw new SNoSuchElementException();
+        }
+        return value;
+    }
+
+    @Override
+    public void remove() {
+        throw new SUnsupportedOperationException("remove");
+    }
+
+}

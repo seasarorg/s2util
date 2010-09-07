@@ -20,7 +20,7 @@ import java.text.ParseException;
 import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
- * {@link ParseException}をラップする例外です。
+ * 解析できなかった場合にスローされる例外です。
  * 
  * @author higa
  */
@@ -36,6 +36,16 @@ public class ParseRuntimeException extends SRuntimeException {
      */
     public ParseRuntimeException(final ParseException cause) {
         super("EUTL0050", asArray(cause), cause);
+    }
+
+    /**
+     * {@link ParseRuntimeException}を作成します。
+     * 
+     * @param s
+     *            解析できなかった文字列
+     */
+    public ParseRuntimeException(final String s) {
+        super("EUTL0051", asArray(s));
     }
 
 }

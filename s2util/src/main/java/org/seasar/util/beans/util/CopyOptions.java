@@ -17,7 +17,6 @@ package org.seasar.util.beans.util;
 
 import java.sql.Time;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.seasar.util.beans.Converter;
@@ -45,20 +44,19 @@ public class CopyOptions {
      * 日付用のデフォルトコンバータです。
      */
     protected static final Converter DEFAULT_DATE_CONVERTER =
-        new DateConverter(DateConversionUtil.getY4Pattern(Locale.getDefault()));
+        new DateConverter(DateConversionUtil.getMediumPattern());
 
     /**
      * 時間用のデフォルトコンバータです。
      */
     protected static final Converter DEFAULT_TIME_CONVERTER =
-        new DateConverter(TimeConversionUtil.getPattern(Locale.getDefault()));
+        new DateConverter(TimeConversionUtil.getMediumPattern());
 
     /**
      * 日時用のデフォルトコンバータです。
      */
     protected static final Converter DEFAULT_TIMESTAMP_CONVERTER =
-        new DateConverter(TimestampConversionUtil.getPattern(Locale
-            .getDefault()));
+        new DateConverter(TimestampConversionUtil.getMediumPattern());
 
     /**
      * 操作の対象に含めるプロパティ名の配列です。

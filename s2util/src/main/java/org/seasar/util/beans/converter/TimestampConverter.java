@@ -20,8 +20,8 @@ import java.util.Date;
 import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
-import org.seasar.util.exception.EmptyRuntimeException;
-import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 日時用のコンバータです。
@@ -42,18 +42,14 @@ public class TimestampConverter implements Converter {
      *            日時のパターン
      */
     public TimestampConverter(final String pattern) {
-        if (StringUtil.isEmpty(pattern)) {
-            throw new EmptyRuntimeException("pattern");
-        }
+        assertArgumentNotEmpty("pattern", pattern);
         this.pattern = pattern;
     }
 
     @Override
     public Object getAsObject(final String value) {
-        if (StringUtil.isEmpty(value)) {
-            return null;
-        }
-        return TimestampConversionUtil.toTimestamp(value, pattern);
+        assertArgumentNotEmpty("value", value);
+        return TimestampConversionUtil.toSqlTimestamp(value, pattern);
     }
 
     @Override

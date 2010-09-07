@@ -147,7 +147,7 @@ public class PropertyDescImplTest {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = new BeanDescImpl(MyBean.class);
         PropertyDesc propDesc = beanDesc.getPropertyDesc("hhh");
-        propDesc.setValue(myBean, "2000/11/8");
+        propDesc.setValue(myBean, "2000/11/8 11:22:33");
         assertThat(myBean.getHhh(), is(notNullValue()));
     }
 

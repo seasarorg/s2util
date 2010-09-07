@@ -29,7 +29,11 @@ import org.seasar.util.misc.DisposableUtil;
  */
 public abstract class MessageFormatter {
 
-    private static final String MESSAGES = "Messages";
+    /** メッセージコードの数値部の長さ */
+    protected static final int CODE_NUMBER_LENGTH = 4;
+
+    /** メッセージコードに対応するリソースバンドル名の接尾辞 */
+    protected static final String MESSAGES = "Messages";
 
     /** 初期化済みを示すフラグ */
     protected static volatile boolean initialized;
@@ -101,9 +105,10 @@ public abstract class MessageFormatter {
         }
 
         final int length = messageCode.length();
-        if (length > 4) {
+        if (length > CODE_NUMBER_LENGTH) {
             final String key =
-                messageCode.charAt(0) + messageCode.substring(length - 4);
+                messageCode.charAt(0)
+                    + messageCode.substring(length - CODE_NUMBER_LENGTH);
             final String pattern =
                 ResourceBundleUtil.getString(resourceBundle, key);
             if (pattern != null) {
@@ -121,7 +126,9 @@ public abstract class MessageFormatter {
      * @return システム名
      */
     protected static String getSystemName(final String messageCode) {
-        return messageCode.substring(1, Math.max(1, messageCode.length() - 4));
+        return messageCode.substring(
+            1,
+            Math.max(1, messageCode.length() - CODE_NUMBER_LENGTH));
     }
 
     /**
@@ -153,14 +160,14 @@ public abstract class MessageFormatter {
         for (int i = 0; i < args.length; i++) {
             buffer.append(args[i] + ", ");
         }
-        buffer.setLength(buffer.length() - 2);
+        buffer.setLength(buffer.length() - ", ".length());
         return new String(buffer);
     }
 
     /**
      * 初期化します。
      */
-    protected synchronized static void initialize() {
+    protected static synchronized void initialize() {
         if (!initialized) {
             DisposableUtil.add(new Disposable() {
                 @Override

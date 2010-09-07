@@ -21,8 +21,8 @@ import java.util.Date;
 import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.StringConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
-import org.seasar.util.exception.EmptyRuntimeException;
-import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 時間用のコンバータです。
@@ -43,18 +43,14 @@ public class TimeConverter implements Converter {
      *            時間のパターン
      */
     public TimeConverter(final String pattern) {
-        if (StringUtil.isEmpty(pattern)) {
-            throw new EmptyRuntimeException("pattern");
-        }
+        assertArgumentNotEmpty("pattern", pattern);
         this.pattern = pattern;
     }
 
     @Override
     public Object getAsObject(final String value) {
-        if (StringUtil.isEmpty(value)) {
-            return null;
-        }
-        return TimeConversionUtil.toTime(value, pattern);
+        assertArgumentNotEmpty("value", value);
+        return TimeConversionUtil.toSqlTime(value, pattern);
     }
 
     @Override

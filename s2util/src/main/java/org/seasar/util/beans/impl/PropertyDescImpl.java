@@ -33,10 +33,10 @@ import org.seasar.util.convert.BooleanConversionUtil;
 import org.seasar.util.convert.CalendarConversionUtil;
 import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.NumberConversionUtil;
-import org.seasar.util.convert.SqlDateConversionUtil;
 import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.IllegalPropertyRuntimeException;
+import org.seasar.util.exception.ParseRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.lang.ConstructorUtil;
 import org.seasar.util.lang.FieldUtil;
@@ -269,9 +269,8 @@ public class PropertyDescImpl implements PropertyDesc {
             assertState(readable, propertyName + " is not readable.");
             if (hasReadMethod()) {
                 return (T) MethodUtil.invoke(readMethod, target, EMPTY_ARGS);
-            } else {
-                return (T) FieldUtil.get(field, target);
             }
+            return (T) FieldUtil.get(field, target);
         } catch (final Throwable t) {
             throw new IllegalPropertyRuntimeException(
                 beanDesc.getBeanClass(),
@@ -379,13 +378,21 @@ public class PropertyDescImpl implements PropertyDesc {
 
     private Object convertDate(final Object arg) {
         if (propertyType == java.util.Date.class) {
-            return DateConversionUtil.toDate(arg);
+            try {
+                return TimestampConversionUtil.toDate(arg);
+            } catch (ParseRuntimeException ex) {
+                try {
+                    return DateConversionUtil.toDate(arg);
+                } catch (ParseRuntimeException ex2) {
+                    return TimeConversionUtil.toDate(arg);
+                }
+            }
         } else if (propertyType == Timestamp.class) {
-            return TimestampConversionUtil.toTimestamp(arg);
+            return TimestampConversionUtil.toSqlTimestamp(arg);
         } else if (propertyType == java.sql.Date.class) {
-            return SqlDateConversionUtil.toDate(arg);
+            return DateConversionUtil.toSqlDate(arg);
         } else if (propertyType == Time.class) {
-            return TimeConversionUtil.toTime(arg);
+            return TimeConversionUtil.toSqlTime(arg);
         }
         return arg;
     }

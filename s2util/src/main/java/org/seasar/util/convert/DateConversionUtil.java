@@ -16,250 +16,648 @@
 package org.seasar.util.convert;
 
 import java.text.DateFormat;
-import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
+import org.seasar.util.collection.MultiIterator;
 import org.seasar.util.exception.ParseRuntimeException;
-import org.seasar.util.lang.StringUtil;
+import org.seasar.util.exception.SNoSuchElementException;
+import org.seasar.util.exception.SUnsupportedOperationException;
+
+import static java.text.DateFormat.*;
+
+import static org.seasar.util.lang.StringUtil.*;
 
 /**
- * {@link Date}用の変換ユーティリティです。
+ * 日付だけを表現するオブジェクトから{@link Date}、{@link Calendar}、{@link java.sql.Date}
+ * への変換ユーティリティです。
+ * <p>
+ * 時刻だけを表現するオブジェクトを変換する場合は {@link TimeConversionUtil}を、 日付と時刻を表現するオブジェクトを変換する場合は
+ * {@link TimestampConversionUtil}を 参照してください。
+ * </p>
+ * <p>
+ * 変換元のオブジェクトが{@link Date}、{@link Calendar}、{@link java.sql.Date}の場合は、
+ * それらの持つミリ秒単位の値を使って変換後のオブジェクトを作成します。
+ * その他の型の場合は変換元オブジェクトの文字列表現から変換後のオブジェクトを作成します。
+ * </p>
+ * <p>
+ * パターンを指定されなかった場合、変換に使用するパターンはロケールに依存して次のようになります。
+ * </p>
+ * <table border="1">
+ * <tr>
+ * <th>カテゴリ</th>
+ * <th>パターン</th>
+ * <th>{@link Locale#JAPANESE}の例</ht>
+ * </tr>
+ * <tr>
+ * <td rowspan="4">{@link DateFormat}の標準形式</td>
+ * <td>{@link DateFormat#SHORT}の形式</td>
+ * <td>{@literal yy/MM/dd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#MEDIUM}の形式</td>
+ * <td>{@literal yyyy/MM/dd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#LONG}の形式</td>
+ * <td>{@literal yyyy/MM/dd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#FULL}の形式</td>
+ * <td>{@literal yyyy'年'M'月'd'日'}</td>
+ * </tr>
+ * <tr>
+ * <td rowspan="4">プレーン形式</td>
+ * <td>{@link DateFormat#SHORT}の区切り文字を除去した形式</td>
+ * <td>{@literal yyMMdd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#MEDIUM}の区切り文字を除去した形式</td>
+ * <td>{@literal yyyyMMdd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#LONG}の区切り文字を除去した形式</td>
+ * <td>{@literal yyyyMMdd}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link DateFormat#FULL}の区切り文字を除去した形式</td>
+ * <td>{@literal yyyyMMdd}</td>
+ * </tr>
+ * <tr>
+ * <td>その他</td>
+ * <td>{@link java.sql.Date#valueOf(String) Jdbcエスケープ構文}形式</td>
+ * <td>{@literal yyyy-MM-dd}</td>
+ * </tr>
+ * </table>
  * 
  * @author higa
- * 
+ * @see TimeConversionUtil
+ * @see TimestampConversionUtil
  */
 public class DateConversionUtil {
 
-    /**
-     * インスタンスを構築します。
-     */
-    protected DateConversionUtil() {
-    }
+    /** {@link DateFormat}が持つスタイルの配列 */
+    protected static final int[] STYLES =
+        new int[] { SHORT, MEDIUM, LONG, FULL };
 
     /**
-     * {@link Date}に変換します。
+     * デフォルロケールで{@link DateFormat#SHORT}スタイルのパターン文字列を返します。
      * 
-     * @param o
-     * @return {@link Date}
+     * @return {@link DateFormat#SHORT}スタイルのパターン文字列
      */
-    public static Date toDate(final Object o) {
-        return toDate(o, null);
+    public static String getShortPattern() {
+        return getShortPattern(Locale.getDefault());
     }
 
     /**
-     * {@link Date}に変換します。
+     * 指定されたロケールで{@link DateFormat#SHORT}スタイルのパターン文字列を返します。
      * 
-     * @param o
-     * @param pattern
-     * @return {@link Date}
-     */
-    public static Date toDate(final Object o, final String pattern) {
-        if (o == null) {
-            return null;
-        } else if (o instanceof String) {
-            return toDate((String) o, pattern);
-        } else if (o instanceof Date) {
-            return (Date) o;
-        } else if (o instanceof Calendar) {
-            return ((Calendar) o).getTime();
-        } else {
-            return toDate(o.toString(), pattern);
-        }
-    }
-
-    /**
-     * {@link Date}に変換します。
-     * 
-     * @param s
-     * @param pattern
-     * @return {@link Date}
-     */
-    public static Date toDate(final String s, final String pattern) {
-        return toDate(s, pattern, Locale.getDefault());
-    }
-
-    /**
-     * @param s
-     * @param pattern
      * @param locale
-     * @return 日付
+     *            ロケール
+     * @return {@link DateFormat#SHORT}スタイルのパターン文字列
      */
-    public static Date toDate(final String s, final String pattern,
+    public static String getShortPattern(final Locale locale) {
+        return ((SimpleDateFormat) getDateInstance(SHORT, locale)).toPattern();
+    }
+
+    /**
+     * デフォルロケールで{@link DateFormat#MEDIUM}スタイルのパターン文字列を返します。
+     * 
+     * @return {@link DateFormat#MEDIUM}スタイルのパターン文字列
+     */
+    public static String getMediumPattern() {
+        return getMediumPattern(Locale.getDefault());
+    }
+
+    /**
+     * 指定されたロケールで{@link DateFormat#MEDIUM}スタイルのパターン文字列を返します。
+     * 
+     * @param locale
+     *            ロケール
+     * @return {@link DateFormat#MEDIUM}スタイルのパターン文字列
+     */
+    public static String getMediumPattern(final Locale locale) {
+        return ((SimpleDateFormat) getDateInstance(MEDIUM, locale)).toPattern();
+    }
+
+    /**
+     * デフォルロケールで{@link DateFormat#LONG}スタイルのパターン文字列を返します。
+     * 
+     * @return {@link DateFormat#LONG}スタイルのパターン文字列
+     */
+    public static String getLongPattern() {
+        return getLongPattern(Locale.getDefault());
+    }
+
+    /**
+     * 指定されたロケールで{@link DateFormat#LONG}スタイルのパターン文字列を返します。
+     * 
+     * @param locale
+     *            ロケール
+     * @return {@link DateFormat#LONG}スタイルのパターン文字列
+     */
+    public static String getLongPattern(final Locale locale) {
+        return ((SimpleDateFormat) getDateInstance(LONG, locale)).toPattern();
+    }
+
+    /**
+     * デフォルロケールで{@link DateFormat#FULL}スタイルのパターン文字列を返します。
+     * 
+     * @return {@link DateFormat#FULL}スタイルのパターン文字列
+     */
+    public static String getFullPattern() {
+        return getFullPattern(Locale.getDefault());
+    }
+
+    /**
+     * 指定されたロケールで{@link DateFormat#FULL}スタイルのパターン文字列を返します。
+     * 
+     * @param locale
+     *            ロケール
+     * @return {@link DateFormat#FULL}スタイルのパターン文字列
+     */
+    public static String getFullPattern(final Locale locale) {
+        return ((SimpleDateFormat) getDateInstance(FULL, locale)).toPattern();
+    }
+
+    /**
+     * オブジェクトを{@link Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @return 変換された{@link Date}
+     */
+    public static Date toDate(final Object src) {
+        return toDate(src, null, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @return 変換された{@link Date}
+     */
+    public static Date toDate(final Object src, final String pattern) {
+        return toDate(src, pattern, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link Date}
+     */
+    public static Date toDate(final Object src, final Locale locale) {
+        return toDate(src, null, locale);
+    }
+
+    /**
+     * オブジェクトを{@link Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link Date}
+     */
+    protected static Date toDate(final Object src, final String pattern,
             final Locale locale) {
-        if (StringUtil.isEmpty(s)) {
+        if (src == null) {
             return null;
         }
-        final SimpleDateFormat sdf = getDateFormat(s, pattern, locale);
-        try {
-            return sdf.parse(s);
-        } catch (final ParseException ex) {
-            throw new ParseRuntimeException(ex);
+        if (src.getClass() == Date.class) {
+            return (Date) src;
         }
+        if (src instanceof Date) {
+            return new Date(((Date) src).getTime());
+        }
+        if (src instanceof Calendar) {
+            return new Date(((Calendar) src).getTimeInMillis());
+        }
+        final String str = src.toString();
+        if (isEmpty(str)) {
+            return null;
+        }
+        if (isNotEmpty(pattern)) {
+            final SimpleDateFormat format =
+                new SimpleDateFormat(pattern, locale);
+            final Date date = toDate(str, format);
+            if (date != null) {
+                return date;
+            }
+        }
+        final Date date = toDate(str, locale);
+        if (date != null) {
+            return date;
+        }
+        final java.sql.Date sqlDate = toSqlDateJdbcEscape(str);
+        if (sqlDate != null) {
+            return new java.sql.Date(sqlDate.getTime());
+        }
+        throw new ParseRuntimeException(str);
     }
 
     /**
-     * {@link SimpleDateFormat}を返します。
+     * オブジェクトを{@link Calendar}に変換します。
      * 
-     * @param s
-     * @param pattern
-     * @param locale
-     * @return {@link SimpleDateFormat}
+     * @param src
+     *            変換元のオブジェクト
+     * @return 変換された{@link Date}
      */
-    public static SimpleDateFormat getDateFormat(final String s,
+    public static Calendar toCalendar(final Object src) {
+        return toCalendar(src, null, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link Calendar}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @return 変換された{@link Date}
+     */
+    public static Calendar toCalendar(final Object src, final String pattern) {
+        return toCalendar(src, pattern, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link Calendar}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link Date}
+     */
+    public static Calendar toCalendar(final Object src, final Locale locale) {
+        return toCalendar(src, null, locale);
+    }
+
+    /**
+     * オブジェクトを{@link Calendar}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link Date}
+     */
+    protected static Calendar toCalendar(final Object src,
             final String pattern, final Locale locale) {
-        if (pattern != null) {
-            return new SimpleDateFormat(pattern);
+        if (src == null) {
+            return null;
         }
-        return getDateFormat(s, locale);
-    }
-
-    /**
-     * {@link SimpleDateFormat}を返します。
-     * 
-     * @param s
-     * @param locale
-     * @return {@link SimpleDateFormat}
-     */
-    public static SimpleDateFormat getDateFormat(final String s,
-            final Locale locale) {
-        String pattern = getPattern(locale);
-        final String shortPattern = removeDelimiter(pattern);
-        final String delimitor = findDelimiter(s);
-        if (delimitor == null) {
-            if (s.length() == shortPattern.length()) {
-                return new SimpleDateFormat(shortPattern);
+        if (src instanceof Calendar) {
+            return (Calendar) src;
+        }
+        if (src instanceof Date) {
+            return toCalendar((Date) src, locale);
+        }
+        final String str = src.toString();
+        if (isEmpty(str)) {
+            return null;
+        }
+        if (isNotEmpty(pattern)) {
+            final SimpleDateFormat format =
+                new SimpleDateFormat(pattern, locale);
+            final Date date = toDate(str, format);
+            if (date != null) {
+                return toCalendar(date, locale);
             }
-            if (s.length() == shortPattern.length() + 2) {
-                return new SimpleDateFormat(StringUtil.replace(
-                    shortPattern,
-                    "yy",
-                    "yyyy"));
+        }
+        final Date date = toDate(str, locale);
+        if (date != null) {
+            return toCalendar(date, locale);
+        }
+        final java.sql.Date sqlDate = toSqlDateJdbcEscape(str);
+        if (sqlDate != null) {
+            return toCalendar(sqlDate, locale);
+        }
+        throw new ParseRuntimeException(str);
+    }
+
+    /**
+     * オブジェクトを{@link java.sql.Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @return 変換された{@link java.sql.Date}
+     */
+    public static java.sql.Date toSqlDate(final Object src) {
+        return toSqlDate(src, null, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link java.sql.Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @return 変換された{@link java.sql.Date}
+     */
+    public static java.sql.Date toSqlDate(final Object src, final String pattern) {
+        return toSqlDate(src, pattern, Locale.getDefault());
+    }
+
+    /**
+     * オブジェクトを{@link java.sql.Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link java.sql.Date}
+     */
+    public static java.sql.Date toSqlDate(final Object src, final Locale locale) {
+        return toSqlDate(src, null, locale);
+    }
+
+    /**
+     * オブジェクトを{@link java.sql.Date}に変換します。
+     * 
+     * @param src
+     *            変換元のオブジェクト
+     * @param pattern
+     *            パターン文字列
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link java.sql.Date}
+     */
+    protected static java.sql.Date toSqlDate(final Object src,
+            final String pattern, final Locale locale) {
+        if (src == null) {
+            return null;
+        }
+        if (src instanceof java.sql.Date) {
+            return (java.sql.Date) src;
+        }
+        if (src instanceof Date) {
+            return new java.sql.Date(((Date) src).getTime());
+        }
+        if (src instanceof Calendar) {
+            return new java.sql.Date(((Calendar) src).getTimeInMillis());
+        }
+        final String str = src.toString();
+        if (isEmpty(str)) {
+            return null;
+        }
+        if (isNotEmpty(pattern)) {
+            final SimpleDateFormat format =
+                new SimpleDateFormat(pattern, locale);
+            final Date date = toDate(str, format);
+            if (date != null) {
+                return new java.sql.Date(date.getTime());
             }
-        } else {
-            final String[] array = StringUtil.split(s, delimitor);
-            for (int i = 0; i < array.length; ++i) {
-                if (array[i].length() == 4) {
-                    pattern = StringUtil.replace(pattern, "yy", "yyyy");
-                    break;
-                }
-            }
-            return new SimpleDateFormat(pattern);
         }
-        return new SimpleDateFormat();
+        final Date date = toDate(str, locale);
+        if (date != null) {
+            return new java.sql.Date(date.getTime());
+        }
+        final java.sql.Date sqlDate = toSqlDateJdbcEscape(str);
+        if (sqlDate != null) {
+            return sqlDate;
+        }
+        throw new ParseRuntimeException(str);
     }
 
     /**
-     * {@link SimpleDateFormat}を返します。
+     * 文字列を{@link Date}に変換します。
      * 
+     * @param str
+     *            文字列
      * @param locale
-     * @return {@link SimpleDateFormat}
+     *            ロケール
+     * @return 変換された{@link Date}
      */
-    public static SimpleDateFormat getDateFormat(final Locale locale) {
-        return new SimpleDateFormat(getPattern(locale));
-    }
-
-    /**
-     * 年4桁用の{@link SimpleDateFormat}を返します。
-     * 
-     * @param locale
-     * @return 年4桁用の{@link SimpleDateFormat}
-     */
-    public static SimpleDateFormat getY4DateFormat(final Locale locale) {
-        return new SimpleDateFormat(getY4Pattern(locale));
-    }
-
-    /**
-     * 年4桁用の日付パターンを返します。
-     * 
-     * @param locale
-     * @return 年4桁用の日付パターン
-     */
-    public static String getY4Pattern(final Locale locale) {
-        String pattern = getPattern(locale);
-        if (pattern.indexOf("yyyy") < 0) {
-            pattern = StringUtil.replace(pattern, "yy", "yyyy");
-        }
-        return pattern;
-    }
-
-    /**
-     * 日付パターンを返します。
-     * 
-     * @param locale
-     * @return 日付パターン
-     */
-    public static String getPattern(final Locale locale) {
-        final SimpleDateFormat df =
-            (SimpleDateFormat) DateFormat.getDateInstance(
-                DateFormat.SHORT,
-                locale);
-        String pattern = df.toPattern();
-        final int index = pattern.indexOf(' ');
-        if (index > 0) {
-            pattern = pattern.substring(0, index);
-        }
-        if (pattern.indexOf("MM") < 0) {
-            pattern = StringUtil.replace(pattern, "M", "MM");
-        }
-        if (pattern.indexOf("dd") < 0) {
-            pattern = StringUtil.replace(pattern, "d", "dd");
-        }
-        return pattern;
-    }
-
-    /**
-     * 日付のデリミタを探します。
-     * 
-     * @param value
-     * @return 日付のデリミタ
-     */
-    public static String findDelimiter(final String value) {
-        for (int i = 0; i < value.length(); ++i) {
-            final char c = value.charAt(i);
-            if (Character.isDigit(c)) {
+    @SuppressWarnings("unchecked")
+    protected static Date toDate(final String str, final Locale locale) {
+        for (final DateFormat format : MultiIterator.iterable(
+            new DateFormatIterator(locale),
+            new PlainDateFormatIterator(str, locale))) {
+            if (format == null) {
                 continue;
             }
-            return Character.toString(c);
+            final Date date = toDate(str, format);
+            if (date != null) {
+                return date;
+            }
         }
         return null;
     }
 
     /**
-     * 日付パターンから日付のデリミタを探します。
+     * 文字列を{@link Date}に変換します。
      * 
-     * @param pattern
-     * @return 日付のデリミタ
+     * @param str
+     *            文字列
+     * @param format
+     *            {@link DateFormat}
+     * @return 変換された{@link Date}
      */
-    public static String findDelimiterFromPattern(final String pattern) {
-        String ret = null;
-        for (int i = 0; i < pattern.length(); ++i) {
-            final char c = pattern.charAt(i);
-            if (c != 'y' && c != 'M' && c != 'd') {
-                ret = String.valueOf(c);
-                break;
-            }
+    protected static Date toDate(final String str, final DateFormat format) {
+        final ParsePosition pos = new ParsePosition(0);
+        final Date date = format.parse(str, pos);
+        if (date == null) {
+            return null;
         }
-        return ret;
+        final int index = pos.getIndex();
+        if (index == 0) {
+            return null;
+        }
+        if (index < str.length()) {
+            return null;
+        }
+        return date;
     }
 
     /**
-     * 日付パターンから日付のデリミタを取り除きます。
+     * {@link Date}を{@link Calendar}に変換します。
+     * 
+     * @param date
+     *            {@link Date}
+     * @param locale
+     *            ロケール
+     * @return 変換された{@link Calendar}
+     */
+    protected static Calendar toCalendar(final Date date, final Locale locale) {
+        final Calendar calendar;
+        if (locale == null) {
+            calendar = Calendar.getInstance();
+        } else {
+            calendar = Calendar.getInstance(locale);
+        }
+        calendar.setTime(date);
+        return calendar;
+    }
+
+    /**
+     * 文字列を{@link java.sql.Date}に変換します。
+     * 
+     * @param str
+     *            文字列
+     * @return 変換された{@link java.sql.Date}
+     */
+    protected static java.sql.Date toSqlDateJdbcEscape(final String str) {
+        try {
+            return java.sql.Date.valueOf(str);
+        } catch (final IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * パターン文字列を区切り文字を含まないプレーンなパターン文字列に変換して返します。
      * 
      * @param pattern
-     *            パターン
-     * @return 日付のデリミタを取り除いた後のパターン
+     *            パターン文字列
+     * @return 区切り文字を含まないプレーンなパターン文字列
      */
-    public static String removeDelimiter(final String pattern) {
-        final StringBuilder buf = new StringBuilder();
+    protected static String toPlainPattern(final String pattern) {
+        final StringBuilder buf = new StringBuilder(pattern.length());
         for (int i = 0; i < pattern.length(); ++i) {
-            final char c = pattern.charAt(i);
-            if (c == 'y' || c == 'M' || c == 'd') {
-                buf.append(c);
+            final char ch = pattern.charAt(i);
+            if (Character.isLetterOrDigit(ch) || Character.isWhitespace(ch)) {
+                buf.append(ch);
             }
         }
-        return buf.toString();
+        if (buf.indexOf("yy") == -1) {
+            final int pos = buf.indexOf("y");
+            if (pos != -1) {
+                buf.replace(pos, pos + 1, "yy");
+            }
+        }
+        if (buf.indexOf("MM") == -1) {
+            final int pos = buf.indexOf("M");
+            if (pos != -1) {
+                buf.replace(pos, pos + 1, "MM");
+            }
+        }
+        if (buf.indexOf("dd") == -1) {
+            final int pos = buf.indexOf("d");
+            if (pos != -1) {
+                buf.replace(pos, pos + 1, "dd");
+            }
+        }
+        return new String(buf);
     }
+
+    /**
+     * ロケールが持つスタイルに対応する{@link DateFormat}を反復する{@link Iterator}です。
+     * 
+     * @author koichik
+     */
+    protected static class DateFormatIterator implements Iterator<DateFormat> {
+
+        /** ロケール */
+        protected final Locale locale;
+
+        /** 現在のスタイルを示すインデックス */
+        protected int index;
+
+        /**
+         * インスタンスを構築します。
+         * 
+         * @param locale
+         *            ロケール
+         */
+        public DateFormatIterator(final Locale locale) {
+            this.locale = locale;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < STYLES.length;
+        }
+
+        @Override
+        public DateFormat next() {
+            if (!hasNext()) {
+                throw new SNoSuchElementException();
+            }
+            final int style = STYLES[index++];
+            return DateFormat.getDateInstance(style, locale);
+        }
+
+        @Override
+        public void remove() {
+            throw new SUnsupportedOperationException("remove");
+        }
+
+    }
+
+    /**
+     * ロケールが持つスタイルに対応する{@link DateFormat}を反復する{@link Iterator}です。
+     * 
+     * @author koichik
+     */
+    protected static class PlainDateFormatIterator implements
+            Iterator<DateFormat> {
+
+        /** 変換元の文字列 */
+        protected final String src;
+
+        /** ロケール */
+        protected final Locale locale;
+
+        /** 現在のスタイルを示すインデックス */
+        protected int index;
+
+        /**
+         * インスタンスを構築します。
+         * 
+         * @param src
+         *            変換後の文字列
+         * @param locale
+         *            ロケール
+         */
+        public PlainDateFormatIterator(final String src, final Locale locale) {
+            this.src = src;
+            this.locale = locale;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < STYLES.length;
+        }
+
+        @Override
+        public DateFormat next() {
+            if (!hasNext()) {
+                throw new SNoSuchElementException();
+            }
+            final int style = STYLES[index++];
+            final DateFormat format = DateFormat.getDateInstance(style, locale);
+            if (format instanceof SimpleDateFormat) {
+                final SimpleDateFormat simpleFormat = (SimpleDateFormat) format;
+                final String pattern = toPlainPattern(simpleFormat.toPattern());
+                if (pattern.length() == src.length()) {
+                    return new SimpleDateFormat(pattern);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public void remove() {
+            throw new SUnsupportedOperationException("remove");
+        }
+
+    }
+
 }
