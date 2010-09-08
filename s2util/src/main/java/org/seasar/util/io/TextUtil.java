@@ -41,8 +41,12 @@ public abstract class TextUtil {
         assertArgumentNotEmpty("path", path);
 
         final InputStream is = ResourceUtil.getResourceAsStream(path);
-        final Reader reader = InputStreamReaderUtil.create(is);
-        return ReaderUtil.readText(reader);
+        try {
+            final Reader reader = InputStreamReaderUtil.create(is);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
     }
 
     /**
@@ -56,8 +60,12 @@ public abstract class TextUtil {
         assertArgumentNotNull("file", file);
 
         final InputStream is = FileInputStreamUtil.create(file);
-        final Reader reader = InputStreamReaderUtil.create(is);
-        return ReaderUtil.readText(reader);
+        try {
+            final Reader reader = InputStreamReaderUtil.create(is);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
     }
 
     /**
@@ -71,8 +79,12 @@ public abstract class TextUtil {
         assertArgumentNotEmpty("path", path);
 
         final InputStream is = ResourceUtil.getResourceAsStream(path);
-        final Reader reader = InputStreamReaderUtil.create(is, UTF8);
-        return ReaderUtil.readText(reader);
+        try {
+            final Reader reader = InputStreamReaderUtil.create(is, UTF8);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
     }
 
     /**
@@ -86,8 +98,12 @@ public abstract class TextUtil {
         assertArgumentNotNull("file", file);
 
         final InputStream is = FileInputStreamUtil.create(file);
-        final Reader reader = InputStreamReaderUtil.create(is, UTF8);
-        return ReaderUtil.readText(reader);
+        try {
+            final Reader reader = InputStreamReaderUtil.create(is, UTF8);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
     }
 
 }

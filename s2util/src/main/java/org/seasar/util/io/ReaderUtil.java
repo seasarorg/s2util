@@ -51,7 +51,7 @@ public abstract class ReaderUtil {
     /**
      * {@link Reader}からテキストを読み込みます。
      * <p>
-     * {@link Reader}はクローズされます。
+     * {@link Reader}はクローズされません。
      * </p>
      * 
      * @param reader
@@ -61,22 +61,18 @@ public abstract class ReaderUtil {
     public static String readText(final Reader reader) {
         assertArgumentNotNull("reader", reader);
 
-        final StringBuilder out = new StringBuilder(BUF_SIZE);
         try {
             final BufferedReader in = new BufferedReader(reader);
-            try {
-                final char[] buf = new char[BUF_SIZE];
-                int n;
-                while ((n = in.read(buf)) >= 0) {
-                    out.append(buf, 0, n);
-                }
-            } finally {
-                CloseableUtil.close(in);
+            final StringBuilder out = new StringBuilder(BUF_SIZE);
+            final char[] buf = new char[BUF_SIZE];
+            int n;
+            while ((n = in.read(buf)) >= 0) {
+                out.append(buf, 0, n);
             }
+            return new String(out);
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
-        return new String(out);
     }
 
 }
