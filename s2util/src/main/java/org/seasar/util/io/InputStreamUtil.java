@@ -22,7 +22,6 @@ import java.io.OutputStream;
 
 import org.seasar.util.exception.IORuntimeException;
 
-import static org.seasar.util.io.CloseableUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -37,7 +36,7 @@ public abstract class InputStreamUtil {
     /**
      * {@link InputStream}からbyteの配列を取得します。
      * <p>
-     * 入力ストリームはクローズされます。
+     * 入力ストリームはクローズされません。
      * <p>
      * 
      * @param is
@@ -58,8 +57,6 @@ public abstract class InputStreamUtil {
             return baos.toByteArray();
         } catch (final IOException e) {
             throw new IORuntimeException(e);
-        } finally {
-            close(is);
         }
     }
 

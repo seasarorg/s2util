@@ -28,13 +28,17 @@ import org.seasar.util.lang.StringUtil;
 public class InputStreamUtilTest extends TestCase {
 
     /**
-     * 
+     * @throws Exception
      */
-    public void testGetBytes() {
+    public void testGetBytes() throws Exception {
         InputStream is =
             ResourceUtil.getResourceAsStream(StringUtil.replace(getClass()
                 .getName(), ".", "/")
                 + ".class");
-        assertNotNull("1", InputStreamUtil.getBytes(is));
+        try {
+            assertNotNull("1", InputStreamUtil.getBytes(is));
+        } finally {
+            is.close();
+        }
     }
 }

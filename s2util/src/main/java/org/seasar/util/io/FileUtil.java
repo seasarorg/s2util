@@ -18,6 +18,7 @@ package org.seasar.util.io;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -81,7 +82,12 @@ public abstract class FileUtil {
     public static byte[] getBytes(final File file) {
         assertArgumentNotNull("file", file);
 
-        return InputStreamUtil.getBytes(FileInputStreamUtil.create(file));
+        FileInputStream is = FileInputStreamUtil.create(file);
+        try {
+            return InputStreamUtil.getBytes(is);
+        } finally {
+            CloseableUtil.close(is);
+        }
     }
 
     /**
