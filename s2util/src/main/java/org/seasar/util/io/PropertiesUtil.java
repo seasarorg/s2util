@@ -17,6 +17,7 @@ package org.seasar.util.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Properties;
 
 import org.seasar.util.exception.IORuntimeException;
@@ -48,6 +49,28 @@ public abstract class PropertiesUtil {
 
         try {
             props.load(in);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * {@link Properties#load(Reader)}の例外処理をラップします。
+     * <p>
+     * 入力ストリームはクローズされません。
+     * </p>
+     * 
+     * @param props
+     *            プロパティセット
+     * @param reader
+     *            入力リーだ
+     */
+    public static void load(final Properties props, final Reader reader) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("reader", reader);
+
+        try {
+            props.load(reader);
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
