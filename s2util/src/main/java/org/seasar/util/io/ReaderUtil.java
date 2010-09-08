@@ -33,6 +33,22 @@ public abstract class ReaderUtil {
     private static final int BUF_SIZE = 4096;
 
     /**
+     * {@link BufferedReader}から一行読み込んで返します。
+     * 
+     * @param reader
+     *            {@link BufferedReader}
+     * @return 一行の文字列。終端に達した場合は{@literal null}
+     * @see BufferedReader#readLine()
+     */
+    public static String readLine(final BufferedReader reader) {
+        try {
+            return reader.readLine();
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
      * {@link Reader}からテキストを読み込みます。
      * <p>
      * {@link Reader}はクローズされます。
