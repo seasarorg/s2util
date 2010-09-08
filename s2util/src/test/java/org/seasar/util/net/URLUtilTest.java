@@ -13,12 +13,16 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.util.io;
+package org.seasar.util.net;
 
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.seasar.util.io.FileUtil;
+import org.seasar.util.io.ResourceUtil;
+import org.seasar.util.net.URLUtil;
 
 import junit.framework.TestCase;
 

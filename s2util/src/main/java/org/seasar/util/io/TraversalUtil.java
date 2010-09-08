@@ -33,6 +33,7 @@ import org.seasar.util.lang.ClassLoaderUtil;
 import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.StringUtil;
 import org.seasar.util.log.Logger;
+import org.seasar.util.net.URLUtil;
 import org.seasar.util.zip.ZipFileUtil;
 import org.seasar.util.zip.ZipInputStreamUtil;
 
@@ -41,111 +42,109 @@ import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
- * ファイルシステム上やJarファイル中に展開されているリソースの集まりを扱うユーティリティクラスです。
+ * ファイルシステム上やJarファイル中に展開されている、クラスやリソースの集まりを横断的に処理するためのユーティリティです。
  * <p>
- * 次のプロトコルをサポートしています。
+ * 対象となるファイルシステム上のディレクトリや、Jarファイルの一などは{@link URL}によって与えられます。 URLのプロトコルに応じて適切な
+ * {@link Traverser}が返されるので、そのメソッドを呼び出すことでクラスやリソースをトラバースすることが出来ます。
  * </p>
+ * </p> 次のプロトコルをサポートしています。 </p>
  * <ul>
- * <li><code>file</code></li>
- * <li><code>jar</code></li>
- * <li><code>wsjar</code>(WebShpere独自プロトコル、<code>jar</code>の別名)</li>
- * <li><code>zip</code>(WebLogic独自プロトコル)</li>
+ * <li>{@literal file}</li>
+ * <li>{@literal jar}</li>
+ * <li>{@literal wsjar}(WebShpere独自プロトコル、<code>jar</code>の別名)</li>
+ * <li>{@literal zip}(WebLogic独自プロトコル、通常のZipファイルは{@literal jar}プロトコルを使用してください)</li>
  * <li><code>code-source</code>(Oracle AS(OC4J)独自プロトコル)</li>
- * <li><code>vfsfile</code>(JBossAS5独自プロトコル、<code>file</code>の別名)</li>
- * <li><code>vfszip</code>(JBossAS5独自プロトコル)</li>
+ * <li>{@literal vfsfile}(JBossAS5独自プロトコル、<code>file</code>の別名)</li>
+ * <li>{@literal vfszip}(JBossAS5独自プロトコル)</li>
  * </ul>
  * 
  * @author koichik
  * @see URLUtil#toCanonicalProtocol(String)
+ * @see ClassTraversalUtil
+ * @see ResourceTraversalUtil
  */
-public abstract class ResourceTraverserUtil {
+public abstract class TraversalUtil {
 
-    /** 空の{@link ResourceTraverser}の配列です。 */
-    protected static final ResourceTraverser[] EMPTY_ARRAY =
-        new ResourceTraverser[0];
+    /** 空の{@link Traverser}の配列です。 */
+    protected static final Traverser[] EMPTY_ARRAY = new Traverser[0];
 
-    private static final Logger logger = Logger
-        .getLogger(ResourceTraverserUtil.class);
+    private static final Logger logger = Logger.getLogger(TraversalUtil.class);
 
-    /** URLのプロトコルをキー、{@link ResourceTraverserFactory}を値とするマッピングです。 */
-    protected static final ConcurrentMap<String, ResourceTraverserFactory> resourcesTypeFactories =
+    /** URLのプロトコルをキー、{@link TraverserFactory}を値とするマッピングです。 */
+    protected static final ConcurrentMap<String, TraverserFactory> traverserFactories =
         newConcurrentHashMap();
     static {
-        addResourcesFactory("file", new ResourceTraverserFactory() {
+        addTraverserFactory("file", new TraverserFactory() {
             @Override
-            public ResourceTraverser create(final URL url,
-                    final String rootPackage, final String rootDir) {
-                return new FileSystemResourceTraverser(
+            public Traverser create(final URL url, final String rootPackage,
+                    final String rootDir) {
+                return new FileSystemTraverser(
                     getBaseDir(url, rootDir),
                     rootPackage,
                     rootDir);
             }
         });
-        addResourcesFactory("jar", new ResourceTraverserFactory() {
+        addTraverserFactory("jar", new TraverserFactory() {
             @Override
-            public ResourceTraverser create(final URL url,
-                    final String rootPackage, final String rootDir) {
-                return new JarFileResourceTraverser(url, rootPackage, rootDir);
+            public Traverser create(final URL url, final String rootPackage,
+                    final String rootDir) {
+                return new JarFileTraverser(url, rootPackage, rootDir);
             }
         });
-        addResourcesFactory("zip", new ResourceTraverserFactory() {
+        addTraverserFactory("zip", new TraverserFactory() {
             @Override
-            public ResourceTraverser create(final URL url,
-                    final String rootPackage, final String rootDir) {
-                return new JarFileResourceTraverser(
-                    JarFileUtil.create(new File(ZipFileUtil.toZipFilePath(url))),
-                    rootPackage,
-                    rootDir);
+            public Traverser create(final URL url, final String rootPackage,
+                    final String rootDir) {
+                return new JarFileTraverser(JarFileUtil.create(new File(
+                    ZipFileUtil.toZipFilePath(url))), rootPackage, rootDir);
             }
         });
-        addResourcesFactory("code-source", new ResourceTraverserFactory() {
+        addTraverserFactory("code-source", new TraverserFactory() {
             @Override
-            public ResourceTraverser create(final URL url,
-                    final String rootPackage, final String rootDir) {
-                return new JarFileResourceTraverser(URLUtil.create("jar:file:"
+            public Traverser create(final URL url, final String rootPackage,
+                    final String rootDir) {
+                return new JarFileTraverser(URLUtil.create("jar:file:"
                     + url.getPath()), rootPackage, rootDir);
             }
         });
-        addResourcesFactory("vfszip", new ResourceTraverserFactory() {
+        addTraverserFactory("vfszip", new TraverserFactory() {
             @Override
-            public ResourceTraverser create(final URL url,
-                    final String rootPackage, final String rootDir) {
-                return new VfsZipResourceTraverser(url, rootPackage, rootDir);
+            public Traverser create(final URL url, final String rootPackage,
+                    final String rootDir) {
+                return new VfsZipTraverser(url, rootPackage, rootDir);
             }
         });
     }
 
     /**
-     * {@link ResourceTraverserFactory}を追加します。
+     * {@link TraverserFactory}を追加します。
      * 
      * @param protocol
      *            URLのプロトコル
      * @param factory
-     *            プロトコルに対応する{@link ResourceTraverser}のファクトリ
+     *            プロトコルに対応する{@link Traverser}のファクトリ
      */
-    public static void addResourcesFactory(final String protocol,
-            final ResourceTraverserFactory factory) {
+    public static void addTraverserFactory(final String protocol,
+            final TraverserFactory factory) {
         assertArgumentNotEmpty("protocol", protocol);
         assertArgumentNotNull("factory", factory);
 
-        resourcesTypeFactories.put(protocol, factory);
+        traverserFactories.put(protocol, factory);
     }
 
     /**
-     * 指定のクラスを基点とするリソースの集まりを扱う{@link ResourceTraverser}を返します。
+     * 指定のクラスを基点とする、リソースやクラスの集まりを扱う{@link Traverser}を返します。
      * <p>
-     * このメソッドが返す{@link ResourceTraverser}は、指定されたクラスをFQNで参照可能なパスをルートとします。
-     * 例えば指定されたクラスが <code>foo.Bar</code>で、そのクラスファイルが
-     * <code>classes/foo/Bar.class</code>の場合、 このメソッドが返す
-     * {@link ResourceTraverser}は<code>classes</code>ディレクトリ以下のリソースの集合を扱います。
+     * このメソッドが返す{@link Traverser}は、指定されたクラスをFQNで参照可能なパスをルートとします。 例えば指定されたクラスが
+     * <code>foo.Bar</code>で、そのクラスファイルが <code>classes/foo/Bar.class</code>の場合、
+     * このメソッドが返す {@link Traverser}は<code>classes</code>ディレクトリ以下のリソースの集合を扱います。
      * </p>
      * 
      * @param referenceClass
      *            基点となるクラス
-     * @return 指定のクラスを基点とするリソースの集まりを扱う{@link ResourceTraverser}
+     * @return 指定のクラスを基点とする、クラスやリソースの集まりを扱う{@link Traverser}
      */
-    public static ResourceTraverser getResourceTraverser(
-            final Class<?> referenceClass) {
+    public static Traverser getTraverser(final Class<?> referenceClass) {
         assertArgumentNotNull("referenceClass", referenceClass);
 
         final URL url =
@@ -156,45 +155,44 @@ public abstract class ResourceTraverserUtil {
             final int pos = baseUrl.lastIndexOf('/');
             baseUrl = baseUrl.substring(0, pos);
         }
-        return getResourceTraverser(URLUtil.create(baseUrl + '/'), null, null);
+        return getTraverser(URLUtil.create(baseUrl + '/'), null, null);
     }
 
     /**
-     * 指定のディレクトリを基点とするリソースの集まりを扱う{@link ResourceTraverser}を返します。
+     * 指定のディレクトリを基点とする、クラスやリソースの集まりを扱う{@link Traverser}を返します。
      * 
      * @param rootDir
      *            ルートディレクトリ
-     * @return 指定のディレクトリを基点とするリソースの集まりを扱う{@link ResourceTraverser}
+     * @return 指定のディレクトリを基点とする、クラスやリソースの集まりを扱う{@link Traverser}
      */
-    public static ResourceTraverser getResourceTraverser(final String rootDir) {
+    public static Traverser getTraverser(final String rootDir) {
         assertArgumentNotEmpty("rootDir", rootDir);
 
         final URL url =
             ResourceUtil.getResource(rootDir.endsWith("/") ? rootDir
                 : rootDir + '/');
-        return getResourceTraverser(url, null, rootDir);
+        return getTraverser(url, null, rootDir);
     }
 
     /**
-     * 指定のルートパッケージを基点とするリソースの集まりを扱う{@link ResourceTraverser}の配列を返します。
+     * 指定のルートパッケージを基点とする、クラスやリソースの集まりを扱う{@link Traverser}の配列を返します。
      * 
      * @param rootPackage
      *            ルートパッケージ
-     * @return 指定のルートパッケージを基点とするリソースの集まりを扱う{@link ResourceTraverser}の配列
+     * @return 指定のルートパッケージを基点とするリソースの集まりを扱う{@link Traverser}の配列
      */
-    public static ResourceTraverser[] getResourceTraversers(
-            final String rootPackage) {
+    public static Traverser[] getTraversers(final String rootPackage) {
         if (StringUtil.isEmpty(rootPackage)) {
             return EMPTY_ARRAY;
         }
 
         final String baseName = toDirectoryName(rootPackage);
-        final List<ResourceTraverser> list = new ArrayList<ResourceTraverser>();
+        final List<Traverser> list = new ArrayList<Traverser>();
         for (final Iterator<URL> it = ClassLoaderUtil.getResources(baseName); it
             .hasNext();) {
             final URL url = it.next();
-            final ResourceTraverser resourcesType =
-                getResourceTraverser(url, rootPackage, baseName);
+            final Traverser resourcesType =
+                getTraverser(url, rootPackage, baseName);
             if (resourcesType != null) {
                 list.add(resourcesType);
             }
@@ -203,11 +201,11 @@ public abstract class ResourceTraverserUtil {
             logger.log("WUTL0014", new Object[] { rootPackage });
             return EMPTY_ARRAY;
         }
-        return list.toArray(new ResourceTraverser[list.size()]);
+        return list.toArray(new Traverser[list.size()]);
     }
 
     /**
-     * URLを扱う{@link ResourceTraverser}を作成して返します。
+     * URLを扱う{@link Traverser}を作成して返します。
      * <p>
      * URLのプロトコルが未知の場合は<code>null</code>を返します。
      * </p>
@@ -218,14 +216,14 @@ public abstract class ResourceTraverserUtil {
      *            ルートパッケージ
      * @param rootDir
      *            ルートディレクトリ
-     * @return URLを扱う{@link ResourceTraverser}
+     * @return URLを扱う{@link Traverser}
      */
-    protected static ResourceTraverser getResourceTraverser(final URL url,
+    protected static Traverser getTraverser(final URL url,
             final String rootPackage, final String rootDir) {
         assertArgumentNotNull("url", url);
 
-        final ResourceTraverserFactory factory =
-            resourcesTypeFactories.get(URLUtil.toCanonicalProtocol(url
+        final TraverserFactory factory =
+            traverserFactories.get(URLUtil.toCanonicalProtocol(url
                 .getProtocol()));
         if (factory != null) {
             return factory.create(url, rootPackage, rootDir);
@@ -282,13 +280,13 @@ public abstract class ResourceTraverserUtil {
     }
 
     /**
-     * {@link ResourceTraverser}のインスタンスを作成するファクトリです。
+     * {@link Traverser}のインスタンスを作成するファクトリです。
      * 
      * @author koichik
      */
-    public interface ResourceTraverserFactory {
+    public interface TraverserFactory {
         /**
-         * {@link ResourceTraverser}のインスタンスを作成して返します。
+         * {@link Traverser}のインスタンスを作成して返します。
          * 
          * @param url
          *            リソースを表すURL
@@ -296,9 +294,9 @@ public abstract class ResourceTraverserUtil {
          *            ルートパッケージ
          * @param rootDir
          *            ルートディレクトリ
-         * @return URLで表されたリソースを扱う{@link ResourceTraverser}
+         * @return URLで表されたリソースを扱う{@link Traverser}
          */
-        ResourceTraverser create(URL url, String rootPackage, String rootDir);
+        Traverser create(URL url, String rootPackage, String rootDir);
     }
 
     /**
@@ -306,8 +304,7 @@ public abstract class ResourceTraverserUtil {
      * 
      * @author koichik
      */
-    public static class FileSystemResourceTraverser implements
-            ResourceTraverser {
+    public static class FileSystemTraverser implements Traverser {
 
         /** ベースディレクトリです。 */
         protected final File baseDir;
@@ -328,7 +325,7 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public FileSystemResourceTraverser(final File baseDir,
+        public FileSystemTraverser(final File baseDir,
                 final String rootPackage, final String rootDir) {
             this.baseDir = baseDir;
             this.rootPackage = rootPackage;
@@ -345,8 +342,8 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public FileSystemResourceTraverser(final URL url,
-                final String rootPackage, final String rootDir) {
+        public FileSystemTraverser(final URL url, final String rootPackage,
+                final String rootDir) {
             this(URLUtil.toFile(url), rootPackage, rootDir);
         }
 
@@ -380,7 +377,7 @@ public abstract class ResourceTraverserUtil {
      * 
      * @author koichik
      */
-    public static class JarFileResourceTraverser implements ResourceTraverser {
+    public static class JarFileTraverser implements Traverser {
 
         /** Jarファイルです。 */
         protected final JarFile jarFile;
@@ -401,7 +398,7 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public JarFileResourceTraverser(final JarFile jarFile,
+        public JarFileTraverser(final JarFile jarFile,
                 final String rootPackage, final String rootDir) {
             this.jarFile = jarFile;
             this.rootPackage = rootPackage;
@@ -418,8 +415,8 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public JarFileResourceTraverser(final URL url,
-                final String rootPackage, final String rootDir) {
+        public JarFileTraverser(final URL url, final String rootPackage,
+                final String rootDir) {
             this(JarFileUtil.toJarFile(url), rootPackage, rootDir);
         }
 
@@ -470,7 +467,7 @@ public abstract class ResourceTraverserUtil {
      * 
      * @author koichik
      */
-    public static class VfsZipResourceTraverser implements ResourceTraverser {
+    public static class VfsZipTraverser implements Traverser {
 
         /** WAR内の.classファイルの接頭辞です。 */
         protected static final String WAR_CLASSES_PREFIX = "/WEB-INF/CLASSES/";
@@ -500,7 +497,7 @@ public abstract class ResourceTraverserUtil {
          * @param rootDir
          *            ルートディレクトリ
          */
-        public VfsZipResourceTraverser(final URL url, final String rootPackage,
+        public VfsZipTraverser(final URL url, final String rootPackage,
                 final String rootDir) {
             URL zipUrl = url;
             String prefix = "";

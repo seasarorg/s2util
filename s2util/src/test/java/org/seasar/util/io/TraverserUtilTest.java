@@ -26,8 +26,8 @@ import junit.textui.ResultPrinter;
 import junit.textui.TestRunner;
 
 import org.junit.Test;
-import org.seasar.util.io.ResourceTraverserUtil.FileSystemResourceTraverser;
-import org.seasar.util.io.ResourceTraverserUtil.JarFileResourceTraverser;
+import org.seasar.util.io.TraversalUtil.FileSystemTraverser;
+import org.seasar.util.io.TraversalUtil.JarFileTraverser;
 import org.seasar.util.io.xxx.DummyTest;
 import org.seasar.util.lang.ClassUtil;
 
@@ -37,17 +37,16 @@ import static org.junit.Assert.*;
 /**
  * @author koichik
  */
-public class ResourceTraverserUtilTest {
+public class TraverserUtilTest {
 
     /**
      * @throws Exception
      */
     @Test
     public void testFromClass_FileSystem() throws Exception {
-        ResourceTraverser traverser =
-            ResourceTraverserUtil.getResourceTraverser(DummyTest.class);
+        Traverser traverser = TraversalUtil.getTraverser(DummyTest.class);
         assertThat(traverser, is(notNullValue()));
-        assertThat(traverser instanceof FileSystemResourceTraverser, is(true));
+        assertThat(traverser instanceof FileSystemTraverser, is(true));
 
         assertThat(traverser.isExistClass(DummyTest.class.getName()), is(true));
         assertThat(
@@ -63,9 +62,7 @@ public class ResourceTraverserUtilTest {
         });
         assertThat(set.size() > 0, is(true));
         assertThat(set.contains(DummyTest.class.getName()), is(true));
-        assertThat(
-            set.contains(ResourceTraverserUtilTest.class.getName()),
-            is(true));
+        assertThat(set.contains(TraverserUtilTest.class.getName()), is(true));
         assertThat(set.contains(TestCase.class.getName()), is(not(true)));
     }
 
@@ -74,10 +71,9 @@ public class ResourceTraverserUtilTest {
      */
     @Test
     public void testFromClass_JarFile() throws Exception {
-        ResourceTraverser traverser =
-            ResourceTraverserUtil.getResourceTraverser(TestCase.class);
+        Traverser traverser = TraversalUtil.getTraverser(TestCase.class);
         assertThat(traverser, is(notNullValue()));
-        assertThat(traverser instanceof JarFileResourceTraverser, is(true));
+        assertThat(traverser instanceof JarFileTraverser, is(true));
 
         assertThat(traverser.isExistClass(TestCase.class.getName()), is(true));
         assertThat(
@@ -101,11 +97,10 @@ public class ResourceTraverserUtilTest {
      */
     @Test
     public void testFromDir_FileSystem() throws Exception {
-        ResourceTraverser traverser =
-            ResourceTraverserUtil
-                .getResourceTraverser("org/seasar/util/io/xxx");
+        Traverser traverser =
+            TraversalUtil.getTraverser("org/seasar/util/io/xxx");
         assertThat(traverser, is(notNullValue()));
-        assertThat(traverser instanceof FileSystemResourceTraverser, is(true));
+        assertThat(traverser instanceof FileSystemTraverser, is(true));
 
         final List<String> list = new ArrayList<String>();
         traverser.forEach(new ResourceHandler() {
@@ -123,10 +118,9 @@ public class ResourceTraverserUtilTest {
      */
     @Test
     public void testFromDir_JarFile() throws Exception {
-        ResourceTraverser traverser =
-            ResourceTraverserUtil.getResourceTraverser("junit/textui");
+        Traverser traverser = TraversalUtil.getTraverser("junit/textui");
         assertThat(traverser, is(notNullValue()));
-        assertThat(traverser instanceof JarFileResourceTraverser, is(true));
+        assertThat(traverser instanceof JarFileTraverser, is(true));
 
         final List<String> list = new ArrayList<String>();
         traverser.forEach(new ResourceHandler() {
@@ -145,14 +139,13 @@ public class ResourceTraverserUtilTest {
      */
     @Test
     public void testFromRootPackage_FileSystem() throws Exception {
-        ResourceTraverser[] traversers =
-            ResourceTraverserUtil
-                .getResourceTraversers("org.seasar.util.io.xxx");
+        Traverser[] traversers =
+            TraversalUtil.getTraversers("org.seasar.util.io.xxx");
         assertThat(traversers, is(notNullValue()));
         assertThat(traversers.length, is(1));
 
-        ResourceTraverser traverser = traversers[0];
-        assertThat(traverser instanceof FileSystemResourceTraverser, is(true));
+        Traverser traverser = traversers[0];
+        assertThat(traverser instanceof FileSystemTraverser, is(true));
 
         assertThat(traverser.isExistClass("DummyTest"), is(true));
         assertThat(traverser.isExistClass("TestCase"), is(not(true)));
@@ -167,7 +160,7 @@ public class ResourceTraverserUtilTest {
         assertThat(set.size() > 0, is(true));
         assertThat(set.contains(DummyTest.class.getName()), is(true));
         assertThat(
-            set.contains(ResourceTraverserUtilTest.class.getName()),
+            set.contains(TraverserUtilTest.class.getName()),
             is(not(true)));
         assertThat(set.contains(TestCase.class.getName()), is(not(true)));
     }
@@ -177,13 +170,12 @@ public class ResourceTraverserUtilTest {
      */
     @Test
     public void testFromRootPackage_JarFile() throws Exception {
-        ResourceTraverser[] traversers =
-            ResourceTraverserUtil.getResourceTraversers("junit.textui");
+        Traverser[] traversers = TraversalUtil.getTraversers("junit.textui");
         assertThat(traversers, is(notNullValue()));
         assertThat(traversers.length, is(1));
 
-        ResourceTraverser traverser = traversers[0];
-        assertThat(traverser instanceof JarFileResourceTraverser, is(true));
+        Traverser traverser = traversers[0];
+        assertThat(traverser instanceof JarFileTraverser, is(true));
 
         assertThat(traverser.isExistClass("TestRunner"), is(true));
         assertThat(traverser.isExistClass("DummyTest"), is(not(true)));

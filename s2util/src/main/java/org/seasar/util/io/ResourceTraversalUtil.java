@@ -32,12 +32,9 @@ import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * リソースをトラバースするためのクラスです。
- * <p>
- * このクラスを直接使うより、{@link ResourceTraverserUtil}を使用してください。
- * </p>
  * 
  * @author taedium
- * @see ResourceTraverserUtil
+ * @see TraversalUtil
  */
 public abstract class ResourceTraversalUtil {
 

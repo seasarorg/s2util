@@ -29,12 +29,9 @@ import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * クラスを横断して処理するためのハンドラです。
- * <p>
- * このクラスを直接使うより、{@link ResourceTraverserUtil}を使用してください。
- * </p>
  * 
  * @author koichik
- * @see ResourceTraverserUtil
+ * @see TraversalUtil
  */
 public abstract class ClassTraversalUtil {
 

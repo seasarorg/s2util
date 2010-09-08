@@ -1,11 +1,11 @@
 package org.seasar.util.io;
 
 /**
- * リソースの集まりを表すオブジェクトです。
+ * クラスやリソースの集まりを表すオブジェクトです。
  * 
  * @author koichik
  */
-public interface ResourceTraverser {
+public interface Traverser {
 
     /**
      * 指定されたクラス名に対応するクラスファイルがこのインスタンスが扱うリソースの中に存在すれば<code>true</code>を返します。
@@ -20,8 +20,8 @@ public interface ResourceTraverser {
     boolean isExistClass(final String className);
 
     /**
-     * このインスタンスが扱うリソースの中に存在するクラスを探して
-     * {@link ClassHandler#processClass(String, String) ハンドラ}をコールバックします。
+     * このインスタンスが扱うクラスを探して {@link ClassHandler#processClass(String, String) ハンドラ}
+     * をコールバックします。
      * <p>
      * インスタンス構築時にルートパッケージが指定されている場合は、 ルートパッケージ以下のクラスのみが対象となります。
      * </p>

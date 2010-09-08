@@ -24,6 +24,7 @@ import java.util.Properties;
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.ResourceNotFoundRuntimeException;
 import org.seasar.util.jar.JarFileUtil;
+import org.seasar.util.net.URLUtil;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
