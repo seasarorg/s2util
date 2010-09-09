@@ -91,7 +91,7 @@ public class PropertiesUtilTest {
     @Test
     public void testLoadPropertiesReader() {
         InputStreamReader inputStreamReader =
-            InputStreamReaderUtil.create(
+            ReaderUtil.create(
                 ResourceUtil
                     .getResourceAsStream("org/seasar/util/io/test.properties"),
                 "UTF-8");
@@ -110,7 +110,7 @@ public class PropertiesUtilTest {
         exception.expect(NullArgumentException.class);
         exception.expectMessage(is("[EUTL0008]引数[props]がnullです。"));
         InputStreamReader inputStreamReader =
-            InputStreamReaderUtil.create(
+            ReaderUtil.create(
                 ResourceUtil
                     .getResourceAsStream("org/seasar/util/io/test.properties"),
                 "UTF-8");

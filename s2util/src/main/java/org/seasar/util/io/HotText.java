@@ -112,7 +112,7 @@ public class HotText {
      * {@link File}からデータを読み込みます。
      */
     protected void updateValueByFile() {
-        value = TextUtil.readUTF8(file);
+        value = TextFileUtil.readUTF8(file);
         lastModified = file.lastModified();
     }
 
@@ -120,7 +120,7 @@ public class HotText {
      * {@link ClassLoader}を使ってデータを読み込みます。 この場合、ファイルの変更をHOTに認識することはできません。
      */
     protected void updateValueByPath() {
-        value = TextUtil.readUTF8(path);
+        value = TextFileUtil.readUTF8(path);
     }
 
 }

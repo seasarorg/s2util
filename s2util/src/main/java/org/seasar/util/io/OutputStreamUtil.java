@@ -15,10 +15,14 @@
  */
 package org.seasar.util.io;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.seasar.util.exception.IORuntimeException;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link OutputStream}用のユーティリティクラスです。
@@ -26,6 +30,24 @@ import org.seasar.util.exception.IORuntimeException;
  * @author shot
  */
 public abstract class OutputStreamUtil {
+
+    /**
+     * {@link FileOutputStream}を作成します。
+     * 
+     * @param file
+     *            ファイル
+     * @return ファイルへ出力する{@link FileOutputStream}
+     * @see FileOutputStream#FileOutputStream(File)
+     */
+    public static FileOutputStream create(final File file) {
+        assertArgumentNotNull("file", file);
+
+        try {
+            return new FileOutputStream(file);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
 
     /**
      * {@link OutputStream}をflushします。

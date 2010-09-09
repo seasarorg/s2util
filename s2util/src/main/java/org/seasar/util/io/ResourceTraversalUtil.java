@@ -219,7 +219,7 @@ public abstract class ResourceTraversalUtil {
                 final String filePath = FileUtil.getCanonicalPath(file);
                 final String resourcePath =
                     filePath.substring(pos + 1).replace('\\', '/');
-                final InputStream is = FileInputStreamUtil.create(file);
+                final InputStream is = InputStreamUtil.create(file);
                 try {
                     handler.processResource(resourcePath, is);
                 } finally {

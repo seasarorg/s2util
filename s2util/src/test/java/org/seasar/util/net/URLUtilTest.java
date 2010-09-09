@@ -20,11 +20,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.seasar.util.io.FileUtil;
-import org.seasar.util.io.ResourceUtil;
-import org.seasar.util.net.URLUtil;
-
 import junit.framework.TestCase;
+
+import org.seasar.util.io.CopyUtil;
+import org.seasar.util.io.ResourceUtil;
 
 /**
  * @author taichi
@@ -47,7 +46,7 @@ public class URLUtilTest extends TestCase {
             dest.delete();
         }
         dest.createNewFile();
-        FileUtil.copy(new File(srcJar), dest);
+        CopyUtil.copy(new File(srcJar), dest);
         new URL("http://a").openConnection().setDefaultUseCaches(true);
 
         URLUtil.disableURLCaches();

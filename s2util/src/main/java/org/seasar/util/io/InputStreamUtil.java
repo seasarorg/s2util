@@ -16,9 +16,10 @@
 package org.seasar.util.io;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.seasar.util.exception.IORuntimeException;
 
@@ -34,10 +35,28 @@ public abstract class InputStreamUtil {
     private static final int BUF_SIZE = 4096;
 
     /**
+     * {@link FileInputStream}を作成します。
+     * 
+     * @param file
+     *            ファイル
+     * @return ファイルから入力する{@link FileInputStream}
+     * @see FileInputStream#FileInputStream(File)
+     */
+    public static FileInputStream create(final File file) {
+        assertArgumentNotNull("file", file);
+
+        try {
+            return new FileInputStream(file);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
      * {@link InputStream}からbyteの配列を取得します。
      * <p>
      * 入力ストリームはクローズされません。
-     * <p>
+     * </p>
      * 
      * @param is
      *            入力ストリーム
@@ -46,44 +65,9 @@ public abstract class InputStreamUtil {
     public static final byte[] getBytes(final InputStream is) {
         assertArgumentNotNull("is", is);
 
-        final byte[] buf = new byte[8192];
-        try {
-            final ByteArrayOutputStream baos =
-                new ByteArrayOutputStream(BUF_SIZE);
-            int n = 0;
-            while ((n = is.read(buf, 0, buf.length)) != -1) {
-                baos.write(buf, 0, n);
-            }
-            return baos.toByteArray();
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
-    }
-
-    /**
-     * {@link InputStream}の内容を {@link OutputStream}にコピーします。
-     * <p>
-     * 入力ストリームおよび出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param is
-     *            入力ストリーム
-     * @param os
-     *            出力ストリーム
-     */
-    public static final void copy(final InputStream is, final OutputStream os) {
-        assertArgumentNotNull("is", is);
-        assertArgumentNotNull("os", os);
-
-        final byte[] buf = new byte[BUF_SIZE];
-        try {
-            int n = 0;
-            while ((n = is.read(buf, 0, buf.length)) != -1) {
-                os.write(buf, 0, n);
-            }
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
+        final ByteArrayOutputStream os = new ByteArrayOutputStream(BUF_SIZE);
+        CopyUtil.copy(is, os);
+        return os.toByteArray();
     }
 
     /**

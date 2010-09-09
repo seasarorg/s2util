@@ -15,20 +15,13 @@
  */
 package org.seasar.util.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 
 import org.seasar.util.exception.IORuntimeException;
-import org.seasar.util.exception.NullArgumentException;
 
-import static org.seasar.util.io.CloseableUtil.*;
-import static org.seasar.util.message.MessageFormatter.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -37,6 +30,8 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * @author higa
  */
 public abstract class FileUtil {
+
+    private static final int BUF_SIZE = 4096;
 
     /**
      * この抽象パス名の正規の形式を返します。
@@ -82,97 +77,9 @@ public abstract class FileUtil {
     public static byte[] getBytes(final File file) {
         assertArgumentNotNull("file", file);
 
-        FileInputStream is = FileInputStreamUtil.create(file);
-        try {
-            return InputStreamUtil.getBytes(is);
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * <code>src</code>の内容を<code>dest</code>にコピーします。
-     * 
-     * @param src
-     *            コピー元のファイル
-     * @param dest
-     *            コピー先のファイル
-     */
-    public static void copy(final File src, final File dest) {
-        assertArgumentNotNull("src", src);
-        assertArgument(
-            "src",
-            src.exists() && src.canRead(),
-            getMessage("EUTL0101", src));
-        assertArgumentNotNull("dest", dest);
-        assertArgument(
-            "dest",
-            !dest.exists() || dest.canWrite(),
-            getMessage("EUTL0102", src));
-
-        final BufferedInputStream in =
-            new BufferedInputStream(FileInputStreamUtil.create(src));
-        try {
-            final BufferedOutputStream out =
-                new BufferedOutputStream(FileOutputStreamUtil.create(dest));
-            try {
-                InputStreamUtil.copy(in, out);
-            } finally {
-                close(out);
-            }
-        } finally {
-            close(in);
-        }
-    }
-
-    /**
-     * バイトの配列をファイルに書き出します。
-     * 
-     * @param path
-     *            ファイルのパス
-     * @param data
-     *            バイトの配列
-     * 
-     * @throws NullArgumentException
-     *             pathやdataがnullの場合。
-     */
-    public static void write(final String path, final byte[] data) {
-        assertArgumentNotNull("path", path);
-        assertArgumentNotNull("data", data);
-
-        write(path, data, 0, data.length);
-    }
-
-    /**
-     * バイトの配列をファイルに書き出します。
-     * 
-     * @param path
-     *            ファイルのパス
-     * @param data
-     *            バイトの配列
-     * @param offset
-     *            オフセット
-     * @param length
-     *            配列の長さ
-     * @throws NullArgumentException
-     *             pathやdataがnullの場合。
-     */
-    public static void write(final String path, final byte[] data,
-            final int offset, final int length) {
-        assertArgumentNotNull("path", path);
-        assertArgumentNotNull("data", data);
-
-        try {
-            final OutputStream out =
-                new BufferedOutputStream(new FileOutputStream(path));
-            try {
-                out.write(data, offset, length);
-            } finally {
-                close(out);
-            }
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
+        final ByteArrayOutputStream os = new ByteArrayOutputStream(BUF_SIZE);
+        CopyUtil.copy(file, os);
+        return os.toByteArray();
     }
 
 }

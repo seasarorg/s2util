@@ -17,24 +17,27 @@ package org.seasar.util.io;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
- * テキスト用のユーティリティクラスです。
+ * テキストファイル用のユーティリティクラスです。
  * 
  * @author higa
  */
-public abstract class TextUtil {
+public abstract class TextFileUtil {
+
+    private static final String JIS_AUTO_DETECT = "JISAutoDetect";
 
     private static final String UTF8 = "UTF-8";
 
     /**
-     * テキストを読み込みます。
+     * デフォルトエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param path
-     *            パス
+     *            ファイルのパス
      * @return 読み込んだテキスト
      */
     public static String readText(final String path) {
@@ -42,7 +45,7 @@ public abstract class TextUtil {
 
         final InputStream is = ResourceUtil.getResourceAsStream(path);
         try {
-            final Reader reader = InputStreamReaderUtil.create(is);
+            final Reader reader = new InputStreamReader(is);
             return ReaderUtil.readText(reader);
         } finally {
             CloseableUtil.close(is);
@@ -50,7 +53,7 @@ public abstract class TextUtil {
     }
 
     /**
-     * テキストを読み込みます。
+     * デフォルトエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param file
      *            ファイル
@@ -59,9 +62,9 @@ public abstract class TextUtil {
     public static String readText(final File file) {
         assertArgumentNotNull("file", file);
 
-        final InputStream is = FileInputStreamUtil.create(file);
+        final InputStream is = InputStreamUtil.create(file);
         try {
-            final Reader reader = InputStreamReaderUtil.create(is);
+            final Reader reader = new InputStreamReader(is);
             return ReaderUtil.readText(reader);
         } finally {
             CloseableUtil.close(is);
@@ -69,7 +72,45 @@ public abstract class TextUtil {
     }
 
     /**
-     * UTF8でテキストを読み込みます。
+     * 日本語のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param path
+     *            パス
+     * @return 読み込んだテキスト
+     */
+    public static String readJisAutoDetect(final String path) {
+        assertArgumentNotEmpty("path", path);
+
+        final InputStream is = ResourceUtil.getResourceAsStream(path);
+        try {
+            final Reader reader = ReaderUtil.create(is, JIS_AUTO_DETECT);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
+    }
+
+    /**
+     * 日本語のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param file
+     *            ファイル
+     * @return 読み込んだテキスト
+     */
+    public static String readJisAutoDetect(final File file) {
+        assertArgumentNotNull("file", file);
+
+        final InputStream is = InputStreamUtil.create(file);
+        try {
+            final Reader reader = ReaderUtil.create(is, JIS_AUTO_DETECT);
+            return ReaderUtil.readText(reader);
+        } finally {
+            CloseableUtil.close(is);
+        }
+    }
+
+    /**
+     * UTF8でファイルからテキストを読み込みます。
      * 
      * @param path
      *            パス
@@ -80,7 +121,7 @@ public abstract class TextUtil {
 
         final InputStream is = ResourceUtil.getResourceAsStream(path);
         try {
-            final Reader reader = InputStreamReaderUtil.create(is, UTF8);
+            final Reader reader = ReaderUtil.create(is, UTF8);
             return ReaderUtil.readText(reader);
         } finally {
             CloseableUtil.close(is);
@@ -88,7 +129,7 @@ public abstract class TextUtil {
     }
 
     /**
-     * UTF8でテキストを読み込みます。
+     * UTF8でファイルからテキストを読み込みます。
      * 
      * @param file
      *            ファイル
@@ -97,9 +138,9 @@ public abstract class TextUtil {
     public static String readUTF8(final File file) {
         assertArgumentNotNull("file", file);
 
-        final InputStream is = FileInputStreamUtil.create(file);
+        final InputStream is = InputStreamUtil.create(file);
         try {
-            final Reader reader = InputStreamReaderUtil.create(is, UTF8);
+            final Reader reader = ReaderUtil.create(is, UTF8);
             return ReaderUtil.readText(reader);
         } finally {
             CloseableUtil.close(is);

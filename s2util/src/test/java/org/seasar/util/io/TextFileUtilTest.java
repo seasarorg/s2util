@@ -21,43 +21,49 @@ import junit.framework.TestCase;
  * @author higa
  * 
  */
-public class TextUtilTest extends TestCase {
+public class TextFileUtilTest extends TestCase {
 
     /**
      * @throws Exception
      */
-    public void testReadTextCr() throws Exception {
-        assertEquals("1", "aaa\rbbb", TextUtil.readText(getPath("hoge_cr.txt")));
+    public void testReadAutoDetectCr() throws Exception {
+        assertEquals(
+            "1",
+            "aaa\rbbb",
+            TextFileUtil.readJisAutoDetect(getPath("hoge_cr.txt")));
     }
 
     /**
      * @throws Exception
      */
-    public void testReadTextLf() throws Exception {
-        assertEquals("1", "aaa\nbbb", TextUtil.readText(getPath("hoge_lf.txt")));
+    public void testReadAutoDtectLf() throws Exception {
+        assertEquals(
+            "1",
+            "aaa\nbbb",
+            TextFileUtil.readJisAutoDetect(getPath("hoge_lf.txt")));
     }
 
     /**
      * @throws Exception
      */
-    public void testReadTextCrLf() throws Exception {
+    public void testReadAutoDetectCrLf() throws Exception {
         assertEquals(
             "1",
             "aaa\r\nbbb",
-            TextUtil.readText(getPath("hoge_crlf.txt")));
+            TextFileUtil.readJisAutoDetect(getPath("hoge_crlf.txt")));
     }
 
     /**
      * @throws Exception
      */
     public void testReadUTF8() throws Exception {
-        assertEquals("1", "あ", TextUtil.readUTF8(getPath("hoge_utf8.txt")));
+        assertEquals("1", "あ", TextFileUtil.readUTF8(getPath("hoge_utf8.txt")));
     }
 
     private String getPath(String fileName) {
         return getClass()
             .getName()
             .replace('.', '/')
-            .replaceFirst("TextUtilTest", fileName);
+            .replaceFirst(getClass().getSimpleName(), fileName);
     }
 }

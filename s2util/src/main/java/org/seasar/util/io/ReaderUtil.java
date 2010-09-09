@@ -16,7 +16,12 @@
 package org.seasar.util.io;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 
 import org.seasar.util.exception.IORuntimeException;
@@ -31,6 +36,59 @@ import static org.seasar.util.misc.AssertionUtil.*;
 public abstract class ReaderUtil {
 
     private static final int BUF_SIZE = 4096;
+
+    /**
+     * 指定のエンコーディングでファイルから入力する{@link Reader}を作成します。
+     * 
+     * @param is
+     *            入力ストリーム
+     * @param encoding
+     *            入力ストリームのエンコーディング
+     * @return ファイルかへ出力する{@link Reader}
+     */
+    public static InputStreamReader create(final InputStream is,
+            final String encoding) {
+        assertArgumentNotNull("is", is);
+        assertArgumentNotEmpty("encoding", encoding);
+
+        try {
+            return new InputStreamReader(is, encoding);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * プラットフォームデフォルトエンコーディングでファイルから入力する{@link Reader}を作成します。
+     * 
+     * @param file
+     *            ファイル
+     * @return ファイルから入力する{@link Reader}
+     */
+    public static Reader create(final File file) {
+        try {
+            return new FileReader(file);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 指定のエンコーディングでファイルから入力する{@link Reader}を作成します。
+     * 
+     * @param file
+     *            ファイル
+     * @param encoding
+     *            エンコーディング
+     * @return ファイルから入力する{@link Reader}
+     */
+    public static Reader create(final File file, final String encoding) {
+        try {
+            return new InputStreamReader(new FileInputStream(file), encoding);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
 
     /**
      * {@link BufferedReader}から一行読み込んで返します。
@@ -61,18 +119,9 @@ public abstract class ReaderUtil {
     public static String readText(final Reader reader) {
         assertArgumentNotNull("reader", reader);
 
-        try {
-            final BufferedReader in = new BufferedReader(reader);
-            final StringBuilder out = new StringBuilder(BUF_SIZE);
-            final char[] buf = new char[BUF_SIZE];
-            int n;
-            while ((n = in.read(buf)) >= 0) {
-                out.append(buf, 0, n);
-            }
-            return new String(out);
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
+        StringBuilder buf = new StringBuilder(BUF_SIZE);
+        CopyUtil.copy(reader, buf);
+        return new String(buf);
     }
 
 }
