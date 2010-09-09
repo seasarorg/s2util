@@ -57,13 +57,13 @@ public abstract class PropertiesUtil {
     /**
      * {@link Properties#load(Reader)}の例外処理をラップします。
      * <p>
-     * 入力ストリームはクローズされません。
+     * 入力リーダはクローズされません。
      * </p>
      * 
      * @param props
      *            プロパティセット
      * @param reader
-     *            入力リーだ
+     *            入力リーダ
      */
     public static void load(final Properties props, final Reader reader) {
         assertArgumentNotNull("props", props);
