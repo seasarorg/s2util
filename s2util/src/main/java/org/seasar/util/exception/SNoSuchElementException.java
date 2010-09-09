@@ -39,7 +39,7 @@ public class SNoSuchElementException extends NoSuchElementException {
      * @param message
      *            メッセージ
      */
-    public SNoSuchElementException(String message) {
+    public SNoSuchElementException(final String message) {
         super(message);
     }
 

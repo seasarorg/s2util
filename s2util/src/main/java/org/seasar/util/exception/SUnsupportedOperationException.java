@@ -38,7 +38,7 @@ public class SUnsupportedOperationException extends
      * @param message
      *            メッセージ
      */
-    public SUnsupportedOperationException(String message) {
+    public SUnsupportedOperationException(final String message) {
         super(message);
     }
 
@@ -50,7 +50,7 @@ public class SUnsupportedOperationException extends
      * @param cause
      *            元の例外
      */
-    public SUnsupportedOperationException(String message, Throwable cause) {
+    public SUnsupportedOperationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -60,7 +60,7 @@ public class SUnsupportedOperationException extends
      * @param cause
      *            元の例外
      */
-    public SUnsupportedOperationException(Throwable cause) {
+    public SUnsupportedOperationException(final Throwable cause) {
         super(cause);
     }
 

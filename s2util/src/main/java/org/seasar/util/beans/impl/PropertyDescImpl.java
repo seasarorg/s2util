@@ -280,22 +280,23 @@ public class PropertyDescImpl implements PropertyDesc {
     }
 
     @Override
-    public void setValue(final Object target, Object value) {
+    public void setValue(final Object target, final Object value) {
         assertArgumentNotNull("target", target);
 
         try {
-            value = convertIfNeed(value);
+            final Object convertedValue = convertIfNeed(value);
             assertState(writable, propertyName + " is not writable.");
             if (hasWriteMethod()) {
                 try {
                     MethodUtil.invoke(
                         writeMethod,
                         target,
-                        new Object[] { value });
+                        new Object[] { convertedValue });
                 } catch (final Throwable t) {
                     final Class<?> clazz = writeMethod.getDeclaringClass();
                     final Class<?> valueClass =
-                        value == null ? null : value.getClass();
+                        convertedValue == null ? null : convertedValue
+                            .getClass();
                     final Class<?> targetClass =
                         target == null ? null : target.getClass();
                     throw new SIllegalArgumentException(
@@ -310,13 +311,13 @@ public class PropertyDescImpl implements PropertyDesc {
                             valueClass == null ? null : valueClass.getName(),
                             valueClass == null ? null
                                 : valueClass.getClassLoader(),
-                            value,
+                            convertedValue,
                             targetClass == null ? null : targetClass.getName(),
                             targetClass == null ? null
                                 : targetClass.getClassLoader() }).initCause(t);
                 }
             } else {
-                FieldUtil.set(field, target, value);
+                FieldUtil.set(field, target, convertedValue);
             }
         } catch (final Throwable t) {
             throw new IllegalPropertyRuntimeException(

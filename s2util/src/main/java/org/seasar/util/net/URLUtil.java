@@ -203,7 +203,7 @@ public abstract class URLUtil {
     /**
      * <a
      * href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4167874">このバグ<
-     * /a>に対する対応です。
+     * /a> に対する対応です。
      * 
      */
     public static void disableURLCaches() {

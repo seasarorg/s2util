@@ -37,7 +37,7 @@ public class SIndexOutOfBoundsException extends IndexOutOfBoundsException {
      * @param message
      *            メッセージ
      */
-    public SIndexOutOfBoundsException(String message) {
+    public SIndexOutOfBoundsException(final String message) {
         super(message);
     }
 

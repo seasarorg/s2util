@@ -61,14 +61,12 @@ public abstract class ResourceBundleUtil {
      * @see ResourceBundle#getBundle(String, Locale)
      */
     public static final ResourceBundle getBundle(final String name,
-            Locale locale) {
+            final Locale locale) {
         assertArgumentNotEmpty("name", name);
 
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
         try {
-            return ResourceBundle.getBundle(name, locale);
+            return ResourceBundle.getBundle(name, locale != null ? locale
+                : Locale.getDefault());
         } catch (final MissingResourceException ignore) {
             return null;
         }
@@ -87,15 +85,13 @@ public abstract class ResourceBundleUtil {
      * @see ResourceBundle#getBundle(String, Locale, ClassLoader)
      */
     public static final ResourceBundle getBundle(final String name,
-            Locale locale, final ClassLoader classLoader) {
+            final Locale locale, final ClassLoader classLoader) {
         assertArgumentNotNull("name", name);
         assertArgumentNotNull("classLoader", classLoader);
 
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
         try {
-            return ResourceBundle.getBundle(name, locale, classLoader);
+            return ResourceBundle.getBundle(name, locale != null ? locale
+                : Locale.getDefault(), classLoader);
         } catch (final MissingResourceException ignore) {
             return null;
         }

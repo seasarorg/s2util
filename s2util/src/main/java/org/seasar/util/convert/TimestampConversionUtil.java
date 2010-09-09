@@ -52,7 +52,7 @@ import static org.seasar.util.lang.StringUtil.*;
  * <tr>
  * <th>カテゴリ</th>
  * <th>パターン</th>
- * <th>{@link Locale#JAPANESE}の例</ht>
+ * <th>{@link Locale#JAPANESE}の例</th>
  * </tr>
  * <tr>
  * <td rowspan="4">{@link DateFormat}の標準形式</td>

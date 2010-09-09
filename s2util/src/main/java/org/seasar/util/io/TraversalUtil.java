@@ -47,7 +47,9 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * 対象となるファイルシステム上のディレクトリや、Jarファイルの一などは{@link URL}によって与えられます。 URLのプロトコルに応じて適切な
  * {@link Traverser}が返されるので、そのメソッドを呼び出すことでクラスやリソースをトラバースすることが出来ます。
  * </p>
- * </p> 次のプロトコルをサポートしています。 </p>
+ * <p>
+ * 次のプロトコルをサポートしています。
+ * </p>
  * <ul>
  * <li>{@literal file}</li>
  * <li>{@literal jar}</li>

@@ -45,7 +45,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * <table border="1">
  * <tr>
  * <th rowspan="2">入力の型</th>
- * <th colspan="4">出力の型</ht>
+ * <th colspan="4">出力の型</th>
  * </tr>
  * <tr>
  * <th>{@link OutputStream}</th>

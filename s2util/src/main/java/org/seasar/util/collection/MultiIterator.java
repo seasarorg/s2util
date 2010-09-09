@@ -59,7 +59,7 @@ public class MultiIterator<E> implements Iterator<E> {
      * @param iterators
      *            {@link Iterator}の並び
      */
-    public MultiIterator(Iterator<E>... iterators) {
+    public MultiIterator(final Iterator<E>... iterators) {
         this.iterators = iterators;
     }
 

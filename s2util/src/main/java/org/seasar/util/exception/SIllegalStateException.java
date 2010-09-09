@@ -38,7 +38,7 @@ public class SIllegalStateException extends IllegalStateException {
      * @param message
      *            メッセージ
      */
-    public SIllegalStateException(String message) {
+    public SIllegalStateException(final String message) {
         super(message);
     }
 
@@ -50,7 +50,7 @@ public class SIllegalStateException extends IllegalStateException {
      * @param cause
      *            元の例外
      */
-    public SIllegalStateException(String message, Throwable cause) {
+    public SIllegalStateException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -60,7 +60,7 @@ public class SIllegalStateException extends IllegalStateException {
      * @param cause
      *            元の例外
      */
-    public SIllegalStateException(Throwable cause) {
+    public SIllegalStateException(final Throwable cause) {
         super(cause);
     }
 
