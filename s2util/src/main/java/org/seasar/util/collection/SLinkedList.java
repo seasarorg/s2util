@@ -45,7 +45,8 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
      * {@link SLinkedList}を作成します。
      */
     public SLinkedList() {
-        header.next = header.previous = header;
+        header.next = header;
+        header.previous = header;
     }
 
     /**
@@ -227,7 +228,8 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
      * 要素を空にします。
      */
     public void clear() {
-        header.next = header.previous = header;
+        header.next = header;
+        header.previous = header;
         size = 0;
     }
 
@@ -319,7 +321,8 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
             ClassNotFoundException {
         final int size = s.readInt();
         header = new Entry(null, null, null);
-        header.next = header.previous = header;
+        header.next = header;
+        header.previous = header;
         for (int i = 0; i < size; i++) {
             addLast((E) s.readObject());
         }

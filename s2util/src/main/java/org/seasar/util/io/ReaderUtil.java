@@ -35,6 +35,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class ReaderUtil {
 
+    /** デフォルトのバッファサイズ */
     private static final int BUF_SIZE = 4096;
 
     /**

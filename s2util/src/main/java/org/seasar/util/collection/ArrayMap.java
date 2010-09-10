@@ -351,6 +351,15 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int h = 0;
+        for (int i = 0; i < size; i++) {
+            h += listTable[i].hashCode();
+        }
+        return h;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Set<Map.Entry<K, V>> entrySet() {

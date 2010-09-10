@@ -29,8 +29,10 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class TextFileUtil {
 
+    /** 日本語のエンコーディングを自動判別するためのエンコーディング名 */
     private static final String JIS_AUTO_DETECT = "JISAutoDetect";
 
+    /** UTF-8のエンコーディング名 */
     private static final String UTF8 = "UTF-8";
 
     /**

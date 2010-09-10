@@ -32,6 +32,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class InputStreamUtil {
 
+    /** デフォルトのバッファサイズ */
     private static final int BUF_SIZE = 4096;
 
     /**

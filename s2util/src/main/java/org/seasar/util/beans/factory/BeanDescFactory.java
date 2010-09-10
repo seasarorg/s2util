@@ -51,7 +51,9 @@ public abstract class BeanDescFactory {
     public static BeanDesc getBeanDesc(final Class<?> clazz) {
         assertArgumentNotNull("clazz", clazz);
 
-        initialize();
+        if (!initialized) {
+            initialize();
+        }
         BeanDesc beanDesc = beanDescCache.get(clazz);
         if (beanDesc == null) {
             beanDesc =
@@ -64,17 +66,15 @@ public abstract class BeanDescFactory {
      * 初期化を行ないます。
      */
     public static void initialize() {
-        if (!initialized) {
-            synchronized (BeanDescFactory.class) {
-                if (!initialized) {
-                    DisposableUtil.add(new Disposable() {
-                        @Override
-                        public void dispose() {
-                            clear();
-                        }
-                    });
-                    initialized = true;
-                }
+        synchronized (BeanDescFactory.class) {
+            if (!initialized) {
+                DisposableUtil.add(new Disposable() {
+                    @Override
+                    public void dispose() {
+                        clear();
+                    }
+                });
+                initialized = true;
             }
         }
     }

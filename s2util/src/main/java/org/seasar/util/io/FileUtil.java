@@ -31,6 +31,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class FileUtil {
 
+    /** デフォルトのバッファサイズ */
     private static final int BUF_SIZE = 4096;
 
     /**

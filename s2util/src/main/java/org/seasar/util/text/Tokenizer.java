@@ -217,7 +217,8 @@ public class Tokenizer {
         if (processOrdinary()) {
             return ttype;
         }
-        return ttype = peekc;
+        ttype = peekc;
+        return ttype;
     }
 
     /**
