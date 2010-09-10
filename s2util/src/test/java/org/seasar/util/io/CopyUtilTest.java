@@ -134,6 +134,18 @@ public class CopyUtilTest {
      */
     @Test
     public void testFileToFile() throws Exception {
+        int result = copy(inputFile, outputFile);
+        assertThat(result, is(urlString.getBytes("UTF-8").length));
+
+        result = copy(outputFile, "UTF-8", writer);
+        assertThat(writer.toString(), is(urlString));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testFileToFile_Encoding() throws Exception {
         int result = copy(inputFile, "UTF-8", outputFile, "Shift_JIS");
         assertThat(result, is(urlString.length()));
 

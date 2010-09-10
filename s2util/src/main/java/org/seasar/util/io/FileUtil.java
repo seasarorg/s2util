@@ -15,12 +15,20 @@
  */
 package org.seasar.util.io;
 
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.net.URLUtil;
+import org.seasar.util.nio.ChannelUtil;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -31,8 +39,14 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class FileUtil {
 
+    /** 日本語のエンコーディングを自動判別するためのエンコーディング名 */
+    private static final String JIS_AUTO_DETECT = "JISAutoDetect";
+
+    /** UTF-8のエンコーディング名 */
+    private static final String UTF8 = "UTF-8";
+
     /** デフォルトのバッファサイズ */
-    private static final int BUF_SIZE = 4096;
+    protected static final int DEFAULT_BUF_SIZE = 4096;
 
     /**
      * この抽象パス名の正規の形式を返します。
@@ -75,12 +89,170 @@ public abstract class FileUtil {
      *            ファイル
      * @return ファイルの内容を読み込んだバイト配列
      */
-    public static byte[] getBytes(final File file) {
+    public static byte[] readBytes(final File file) {
         assertArgumentNotNull("file", file);
 
-        final ByteArrayOutputStream os = new ByteArrayOutputStream(BUF_SIZE);
-        CopyUtil.copy(file, os);
-        return os.toByteArray();
+        final FileInputStream is = InputStreamUtil.create(file);
+        try {
+            final FileChannel channel = is.getChannel();
+            final ByteBuffer buffer =
+                ByteBuffer.allocate((int) ChannelUtil.size(channel));
+            ChannelUtil.read(channel, buffer);
+            return buffer.array();
+        } finally {
+            CloseableUtil.close(is);
+        }
+    }
+
+    /**
+     * デフォルトエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param path
+     *            ファイルのパス
+     * @return 読み込んだテキスト
+     */
+    public static String readText(final String path) {
+        return readText(path, Charset.defaultCharset().name());
+    }
+
+    /**
+     * デフォルトエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param file
+     *            ファイル
+     * @return 読み込んだテキスト
+     */
+    public static String readText(final File file) {
+        return readText(file, Charset.defaultCharset().name());
+    }
+
+    /**
+     * 指定のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param path
+     *            パス
+     * @param encoding
+     *            エンコーディング
+     * @return 読み込んだテキスト
+     */
+    public static String readText(final String path, final String encoding) {
+        assertArgumentNotEmpty("path", path);
+        assertArgumentNotEmpty("encoding", encoding);
+
+        final URL url = ResourceUtil.getResource(path);
+        if (url.getProtocol().equals("file")) {
+            return readText(URLUtil.toFile(url), encoding);
+        }
+        final InputStream is = URLUtil.openStream(url);
+        try {
+            final Reader reader =
+                ReaderUtil.create(
+                    new BufferedInputStream(is, DEFAULT_BUF_SIZE),
+                    encoding);
+            return read(reader, DEFAULT_BUF_SIZE);
+        } finally {
+            CloseableUtil.close(is);
+        }
+    }
+
+    /**
+     * 指定のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param file
+     *            ファイル
+     * @param encoding
+     *            エンコーディング
+     * @return 読み込んだテキスト
+     */
+    public static String readText(final File file, final String encoding) {
+        assertArgumentNotNull("file", file);
+        assertArgumentNotEmpty("encoding", encoding);
+
+        final FileInputStream is = InputStreamUtil.create(file);
+        try {
+            final Reader reader =
+                ReaderUtil.create(
+                    new BufferedInputStream(is, DEFAULT_BUF_SIZE),
+                    encoding);
+            return read(reader, (int) ChannelUtil.size(is.getChannel()));
+        } finally {
+            CloseableUtil.close(is);
+        }
+    }
+
+    /**
+     * 日本語のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param path
+     *            パス
+     * @return 読み込んだテキスト
+     */
+    public static String readJisAutoDetect(final String path) {
+        return readText(path, JIS_AUTO_DETECT);
+    }
+
+    /**
+     * 日本語のエンコーディングでファイルからテキストを読み込みます。
+     * 
+     * @param file
+     *            ファイル
+     * @return 読み込んだテキスト
+     */
+    public static String readJisAutoDetect(final File file) {
+        return readText(file, JIS_AUTO_DETECT);
+    }
+
+    /**
+     * UTF8でファイルからテキストを読み込みます。
+     * 
+     * @param path
+     *            パス
+     * @return 読み込んだテキスト
+     */
+    public static String readUTF8(final String path) {
+        return readText(path, UTF8);
+    }
+
+    /**
+     * UTF8でファイルからテキストを読み込みます。
+     * 
+     * @param file
+     *            ファイル
+     * @return 読み込んだテキスト
+     */
+    public static String readUTF8(final File file) {
+        return readText(file, UTF8);
+    }
+
+    /**
+     * リーダーから読み込んだ内容を文字列で返します。
+     * 
+     * @param reader
+     *            リーダー
+     * @param initialCapacity
+     *            バッファの初期容量
+     * @return リーダーから読み込んだ文字列
+     */
+    protected static String read(final Reader reader, final int initialCapacity) {
+        int bufferSize = initialCapacity;
+        char[] buf = new char[bufferSize];
+        int size = 0;
+        int len;
+        try {
+            while ((len = reader.read(buf, size, bufferSize - size)) != -1) {
+                size += len;
+                if (size == bufferSize) {
+                    final char[] newBuf =
+                        new char[bufferSize + initialCapacity];
+                    System.arraycopy(buf, 0, newBuf, 0, bufferSize);
+                    buf = newBuf;
+                    bufferSize += initialCapacity;
+                }
+            }
+            return new String(buf, 0, size);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
     }
 
 }

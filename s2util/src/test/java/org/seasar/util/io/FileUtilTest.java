@@ -15,49 +15,72 @@
  */
 package org.seasar.util.io;
 
-import junit.framework.TestCase;
+import java.io.File;
+import java.net.URL;
+
+import org.junit.Test;
+import org.seasar.util.net.URLUtil;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.seasar.util.io.FileUtil.*;
 
 /**
- * @author higa
+ * @author koichik
  * 
  */
-public class TextFileUtilTest extends TestCase {
+public class FileUtilTest {
+
+    URL url = ResourceUtil.getResource(getClass().getName().replace('.', '/')
+        + ".txt");
+
+    File inputFile = URLUtil.toFile(url);
 
     /**
      * @throws Exception
      */
+    @Test
+    public void testFileToFile() throws Exception {
+        byte[] bytes = readBytes(inputFile);
+        assertThat(bytes, is("あいうえお".getBytes("UTF-8")));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testReadAutoDetectCr() throws Exception {
-        assertEquals(
-            "1",
-            "aaa\rbbb",
-            TextFileUtil.readJisAutoDetect(getPath("hoge_cr.txt")));
+        assertThat(
+            FileUtil.readJisAutoDetect(getPath("hoge_cr.txt")),
+            is("aaa\rbbb"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testReadAutoDtectLf() throws Exception {
-        assertEquals(
-            "1",
-            "aaa\nbbb",
-            TextFileUtil.readJisAutoDetect(getPath("hoge_lf.txt")));
+        assertThat(
+            FileUtil.readJisAutoDetect(getPath("hoge_lf.txt")),
+            is("aaa\nbbb"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testReadAutoDetectCrLf() throws Exception {
-        assertEquals(
-            "1",
-            "aaa\r\nbbb",
-            TextFileUtil.readJisAutoDetect(getPath("hoge_crlf.txt")));
+        assertThat(
+            FileUtil.readJisAutoDetect(getPath("hoge_crlf.txt")),
+            is("aaa\r\nbbb"));
     }
 
     /**
      * @throws Exception
      */
+    @Test
     public void testReadUTF8() throws Exception {
-        assertEquals("1", "あ", TextFileUtil.readUTF8(getPath("hoge_utf8.txt")));
+        assertThat(FileUtil.readUTF8(getPath("hoge_utf8.txt")), is("あ"));
     }
 
     private String getPath(String fileName) {
@@ -66,4 +89,5 @@ public class TextFileUtilTest extends TestCase {
             .replace('.', '/')
             .replaceFirst(getClass().getSimpleName(), fileName);
     }
+
 }

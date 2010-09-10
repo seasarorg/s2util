@@ -20,8 +20,11 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,11 +32,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.net.URLUtil;
+import org.seasar.util.nio.ChannelUtil;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -97,16 +104,8 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * </tr>
  * </table>
  * <p>
- * {@link InputStream}/{@link OutputStream}/{@link Reader}/{@link Writer}については、
- * それぞれ{@link BufferedInputStream}/{@link BufferedOutputStream}/
- * {@link BufferedReader}/{@link BufferedWriter}を 受け取るメソッドも用意されています。
- * 二重にバッファリングされることを防ぐため、{@literal BufferedXxx}
- * を使用している場合はその型の引数を受け取るメソッドを呼び出すようにしてください。
- * </p>
- * <p>
- * {@link InputStream}/{@link OutputStream}/{@link Reader}/{@link Writer}および
- * それぞれの{@literal Buffered}版を受け取るメソッドは、 どれも引数に対して{@link Closeable#close()}
- * を呼び出しません。 クローズする責務は呼び出し側にあります。
+ * {@link InputStream}/{@link OutputStream}/{@link Reader}/{@link Writer}
+ * を受け取るメソッドは、 どれも引数に対して{@link Closeable#close()}を呼び出しません。 クローズする責務は呼び出し側にあります。
  * </p>
  * <p>
  * どのメソッドも発生した{@link IOException}は{@link IORuntimeException}にラップしてスローされます。
@@ -138,67 +137,18 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        return copyInternal(
-            new BufferedInputStream(in, DEFAULT_BUF_SIZE),
-            new BufferedOutputStream(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 入力ストリームから出力ストリームへコピーします。
-     * <p>
-     * 入力ストリーム、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final InputStream in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(new BufferedInputStream(in, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * 入力ストリームから出力ストリームへコピーします。
-     * <p>
-     * 入力ストリーム、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final BufferedInputStream in, final OutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(in, new BufferedOutputStream(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 入力ストリームから出力ストリームへコピーします。
-     * <p>
-     * 入力ストリーム、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final BufferedInputStream in,
-            final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(in, out);
+        if (in instanceof FileInputStream) {
+            if (out instanceof FileOutputStream) {
+                return copyInternal(
+                    (FileInputStream) in,
+                    (FileOutputStream) out);
+            }
+            return copyInternal((FileInputStream) in, wrap(out));
+        }
+        if (out instanceof FileOutputStream) {
+            return copyInternal(wrap(in), (FileOutputStream) out);
+        }
+        return copyInternal(wrap(in), wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -220,95 +170,8 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final Reader is = new InputStreamReader(in);
-        return copyInternal(
-            new BufferedReader(is, DEFAULT_BUF_SIZE),
-            new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final InputStream in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = new InputStreamReader(in);
-        return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in, final Writer out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = new InputStreamReader(in);
-        return copyInternal(is, new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = new InputStreamReader(in);
-        return copyInternal(is, out);
-    }
-
-    /**
-     * 指定のエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in, final String encoding,
-            final Writer out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in, encoding);
-        return copyInternal(is, new BufferedWriter(out, DEFAULT_BUF_SIZE));
+        final Reader is = new InputStreamReader(wrap(in));
+        return copyInternal(is, wrap(out));
     }
 
     /**
@@ -331,58 +194,8 @@ public abstract class CopyUtil {
         assertArgumentNotEmpty("encoding", encoding);
         assertArgumentNotNull("out", out);
 
-        final Reader is = ReaderUtil.create(in, encoding);
-        return copyInternal(
-            new BufferedReader(is, DEFAULT_BUF_SIZE),
-            new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 指定のエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final InputStream in, final String encoding,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in, encoding);
-        return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * 指定のエンコーディングで入力ストリームからライターへコピーします。
-     * <p>
-     * 入力ストリーム、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in, final String encoding,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in, encoding);
-        return copyInternal(is, out);
+        final Reader is = ReaderUtil.create(wrap(in), encoding);
+        return copyInternal(is, wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -404,37 +217,12 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final OutputStream os = OutputStreamUtil.create(out);
+        final FileOutputStream os = OutputStreamUtil.create(out);
         try {
-            return copyInternal(
-                new BufferedInputStream(in, DEFAULT_BUF_SIZE),
-                new BufferedOutputStream(os, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(os);
-        }
-    }
-
-    /**
-     * 入力ストリームからファイルへコピーします。
-     * <p>
-     * 入力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            ファイル
-     * @return コピーしたバイト数
-     */
-    public static int copy(final BufferedInputStream in, final File out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final OutputStream os = OutputStreamUtil.create(out);
-        try {
-            return copyInternal(in, new BufferedOutputStream(
-                os,
-                DEFAULT_BUF_SIZE));
+            if (in instanceof FileInputStream) {
+                return copyInternal((FileInputStream) in, os);
+            }
+            return copyInternal(wrap(in), os);
         } finally {
             CloseableUtil.close(os);
         }
@@ -459,27 +247,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final Reader is = new InputStreamReader(in);
-        return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングで入力ストリームから{@link StringBuilder}へコピーします。
-     * <p>
-     * 入力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param out
-     *            {@link StringBuilder}
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in, final StringBuilder out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = new InputStreamReader(in);
+        final Reader is = new InputStreamReader(wrap(in));
         return copyInternal(is, out);
     }
 
@@ -503,31 +271,7 @@ public abstract class CopyUtil {
         assertArgumentNotEmpty("encoding", encoding);
         assertArgumentNotNull("out", out);
 
-        final Reader is = ReaderUtil.create(in, encoding);
-        return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * 指定のエンコーディングで入力ストリームから{@link StringBuilder}へコピーします。
-     * <p>
-     * 入力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            入力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            {@link StringBuilder}
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedInputStream in, final String encoding,
-            final StringBuilder out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in, encoding);
+        final Reader is = ReaderUtil.create(wrap(in), encoding);
         return copyInternal(is, out);
     }
 
@@ -550,71 +294,8 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final Writer os = new OutputStreamWriter(out);
-        return copyInternal(
-            new BufferedReader(in, DEFAULT_BUF_SIZE),
-            new BufferedWriter(os, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @return コピーした文字数
-     */
-    public static int copy(final Reader in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Writer os = new OutputStreamWriter(out);
-        return copyInternal(new BufferedReader(in, DEFAULT_BUF_SIZE), os);
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final OutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Writer os = new OutputStreamWriter(out);
-        return copyInternal(in, new BufferedWriter(os, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in,
-            final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Writer os = new OutputStreamWriter(out);
-        return copyInternal(in, os);
+        final Writer os = new OutputStreamWriter(wrap(out));
+        return copyInternal(wrap(in), os);
     }
 
     /**
@@ -637,82 +318,8 @@ public abstract class CopyUtil {
         assertArgumentNotNull("out", out);
         assertArgumentNotEmpty("encoding", encoding);
 
-        final Writer os = WriterUtil.create(out, encoding);
-        return copyInternal(
-            new BufferedReader(in, DEFAULT_BUF_SIZE),
-            new BufferedWriter(os, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 指定のエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @return コピーした文字数
-     */
-    public static int copy(final Reader in, final BufferedOutputStream out,
-            final String encoding) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-        assertArgumentNotEmpty("encoding", encoding);
-
-        final Writer os = WriterUtil.create(out, encoding);
-        return copyInternal(new BufferedReader(in, DEFAULT_BUF_SIZE), os);
-    }
-
-    /**
-     * 指定のエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final OutputStream out,
-            final String encoding) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-        assertArgumentNotEmpty("encoding", encoding);
-
-        final Writer os = WriterUtil.create(out, encoding);
-        return copyInternal(in, new BufferedWriter(os, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 指定のエンコーディングでリーダーから出力ストリームへコピーします。
-     * <p>
-     * リーダー、出力ストリームともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            出力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in,
-            final BufferedOutputStream out, final String encoding) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-        assertArgumentNotEmpty("encoding", encoding);
-
-        final Writer os = WriterUtil.create(out, encoding);
-        return copyInternal(in, os);
+        final Writer os = WriterUtil.create(wrap(out), encoding);
+        return copyInternal(wrap(in), os);
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -734,66 +341,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        return copyInternal(
-            new BufferedReader(in, DEFAULT_BUF_SIZE),
-            new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * リーダーからライターへコピーします。
-     * <p>
-     * リーダー、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final Reader in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(new BufferedReader(in, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * リーダーからライターへコピーします。
-     * <p>
-     * リーダー、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final Writer out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(in, new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * リーダーからライターへコピーします。
-     * <p>
-     * リーダー、ライターともクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(in, out);
+        return copyInternal(wrap(in), wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -817,33 +365,7 @@ public abstract class CopyUtil {
 
         final Writer os = WriterUtil.create(out);
         try {
-            return copyInternal(
-                new BufferedReader(in, DEFAULT_BUF_SIZE),
-                new BufferedWriter(os, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(os);
-        }
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでリーダーからファイルへコピーします。
-     * <p>
-     * リーダーはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            ファイル
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final File out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Writer os = WriterUtil.create(out);
-        try {
-            return copyInternal(in, new BufferedWriter(os, DEFAULT_BUF_SIZE));
+            return copyInternal(wrap(in), wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -868,37 +390,7 @@ public abstract class CopyUtil {
 
         final Writer os = WriterUtil.create(out, encoding);
         try {
-            return copyInternal(
-                new BufferedReader(in, DEFAULT_BUF_SIZE),
-                new BufferedWriter(os, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(os);
-        }
-    }
-
-    /**
-     * 指定のエンコーディングでリーダーからファイルへコピーします。
-     * <p>
-     * リーダーはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            ファイル
-     * @param encoding
-     *            エンコーディング
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final File out,
-            final String encoding) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-        assertArgumentNotEmpty("encoding", encoding);
-
-        final Writer os = WriterUtil.create(out, encoding);
-        try {
-            return copyInternal(in, new BufferedWriter(os, DEFAULT_BUF_SIZE));
+            return copyInternal(wrap(in), wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -923,26 +415,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        return copyInternal(new BufferedReader(in, DEFAULT_BUF_SIZE), out);
-    }
-
-    /**
-     * リーダーから{@link StringBuilder}へコピーします。
-     * <p>
-     * リーダーはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            リーダー
-     * @param out
-     *            {@link StringBuilder}
-     * @return コピーした文字数
-     */
-    public static int copy(final BufferedReader in, final StringBuilder out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(in, out);
+        return copyInternal(wrap(in), out);
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -964,37 +437,12 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final InputStream is = InputStreamUtil.create(in);
+        final FileInputStream is = InputStreamUtil.create(in);
         try {
-            return copyInternal(
-                new BufferedInputStream(is, DEFAULT_BUF_SIZE),
-                new BufferedOutputStream(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * ファイルから出力ストリームへコピーします。
-     * <p>
-     * 出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            ファイル
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final File in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final InputStream is = InputStreamUtil.create(in);
-        try {
-            return copyInternal(
-                new BufferedInputStream(is, DEFAULT_BUF_SIZE),
-                out);
+            if (out instanceof FileOutputStream) {
+                return copyInternal(is, (FileOutputStream) out);
+            }
+            return copyInternal(is, wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1021,33 +469,7 @@ public abstract class CopyUtil {
 
         final Reader is = ReaderUtil.create(in);
         try {
-            return copyInternal(
-                new BufferedReader(is, DEFAULT_BUF_SIZE),
-                new BufferedWriter(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでファイルからライターへコピーします。
-     * <p>
-     * ライターはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            ファイル
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final File in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in);
-        try {
-            return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
+            return copyInternal(wrap(is), wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1075,34 +497,7 @@ public abstract class CopyUtil {
 
         final Reader is = ReaderUtil.create(in, encoding);
         try {
-            return copyInternal(
-                new BufferedReader(is, DEFAULT_BUF_SIZE),
-                new BufferedWriter(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * 指定のエンコーディングでファイルからライターへコピーします。
-     * 
-     * @param in
-     *            ファイル
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final File in, final String encoding,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = ReaderUtil.create(in, encoding);
-        try {
-            return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
+            return copyInternal(wrap(is), wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1124,15 +519,11 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final InputStream is = InputStreamUtil.create(in);
+        final FileInputStream is = InputStreamUtil.create(in);
         try {
-            final OutputStream os = OutputStreamUtil.create(out);
+            final FileOutputStream os = OutputStreamUtil.create(out);
             try {
-                return copyInternal(new BufferedInputStream(
-                    is,
-                    DEFAULT_BUF_SIZE), new BufferedOutputStream(
-                    os,
-                    DEFAULT_BUF_SIZE));
+                return copyInternal(is, os);
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1161,9 +552,7 @@ public abstract class CopyUtil {
         try {
             final Writer os = WriterUtil.create(out);
             try {
-                return copyInternal(
-                    new BufferedReader(is, DEFAULT_BUF_SIZE),
-                    new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                return copyInternal(wrap(is), wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1192,9 +581,7 @@ public abstract class CopyUtil {
         try {
             final Writer os = WriterUtil.create(out, encoding);
             try {
-                return copyInternal(
-                    new BufferedReader(is, DEFAULT_BUF_SIZE),
-                    new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                return copyInternal(wrap(is), wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1227,9 +614,7 @@ public abstract class CopyUtil {
         try {
             final Writer os = WriterUtil.create(out, outputEncoding);
             try {
-                return copyInternal(
-                    new BufferedReader(is, DEFAULT_BUF_SIZE),
-                    new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                return copyInternal(wrap(is), wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1256,7 +641,7 @@ public abstract class CopyUtil {
 
         final Reader is = ReaderUtil.create(in);
         try {
-            return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
+            return copyInternal(wrap(is), out);
         } finally {
             CloseableUtil.close(is);
         }
@@ -1281,7 +666,7 @@ public abstract class CopyUtil {
 
         final Reader is = ReaderUtil.create(in, encoding);
         try {
-            return copyInternal(new BufferedReader(is, DEFAULT_BUF_SIZE), out);
+            return copyInternal(wrap(is), out);
         } finally {
             CloseableUtil.close(is);
         }
@@ -1308,35 +693,10 @@ public abstract class CopyUtil {
 
         final InputStream is = URLUtil.openStream(in);
         try {
-            return copyInternal(
-                new BufferedInputStream(is, DEFAULT_BUF_SIZE),
-                new BufferedOutputStream(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * URLから出力ストリームへコピーします。
-     * <p>
-     * 出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            URL
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final URL in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final InputStream is = URLUtil.openStream(in);
-        try {
-            return copyInternal(
-                new BufferedInputStream(is, DEFAULT_BUF_SIZE),
-                out);
+            if (out instanceof FileOutputStream) {
+                return copyInternal(wrap(is), (FileOutputStream) out);
+            }
+            return copyInternal(wrap(is), wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1363,35 +723,7 @@ public abstract class CopyUtil {
 
         final InputStream is = URLUtil.openStream(in);
         try {
-            return copyInternal(new BufferedReader(
-                new InputStreamReader(is),
-                DEFAULT_BUF_SIZE), new BufferedWriter(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでURLからライターへコピーします。
-     * <p>
-     * ライターはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            URL
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final URL in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final InputStream is = URLUtil.openStream(in);
-        try {
-            return copyInternal(new BufferedReader(
-                new InputStreamReader(is),
-                DEFAULT_BUF_SIZE), out);
+            return copyInternal(new InputStreamReader(wrap(is)), wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1419,39 +751,8 @@ public abstract class CopyUtil {
         final InputStream is = URLUtil.openStream(in);
         try {
             return copyInternal(
-                new BufferedReader(
-                    ReaderUtil.create(is, encoding),
-                    DEFAULT_BUF_SIZE),
-                new BufferedWriter(out, DEFAULT_BUF_SIZE));
-        } finally {
-            CloseableUtil.close(is);
-        }
-    }
-
-    /**
-     * 指定のエンコーディングでURLからライターへコピーします。
-     * 
-     * @param in
-     *            URL
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final URL in, final String encoding,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        final InputStream is = URLUtil.openStream(in);
-        try {
-            return copyInternal(
-                new BufferedReader(
-                    ReaderUtil.create(is, encoding),
-                    DEFAULT_BUF_SIZE),
-                out);
+                ReaderUtil.create(wrap(is), encoding),
+                wrap(out));
         } finally {
             CloseableUtil.close(is);
         }
@@ -1475,13 +776,9 @@ public abstract class CopyUtil {
 
         final InputStream is = URLUtil.openStream(in);
         try {
-            final OutputStream os = OutputStreamUtil.create(out);
+            final FileOutputStream os = OutputStreamUtil.create(out);
             try {
-                return copyInternal(new BufferedInputStream(
-                    is,
-                    DEFAULT_BUF_SIZE), new BufferedOutputStream(
-                    os,
-                    DEFAULT_BUF_SIZE));
+                return copyInternal(wrap(is), os);
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1511,10 +808,8 @@ public abstract class CopyUtil {
             final Writer os = WriterUtil.create(out);
             try {
                 return copyInternal(
-                    new BufferedReader(
-                        ReaderUtil.create(is, encoding),
-                        DEFAULT_BUF_SIZE),
-                    new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                    ReaderUtil.create(wrap(is), encoding),
+                    wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1543,9 +838,7 @@ public abstract class CopyUtil {
         try {
             final Writer os = WriterUtil.create(out, encoding);
             try {
-                return copyInternal(new BufferedReader(
-                    new InputStreamReader(is),
-                    DEFAULT_BUF_SIZE), new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                return copyInternal(new InputStreamReader(wrap(is)), wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1579,10 +872,8 @@ public abstract class CopyUtil {
             final Writer os = WriterUtil.create(out, outputEncoding);
             try {
                 return copyInternal(
-                    new BufferedReader(
-                        ReaderUtil.create(is, inputEncoding),
-                        DEFAULT_BUF_SIZE),
-                    new BufferedWriter(os, DEFAULT_BUF_SIZE));
+                    ReaderUtil.create(wrap(is), inputEncoding),
+                    wrap(os));
             } finally {
                 CloseableUtil.close(os);
             }
@@ -1609,9 +900,7 @@ public abstract class CopyUtil {
 
         final InputStream is = URLUtil.openStream(in);
         try {
-            return copyInternal(new BufferedReader(
-                new InputStreamReader(is),
-                DEFAULT_BUF_SIZE), out);
+            return copyInternal(new InputStreamReader(wrap(is)), out);
         } finally {
             CloseableUtil.close(is);
         }
@@ -1636,11 +925,7 @@ public abstract class CopyUtil {
 
         final InputStream is = URLUtil.openStream(in);
         try {
-            return copyInternal(
-                new BufferedReader(
-                    ReaderUtil.create(is, encoding),
-                    DEFAULT_BUF_SIZE),
-                out);
+            return copyInternal(ReaderUtil.create(wrap(is), encoding), out);
         } finally {
             CloseableUtil.close(is);
         }
@@ -1665,28 +950,11 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        return copyInternal(
-            new ByteArrayInputStream(in),
-            new BufferedOutputStream(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * バイト配列から出力ストリームへコピーします。
-     * <p>
-     * 出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            バイト配列
-     * @param out
-     *            出力ストリーム
-     * @return コピーしたバイト数
-     */
-    public static int copy(final byte[] in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(new ByteArrayInputStream(in), out);
+        final ByteArrayInputStream is = new ByteArrayInputStream(in);
+        if (out instanceof FileOutputStream) {
+            return copyInternal(is, (FileOutputStream) out);
+        }
+        return copyInternal(is, wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -1709,27 +977,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("out", out);
 
         final Reader is = new InputStreamReader(new ByteArrayInputStream(in));
-        return copyInternal(is, new BufferedWriter(out, DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングでバイト配列からライターへコピーします。
-     * <p>
-     * ライターはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            バイト配列
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final byte[] in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Reader is = new InputStreamReader(new ByteArrayInputStream(in));
-        return copyInternal(is, out);
+        return copyInternal(is, wrap(out));
     }
 
     /**
@@ -1752,42 +1000,9 @@ public abstract class CopyUtil {
         assertArgumentNotEmpty("encoding", encoding);
         assertArgumentNotNull("out", out);
 
-        try {
-            final Reader is =
-                new InputStreamReader(new ByteArrayInputStream(in), encoding);
-            return copyInternal(is, new BufferedWriter(out, DEFAULT_BUF_SIZE));
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
-    }
-
-    /**
-     * 指定されたエンコーディングでバイト配列からライターへコピーします。
-     * <p>
-     * ライターはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            バイト配列
-     * @param encoding
-     *            エンコーディング
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final byte[] in, final String encoding,
-            final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotEmpty("encoding", encoding);
-        assertArgumentNotNull("out", out);
-
-        try {
-            final Reader is =
-                new InputStreamReader(new ByteArrayInputStream(in), encoding);
-            return copyInternal(is, out);
-        } catch (final IOException e) {
-            throw new IORuntimeException(e);
-        }
+        final Reader is =
+            ReaderUtil.create(new ByteArrayInputStream(in), encoding);
+        return copyInternal(is, wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -1806,11 +1021,11 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final OutputStream os = OutputStreamUtil.create(out);
+        final FileOutputStream os = OutputStreamUtil.create(out);
         try {
-            return copyInternal(
-                new ByteArrayInputStream(in),
-                new BufferedOutputStream(os, DEFAULT_BUF_SIZE));
+            final FileChannel channel = os.getChannel();
+            final ByteBuffer buffer = ByteBuffer.wrap(in);
+            return ChannelUtil.write(channel, buffer);
         } finally {
             CloseableUtil.close(os);
         }
@@ -1837,7 +1052,7 @@ public abstract class CopyUtil {
             ReaderUtil.create(new ByteArrayInputStream(in), encoding);
         final Writer os = WriterUtil.create(out);
         try {
-            return copyInternal(is, new BufferedWriter(os, DEFAULT_BUF_SIZE));
+            return copyInternal(is, wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -1863,7 +1078,7 @@ public abstract class CopyUtil {
         final Reader is = new InputStreamReader(new ByteArrayInputStream(in));
         final Writer os = WriterUtil.create(out, encoding);
         try {
-            return copyInternal(is, new BufferedWriter(os, DEFAULT_BUF_SIZE));
+            return copyInternal(is, wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -1893,7 +1108,7 @@ public abstract class CopyUtil {
             ReaderUtil.create(new ByteArrayInputStream(in), inputEncoding);
         final Writer os = WriterUtil.create(out, outputEncoding);
         try {
-            return copyInternal(is, new BufferedWriter(os, DEFAULT_BUF_SIZE));
+            return copyInternal(is, wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -1960,29 +1175,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        final Writer os = new OutputStreamWriter(out);
-        return copyInternal(new StringReader(in), new BufferedWriter(
-            os,
-            DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * プラットフォームのデフォルトエンコーディングで文字列を出力ストリームへコピーします。
-     * <p>
-     * 出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            文字列
-     * @param out
-     *            出力ストリーム
-     * @return コピーした文字数
-     */
-    public static int copy(final String in, final BufferedOutputStream out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        final Writer os = new OutputStreamWriter(out);
+        final Writer os = new OutputStreamWriter(wrap(out));
         return copyInternal(new StringReader(in), os);
     }
 
@@ -2006,33 +1199,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("out", out);
         assertArgumentNotEmpty("encoding", encoding);
 
-        final Writer os = WriterUtil.create(out, encoding);
-        return copyInternal(new StringReader(in), new BufferedWriter(
-            os,
-            DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 指定されたエンコーディングで文字列を出力ストリームへコピーします。
-     * <p>
-     * 出力ストリームはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            文字列
-     * @param out
-     *            出力ストリーム
-     * @param encoding
-     *            エンコーディング
-     * @return コピーした文字数
-     */
-    public static int copy(final String in, final BufferedOutputStream out,
-            final String encoding) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-        assertArgumentNotEmpty("encoding", encoding);
-
-        final Writer os = WriterUtil.create(out, encoding);
+        final Writer os = WriterUtil.create(wrap(out), encoding);
         return copyInternal(new StringReader(in), os);
     }
 
@@ -2055,28 +1222,7 @@ public abstract class CopyUtil {
         assertArgumentNotNull("in", in);
         assertArgumentNotNull("out", out);
 
-        return copyInternal(new StringReader(in), new BufferedWriter(
-            out,
-            DEFAULT_BUF_SIZE));
-    }
-
-    /**
-     * 文字列をライターへコピーします。
-     * <p>
-     * ライターはクローズされません。
-     * </p>
-     * 
-     * @param in
-     *            文字列
-     * @param out
-     *            ライター
-     * @return コピーした文字数
-     */
-    public static int copy(final String in, final BufferedWriter out) {
-        assertArgumentNotNull("in", in);
-        assertArgumentNotNull("out", out);
-
-        return copyInternal(new StringReader(in), out);
+        return copyInternal(new StringReader(in), wrap(out));
     }
 
     // ////////////////////////////////////////////////////////////////
@@ -2097,9 +1243,7 @@ public abstract class CopyUtil {
 
         final Writer os = WriterUtil.create(out);
         try {
-            return copyInternal(new StringReader(in), new BufferedWriter(
-                os,
-                DEFAULT_BUF_SIZE));
+            return copyInternal(new StringReader(in), wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -2124,9 +1268,7 @@ public abstract class CopyUtil {
 
         final Writer os = WriterUtil.create(out, encoding);
         try {
-            return copyInternal(new StringReader(in), new BufferedWriter(
-                os,
-                DEFAULT_BUF_SIZE));
+            return copyInternal(new StringReader(in), wrap(os));
         } finally {
             CloseableUtil.close(os);
         }
@@ -2162,6 +1304,89 @@ public abstract class CopyUtil {
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
+    }
+
+    /**
+     * ファイル入力ストリームの内容を出力ストリームにコピーします。
+     * <p>
+     * ファイル入力ストリーム、出力ストリームともクローズされません。
+     * </p>
+     * 
+     * @param in
+     *            ファイル入力ストリーム
+     * @param out
+     *            出力ストリーム
+     * @return コピーしたバイト数
+     */
+    protected static int copyInternal(final FileInputStream in,
+            final OutputStream out) {
+        try {
+            final FileChannel channel = in.getChannel();
+            final ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUF_SIZE);
+            final byte[] buf = buffer.array();
+            int len;
+            int amount = 0;
+            while ((len = ChannelUtil.read(channel, buffer, amount)) != -1) {
+                out.write(buf, 0, len);
+                buffer.clear();
+                amount += len;
+            }
+            out.flush();
+            return amount;
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 入力ストリームの内容をファイル出力ストリームにコピーします。
+     * <p>
+     * 入力ストリーム、ファイル出力ストリームともクローズされません。
+     * </p>
+     * 
+     * @param in
+     *            入力ストリーム
+     * @param out
+     *            ファイル出力ストリーム
+     * @return コピーしたバイト数
+     */
+    protected static int copyInternal(final InputStream in,
+            final FileOutputStream out) {
+        try {
+            final FileChannel channel = out.getChannel();
+            final ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUF_SIZE);
+            final byte[] buf = buffer.array();
+            int len;
+            int amount = 0;
+            while ((len = in.read(buf)) != -1) {
+                channel.write(buffer, amount);
+                buffer.clear();
+                amount += len;
+            }
+            out.flush();
+            return amount;
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * ファイル入力ストリームの内容をファイル出力ストリームにコピーします。
+     * <p>
+     * ファイル入力ストリーム、ファイル出力ストリームともクローズされません。
+     * </p>
+     * 
+     * @param in
+     *            ファイル入力ストリーム
+     * @param out
+     *            ファイル出力ストリーム
+     * @return コピーしたバイト数
+     */
+    protected static int copyInternal(final FileInputStream in,
+            final FileOutputStream out) {
+        final FileChannel ic = in.getChannel();
+        final FileChannel oc = out.getChannel();
+        return (int) ChannelUtil.transfer(ic, oc);
     }
 
     /**
@@ -2214,6 +1439,74 @@ public abstract class CopyUtil {
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
+    }
+
+    /**
+     * 必要があれば入力ストリームを{@link BufferedInputStream}でラップします。
+     * 
+     * @param is
+     *            入力ストリーム
+     * @return ラップされた入力ストリーム
+     */
+    protected static InputStream wrap(final InputStream is) {
+        if (is instanceof BufferedInputStream) {
+            return is;
+        }
+        if (is instanceof ByteArrayInputStream) {
+            return is;
+        }
+        return new BufferedInputStream(is, DEFAULT_BUF_SIZE);
+    }
+
+    /**
+     * 必要があれば出力ストリームを{@link BufferedOutputStream}でラップします。
+     * 
+     * @param os
+     *            出力ストリーム
+     * @return ラップされた出力ストリーム
+     */
+    protected static OutputStream wrap(final OutputStream os) {
+        if (os instanceof BufferedOutputStream) {
+            return os;
+        }
+        if (os instanceof ByteArrayOutputStream) {
+            return os;
+        }
+        return new BufferedOutputStream(os, DEFAULT_BUF_SIZE);
+    }
+
+    /**
+     * 必要があればリーダーを{@link BufferedReader}でラップします。
+     * 
+     * @param reader
+     *            リーダー
+     * @return ラップされたリーダー
+     */
+    protected static Reader wrap(final Reader reader) {
+        if (reader instanceof BufferedReader) {
+            return reader;
+        }
+        if (reader instanceof StringReader) {
+            return reader;
+        }
+        return new BufferedReader(reader, DEFAULT_BUF_SIZE);
+    }
+
+    /**
+     * 必要があればライターを{@link BufferedWriter}でラップします。
+     * 
+     * @param writer
+     *            ライター
+     * @return ラップされたライター
+     */
+    protected static Writer wrap(final Writer writer) {
+        if (writer instanceof BufferedWriter) {
+            return writer;
+        }
+        if (writer instanceof StringWriter) {
+            return writer;
+        }
+        return new BufferedWriter(writer, DEFAULT_BUF_SIZE);
     }
 
 }
