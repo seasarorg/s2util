@@ -1491,4 +1491,26 @@ public abstract class CollectionsUtil {
         return value;
     }
 
+    /**
+     * {@link Collection}が{@literal null}または要素が無い場合は{@literal true}を返します。
+     * 
+     * @param collection
+     *            コレクション
+     * @return コレクションが{@literal null}または要素が無い場合は{@literal true}
+     */
+    public static boolean isEmpty(final Collection<?> collection) {
+        return (collection == null || collection.isEmpty());
+    }
+
+    /**
+     * {@link Map}が{@literal null}または要素が無い場合は{@literal true}を返します。
+     * 
+     * @param map
+     *            マップ
+     * @return マップが{@literal null}または要素が無い場合は{@literal true}
+     */
+    public static boolean isEmpty(final Map<?, ?> map) {
+        return (map == null || map.isEmpty());
+    }
+
 }
