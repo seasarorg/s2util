@@ -19,9 +19,10 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import org.seasar.util.beans.Converter;
-import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.ParseRuntimeException;
 import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 数値用のコンバータです。
@@ -42,9 +43,7 @@ public class NumberConverter implements Converter {
      *            数値のパターン
      */
     public NumberConverter(final String pattern) {
-        if (StringUtil.isEmpty(pattern)) {
-            throw new EmptyRuntimeException("pattern");
-        }
+        assertArgumentNotEmpty("pattern", pattern);
         this.pattern = pattern;
     }
 

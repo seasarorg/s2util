@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.seasar.util.exception.EmptyRuntimeException;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 配列に対するユーティリティクラスです。
@@ -263,9 +263,7 @@ public abstract class ArrayUtil {
      * @return オブジェクトが追加された結果の配列
      */
     public static <T> T[] add(final T[] array, final T obj) {
-        if (array == null) {
-            throw new EmptyRuntimeException("array");
-        }
+        assertArgumentNotNull("array", array);
         final int length = array.length;
         @SuppressWarnings("unchecked")
         final T[] newArray =
@@ -287,9 +285,7 @@ public abstract class ArrayUtil {
      * @return 値が追加された結果の配列
      */
     public static int[] add(final int[] array, final int value) {
-        if (array == null) {
-            throw new EmptyRuntimeException("array");
-        }
+        assertArgumentNotNull("array", array);
         final int[] newArray =
             (int[]) Array.newInstance(int.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);

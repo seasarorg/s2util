@@ -20,8 +20,9 @@ import java.util.Date;
 import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.StringConversionUtil;
-import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.lang.StringUtil;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * SQLの日付用のコンバータです。
@@ -42,9 +43,7 @@ public class SqlDateConverter implements Converter {
      *            日付のパターン
      */
     public SqlDateConverter(final String pattern) {
-        if (StringUtil.isEmpty(pattern)) {
-            throw new EmptyRuntimeException("pattern");
-        }
+        assertArgumentNotEmpty("pattern", pattern);
         this.pattern = pattern;
     }
 

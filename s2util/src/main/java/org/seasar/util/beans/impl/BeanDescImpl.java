@@ -41,7 +41,6 @@ import org.seasar.util.convert.IntegerConversionUtil;
 import org.seasar.util.convert.LongConversionUtil;
 import org.seasar.util.convert.ShortConversionUtil;
 import org.seasar.util.exception.ConstructorNotFoundRuntimeException;
-import org.seasar.util.exception.EmptyRuntimeException;
 import org.seasar.util.exception.FieldNotFoundRuntimeException;
 import org.seasar.util.exception.MethodNotFoundRuntimeException;
 import org.seasar.util.exception.PropertyNotFoundRuntimeException;
@@ -574,9 +573,7 @@ public class BeanDescImpl implements BeanDesc {
      *            {@link PropertyDesc}
      */
     protected void addPropertyDesc(final PropertyDescImpl propertyDesc) {
-        if (propertyDesc == null) {
-            throw new EmptyRuntimeException("propertyDesc");
-        }
+        assertArgumentNotNull("propertyDesc", propertyDesc);
         propertyDescCache.put(propertyDesc.getPropertyName(), propertyDesc);
     }
 

@@ -15,37 +15,46 @@
  */
 package org.seasar.util.exception;
 
-import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
  * 空の場合にスローされる例外です。
  * 
  * @author higa
  */
-public class EmptyRuntimeException extends SRuntimeException {
+public class EmptyRuntimeException extends SIllegalArgumentException {
 
     private static final long serialVersionUID = 4625805280526951642L;
-
-    private final String targetName;
 
     /**
      * {@link EmptyRuntimeException}を作成します。
      * 
-     * @param targetName
-     *            対象の名前
+     * @param argName
+     *            引数の名前
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の配列
      */
-    public EmptyRuntimeException(final String targetName) {
-        super("EUTL0007", asArray(targetName));
-        this.targetName = targetName;
+    public EmptyRuntimeException(final String argName,
+            final String messageCode, final Object[] args) {
+        this(argName, messageCode, args, null);
     }
 
     /**
-     * ターゲット名を返します。
+     * {@link EmptyRuntimeException}を作成します。
      * 
-     * @return ターゲット名
+     * @param argName
+     *            引数の名前
+     * @param messageCode
+     *            メッセージコード
+     * @param args
+     *            引数の配列
+     * @param cause
+     *            原因となった例外
      */
-    public String getTargetName() {
-        return targetName;
+    public EmptyRuntimeException(final String argName,
+            final String messageCode, final Object[] args, final Throwable cause) {
+        super(argName, messageCode, args, cause);
     }
 
 }

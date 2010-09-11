@@ -29,6 +29,7 @@ import org.seasar.util.exception.NoSuchFieldRuntimeException;
 import org.seasar.util.exception.NoSuchMethodRuntimeException;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link Class}用のユーティリティクラスです。
@@ -118,9 +119,7 @@ public abstract class ClassUtil {
     @SuppressWarnings("unchecked")
     public static <T> Class<T> forName(final String className,
             final ClassLoader loader) throws ClassNotFoundRuntimeException {
-        if (StringUtil.isEmpty(className)) {
-            throw new EmptyRuntimeException("className");
-        }
+        assertArgumentNotEmpty("className", className);
         try {
             return (Class<T>) Class.forName(className, true, loader);
         } catch (final ClassNotFoundException e) {
@@ -191,9 +190,7 @@ public abstract class ClassUtil {
      */
     public static Class<?> convertClass(final String className)
             throws ClassNotFoundRuntimeException {
-        if (StringUtil.isEmpty(className)) {
-            throw new EmptyRuntimeException("className");
-        }
+        assertArgumentNotEmpty("className", className);
         final Class<?> clazz = primitiveNameToClassMap.get(className);
         if (clazz != null) {
             return clazz;
@@ -420,9 +417,7 @@ public abstract class ClassUtil {
      */
     public static Field getField(final Class<?> clazz, final String name)
             throws NoSuchFieldRuntimeException {
-        if (StringUtil.isEmpty(name)) {
-            throw new EmptyRuntimeException("name");
-        }
+        assertArgumentNotEmpty("names", name);
         try {
             return clazz.getField(name);
         } catch (final NoSuchFieldException e) {
@@ -471,9 +466,7 @@ public abstract class ClassUtil {
      */
     public static Method getMethod(final Class<?> clazz, final String name,
             final Class<?>... argTypes) throws NoSuchMethodRuntimeException {
-        if (StringUtil.isEmpty(name)) {
-            throw new EmptyRuntimeException("name");
-        }
+        assertArgumentNotEmpty("name", name);
         try {
             return clazz.getMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
