@@ -15,14 +15,17 @@
  */
 package org.seasar.util.io;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Properties;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.seasar.util.exception.NullArgumentException;
+import org.seasar.util.net.URLUtil;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -32,6 +35,11 @@ import static org.junit.Assert.*;
  * 
  */
 public class PropertiesUtilTest {
+
+    URL url = ResourceUtil.getResource(getClass().getName().replace('.', '/')
+        + ".txt");
+
+    File inputFile = URLUtil.toFile(url);
 
     /**
      * @see org.junit.rules.ExpectedException
@@ -129,6 +137,29 @@ public class PropertiesUtilTest {
         InputStreamReader inputStreamReader = null;
         Properties properties = new Properties();
         PropertiesUtil.load(properties, inputStreamReader);
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File, String)}
+     * .
+     */
+    @Test
+    public void testLoadPropertiesFile() {
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, inputFile);
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File)} .
+     */
+    @Test
+    public void testLoadPropertiesFileString() {
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, inputFile, "UTF-8");
+        assertThat(properties.getProperty("a"), is("A"));
     }
 
 }

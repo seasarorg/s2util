@@ -15,9 +15,11 @@
  */
 package org.seasar.util.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 import org.seasar.util.exception.IORuntimeException;
@@ -74,6 +76,45 @@ public abstract class PropertiesUtil {
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
+    }
+
+    /**
+     * 指定のエンコーディングでファイルを読み込んで{@link Properties}にロードします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット
+     * @param file
+     *            ファイル
+     * @param encoding
+     *            エンコーディング
+     */
+    public static void load(final Properties props, final File file,
+            final String encoding) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("file", file);
+        assertArgumentNotEmpty("encoding", encoding);
+
+        final Reader reader = ReaderUtil.create(file, encoding);
+
+        try {
+            props.load(reader);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        } finally {
+            CloseableUtil.close(reader);
+        }
+    }
+
+    /**
+     * プラットフォームデフォルトエンコーディングでファイルを読み込んで{@link Properties}にロードします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット
+     * @param file
+     *            ファイル
+     */
+    public static void load(final Properties props, final File file) {
+        load(props, file, Charset.defaultCharset().name());
     }
 
 }
