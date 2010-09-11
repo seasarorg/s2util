@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.seasar.util.collection.ArrayUtil;
-import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.EmptyArgumentException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalArgumentException;
 import org.seasar.util.exception.SIllegalStateException;
@@ -59,13 +59,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空文字列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空文字列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final String argValue) {
         if (StringUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0010",
                 asArray(argValue));
@@ -79,13 +79,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空文字列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空文字列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final CharSequence argValue) {
         if (argValue == null || argValue.length() == 0) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0010",
                 asArray(argValue));
@@ -99,13 +99,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final Object[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -119,13 +119,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final boolean[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -139,13 +139,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final byte[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -159,13 +159,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final short[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -179,13 +179,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final int[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -199,13 +199,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final long[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -219,13 +219,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final float[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -239,13 +239,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final double[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -259,13 +259,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の配列でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の配列の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final char[] argValue) {
         if (ArrayUtil.isEmpty(argValue)) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
                 asArray(argValue));
@@ -279,13 +279,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の{@link Collection}でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の{@link Collection}の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final Collection<?> argValue) {
         if (argValue == null || argValue.isEmpty()) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0012",
                 asArray(argValue));
@@ -299,13 +299,13 @@ public abstract class AssertionUtil {
      *            {@code null} でも空の{@link Map}でもあってはならない引数の名前
      * @param argValue
      *            引数の値
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             引数が<code>null</code>または空の{@link Map}の場合。
      */
     public static void assertArgumentNotEmpty(final String argName,
             final Map<?, ?> argValue) {
         if (argValue == null || argValue.isEmpty()) {
-            throw new EmptyRuntimeException(
+            throw new EmptyArgumentException(
                 argName,
                 "EUTL0013",
                 asArray(argValue));

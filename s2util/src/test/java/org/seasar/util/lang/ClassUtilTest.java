@@ -16,7 +16,7 @@
 package org.seasar.util.lang;
 
 import org.junit.Test;
-import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.EmptyArgumentException;
 import org.seasar.util.exception.NoSuchConstructorRuntimeException;
 import org.seasar.util.exception.NoSuchFieldRuntimeException;
 
@@ -35,7 +35,7 @@ public class ClassUtilTest {
     /**
      * @throws Exception
      */
-    @Test(expected = EmptyRuntimeException.class)
+    @Test(expected = EmptyArgumentException.class)
     public void testForName_EmptyName() throws Exception {
         ClassUtil.forName("");
     }
@@ -43,7 +43,7 @@ public class ClassUtilTest {
     /**
      * @throws Exception
      */
-    @Test(expected = EmptyRuntimeException.class)
+    @Test(expected = EmptyArgumentException.class)
     public void testGetField_EmptyName() throws Exception {
         ClassUtil.getField(getClass(), "");
     }
@@ -51,7 +51,7 @@ public class ClassUtilTest {
     /**
      * @throws Exception
      */
-    @Test(expected = EmptyRuntimeException.class)
+    @Test(expected = EmptyArgumentException.class)
     public void testGetMethod_EmptyName() throws Exception {
         ClassUtil.getMethod(getClass(), "");
     }

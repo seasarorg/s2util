@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.seasar.util.exception.ClassNotFoundRuntimeException;
-import org.seasar.util.exception.EmptyRuntimeException;
+import org.seasar.util.exception.EmptyArgumentException;
 import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.InstantiationRuntimeException;
 import org.seasar.util.exception.NoSuchConstructorRuntimeException;
@@ -110,7 +110,7 @@ public abstract class ClassUtil {
      * @param loader
      *            クラスのロード元である必要があるクラスローダ
      * @return 指定された名前を持つクラスの{@link Class}オブジェクト
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             クラス名が{@literal null}または空文字列だった場合
      * @throws ClassNotFoundRuntimeException
      *             クラスが見つからなかった場合
@@ -182,7 +182,7 @@ public abstract class ClassUtil {
      * @param className
      *            クラス名
      * @return {@link Class}
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             クラス名が{@literal null}または空文字列だった場合
      * @throws ClassNotFoundRuntimeException
      *             {@link ClassNotFoundException}がおきた場合
@@ -409,7 +409,7 @@ public abstract class ClassUtil {
      * @param name
      *            フィールド名
      * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             フィールド名が{@literal null}または空文字列だった場合
      * @throws NoSuchFieldRuntimeException
      *             指定された名前のフィールドが見つからない場合
@@ -458,7 +458,7 @@ public abstract class ClassUtil {
      * @param argTypes
      *            パラメータのリスト
      * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
-     * @throws EmptyRuntimeException
+     * @throws EmptyArgumentException
      *             メソッド名が{@literal null}または空文字列だった場合
      * @throws NoSuchMethodRuntimeException
      *             一致するメソッドが見つからない場合

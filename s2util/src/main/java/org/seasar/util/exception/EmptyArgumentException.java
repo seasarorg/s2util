@@ -21,12 +21,12 @@ package org.seasar.util.exception;
  * 
  * @author higa
  */
-public class EmptyRuntimeException extends SIllegalArgumentException {
+public class EmptyArgumentException extends SIllegalArgumentException {
 
     private static final long serialVersionUID = 4625805280526951642L;
 
     /**
-     * {@link EmptyRuntimeException}を作成します。
+     * {@link EmptyArgumentException}を作成します。
      * 
      * @param argName
      *            引数の名前
@@ -35,13 +35,13 @@ public class EmptyRuntimeException extends SIllegalArgumentException {
      * @param args
      *            引数の配列
      */
-    public EmptyRuntimeException(final String argName,
+    public EmptyArgumentException(final String argName,
             final String messageCode, final Object[] args) {
         this(argName, messageCode, args, null);
     }
 
     /**
-     * {@link EmptyRuntimeException}を作成します。
+     * {@link EmptyArgumentException}を作成します。
      * 
      * @param argName
      *            引数の名前
@@ -52,7 +52,7 @@ public class EmptyRuntimeException extends SIllegalArgumentException {
      * @param cause
      *            原因となった例外
      */
-    public EmptyRuntimeException(final String argName,
+    public EmptyArgumentException(final String argName,
             final String messageCode, final Object[] args, final Throwable cause) {
         super(argName, messageCode, args, cause);
     }
