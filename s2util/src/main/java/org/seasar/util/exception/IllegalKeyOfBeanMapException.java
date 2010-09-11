@@ -26,6 +26,8 @@ import static org.seasar.util.collection.ArrayUtil.*;
  */
 public class IllegalKeyOfBeanMapException extends SIllegalArgumentException {
 
+    private static final long serialVersionUID = 3456740832476626338L;
+
     /**
      * インスタンスを構築します。
      * 

@@ -26,6 +26,8 @@ import static org.seasar.util.collection.ArrayUtil.*;
  */
 public class FieldNotStaticRuntimeException extends SRuntimeException {
 
+    private static final long serialVersionUID = -7791347225750660981L;
+
     private final Class<?> targetClass;
 
     private final String fieldName;

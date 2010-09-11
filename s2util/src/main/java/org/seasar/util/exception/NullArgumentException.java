@@ -26,8 +26,6 @@ import static org.seasar.util.collection.ArrayUtil.*;
  */
 public class NullArgumentException extends SIllegalArgumentException {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * {@link NullArgumentException}を作成します。
      * 

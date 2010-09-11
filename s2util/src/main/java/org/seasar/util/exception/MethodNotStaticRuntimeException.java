@@ -26,6 +26,8 @@ import static org.seasar.util.collection.ArrayUtil.*;
  */
 public class MethodNotStaticRuntimeException extends SRuntimeException {
 
+    private static final long serialVersionUID = 7186052234464152208L;
+
     private final Class<?> targetClass;
 
     private final String methodName;
