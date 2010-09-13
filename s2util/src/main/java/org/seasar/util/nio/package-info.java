@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * 様々なユーティリティ機能を提供します。
+ * New I/Oを扱うユーティリティを提供します。
  */
-package org.seasar.util;
+package org.seasar.util.nio;
 

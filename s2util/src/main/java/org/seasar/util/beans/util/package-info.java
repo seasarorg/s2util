@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * JavaBeans同士やJavaBeansと{@link java.util.Map}を相互変換する機能を提供します。
+ * JavaBeans同士やJavaBeansと{@link java.util.Map}を相互変換する機能など、JavaBeansを扱うユーティリティを提供します。
  */
 package org.seasar.util.beans.util;
 

@@ -26,7 +26,6 @@ import org.seasar.util.lang.ClassUtil;
 /**
  * {@link java.sql.DriverManager}のためのユーティリティクラスです。
  * 
- * @since 2.4.10
  * @author koichik
  */
 public abstract class DriverManagerUtil {
@@ -36,7 +35,6 @@ public abstract class DriverManagerUtil {
      * 
      * @param driverClassName
      *            登録するJDBCドライバのクラス名
-     * @since 2.4.10
      */
     public static void registerDriver(final String driverClassName) {
         final Class<Driver> clazz = ClassUtil.forName(driverClassName);
@@ -48,7 +46,6 @@ public abstract class DriverManagerUtil {
      * 
      * @param driverClass
      *            登録するJDBCドライバのクラス
-     * @since 2.4.10
      */
     public static void registerDriver(final Class<Driver> driverClass) {
         registerDriver(ClassUtil.newInstance(driverClass));
@@ -59,7 +56,6 @@ public abstract class DriverManagerUtil {
      * 
      * @param driver
      *            登録するJDBCドライバ
-     * @since 2.4.10
      */
     public static void registerDriver(final Driver driver) {
         try {
@@ -74,7 +70,6 @@ public abstract class DriverManagerUtil {
      * 
      * @param driver
      *            登録解除するJDBCドライバ
-     * @since 2.4.10
      */
     public static void deregisterDriver(final Driver driver) {
         try {
@@ -86,8 +81,6 @@ public abstract class DriverManagerUtil {
 
     /**
      * 現在のクラスローダに結びつけられている全てのJDBCドライバを登録解除します。
-     * 
-     * @since 2.4.10
      */
     public static synchronized void deregisterAllDrivers() {
         for (final Enumeration<Driver> e = DriverManager.getDrivers(); e

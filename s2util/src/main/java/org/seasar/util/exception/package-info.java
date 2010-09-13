@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * ユーティリティがスローする例外を提供します。
+ * S2Utilがスローする例外を提供します。
  */
 package org.seasar.util.exception;
 

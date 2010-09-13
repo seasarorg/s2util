@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * {@link org.seasar.util.beans.BeanDesc}のファクトリを提供します。
+ * {@link org.seasar.util.beans.BeanDesc}や{@link org.seasar.util.beans.ParameterizedClassDesc}のファクトリを提供します。
  */
 package org.seasar.util.beans.factory;
 

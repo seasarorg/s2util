@@ -22,7 +22,6 @@ import static org.seasar.util.misc.AssertionUtil.*;
 /**
  * {@link ParameterizedClassDesc}の実装クラスです。
  * 
- * @since 2.4.18
  * @author koichik
  */
 public class ParameterizedClassDescImpl implements ParameterizedClassDesc {

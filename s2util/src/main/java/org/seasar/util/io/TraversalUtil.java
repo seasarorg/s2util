@@ -53,11 +53,11 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * <ul>
  * <li>{@literal file}</li>
  * <li>{@literal jar}</li>
- * <li>{@literal wsjar}(WebShpere独自プロトコル、<code>jar</code>の別名)</li>
- * <li>{@literal zip}(WebLogic独自プロトコル、通常のZipファイルは{@literal jar}プロトコルを使用してください)</li>
- * <li><code>code-source</code>(Oracle AS(OC4J)独自プロトコル)</li>
- * <li>{@literal vfsfile}(JBossAS5独自プロトコル、<code>file</code>の別名)</li>
- * <li>{@literal vfszip}(JBossAS5独自プロトコル)</li>
+ * <li>{@literal wsjar} (WebShpere独自プロトコル、{@literal jar}の別名)</li>
+ * <li>{@literal zip} (WebLogic独自プロトコル、通常のZipファイルは{@literal jar}プロトコルを使用してください)</li>
+ * <li>{@literal code-source} (Oracle AS(OC4J)独自プロトコル)</li>
+ * <li>{@literal vfsfile} (JBossAS5独自プロトコル、{@literal file}の別名)</li>
+ * <li>{@literal vfszip} (JBossAS5独自プロトコル)</li>
  * </ul>
  * 
  * @author koichik

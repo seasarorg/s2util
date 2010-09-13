@@ -28,7 +28,7 @@
 	<developers>
 		<developer>
 			<id>koichik</id>
-			<name>KOBAYASHI Koichi</name>
+			<name>KOBAYASHI, Koichi</name>
 			<email>koichik_at_improvement.jp</email>
 			<url>http://d.hatena.ne.jp/koichik/</url>
 			<timezone>+9</timezone>
@@ -38,6 +38,13 @@
 			<name>Shinsuke Sugaya</name>
 			<email>shinsuke_at_yahoo.co.jp</email>
 			<url>http://d.hatena.ne.jp/shinsuke_sugaya/</url>
+			<timezone>+9</timezone>
+		</developer>
+		<developer>
+			<id>wyukawa</id>
+			<name>Wataru Yukawa</name>
+			<email>wyukawa_at_gmail.com</email>
+			<url>http://d.hatena.ne.jp/wyukawa/</url>
 			<timezone>+9</timezone>
 		</developer>
 	</developers>

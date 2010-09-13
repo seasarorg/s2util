@@ -3,7 +3,7 @@ package org.seasar.util.io;
 import java.io.InputStream;
 
 /**
- * リソースを処理するインターフェースです。
+ * リソースを処理するハンドラのインターフェースです。
  * 
  * @author taedium
  */

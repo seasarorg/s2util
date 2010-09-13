@@ -26,6 +26,8 @@ import java.io.Writer;
 import org.seasar.util.exception.IORuntimeException;
 
 /**
+ * {@link Writer}用のユーティリティクラスです。
+ * 
  * @author koichik
  */
 public abstract class WriterUtil {

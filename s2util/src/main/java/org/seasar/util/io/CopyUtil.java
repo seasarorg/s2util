@@ -104,7 +104,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * </tr>
  * </table>
  * <p>
- * {@link InputStream}/{@link OutputStream}/{@link Reader}/{@link Writer}
+ * 引数に{@link InputStream}/{@link OutputStream}/{@link Reader}/{@link Writer}
  * を受け取るメソッドは、 どれも引数に対して{@link Closeable#close()}を呼び出しません。 クローズする責務は呼び出し側にあります。
  * </p>
  * <p>

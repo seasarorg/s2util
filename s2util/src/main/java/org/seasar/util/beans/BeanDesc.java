@@ -21,7 +21,7 @@ import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
 /**
- * Bean(JavaBeans)を扱うためのインターフェースです。
+ * JavaBeansのメタデータを扱うためのインターフェースです。
  * 
  * @author higa
  */

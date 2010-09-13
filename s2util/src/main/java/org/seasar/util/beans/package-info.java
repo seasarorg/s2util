@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * JavaBeansのメタデータにアクセスする機能や、JavaBeans同士やJavaBeansと{@link java.util.Map}を相互変換する機能を提供します。
+ * JavaBeansのメタデータにアクセスするためのインターフェースを提供します。
  */
 package org.seasar.util.beans;
 

@@ -1,7 +1,7 @@
 package org.seasar.util.io;
 
 /**
- * クラスを横断して処理するためのハンドラです。
+ * クラスを処理するハンドラのインターフェースです。
  * 
  * @author koichik
  */

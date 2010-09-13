@@ -21,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
 
 /**
+ * {@link MessageDigest}を扱うユーティリティです。
+ * 
  * @author higa
  */
 public abstract class MessageDigestUtil {
