@@ -82,6 +82,10 @@
 		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/s2util/trunk/s2util/</developerConnection>
 		<url>http://www.seasar.org/source/browse/sandbox.s2util/</url>
 	</scm>
+	<ciManagement>
+		<system>hudson</system>
+		<url>https://www.seasar.org/hudson/job/s2util/</url>
+	</ciManagement>
 	<repositories>
 		<repository>
 			<id>maven.seasar.org</id>

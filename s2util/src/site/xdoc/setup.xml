@@ -58,7 +58,7 @@
 </repositories>
 ]]></source>
 			<p>
-				利用するサブプロジェクトを依存関係に追加してください．
+				S2Utilを依存関係に追加してください．
 			</p>
 			<source><![CDATA[
 <dependencies>
