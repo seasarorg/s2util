@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>Welcome</title>
+	</properties>
+	<body>
+		<section name="S2Util">
+			<p>
+				<strong>S2Util</strong>
+				プロジェクトは，
+				<a href="http://s2container.seasar.org/">Seasar2</a>
+				からスピンアウトしたプロジェクトで，Seasar2 に含まれていた様々なユーティリティクラスを提供します．
+				ユーティリティクラスは
+				Java5 以降のジェネリックスや可変長配列に対応するなどの変更が加えられています．
+				<br />
+				詳細は
+				<a href="apidocs/index.html" Javadoc</a>
+				を参照してください．
+			</p>
+		</section>
+	</body>
+</document>

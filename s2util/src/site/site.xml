@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<project>
+	<skin>
+		<groupId>org.seasar.project</groupId>
+		<artifactId>seasar-skin</artifactId>
+		<version>0.1.3</version>
+	</skin>
+	<bannerLeft>
+		<name>Seasar Banner</name>
+		<src>http://www.seasar.org/images/seasar_banner.gif
+		</src>
+		<href>http://www.seasar.org/</href>
+	</bannerLeft>
+	<bannerRight>
+		<src>http://maven.apache.org/images/maven-small.gif
+		</src>
+	</bannerRight>
+	<body>
+		<breadcrumbs>
+			<item name="Seasar" href="http://www.seasar.org/" />
+			<item name="S2Util" href="index.html" />
+		</breadcrumbs>
+		<menu name="About" inherit="top">
+			<item name="ホーム" href="index.html" />
+			<item name="ライセンス" href="license.html" />
+			<item name="ダウンロード" href="downloads.html" />
+			<!--
+			<item name="変更履歴" href="changelog.html" />
+			-->
+			<item name="メーリングリスト" href="https://ml.seasar.org/mailman/listinfo/seasar-user" />
+			<item name="トラッキング" href="https://www.seasar.org/issues/browse/UTIL" />
+			<item name="SVN リポジトリブラウザ" href="http://svn.seasar.org/browse/?root=sandbox.s2util" />
+		</menu>
+		<menu name="Document">
+			<item name="セットアップ" href="setup.html" />
+			<item name="Javadoc" href="apidocs/index.html" />
+		</menu>
+		${reports}
+	</body>
+</project>

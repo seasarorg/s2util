@@ -181,6 +181,39 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>zip</id>
+						<phase>site</phase>
+						<configuration>
+							<tasks>
+								<tstamp>
+									<format property="releaseDate" pattern="yyyy-MM-dd"
+										locale="ja,JP" />
+								</tstamp>
+								<property name="zipDir" value="target/site/downloads/${releaseDate}" />
+								<mkdir dir="${zipDir}" />
+								<zip zipfile="${zipDir}/S2Util-${version}.zip">
+									<zipfileset prefix="s2util" dir=".">
+										<exclude name="**/build/**" />
+										<exclude name="**/target/**" />
+									</zipfileset>
+									<zipfileset prefix="s2util/" dir="target">
+										<include name="s2util-${version}.jar" />
+										<include name="s2util-${version}-sources.jar" />
+									</zipfileset>
+									<zipfileset prefix="s2util/doc" dir="target/site" />
+								</zip>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.google.code.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.4.0</version>
@@ -289,44 +322,15 @@
 						</executions>
 					</plugin>
 					<!-- FindBugs -->
-					<!--
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>findbugs-maven-plugin</artifactId>
-						<configuration>
-							<findbugsXmlOutput>true</findbugsXmlOutput>
-							<xmlOutput>true</xmlOutput>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>findbugs</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>cobertura-maven-plugin</artifactId>
-						<configuration>
-							<encoding>UTF-8</encoding>
-							<instrumentation>
-								<excludes>
-									<exclude>**/*Test.class</exclude>
-								</excludes>
-							</instrumentation>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>cobertura</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					-->
+					<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>findbugs-maven-plugin</artifactId> 
+						<configuration> <findbugsXmlOutput>true</findbugsXmlOutput> <xmlOutput>true</xmlOutput> 
+						</configuration> <executions> <execution> <phase>package</phase> <goals> 
+						<goal>findbugs</goal> </goals> </execution> </executions> </plugin> <plugin> 
+						<groupId>org.codehaus.mojo</groupId> <artifactId>cobertura-maven-plugin</artifactId> 
+						<configuration> <encoding>UTF-8</encoding> <instrumentation> <excludes> <exclude>**/*Test.class</exclude> 
+						</excludes> </instrumentation> </configuration> <executions> <execution> 
+						<phase>package</phase> <goals> <goal>cobertura</goal> </goals> </execution> 
+						</executions> </plugin> -->
 				</plugins>
 			</build>
 		</profile>
