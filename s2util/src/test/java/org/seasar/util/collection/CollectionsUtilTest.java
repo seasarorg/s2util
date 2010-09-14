@@ -45,6 +45,18 @@ public class CollectionsUtilTest {
 
     /**
      * Test method for
+     * {@link org.seasar.util.collection.CollectionsUtil#isNotEmpty(java.util.Collection)}
+     * .
+     */
+    @Test
+    public void testIsNotEmptyCollectionOfQ() {
+        Collection<String> c = new ArrayList<String>();
+        c.add("hoge");
+        assertThat(CollectionsUtil.isNotEmpty(c), is(true));
+    }
+
+    /**
+     * Test method for
      * {@link org.seasar.util.collection.CollectionsUtil#isEmpty(java.util.Map)}
      * .
      */
@@ -54,6 +66,18 @@ public class CollectionsUtilTest {
         assertThat(CollectionsUtil.isEmpty(map), is(true));
         map = new HashMap<String, String>();
         assertThat(CollectionsUtil.isEmpty(map), is(true));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.collection.CollectionsUtil#isNotEmpty(java.util.Map)}
+     * .
+     */
+    @Test
+    public void testIsNotEmptyMapOfQQ() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("key", "value");
+        assertThat(CollectionsUtil.isNotEmpty(map), is(true));
     }
 
 }

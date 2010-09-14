@@ -1503,6 +1503,17 @@ public abstract class CollectionsUtil {
     }
 
     /**
+     * {@link Collection}が{@literal null}でも要素が無いわけでもない場合は{@literal true}を返します。
+     * 
+     * @param collection
+     *            コレクション
+     * @return コレクションが{@literal null}でも要素が無いわけでもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final Collection<?> collection) {
+        return !isEmpty(collection);
+    }
+
+    /**
      * {@link Map}が{@literal null}または要素が無い場合は{@literal true}を返します。
      * 
      * @param map
@@ -1511,6 +1522,17 @@ public abstract class CollectionsUtil {
      */
     public static boolean isEmpty(final Map<?, ?> map) {
         return (map == null || map.isEmpty());
+    }
+
+    /**
+     * {@link Map}が{@literal null}でも要素が無いわけでもない場合は{@literal true}を返します。
+     * 
+     * @param map
+     *            マップ
+     * @return マップが{@literal null}でも要素が無いわけでもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final Map<?, ?> map) {
+        return !isEmpty(map);
     }
 
 }
