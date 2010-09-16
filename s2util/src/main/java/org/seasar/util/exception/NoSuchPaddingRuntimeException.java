@@ -15,27 +15,27 @@
  */
 package org.seasar.util.exception;
 
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.NoSuchPaddingException;
 
 import static org.seasar.util.collection.ArrayUtil.*;
 
 /**
- * {@link NoSuchAlgorithmException}をラップする例外です。
+ * {@link NoSuchPaddingException}をラップする例外です。
  * 
- * @author higa
+ * @author shinsuke
  */
-public class NoSuchAlgorithmRuntimeException extends SRuntimeException {
+public class NoSuchPaddingRuntimeException extends SRuntimeException {
 
     private static final long serialVersionUID = -3176447530746274091L;
 
     /**
-     * {@link NoSuchAlgorithmRuntimeException}を作成します。
+     * {@link NoSuchPaddingException}を作成します。
      * 
      * @param cause
      *            原因となった例外
      */
-    public NoSuchAlgorithmRuntimeException(final NoSuchAlgorithmException cause) {
-        super("EUTL0067", asArray(cause), cause);
+    public NoSuchPaddingRuntimeException(final NoSuchPaddingException cause) {
+        super("EUTL0069", asArray(cause), cause);
     }
 
 }

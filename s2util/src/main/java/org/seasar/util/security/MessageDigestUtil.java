@@ -15,15 +15,19 @@
  */
 package org.seasar.util.security;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
+import org.seasar.util.exception.NullArgumentException;
+import org.seasar.util.exception.SIllegalStateException;
 
 /**
  * {@link MessageDigest}を扱うユーティリティです。
  * 
  * @author higa
+ * @author shinsuke
  */
 public abstract class MessageDigestUtil {
 
@@ -36,10 +40,45 @@ public abstract class MessageDigestUtil {
      *             {@link NoSuchAlgorithmException}が発生した場合
      */
     public static MessageDigest getInstance(final String algorithm) {
+        if (algorithm == null) {
+            throw new NullArgumentException("algorithm");
+        }
         try {
             return MessageDigest.getInstance(algorithm);
         } catch (final NoSuchAlgorithmException e) {
             throw new NoSuchAlgorithmRuntimeException(e);
         }
+    }
+
+    /**
+     * 指定されたアルゴリズムでテキストをハッシュ化して文字列にします。
+     * 
+     * @param algorithm
+     * @param text
+     * @return ハッシュ化された文字列
+     */
+    public static String digest(final String algorithm, String text) {
+        if (text == null) {
+            return null;
+        }
+
+        final MessageDigest msgDigest = getInstance(algorithm);
+        try {
+            msgDigest.update(text.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new SIllegalStateException(e);
+        }
+        final byte[] digest = msgDigest.digest();
+
+        final StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < digest.length; i++) {
+            final String tmp = Integer.toHexString(digest[i] & 0xff);
+            if (tmp.length() == 1) {
+                buffer.append('0').append(tmp);
+            } else {
+                buffer.append(tmp);
+            }
+        }
+        return buffer.toString();
     }
 }
