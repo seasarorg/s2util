@@ -276,6 +276,60 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * {@literal boolean}配列の末尾に{@literal boolean}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static boolean[] add(final boolean[] array, final boolean value) {
+        assertArgumentNotNull("array", array);
+        final boolean[] newArray =
+            (boolean[]) Array.newInstance(boolean.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
+     * {@literal byte}配列の末尾に{@literal byte}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static byte[] add(final byte[] array, final byte value) {
+        assertArgumentNotNull("array", array);
+        final byte[] newArray =
+            (byte[]) Array.newInstance(byte.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
+     * {@literal short}配列の末尾に{@literal short}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static short[] add(final short[] array, final short value) {
+        assertArgumentNotNull("array", array);
+        final short[] newArray =
+            (short[]) Array.newInstance(short.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
      * {@literal int}配列の末尾に{@literal int}の値を追加した配列を返します。
      * 
      * @param array
@@ -288,6 +342,60 @@ public abstract class ArrayUtil {
         assertArgumentNotNull("array", array);
         final int[] newArray =
             (int[]) Array.newInstance(int.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
+     * {@literal long}配列の末尾に{@literal long}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static long[] add(final long[] array, final long value) {
+        assertArgumentNotNull("array", array);
+        final long[] newArray =
+            (long[]) Array.newInstance(long.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
+     * {@literal float}配列の末尾に{@literal float}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static float[] add(final float[] array, final float value) {
+        assertArgumentNotNull("array", array);
+        final float[] newArray =
+            (float[]) Array.newInstance(float.class, array.length + 1);
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = value;
+        return newArray;
+    }
+
+    /**
+     * {@literal double}配列の末尾に{@literal double}の値を追加した配列を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 値が追加された結果の配列
+     */
+    public static double[] add(final double[] array, final double value) {
+        assertArgumentNotNull("array", array);
+        final double[] newArray =
+            (double[]) Array.newInstance(double.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
         newArray[array.length] = value;
         return newArray;
@@ -308,7 +416,7 @@ public abstract class ArrayUtil {
      *            配列2
      * @return 配列が連結された結果の配列
      */
-    public static <T> T[] add(final T[] a, final T[] b) {
+    public static <T> T[] addAll(final T[] a, final T[] b) {
         if (a == null) {
             return b;
         }
@@ -325,6 +433,270 @@ public abstract class ArrayUtil {
         final T[] array =
             (T[]) Array.newInstance(a.getClass().getComponentType(), a.length
                 + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static boolean[] addAll(final boolean[] a, final boolean[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final boolean[] array =
+            (boolean[]) Array.newInstance(boolean.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static byte[] addAll(final byte[] a, final byte[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final byte[] array =
+            (byte[]) Array.newInstance(byte.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static short[] addAll(final short[] a, final short[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final short[] array =
+            (short[]) Array.newInstance(short.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static int[] addAll(final int[] a, final int[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final int[] array =
+            (int[]) Array.newInstance(int.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static long[] addAll(final long[] a, final long[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final long[] array =
+            (long[]) Array.newInstance(long.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static float[] addAll(final float[] a, final float[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final float[] array =
+            (float[]) Array.newInstance(float.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static double[] addAll(final double[] a, final double[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final double[] array =
+            (double[]) Array.newInstance(double.class, a.length + b.length);
+        System.arraycopy(a, 0, array, 0, a.length);
+        System.arraycopy(b, 0, array, a.length, b.length);
+        return array;
+    }
+
+    /**
+     * 二つの配列を連結した配列を返します。
+     * <p>
+     * どちらかあるいは両方の配列が{@literal null}の場合、他方の配列がそのまま返されます。 どちらかあるいは両方の配列の長さが
+     * {@literal 0}の場合、他方の配列がそのまま返されます。 いずれの場合も返される配列は引数に渡された配列そのものでコピーはされません。
+     * </p>
+     * 
+     * @param a
+     *            配列1
+     * @param b
+     *            配列2
+     * @return 配列が連結された結果の配列
+     */
+    public static char[] addAll(final char[] a, final char[] b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        if (a.length == 0) {
+            return b;
+        }
+        if (b.length == 0) {
+            return a;
+        }
+        final char[] array =
+            (char[]) Array.newInstance(char.class, a.length + b.length);
         System.arraycopy(a, 0, array, 0, a.length);
         System.arraycopy(b, 0, array, a.length, b.length);
         return array;
@@ -445,6 +817,19 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param <T>
+     *            配列の要素の型
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static <T> boolean isNotEmpty(final T[] arrays) {
+        return (arrays != null && arrays.length != 0);
+    }
+
+    /**
      * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
      * 
      * @param arrays
@@ -453,6 +838,17 @@ public abstract class ArrayUtil {
      */
     public static boolean isEmpty(final boolean[] arrays) {
         return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}または長さが0の場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final boolean[] arrays) {
+        return (arrays != null && arrays.length != 0);
     }
 
     /**
@@ -467,6 +863,17 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final byte[] arrays) {
+        return (arrays != null && arrays.length != 0);
+    }
+
+    /**
      * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
      * 
      * @param arrays
@@ -475,6 +882,17 @@ public abstract class ArrayUtil {
      */
     public static boolean isEmpty(final short[] arrays) {
         return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final short[] arrays) {
+        return (arrays != null && arrays.length != 0);
     }
 
     /**
@@ -489,6 +907,17 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final int[] arrays) {
+        return (arrays != null && arrays.length != 0);
+    }
+
+    /**
      * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
      * 
      * @param arrays
@@ -497,6 +926,17 @@ public abstract class ArrayUtil {
      */
     public static boolean isEmpty(final long[] arrays) {
         return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final long[] arrays) {
+        return (arrays != null && arrays.length != 0);
     }
 
     /**
@@ -511,6 +951,17 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final float[] arrays) {
+        return (arrays != null && arrays.length != 0);
+    }
+
+    /**
      * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
      * 
      * @param arrays
@@ -522,6 +973,17 @@ public abstract class ArrayUtil {
     }
 
     /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final double[] arrays) {
+        return (arrays != null && arrays.length != 0);
+    }
+
+    /**
      * 配列が{@literal null}または長さが0の場合は{@literal true}を返します。
      * 
      * @param arrays
@@ -530,6 +992,17 @@ public abstract class ArrayUtil {
      */
     public static boolean isEmpty(final char[] arrays) {
         return (arrays == null || arrays.length == 0);
+    }
+
+    /**
+     * 配列が{@literal null}でも長さが0でもない場合は{@literal true}を返します。
+     * 
+     * @param arrays
+     *            配列
+     * @return 配列が{@literal null}でも長さが0でもない場合は{@literal true}
+     */
+    public static boolean isNotEmpty(final char[] arrays) {
+        return (arrays != null && arrays.length != 0);
     }
 
     /**

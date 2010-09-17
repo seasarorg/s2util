@@ -33,7 +33,7 @@ public class ArrayUtilTest {
      * @throws Exception
      */
     @Test
-    public void testArray() throws Exception {
+    public void testAsArray() throws Exception {
         assertArrayEquals(new int[] { 1, 2 }, ArrayUtil.asIntArray(1, 2));
         assertArrayEquals(new Object[] { "a", 2 }, ArrayUtil.asArray("a", 2));
         assertArrayEquals(
@@ -46,7 +46,7 @@ public class ArrayUtilTest {
      * @throws Exception
      */
     @Test
-    public void testAdd() throws Exception {
+    public void testAddAll() throws Exception {
         String[] array = new String[] { "111" };
         String[] newArray = ArrayUtil.add(array, "222");
         assertThat(newArray.length, is(2));
@@ -54,33 +54,64 @@ public class ArrayUtilTest {
         assertThat(newArray[1], is("222"));
 
         String[] emptyArray = new String[0];
-        assertThat(ArrayUtil.add(null, null), is(nullValue()));
-        assertThat(ArrayUtil.add(null, emptyArray).length, is(0));
         assertThat(
-            ArrayUtil.add(emptyArray, null),
+            ArrayUtil.addAll((Object[]) null, (Object[]) null),
+            is(nullValue()));
+        assertThat(ArrayUtil.addAll(null, emptyArray).length, is(0));
+        assertThat(
+            ArrayUtil.addAll(emptyArray, null),
             is(sameInstance(emptyArray)));
         assertThat(
-            ArrayUtil.add(emptyArray, null),
+            ArrayUtil.addAll(emptyArray, null),
             is(sameInstance(emptyArray)));
         assertThat(
-            ArrayUtil.add(emptyArray, emptyArray),
+            ArrayUtil.addAll(emptyArray, emptyArray),
             is(sameInstance(emptyArray)));
-        assertThat(ArrayUtil.add(emptyArray, array), is(sameInstance(array)));
-        assertThat(ArrayUtil.add(array, emptyArray), is(sameInstance(array)));
+        assertThat(ArrayUtil.addAll(emptyArray, array), is(sameInstance(array)));
+        assertThat(ArrayUtil.addAll(array, emptyArray), is(sameInstance(array)));
     }
 
     /**
      * @throws Exception
      */
     @Test
-    public void testAdd2() throws Exception {
+    public void testAddAll2() throws Exception {
         String[] a = new String[] { "1", "2" };
         String[] b = new String[] { "3" };
-        a = ArrayUtil.add(a, b);
+        a = ArrayUtil.addAll(a, b);
         assertThat(a.length, is(3));
         assertThat(a[0], is("1"));
         assertThat(a[1], is("2"));
         assertThat(a[2], is("3"));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testAddAll_int() throws Exception {
+        int[] array = new int[] { 111 };
+        int[] newArray = ArrayUtil.add(array, 222);
+        assertThat(newArray.length, is(2));
+        assertThat(newArray[0], is(111));
+        assertThat(newArray[1], is(222));
+
+        int[] emptyArray = new int[0];
+        assertThat(
+            ArrayUtil.addAll((int[]) null, (int[]) null),
+            is(nullValue()));
+        assertThat(ArrayUtil.addAll(null, emptyArray).length, is(0));
+        assertThat(
+            ArrayUtil.addAll(emptyArray, null),
+            is(sameInstance(emptyArray)));
+        assertThat(
+            ArrayUtil.addAll(emptyArray, null),
+            is(sameInstance(emptyArray)));
+        assertThat(
+            ArrayUtil.addAll(emptyArray, emptyArray),
+            is(sameInstance(emptyArray)));
+        assertThat(ArrayUtil.addAll(emptyArray, array), is(sameInstance(array)));
+        assertThat(ArrayUtil.addAll(array, emptyArray), is(sameInstance(array)));
     }
 
     /**
