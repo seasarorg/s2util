@@ -24,6 +24,17 @@ import org.seasar.util.exception.SUnsupportedOperationException;
 
 /**
  * {@link BufferedReader}から読み込んだ行単位の文字列を反復する{@link Iterator}です。
+ * <p>
+ * 次のように使います．
+ * </p>
+ * 
+ * <pre>
+ * import static org.seasar.util.io.LineIterator.*;
+ * BufferedReader reader = ...;
+ * for (String line : iterable(reader)) {
+ *     ...
+ * }
+ * </pre>
  * 
  * @author koichik
  */
