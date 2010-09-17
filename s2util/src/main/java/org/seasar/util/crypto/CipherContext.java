@@ -27,17 +27,18 @@ public interface CipherContext {
 
     /**
      * {@link Cipher}のインスタンスを取得します。
-     *
-     * @param opmode 暗号の操作モード (ENCRYPT_MODE、DECRYPT_MODE、WRAP_MODE、または UNWRAP_MODE のどれか)
+     * 
+     * @param opmode
+     *            暗号の操作モード (ENCRYPT_MODE、DECRYPT_MODE、WRAP_MODE、または UNWRAP_MODE
+     *            のどれか)
      * @return {@link Cipher}のインスタンス
      */
     public abstract Cipher getCipher(int opmode);
 
     /**
-     * CipherContextの識別子を返します。
-     * この値が{@link CipherPool}のプールのキーになります。
-     *
-     * @return
+     * CipherContextの識別子を返します。 この値が{@link CipherPoolUtil}のプールのキーになります。
+     * 
+     * @return CipherContextの識別子
      */
     public abstract String getId();
 

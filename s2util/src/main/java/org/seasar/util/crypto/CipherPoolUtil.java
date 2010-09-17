@@ -33,9 +33,15 @@ import org.seasar.util.misc.Base64Util;
  * 
  */
 public abstract class CipherPoolUtil {
+    /**
+     * encrypto用のCipherプール
+     */
     protected static final Map<String, Queue<Cipher>> encryptoQueueMap =
         new ConcurrentHashMap<String, Queue<Cipher>>();
 
+    /**
+     * decrypto用のCipherプール
+     */
     protected static final Map<String, Queue<Cipher>> decryptoQueueMap =
         new ConcurrentHashMap<String, Queue<Cipher>>();
 
