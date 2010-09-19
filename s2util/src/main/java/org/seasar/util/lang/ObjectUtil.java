@@ -25,15 +25,6 @@ package org.seasar.util.lang;
 public abstract class ObjectUtil {
 
     /**
-     * 文字列同士が等しいかどうか返します。どちらもnullの場合は、<code>true</code>を返します。
-     * 
-     * @param target1
-     *            文字列1
-     * @param target2
-     *            文字列2
-     * @return 文字列同士が等しいかどうか
-     */
-    /**
      * 
      * オブジェクトが等しいかどうか返します。どちらも<code>null</code>の場合は、<code>true</code>を返します。
      * 
