@@ -15,17 +15,21 @@
  */
 package org.seasar.util.lang;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * @author higa
  * 
  */
-public class StringUtilTest extends TestCase {
+public class StringUtilTest {
 
     /**
      * @throws Exception
      */
+    @Test
     public void testReplace() throws Exception {
         assertEquals("1", "1bc45", StringUtil.replace("12345", "23", "bc"));
         assertEquals("2", "1234ef", StringUtil.replace("12345", "5", "ef"));
@@ -41,6 +45,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testSplit() throws Exception {
         String[] array = StringUtil.split("aaa\nbbb", "\n");
         assertEquals("1", 2, array.length);
@@ -51,6 +56,7 @@ public class StringUtilTest extends TestCase {
     /**
      * 
      */
+    @Test
     public void testSplit2() {
         String[] array = StringUtil.split("aaa, bbb", ", ");
         assertEquals("1", 2, array.length);
@@ -61,6 +67,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testLtrim() throws Exception {
         assertEquals("1", "trim", StringUtil.ltrim("zzzytrim", "xyz"));
         assertEquals("2", "", StringUtil.ltrim("xyz", "xyz"));
@@ -69,6 +76,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testRtrim() throws Exception {
         assertEquals("trim", StringUtil.rtrim("trimxxxx", "x"));
         assertEquals("", StringUtil.rtrim("xyz", "xyz"));
@@ -78,6 +86,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testTrimSuffix() throws Exception {
         assertEquals("aaa", StringUtil.trimSuffix("aaaLogic", "Logic"));
     }
@@ -85,6 +94,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testTrimPrefix() throws Exception {
         assertEquals("AAA", StringUtil.trimPrefix("T_AAA", "T_"));
     }
@@ -92,6 +102,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testIsBlank() throws Exception {
         assertEquals("1", true, StringUtil.isBlank(" "));
         assertEquals("2", true, StringUtil.isBlank(""));
@@ -102,6 +113,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testIsNotBlank() throws Exception {
         assertEquals("1", false, StringUtil.isNotBlank(" "));
         assertEquals("2", false, StringUtil.isNotBlank(""));
@@ -112,6 +124,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testContains() throws Exception {
         assertEquals("1", true, StringUtil.contains("a", 'a'));
         assertEquals("2", true, StringUtil.contains("abc", 'b'));
@@ -121,6 +134,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testContains2() throws Exception {
         assertEquals("1", true, StringUtil.contains("a", "a"));
         assertEquals("2", true, StringUtil.contains("abc", "b"));
@@ -130,6 +144,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testEquals() throws Exception {
         assertEquals("1", true, StringUtil.equals("a", "a"));
         assertEquals("2", true, StringUtil.equals(null, null));
@@ -141,6 +156,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testEqualsIgnoreCase() throws Exception {
         assertEquals("1", true, StringUtil.equalsIgnoreCase("a", "a"));
         assertEquals("2", true, StringUtil.equalsIgnoreCase("a", "A"));
@@ -154,6 +170,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testDecapitalize() throws Exception {
         assertEquals("abc", StringUtil.decapitalize("abc"));
         assertEquals("abc", StringUtil.decapitalize("Abc"));
@@ -163,6 +180,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testEndsWithIgnoreCase() throws Exception {
         assertTrue(StringUtil.endsWithIgnoreCase("setHogeAaa", "Aaa"));
         assertTrue(StringUtil.endsWithIgnoreCase("setHogeAaa", "aaa"));
@@ -174,6 +192,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testStartsWithIgnoreCase() throws Exception {
         assertTrue(StringUtil.startsWithIgnoreCase("isHoge", "is"));
         assertTrue(StringUtil.startsWithIgnoreCase("isHoge", "IS"));
@@ -185,6 +204,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testSubstringFromLast() throws Exception {
         assertEquals("ab", StringUtil.substringFromLast("abc", "c"));
         assertEquals("abcab", StringUtil.substringFromLast("abcabc", "c"));
@@ -196,6 +216,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testSubstringToLast() throws Exception {
         assertEquals("", StringUtil.substringToLast("abc", "c"));
         assertEquals("c", StringUtil.substringToLast("abc", "b"));
@@ -208,6 +229,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testToHex() throws Exception {
         assertEquals("010203", StringUtil.toHex(new byte[] { 1, 2, 3 }));
     }
@@ -215,6 +237,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testToHex2() throws Exception {
         assertEquals("0001", StringUtil.toHex(1));
     }
@@ -222,6 +245,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testAppendHex() throws Exception {
         StringBuffer buf = new StringBuffer();
         StringUtil.appendHex(buf, (byte) 1);
@@ -231,6 +255,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testCamelize() throws Exception {
         assertNull(StringUtil.camelize(null));
         assertEquals("Emp", StringUtil.camelize("EMP"));
@@ -240,6 +265,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testDecamelize() throws Exception {
         assertNull(StringUtil.decamelize(null));
         assertEquals("EMP", StringUtil.decamelize("Emp"));
@@ -251,6 +277,7 @@ public class StringUtilTest extends TestCase {
     /**
      * @throws Exception
      */
+    @Test
     public void testIsNumver() throws Exception {
         assertFalse(StringUtil.isNumber(null));
         assertTrue(StringUtil.isNumber("0123456789"));
@@ -264,6 +291,7 @@ public class StringUtilTest extends TestCase {
     /**
      * 
      */
+    @Test
     public void testIsEmpty() {
         assertTrue(StringUtil.isEmpty(null));
         assertTrue(StringUtil.isEmpty(""));
@@ -273,10 +301,33 @@ public class StringUtilTest extends TestCase {
     /**
      * 
      */
+    @Test
     public void testIsNotEmpty() {
         assertFalse(StringUtil.isNotEmpty(null));
         assertFalse(StringUtil.isNotEmpty(""));
         assertTrue(StringUtil.isNotEmpty(" "));
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testDefaultString() {
+        assertThat(StringUtil.defaultString(null), is(""));
+        assertThat(StringUtil.defaultString(""), is(""));
+        assertThat(StringUtil.defaultString("aaa"), is("aaa"));
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testDefaultStringDefaultStr() {
+        assertThat(StringUtil.defaultString(null, "NULL"), is("NULL"));
+        assertThat(StringUtil.defaultString("", "NULL"), is(""));
+        assertThat(StringUtil.defaultString("aaa", "NULL"), is("aaa"));
+        assertThat(StringUtil.defaultString("aaa", null), is("aaa"));
+        assertThat(StringUtil.defaultString(null, null), is(nullValue()));
     }
 
 }

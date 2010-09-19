@@ -27,6 +27,11 @@ import java.util.StringTokenizer;
 public abstract class StringUtil {
 
     /**
+     * 空文字<code>""</code>です。
+     */
+    public static final String EMPTY = "";
+
+    /**
      * 空の文字列の配列です。
      */
     public static final String[] EMPTY_STRINGS = new String[0];
@@ -605,5 +610,54 @@ public abstract class StringUtil {
         }
 
         return true;
+    }
+
+    /**
+     * 引数の文字列を返します。引数の文字列が<code>null</code>だったら空文字を返します。
+     * 
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.defaultString(null)  = ""
+     * StringUtil.defaultString("")    = ""
+     * StringUtil.defaultString("aaa") = "aaa"
+     * </pre>
+     * 
+     * @param str
+     *            文字列(<code>null</code>可)
+     * @return 引数の文字列を返します。引数の文字列が<code>null</code>だったら空文字を返します。
+     * 
+     */
+    public static String defaultString(String str) {
+        return str == null ? EMPTY : str;
+    }
+
+    /**
+     * 引数の文字列を返します。引数の文字列が<code>null</code>だったら<code>defaultStr</code>を返します。
+     * 
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.defaultString(null, "NULL")  = "NULL"
+     * StringUtil.defaultString("", "NULL")    = ""
+     * StringUtil.defaultString("aaa", "NULL") = "aaa"
+     * StringUtil.defaultString("aaa", null) = "aaa"
+     * StringUtil.defaultString(null, null) = null
+     * </pre>
+     * 
+     * @param str
+     *            文字列(<code>null</code>可)
+     * @param defaultStr
+     *            引数の文字列が<code>null</code>だったら返す文字列(<code>null</code>可)
+     * @return 引数の文字列を返します。引数も文字列が<code>null</code>だったら<code>defaultStr</code>
+     *         を返します。
+     * 
+     */
+    public static String defaultString(String str, String defaultStr) {
+        return str == null ? defaultStr : str;
     }
 }
