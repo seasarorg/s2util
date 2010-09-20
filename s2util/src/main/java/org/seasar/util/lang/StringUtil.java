@@ -653,7 +653,7 @@ public abstract class StringUtil {
      *            文字列(<code>null</code>可)
      * @param defaultStr
      *            引数の文字列が<code>null</code>だったら返す文字列(<code>null</code>可)
-     * @return 引数の文字列を返します。引数も文字列が<code>null</code>だったら<code>defaultStr</code>
+     * @return 引数の文字列を返します。引数の文字列が<code>null</code>だったら<code>defaultStr</code>
      *         を返します。
      * 
      */
