@@ -60,4 +60,33 @@ public abstract class ObjectUtil {
         return object1.equals(object2);
     }
 
+    /**
+     * オブジェクトを返します。オブジェクトが<code>null</code>だったら<code>defaultValue</code>を返します。
+     * 
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * ObjectUtil.defaultValue(null, "NULL")  = "NULL"
+     * ObjectUtil.defaultValue(null, 1)    = 1
+     * ObjectUtil.defaultValue(Boolean.TRUE, true) = Boolean.TRUE
+     * ObjectUtil.defaultValue(null, null) = null
+     * </pre>
+     * 
+     * @param <T>
+     *            オブジェクトの型
+     * 
+     * @param t
+     *            オブジェクト(<code>null</code>可)
+     * @param defaultValue
+     *            引数のオブジェクトが<code>null</code>だったら返すオブジェクト(<code>null</code>可)
+     * @return オブジェクトを返します。オブジェクトが<code>null</code>だったら<code>defaultValue</code>
+     *         を返します。
+     * 
+     */
+    public static <T> T defaultValue(T t, T defaultValue) {
+        return t == null ? defaultValue : t;
+    }
+
 }

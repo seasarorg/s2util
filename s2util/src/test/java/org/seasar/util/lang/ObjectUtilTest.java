@@ -43,4 +43,59 @@ public class ObjectUtilTest {
         assertThat(ObjectUtil.equals(Boolean.TRUE, Boolean.FALSE), is(false));
     }
 
+    /**
+     * Test method for
+     * {@link org.seasar.util.lang.ObjectUtil#defaultValue(Object, Object)} .
+     */
+    @Test
+    public void testDefaultValue() {
+        Hoge hoge = new Hoge();
+        assertSame(ObjectUtil.defaultValue(null, hoge), hoge);
+        assertSame(ObjectUtil.defaultValue(hoge, null), hoge);
+        assertSame(ObjectUtil.defaultValue(hoge, hoge), hoge);
+        assertSame(ObjectUtil.defaultValue(null, null), null);
+        assertThat(ObjectUtil.defaultValue(null, "NULL"), is("NULL"));
+        assertThat(ObjectUtil.defaultValue(null, 1), is(1));
+        assertThat(
+            ObjectUtil.defaultValue(Boolean.TRUE, true),
+            is(Boolean.TRUE));
+        assertThat(ObjectUtil.defaultValue(null, null), is(nullValue()));
+    }
+
+    class Hoge {
+        private int i;
+
+        private String s;
+
+        /**
+         * @param i
+         *            the i to set
+         */
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        /**
+         * @return the i
+         */
+        public int getI() {
+            return i;
+        }
+
+        /**
+         * @param s
+         *            the s to set
+         */
+        public void setS(String s) {
+            this.s = s;
+        }
+
+        /**
+         * @return the s
+         */
+        public String getS() {
+            return s;
+        }
+    }
+
 }
