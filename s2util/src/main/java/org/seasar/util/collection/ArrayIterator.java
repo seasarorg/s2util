@@ -36,6 +36,24 @@ public class ArrayIterator<T> implements Iterator<T> {
     protected int index = 0;
 
     /**
+     * for each構文で使用するために配列をラップした{@link Iterable}を返します。
+     * 
+     * @param <T>
+     *            列挙する要素の型
+     * @param array
+     *            配列
+     * @return 配列をラップした{@link Iterable}
+     */
+    public static <T> Iterable<T> iterable(final T[] array) {
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new ArrayIterator<T>(array);
+            }
+        };
+    }
+
+    /**
      * {@link ArrayIterator}を作成します。
      * 
      * @param items

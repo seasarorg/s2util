@@ -78,6 +78,13 @@ public interface BeanDesc {
     int getPropertyDescSize();
 
     /**
+     * {@link PropertyDesc}の{@link Iterable}を返します。
+     * 
+     * @return {@link PropertyDesc}の{@link Iterable}
+     */
+    Iterable<PropertyDesc> getPropertyDescs();
+
+    /**
      * {@link FieldDesc}を持っているかどうかを返します。
      * 
      * @param fieldName
@@ -112,6 +119,13 @@ public interface BeanDesc {
     int getFieldDescSize();
 
     /**
+     * {@link FieldDesc}の{@link Iterable}を返します。
+     * 
+     * @return {@link FieldDesc}の{@link Iterable}
+     */
+    Iterable<FieldDesc> getFieldDescs();
+
+    /**
      * 新しいインスタンスを作成します。
      * 
      * @param <T>
@@ -139,6 +153,29 @@ public interface BeanDesc {
      * @return 引数に適合する{@link Constructor}
      */
     ConstructorDesc getSuitableConstructorDesc(Object... args);
+
+    /**
+     * {@link ConstructorDesc}を返します。
+     * 
+     * @param index
+     *            {@link ConstructorDesc}のインデックス
+     * @return {@link ConstructorDesc}
+     */
+    ConstructorDesc getConstructorDesc(int index);
+
+    /**
+     * {@link ConstructorDesc}の数を返します。
+     * 
+     * @return {@link ConstructorDesc}の数
+     */
+    int getConstructorDescSize();
+
+    /**
+     * {@link ConstructorDesc}の{@link Iterable}を返します。
+     * 
+     * @return {@link ConstructorDesc}の{@link Iterable}
+     */
+    Iterable<ConstructorDesc> getConstructorDescs();
 
     /**
      * 引数の型に応じた{@link MethodDesc}を返します。

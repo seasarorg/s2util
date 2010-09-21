@@ -70,9 +70,8 @@ public abstract class BeanUtil {
             BeanDescFactory.getBeanDesc(src.getClass());
         final BeanDesc destBeanDesc =
             BeanDescFactory.getBeanDesc(dest.getClass());
-        final int size = srcBeanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; i++) {
-            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
+        for (final PropertyDesc srcPropertyDesc : srcBeanDesc
+            .getPropertyDescs()) {
             final String srcPropertyName = srcPropertyDesc.getPropertyName();
             if (!srcPropertyDesc.isReadable()
                 || !options.isTargetProperty(srcPropertyName)) {
@@ -132,9 +131,8 @@ public abstract class BeanUtil {
 
         final BeanDesc srcBeanDesc =
             BeanDescFactory.getBeanDesc(src.getClass());
-        final int size = srcBeanDesc.getPropertyDescSize();
-        for (int i = 0; i < size; i++) {
-            final PropertyDesc srcPropertyDesc = srcBeanDesc.getPropertyDesc(i);
+        for (final PropertyDesc srcPropertyDesc : srcBeanDesc
+            .getPropertyDescs()) {
             final String srcPropertyName = srcPropertyDesc.getPropertyName();
             if (!srcPropertyDesc.isReadable()
                 || !options.isTargetProperty(srcPropertyName)) {

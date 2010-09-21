@@ -25,7 +25,10 @@ import java.util.Map;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.impl.ParameterizedClassDescImpl;
+import org.seasar.util.collection.Indexed;
 
+import static org.seasar.util.collection.ArrayIterator.*;
+import static org.seasar.util.collection.IndexedIterator.*;
 import static org.seasar.util.lang.GenericsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -159,12 +162,11 @@ public abstract class ParameterizedClassDescFactory {
         }
         final ParameterizedClassDesc[] parameterDescs =
             new ParameterizedClassDesc[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; ++i) {
-            parameterDescs[i] =
-                createParameterizedClassDesc(parameterTypes[i], map);
+        for (final Indexed<Type> parameterType : indexed(iterable(parameterTypes))) {
+            parameterDescs[parameterType.getIndex()] =
+                createParameterizedClassDesc(parameterType.getElement(), map);
         }
         desc.setArguments(parameterDescs);
         return desc;
     }
-
 }

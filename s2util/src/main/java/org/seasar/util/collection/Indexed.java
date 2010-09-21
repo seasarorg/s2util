@@ -16,22 +16,20 @@
 package org.seasar.util.collection;
 
 /**
- * 
  * {@link IndexedIterator}でイテレートする要素です。
  * 
  * @author wyukawa
- * 
  * @param <T>
  *            要素の型
- * 
+ * @see IndexedIterator
  */
 public class Indexed<T> {
 
     /** 要素 */
-    private T element;
+    private final T element;
 
     /** 要素のインデックス */
-    private int index;
+    private final int index;
 
     /**
      * コンストラクタ
@@ -39,7 +37,7 @@ public class Indexed<T> {
      * @param element
      * @param index
      */
-    public Indexed(T element, int index) {
+    public Indexed(final T element, final int index) {
         this.element = element;
         this.index = index;
     }

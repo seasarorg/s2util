@@ -157,8 +157,8 @@ public abstract class MessageFormatter {
             return "";
         }
         final StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < args.length; i++) {
-            buffer.append(args[i] + ", ");
+        for (final Object arg : args) {
+            buffer.append(arg + ", ");
         }
         buffer.setLength(buffer.length() - ", ".length());
         return new String(buffer);

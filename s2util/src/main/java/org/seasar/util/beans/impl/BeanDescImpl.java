@@ -48,6 +48,8 @@ import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.FieldUtil;
 import org.seasar.util.lang.StringUtil;
 
+import static java.util.Collections.*;
+
 import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.lang.GenericsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
@@ -72,12 +74,12 @@ public class BeanDescImpl implements BeanDesc {
     protected final Map<TypeVariable<?>, Type> typeVariables;
 
     /** プロパティ名から{@link PropertyDesc}へのマップ */
-    protected final CaseInsensitiveMap<PropertyDescImpl> propertyDescCache =
-        new CaseInsensitiveMap<PropertyDescImpl>();
+    protected final CaseInsensitiveMap<PropertyDesc> propertyDescCache =
+        new CaseInsensitiveMap<PropertyDesc>();
 
     /** フィールド名から{@link FieldDescImpl}へのマップ */
-    protected final ArrayMap<String, FieldDescImpl> fieldDescCache =
-        new ArrayMap<String, FieldDescImpl>();
+    protected final ArrayMap<String, FieldDesc> fieldDescCache =
+        new ArrayMap<String, FieldDesc>();
 
     /** {@link ConstructorDesc}の配列 */
     protected final List<ConstructorDesc> constructorDescs = newArrayList();
@@ -148,6 +150,11 @@ public class BeanDescImpl implements BeanDesc {
     }
 
     @Override
+    public Iterable<PropertyDesc> getPropertyDescs() {
+        return unmodifiableCollection(propertyDescCache.values());
+    }
+
+    @Override
     public boolean hasFieldDesc(final String fieldName) {
         assertArgumentNotEmpty("fieldName", fieldName);
 
@@ -175,6 +182,11 @@ public class BeanDescImpl implements BeanDesc {
     @Override
     public int getFieldDescSize() {
         return fieldDescCache.size();
+    }
+
+    @Override
+    public Iterable<FieldDesc> getFieldDescs() {
+        return unmodifiableCollection(fieldDescCache.values());
     }
 
     @SuppressWarnings("unchecked")
@@ -206,6 +218,21 @@ public class BeanDescImpl implements BeanDesc {
             return constructorDesc;
         }
         throw new ConstructorNotFoundRuntimeException(beanClass, args);
+    }
+
+    @Override
+    public ConstructorDesc getConstructorDesc(int index) {
+        return constructorDescs.get(index);
+    }
+
+    @Override
+    public int getConstructorDescSize() {
+        return constructorDescs.size();
+    }
+
+    @Override
+    public Iterable<ConstructorDesc> getConstructorDescs() {
+        return unmodifiableCollection(constructorDescs);
     }
 
     @Override
@@ -519,7 +546,8 @@ public class BeanDescImpl implements BeanDesc {
     protected void setupReadMethod(final Method readMethod,
             final String propertyName) {
         final Class<?> propertyType = readMethod.getReturnType();
-        PropertyDescImpl propDesc = propertyDescCache.get(propertyName);
+        PropertyDescImpl propDesc =
+            (PropertyDescImpl) propertyDescCache.get(propertyName);
         if (propDesc == null) {
             propDesc =
                 new PropertyDescImpl(
@@ -548,7 +576,8 @@ public class BeanDescImpl implements BeanDesc {
     protected void setupWriteMethod(final Method writeMethod,
             final String propertyName) {
         final Class<?> propertyType = writeMethod.getParameterTypes()[0];
-        PropertyDescImpl propDesc = propertyDescCache.get(propertyName);
+        PropertyDescImpl propDesc =
+            (PropertyDescImpl) propertyDescCache.get(propertyName);
         if (propDesc == null) {
             propDesc =
                 new PropertyDescImpl(
@@ -632,8 +661,8 @@ public class BeanDescImpl implements BeanDesc {
     protected void setupFieldDescsByInterface(final Class<?> interfaceClass) {
         addFieldDescs(interfaceClass);
         final Class<?>[] interfaces = interfaceClass.getInterfaces();
-        for (int i = 0; i < interfaces.length; ++i) {
-            setupFieldDescsByInterface(interfaces[i]);
+        for (final Class<?> intf : interfaces) {
+            setupFieldDescsByInterface(intf);
         }
     }
 
@@ -674,7 +703,7 @@ public class BeanDescImpl implements BeanDesc {
             }
             if (hasPropertyDesc(fname)) {
                 final PropertyDescImpl pd =
-                    propertyDescCache.get(field.getName());
+                    (PropertyDescImpl) propertyDescCache.get(field.getName());
                 pd.setField(field);
                 continue;
             }

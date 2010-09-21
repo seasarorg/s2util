@@ -20,8 +20,7 @@ import java.util.Iterator;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
 /**
- * 
- * インデックス付きの{@link Iterator}です。インデックスは0から始まります。
+ * インデックス付きの{@link Iterator}です。インデックスは{@literal 0}から始まります。
  * 
  * <p>
  * 次のように使います．
@@ -47,10 +46,9 @@ import org.seasar.util.exception.SUnsupportedOperationException;
  * </pre>
  * 
  * @author wyukawa
- * 
  * @param <T>
  *            イテレートする要素の型
- * 
+ * @see Indexed
  */
 public class IndexedIterator<T> implements Iterator<Indexed<T>> {
 
@@ -86,30 +84,21 @@ public class IndexedIterator<T> implements Iterator<Indexed<T>> {
      * 
      * @param iterator
      */
-    public IndexedIterator(Iterator<T> iterator) {
+    public IndexedIterator(final Iterator<T> iterator) {
         this.iterator = iterator;
         this.index = 0;
     }
 
-    /*
-     * @see java.util.Iterator#hasNext()
-     */
     @Override
     public boolean hasNext() {
         return iterator.hasNext();
     }
 
-    /*
-     * @see java.util.Iterator#next()
-     */
     @Override
     public Indexed<T> next() {
         return new Indexed<T>(iterator.next(), index++);
     }
 
-    /*
-     * @see java.util.Iterator#remove()
-     */
     @Override
     public void remove() {
         throw new SUnsupportedOperationException("remove");
