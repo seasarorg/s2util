@@ -28,7 +28,7 @@ import org.seasar.util.exception.SUnsupportedOperationException;
  * 
  * <pre>
  * import static org.seasar.util.collection.IndexedIterator.*;
- * List&lt;String&gt; = ...;
+ * List&lt;String&gt; list = ...;
  * for (Indexed<String> indexed : indexed(list)) {
  *     System.out.println(indexed.getIndex());
  *     System.out.println(indexed.getElement());
