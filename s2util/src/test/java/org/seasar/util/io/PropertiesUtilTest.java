@@ -16,14 +16,18 @@
 package org.seasar.util.io;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Properties;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.net.URLUtil;
 
@@ -40,6 +44,12 @@ public class PropertiesUtilTest {
         + ".txt");
 
     File inputFile = URLUtil.toFile(url);
+
+    /**
+     * 
+     */
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     /**
      * @see org.junit.rules.ExpectedException
@@ -141,8 +151,7 @@ public class PropertiesUtilTest {
 
     /**
      * Test method for
-     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File, String)}
-     * .
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File)} .
      */
     @Test
     public void testLoadPropertiesFile() {
@@ -153,12 +162,89 @@ public class PropertiesUtilTest {
 
     /**
      * Test method for
-     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File)} .
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, File, String)}
+     * .
      */
     @Test
     public void testLoadPropertiesFileString() {
         Properties properties = new Properties();
         PropertiesUtil.load(properties, inputFile, "UTF-8");
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#store(Properties, java.io.OutputStream, String)}
+     * .
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testStorePropertiesOutputStreamString() throws IOException {
+        Properties outProperties = new Properties();
+        outProperties.setProperty("a", "A");
+        File file = tempFolder.newFile("hoge.properties");
+        FileOutputStream outputStream = OutputStreamUtil.create(file);
+        PropertiesUtil.store(outProperties, outputStream, "comments");
+        CloseableUtil.close(outputStream);
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, file);
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#store(Properties, java.io.Writer, String)}
+     * .
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testStorePropertiesWriterString() throws IOException {
+        Properties outProperties = new Properties();
+        outProperties.setProperty("a", "A");
+        File file = tempFolder.newFile("hoge.properties");
+        Writer writer = WriterUtil.create(file);
+        PropertiesUtil.store(outProperties, writer, "comments");
+        CloseableUtil.close(writer);
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, file);
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#store(Properties, File, String, String)}
+     * .
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testStorePropertiesFileStringString() throws IOException {
+        Properties outProperties = new Properties();
+        outProperties.setProperty("a", "A");
+        File file = tempFolder.newFile("hoge.properties");
+        PropertiesUtil.store(outProperties, file, "UTF-8", "comments");
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, file);
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * Test method for
+     * {@link org.seasar.util.io.PropertiesUtil#store(Properties, File, String)}
+     * .
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testStorePropertiesFileString() throws IOException {
+        Properties outProperties = new Properties();
+        outProperties.setProperty("a", "A");
+        File file = tempFolder.newFile("hoge.properties");
+        PropertiesUtil.store(outProperties, file, "comments");
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, file);
         assertThat(properties.getProperty("a"), is("A"));
     }
 

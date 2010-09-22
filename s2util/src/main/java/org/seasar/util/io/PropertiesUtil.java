@@ -18,7 +18,9 @@ package org.seasar.util.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -115,6 +117,101 @@ public abstract class PropertiesUtil {
      */
     public static void load(final Properties props, final File file) {
         load(props, file, Charset.defaultCharset().name());
+    }
+
+    /**
+     * {@link Properties#store(OutputStream, String)}の例外処理をラップします。
+     * 
+     * <p>
+     * 出力ストリームはクローズされません。
+     * </p>
+     * 
+     * @param props
+     *            プロパティセット
+     * @param out
+     *            出力ストリーム
+     * @param comments
+     *            コメント
+     */
+    public static void store(final Properties props, final OutputStream out,
+            String comments) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("out", out);
+
+        try {
+            props.store(out, comments);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * {@link Properties#store(Writer, String)}の例外処理をラップします。
+     * 
+     * <p>
+     * 出力ライタはクローズされません。
+     * </p>
+     * 
+     * @param props
+     *            プロパティセット
+     * @param writer
+     *            出力ライタ
+     * @param comments
+     *            コメント
+     */
+    public static void store(final Properties props, final Writer writer,
+            String comments) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("writer", writer);
+
+        try {
+            props.store(writer, comments);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 指定のエンコーディングでファイルを書き出して{@link Properties}をストアします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット
+     * @param file
+     *            ファイル
+     * @param encoding
+     *            エンコーディング
+     * @param comments
+     *            コメント
+     */
+    public static void store(final Properties props, final File file,
+            String encoding, String comments) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("file", file);
+        assertArgumentNotNull("encoding", encoding);
+
+        final Writer writer = WriterUtil.create(file, encoding);
+        try {
+            props.store(writer, comments);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        } finally {
+            CloseableUtil.close(writer);
+        }
+    }
+
+    /**
+     * プラットフォームデフォルトエンコーディングでファイルを書き出して{@link Properties}をストアします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット
+     * @param file
+     *            ファイル
+     * @param comments
+     *            コメント
+     */
+    public static void store(final Properties props, final File file,
+            String comments) {
+        store(props, file, Charset.defaultCharset().name(), comments);
     }
 
 }
