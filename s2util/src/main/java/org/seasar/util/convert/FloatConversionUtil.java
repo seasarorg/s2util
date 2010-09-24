@@ -31,7 +31,8 @@ public abstract class FloatConversionUtil {
      * {@link Float}に変換します。
      * 
      * @param o
-     * @return {@link Float}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Float}
      */
     public static Float toFloat(final Object o) {
         return toFloat(o, null);
@@ -41,8 +42,10 @@ public abstract class FloatConversionUtil {
      * {@link Float}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Float}
+     *            パターン文字列
+     * @return 変換された{@link Float}
      */
     public static Float toFloat(final Object o, final String pattern) {
         if (o == null) {
@@ -71,21 +74,24 @@ public abstract class FloatConversionUtil {
     }
 
     /**
-     * floatに変換します。
+     * {@literal float}に変換します。
      * 
      * @param o
-     * @return float
+     *            変換元のオブジェクト
+     * @return 変換された{@literal float}
      */
     public static float toPrimitiveFloat(final Object o) {
         return toPrimitiveFloat(o, null);
     }
 
     /**
-     * floatに変換します。
+     * {@literal float}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return float
+     *            パターン文字列
+     * @return 変換された{@literal float}
      */
     public static float toPrimitiveFloat(final Object o, final String pattern) {
         if (o == null) {
@@ -111,4 +117,5 @@ public abstract class FloatConversionUtil {
         }
         return Float.parseFloat(DecimalFormatUtil.normalize(s));
     }
+
 }

@@ -31,7 +31,8 @@ public abstract class BigDecimalConversionUtil {
      * {@link BigDecimal}に変換します。
      * 
      * @param o
-     * @return {@link BigDecimal}に変換されたデータ
+     *            変換元のオブジェクト
+     * @return 変換された{@link BigDecimal}
      */
     public static BigDecimal toBigDecimal(final Object o) {
         return toBigDecimal(o, null);
@@ -41,8 +42,10 @@ public abstract class BigDecimalConversionUtil {
      * {@link BigDecimal}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link BigDecimal}に変換されたデータ
+     *            パターン文字列
+     * @return 変換された{@link BigDecimal}
      */
     public static BigDecimal toBigDecimal(final Object o, final String pattern) {
         if (o == null) {
@@ -69,7 +72,8 @@ public abstract class BigDecimalConversionUtil {
      * {@link BigDecimal}を文字列に変換します。
      * 
      * @param dec
-     * @return 文字列に変換されたデータ
+     *            変換元の{@link BigDecimal}
+     * @return 変換された文字列
      */
     public static String toString(final BigDecimal dec) {
         return dec.toPlainString();
@@ -79,9 +83,11 @@ public abstract class BigDecimalConversionUtil {
      * {@link BigDecimal}を正規化します。
      * 
      * @param dec
+     *            変換元の{@link BigDecimal}
      * @return 正規化されたデータ
      */
     private static BigDecimal normalize(final BigDecimal dec) {
         return new BigDecimal(dec.toPlainString());
     }
+
 }

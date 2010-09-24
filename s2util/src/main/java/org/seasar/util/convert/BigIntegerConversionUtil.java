@@ -28,7 +28,8 @@ public abstract class BigIntegerConversionUtil {
      * {@link BigInteger}に変換します。
      * 
      * @param o
-     * @return {@link BigInteger}
+     *            変換元のオブジェクト
+     * @return 変換された{@link BigInteger}
      */
     public static BigInteger toBigInteger(final Object o) {
         return toBigInteger(o, null);
@@ -38,8 +39,10 @@ public abstract class BigIntegerConversionUtil {
      * {@link BigInteger}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link BigInteger}
+     *            パターン文字列
+     * @return 変換された{@link BigInteger}
      */
     public static BigInteger toBigInteger(final Object o, final String pattern) {
         if (o == null) {
@@ -54,4 +57,5 @@ public abstract class BigIntegerConversionUtil {
             return BigInteger.valueOf(l.longValue());
         }
     }
+
 }

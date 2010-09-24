@@ -27,8 +27,21 @@ import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link BeanDesc}を生成するクラスです。
+ * <p>
+ * 指定されたJavaBeansのメタデータを扱う{@link BeanDesc}を返します。
+ * </p>
+ * 
+ * <pre>
+ * BeanDesc beanDesc = BeanDescFactory.getBeanDesc(Foo.class);
+ * </pre>
+ * <p>
+ * {@link BeanDesc}はキャッシュされます。 キャッシュをクリアするには{@link DisposableUtil#dispose()}
+ * を呼び出してください。
+ * </p>
  * 
  * @author higa
+ * @see BeanDesc
+ * @see DisposableUtil
  */
 public abstract class BeanDescFactory {
 

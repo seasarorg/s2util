@@ -27,10 +27,54 @@ import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
- * JavaBeans用のユーティリティです。
+ * JavaBeansとJavaBeans、あるいはJavaBeansと{@link Map}の間でプロパティをコピーするためのユーティリティです。
+ * <p>
+ * コピー元とコピー先のJavaBeansを指定することで、プロパティがコピーされます。
+ * </p>
+ * 
+ * <pre>
+ * import static org.seasar.util.beans.util.BeanUtil.*;
+ * 
+ * copyBeanToBean(srcBean, destBean);
+ * </pre>
+ * <p>
+ * JavaBeansから{@link Map}あるいは{@link Map}からJavaBeansへコピーすることも出来ます。
+ * </p>
+ * 
+ * <pre>
+ * copyBeanToMap(srcBean, destMap);
+ * copyMapToBean(srcMap, destBean);
+ * </pre>
+ * <p>
+ * コピー先となるJavaBeansまたは{@link Map}のインスタンスを新たに生成してコピーすることも出来ます。
+ * </p>
+ * 
+ * <pre>
+ * DestBean destBean = copyBeanToNewBean(srcBean, DestBean.class);
+ * DestBean destBean = copyMapToNewBean(srcMap, DestBean.class);
+ * Map<String, Object> destMap = copyBeanToNewMap(srcBean);
+ * </pre>
+ * <p>
+ * コピーする際のオプションを指定することも出来ます。
+ * </p>
+ * 
+ * <pre>
+ * import static org.seasar.util.beans.util.CopyOptionsUtil.*;
+ * 
+ * copyBeanToBean(srcBean, destBean, excludeNull());
+ * </pre>
+ * <p>
+ * メソッドチェーンでオプションを複数指定することもできます。
+ * </p>
+ * 
+ * <pre>
+ * copyBeanToBean(srcBean, destBean, excludeNull().dateConverter("date", "MM/dd"));
+ * </pre>
  * 
  * @author Kimura Satoshi
  * @author higa
+ * @see CopyOptionsUtil
+ * @see CopyOptions
  */
 public abstract class BeanUtil {
 

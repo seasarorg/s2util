@@ -41,8 +41,8 @@ public abstract class StringConversionUtil {
      * 文字列に変換します。
      * 
      * @param value
-     *            値
-     * @return 変換された結果
+     *            変換元のオブジェクト
+     * @return 変換された{@literal String}
      */
     public static String toString(final Object value) {
         return toString(value, null);
@@ -52,10 +52,10 @@ public abstract class StringConversionUtil {
      * 文字列に変換します。
      * 
      * @param value
-     *            値
+     *            変換元のオブジェクト
      * @param pattern
-     *            パターン
-     * @return 変換された結果
+     *            パターン文字列
+     * @return 変換された{@literal String}
      */
     public static String toString(final Object value, final String pattern) {
         if (value == null) {
@@ -77,10 +77,10 @@ public abstract class StringConversionUtil {
      * 文字列に変換します。
      * 
      * @param value
-     *            値
+     *            変換元のオブジェクト
      * @param pattern
-     *            パターン
-     * @return 変換された結果
+     *            パターン文字列
+     * @return 変換された{@literal String}
      */
     public static String toString(final Number value, final String pattern) {
         if (value != null) {
@@ -96,10 +96,10 @@ public abstract class StringConversionUtil {
      * 文字列に変換します。
      * 
      * @param value
-     *            値
+     *            変換元のオブジェクト
      * @param pattern
-     *            パターン
-     * @return 変換された結果
+     *            パターン文字列
+     * @return 変換された{@literal String}
      */
     public static String toString(final java.util.Date value,
             final String pattern) {
@@ -134,4 +134,5 @@ public abstract class StringConversionUtil {
         }
         return result.toString();
     }
+
 }

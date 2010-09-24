@@ -31,7 +31,8 @@ public abstract class LongConversionUtil {
      * {@link Long}に変換します。
      * 
      * @param o
-     * @return {@link Long}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Long}
      */
     public static Long toLong(final Object o) {
         return toLong(o, null);
@@ -41,8 +42,10 @@ public abstract class LongConversionUtil {
      * {@link Long}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Long}
+     *            パターン文字列
+     * @return 変換された{@link Long}
      */
     public static Long toLong(final Object o, final String pattern) {
         if (o == null) {
@@ -74,21 +77,24 @@ public abstract class LongConversionUtil {
     }
 
     /**
-     * longに変換します。
+     * 変換された{@literal long}に変換します。
      * 
      * @param o
-     * @return long
+     *            変換元のオブジェクト
+     * @return 変換された{@literal long}
      */
     public static long toPrimitiveLong(final Object o) {
         return toPrimitiveLong(o, null);
     }
 
     /**
-     * longに変換します。
+     * {@literal long}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return long
+     *            パターン文字列
+     * @return 変換された{@literal long}
      */
     public static long toPrimitiveLong(final Object o, final String pattern) {
         if (o == null) {
@@ -115,4 +121,5 @@ public abstract class LongConversionUtil {
         }
         return Long.parseLong(DecimalFormatUtil.normalize(s));
     }
+
 }

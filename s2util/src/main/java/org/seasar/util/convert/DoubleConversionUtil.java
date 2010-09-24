@@ -31,7 +31,8 @@ public abstract class DoubleConversionUtil {
      * {@link Double}に変換します。
      * 
      * @param o
-     * @return {@link Double}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Double}
      */
     public static Double toDouble(final Object o) {
         return toDouble(o, null);
@@ -41,8 +42,10 @@ public abstract class DoubleConversionUtil {
      * {@link Double}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Double}
+     *            パターン文字列
+     * @return 変換された{@link Double}
      */
     public static Double toDouble(final Object o, final String pattern) {
         if (o == null) {
@@ -71,21 +74,24 @@ public abstract class DoubleConversionUtil {
     }
 
     /**
-     * doubleに変換します。
+     * {@literal double}に変換します。
      * 
      * @param o
-     * @return double
+     *            変換元のオブジェクト
+     * @return 変換された{@literal double}
      */
     public static double toPrimitiveDouble(final Object o) {
         return toPrimitiveDouble(o, null);
     }
 
     /**
-     * doubleに変換します。
+     * {@literal double}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return double
+     *            パターン文字列
+     * @return 変換された{@literal double}
      */
     public static double toPrimitiveDouble(final Object o, final String pattern) {
         if (o == null) {
@@ -111,4 +117,5 @@ public abstract class DoubleConversionUtil {
         }
         return Double.parseDouble(DecimalFormatUtil.normalize(s));
     }
+
 }

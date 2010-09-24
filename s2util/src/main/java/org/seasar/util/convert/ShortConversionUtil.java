@@ -31,8 +31,8 @@ public abstract class ShortConversionUtil {
      * {@link Short}に変換します。
      * 
      * @param o
-     *            変換するオブジェクト
-     * @return 変換後のオブジェクト
+     *            変換元のオブジェクト
+     * @return 変換された{@link Short}
      */
     public static Short toShort(final Object o) {
         return toShort(o, null);
@@ -42,10 +42,10 @@ public abstract class ShortConversionUtil {
      * {@link Short}に変換します。
      * 
      * @param o
-     *            変換するオブジェクト
+     *            変換元のオブジェクト
      * @param pattern
-     *            パターン
-     * @return 変換後のオブジェクト
+     *            パターン文字列
+     * @return 変換された{@link Short}
      */
     public static Short toShort(final Object o, final String pattern) {
         if (o == null) {
@@ -77,24 +77,24 @@ public abstract class ShortConversionUtil {
     }
 
     /**
-     * shortに変換します。
+     * {@literal short}に変換します。
      * 
      * @param o
-     *            変換するオブジェクト
-     * @return 変換されたshort
+     *            変換元のオブジェクト
+     * @return 変換された{@literal short}
      */
     public static short toPrimitiveShort(final Object o) {
         return toPrimitiveShort(o, null);
     }
 
     /**
-     * shortに変換します。
+     * {@literal short}に変換します。
      * 
      * @param o
-     *            変換するオブジェクト
+     *            変換元のオブジェクト
      * @param pattern
-     *            パターン
-     * @return 変換されたshort
+     *            パターン文字列
+     * @return 変換された{@literal short}
      */
     public static short toPrimitiveShort(final Object o, final String pattern) {
         if (o == null) {
@@ -122,4 +122,5 @@ public abstract class ShortConversionUtil {
         }
         return Short.parseShort(DecimalFormatUtil.normalize(s));
     }
+
 }

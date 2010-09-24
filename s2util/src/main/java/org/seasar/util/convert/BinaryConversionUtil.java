@@ -25,10 +25,11 @@ import static org.seasar.util.misc.AssertionUtil.*;
 public abstract class BinaryConversionUtil {
 
     /**
-     * byteの配列に変換します。
+     * {@literal byte}の配列に変換します。
      * 
      * @param o
-     * @return byteの配列
+     *            変換元のオブジェクト
+     * @return {@literal byte}の配列
      */
     public static byte[] toBinary(final Object o) {
         if (o instanceof byte[]) {
@@ -40,4 +41,5 @@ public abstract class BinaryConversionUtil {
             return ((String) o).getBytes();
         }
     }
+
 }

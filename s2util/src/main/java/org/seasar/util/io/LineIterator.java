@@ -30,6 +30,7 @@ import org.seasar.util.exception.SUnsupportedOperationException;
  * 
  * <pre>
  * import static org.seasar.util.io.LineIterator.*;
+ * 
  * BufferedReader reader = ...;
  * for (String line : iterable(reader)) {
  *     ...

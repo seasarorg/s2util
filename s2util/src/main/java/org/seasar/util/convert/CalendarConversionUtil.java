@@ -32,7 +32,8 @@ public abstract class CalendarConversionUtil {
      * {@link Calendar}に変換します。
      * 
      * @param o
-     * @return {@link Calendar}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Calendar}
      */
     public static Calendar toCalendar(final Object o) {
         return toCalendar(o, null);
@@ -42,8 +43,10 @@ public abstract class CalendarConversionUtil {
      * {@link Calendar}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Calendar}
+     *            パターン文字列
+     * @return 変換された{@link Calendar}
      */
     public static Calendar toCalendar(final Object o, final String pattern) {
         if (o instanceof Calendar) {
@@ -63,7 +66,7 @@ public abstract class CalendarConversionUtil {
      * 
      * @param calendar
      *            {@link Calendar}
-     * @return カレンダー
+     * @return 変換された{@link Calendar}
      */
     public static Calendar localize(final Calendar calendar) {
         assertArgumentNotNull("calendar", calendar);
@@ -71,4 +74,5 @@ public abstract class CalendarConversionUtil {
         localCalendar.setTimeInMillis(calendar.getTimeInMillis());
         return localCalendar;
     }
+
 }

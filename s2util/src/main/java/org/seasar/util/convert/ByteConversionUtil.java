@@ -31,7 +31,8 @@ public abstract class ByteConversionUtil {
      * {@link Byte}に変換します。
      * 
      * @param o
-     * @return {@link Byte}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Byte}
      */
     public static Byte toByte(final Object o) {
         return toByte(o, null);
@@ -41,8 +42,10 @@ public abstract class ByteConversionUtil {
      * {@link Byte}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Byte}
+     *            パターン文字列
+     * @return 変換された{@link Byte}
      */
     public static Byte toByte(final Object o, final String pattern) {
         if (o == null) {
@@ -74,21 +77,24 @@ public abstract class ByteConversionUtil {
     }
 
     /**
-     * byteに変換します。
+     * {@literal byte}に変換します。
      * 
      * @param o
-     * @return byte
+     *            変換元のオブジェクト
+     * @return 変換された{@literal byte}
      */
     public static byte toPrimitiveByte(final Object o) {
         return toPrimitiveByte(o, null);
     }
 
     /**
-     * byteに変換します。
+     * {@literal byte}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return byte
+     *            パターン文字列
+     * @return 変換された{@literal byte}
      */
     public static byte toPrimitiveByte(final Object o, final String pattern) {
         if (o == null) {
@@ -115,4 +121,5 @@ public abstract class ByteConversionUtil {
         }
         return Byte.parseByte(DecimalFormatUtil.normalize(s));
     }
+
 }

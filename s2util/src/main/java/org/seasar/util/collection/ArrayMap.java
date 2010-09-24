@@ -183,30 +183,33 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
     }
 
     /**
-     * indexに対応する値を返します。
+     * インデックスで指定された位置の値を返します。
      * 
      * @param index
-     * @return indexに対応する値
+     *            インデックス
+     * @return インデックスで指定された位置の値
      */
     public V getAt(final int index) {
         return getEntryAt(index).value;
     }
 
     /**
-     * indexに対応するキーを返します。
+     * インデックスで指定された位置のキーを返します。
      * 
      * @param index
-     * @return indexに対応するキー
+     *            インデックス
+     * @return インデックスで指定された位置のキー
      */
     public K getKeyAt(final int index) {
         return getEntryAt(index).key;
     }
 
     /**
-     * indexに対応する {@link java.util.Map.Entry}を返します。
+     * インデックスで指定された位置の{@link java.util.Map.Entry}を返します。
      * 
      * @param index
-     * @return indexに対応する {@link java.util.Map.Entry}
+     *            インデックス
+     * @return インデックスで指定された位置の{@link java.util.Map.Entry}
      */
     public Entry<K, V> getEntryAt(final int index) {
         assertIndex(index < size, "Index:" + index + ", Size:" + size);
@@ -265,10 +268,11 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
     }
 
     /**
-     * indexに対応する値を削除します。
+     * インデックスで指定された位置のエントリを削除します。
      * 
      * @param index
-     * @return indexに対応する値
+     *            インデックス
+     * @return インデックスで指定された位置にあったエントリの値
      */
     public V removeAt(final int index) {
         final Entry<K, V> e = removeList(index);
@@ -313,6 +317,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
      * 配列に変換します。
      * 
      * @param proto
+     *            要素の格納先の配列。配列のサイズが十分でない場合は、同じ実行時の型で新しい配列が格納用として割り当てられる
      * @return 配列
      */
     public V[] toArray(final V[] proto) {

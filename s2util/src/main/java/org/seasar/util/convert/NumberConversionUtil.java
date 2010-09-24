@@ -34,8 +34,10 @@ public abstract class NumberConversionUtil {
      * 適切な {@link Number}に変換します。
      * 
      * @param type
+     *            変換先の型
      * @param o
-     * @return 適切な {@link Number}
+     *            変換元のオブジェクト
+     * @return {@literal type}に変換された{@link Number}
      */
     public static Object convertNumber(final Class<?> type, final Object o) {
         if (type == Integer.class) {
@@ -59,11 +61,13 @@ public abstract class NumberConversionUtil {
     }
 
     /**
-     * Wrapperを返します。
+     * 指定されたプリミティブ型に対応するラッパー型に変換して返します。
      * 
      * @param type
+     *            プリミティブ型
      * @param o
-     * @return Wrapper
+     *            変換元のオブジェクト
+     * @return 指定されたプリミティブ型に対応するラッパー型に変換されたオブジェクト
      */
     public static Object convertPrimitiveWrapper(final Class<?> type,
             final Object o) {
@@ -117,8 +121,10 @@ public abstract class NumberConversionUtil {
      * デリミタを削除します。
      * 
      * @param value
+     *            文字列の値
      * @param locale
-     * @return デリミタを削除した結果
+     *            ロケール
+     * @return デリミタを削除した結果の文字列
      */
     public static String removeDelimeter(String value, final Locale locale) {
         final String groupingSeparator = findGroupingSeparator(locale);
@@ -132,6 +138,7 @@ public abstract class NumberConversionUtil {
      * グルーピング用のセパレータを探します。
      * 
      * @param locale
+     *            ロケール
      * @return グルーピング用のセパレータ
      */
     public static String findGroupingSeparator(final Locale locale) {
@@ -143,6 +150,7 @@ public abstract class NumberConversionUtil {
      * 数値のセパレータを返します。
      * 
      * @param locale
+     *            ロケール
      * @return 数値のセパレータ
      */
     public static String findDecimalSeparator(final Locale locale) {

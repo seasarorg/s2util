@@ -31,7 +31,8 @@ public abstract class IntegerConversionUtil {
      * {@link Integer}に変換します。
      * 
      * @param o
-     * @return {@link Integer}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Integer}
      */
     public static Integer toInteger(final Object o) {
         return toInteger(o, null);
@@ -41,8 +42,10 @@ public abstract class IntegerConversionUtil {
      * {@link Integer}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return {@link Integer}
+     *            パターン文字列
+     * @return 変換された{@link Integer}
      */
     public static Integer toInteger(final Object o, final String pattern) {
         if (o == null) {
@@ -74,21 +77,24 @@ public abstract class IntegerConversionUtil {
     }
 
     /**
-     * intに変換します。
+     * {@literal int}に変換します。
      * 
      * @param o
-     * @return int
+     *            変換元のオブジェクト
+     * @return 変換された{@literal int}
      */
     public static int toPrimitiveInt(final Object o) {
         return toPrimitiveInt(o, null);
     }
 
     /**
-     * intに変換します。
+     * {@literal int}に変換します。
      * 
      * @param o
+     *            変換元のオブジェクト
      * @param pattern
-     * @return int
+     *            パターン文字列
+     * @return 変換された{@literal int}
      */
     public static int toPrimitiveInt(final Object o, final String pattern) {
         if (o == null) {
@@ -116,4 +122,5 @@ public abstract class IntegerConversionUtil {
         }
         return Integer.parseInt(DecimalFormatUtil.normalize(s));
     }
+
 }

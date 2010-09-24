@@ -52,7 +52,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 /**
- * Java5のgenericsや可変長を活用する、コレクションのためのユーティリティです。
+ * コレクションのためのユーティリティです。
  * 
  * @author koichik
  */

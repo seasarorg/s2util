@@ -20,10 +20,43 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
+import org.seasar.util.beans.factory.BeanDescFactory;
+
 /**
  * JavaBeansのメタデータを扱うためのインターフェースです。
+ * <p>
+ * {@link BeanDesc}のインスタンスは{@link BeanDescFactory}から取得します。
+ * <p>
+ * 
+ * <pre>
+ * BeanDesc beanDesc = BeanDescFactory.getBeanDesc(Foo.class);
+ * </pre>
+ * <p>
+ * 取得した{@link BeanDesc}から，対象となるJavaBeansのプロパティやフィールド、コンストラクタ、メソッドのメタデータを取得できます。
+ * </p>
+ * 
+ * <pre>
+ * for (PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
+ *     propertyDesc.getValue(foo); // Foo のプロパティの値を取得
+ * }
+ * 
+ * for (FieldDesc fieldDesc : beanDesc.getFieldDescs()) {
+ *     fieldDesc.getFileldValue(foo); // Foo のフィールドの値を取得
+ * }
+ * 
+ * for (ConstructorDesc constructorDesc : beanDesc.getConstructorDescs()) {
+ *     constructorDesc.newInstance(...); // Foo のインスタンスを生成
+ * }
+ * 
+ * for (String methodName : beanDesc.getMethodNames()) {
+ *     for (MethodDesc methodDesc : beanDesc.getMethodDescs(methodName)) {
+ *         methodDesc.invoke(foo, ...); // Foo のメソッドを起動
+ *     }
+ * }
+ * </pre>
  * 
  * @author higa
+ * @see BeanDescFactory
  */
 public interface BeanDesc {
 

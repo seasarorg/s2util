@@ -107,7 +107,7 @@ public class CopyOptions {
      * 操作の対象に含めるプロパティ名を追加します。
      * 
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の並び
      * @return このインスタンス自身
      */
     public CopyOptions include(final CharSequence... propertyNames) {
@@ -121,7 +121,7 @@ public class CopyOptions {
      * 操作の対象に含めないプロパティ名を追加します。
      * 
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の並び
      * @return このインスタンス自身
      */
     public CopyOptions exclude(final CharSequence... propertyNames) {
@@ -132,7 +132,7 @@ public class CopyOptions {
     }
 
     /**
-     * null値のプロパティを操作の対象外にします。
+     * {@literal null}値のプロパティを操作の対象外にします。
      * 
      * @return このインスタンス自身
      */
@@ -153,6 +153,10 @@ public class CopyOptions {
 
     /**
      * プレフィックスを指定します。
+     * <p>
+     * プレフィックスを指定すると、コピー元のプロパティ名がプレフィックスで始まるプロパティだけがコピーの対象となります。
+     * また、コピー元のプロパティ名からプレフィックスを除去した名前がコピー先のプロパティ名となります。
+     * </p>
      * 
      * @param prefix
      *            プレフィックス
@@ -167,6 +171,29 @@ public class CopyOptions {
 
     /**
      * JavaBeansのデリミタを設定します。
+     * <p>
+     * JavaBeansから{@link Map}へ、あるいはその逆にコピーする際に、プロパティ名のデリミタを変更することが出来ます。
+     * 例えばJavaBeans側のデリミタにアンダースコア、{@link Map}側のデリミタにピリオドを指定した場合、
+     * コピー元とコピー先のプリパティ名は次のようになります。
+     * </p>
+     * <table border="1">
+     * <tr>
+     * <th>JavaBeansのプロパティ名</th>
+     * <th>{@literal Map}のプロパティ名</th>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo}</td>
+     * <td>{@literal foo}</td>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo_bar}</td>
+     * <td>{@literal foo.bar}</td>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo_bar_baz}</td>
+     * <td>{@literal foo.bar.baz}</td>
+     * </tr>
+     * </table>
      * 
      * @param beanDelimiter
      *            JavaBeansのデリミタ
@@ -178,10 +205,33 @@ public class CopyOptions {
     }
 
     /**
-     * Mapのデリミタを設定します。
+     * {@link Map}のデリミタを設定します。
+     * <p>
+     * JavaBeansから{@link Map}へ、あるいはその逆にコピーする際に、プロパティ名のデリミタを変更することが出来ます。
+     * 例えばJavaBeans側のデリミタにアンダースコア、{@link Map}側のデリミタにピリオドを指定した場合、
+     * コピー元とコピー先のプリパティ名は次のようになります。
+     * </p>
+     * <table border="1">
+     * <tr>
+     * <th>JavaBeansのプロパティ名</th>
+     * <th>{@literal Map}のプロパティ名</th>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo}</td>
+     * <td>{@literal foo}</td>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo_bar}</td>
+     * <td>{@literal foo.bar}</td>
+     * </tr>
+     * <tr>
+     * <td>{@literal foo_bar_baz}</td>
+     * <td>{@literal foo.bar.baz}</td>
+     * </tr>
+     * </table>
      * 
      * @param mapDelimiter
-     *            Mapのデリミタ
+     *            {@link Map}のデリミタ
      * @return このインスタンス自身
      */
     public CopyOptions mapDelimiter(final char mapDelimiter) {
@@ -193,7 +243,9 @@ public class CopyOptions {
      * コンバータを設定します。
      * 
      * @param converter
+     *            コンバータ
      * @param propertyNames
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
      */
     public CopyOptions converter(final Converter converter,
@@ -216,8 +268,9 @@ public class CopyOptions {
      * @param pattern
      *            日付のパターン
      * @param propertyNames
-     *            プロパティ名の配列
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
+     * @see DateConverter
      */
     public CopyOptions dateConverter(final String pattern,
             final CharSequence... propertyNames) {
@@ -232,8 +285,9 @@ public class CopyOptions {
      * @param pattern
      *            日付のパターン
      * @param propertyNames
-     *            プロパティ名の配列
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
+     * @see SqlDateConverter
      */
     public CopyOptions sqlDateConverter(final String pattern,
             final CharSequence... propertyNames) {
@@ -248,8 +302,9 @@ public class CopyOptions {
      * @param pattern
      *            時間のパターン
      * @param propertyNames
-     *            プロパティ名の配列
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
+     * @see TimeConverter
      */
     public CopyOptions timeConverter(final String pattern,
             final CharSequence... propertyNames) {
@@ -264,8 +319,9 @@ public class CopyOptions {
      * @param pattern
      *            日時のパターン
      * @param propertyNames
-     *            プロパティ名の配列
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
+     * @see TimestampConverter
      */
     public CopyOptions timestampConverter(final String pattern,
             final CharSequence... propertyNames) {
@@ -280,8 +336,9 @@ public class CopyOptions {
      * @param pattern
      *            数値のパターン
      * @param propertyNames
-     *            プロパティ名の配列
+     *            このコンバータを適用するプロパティ名の並び
      * @return このインスタンス自身
+     * @see NumberConverter
      */
     public CopyOptions numberConverter(final String pattern,
             final CharSequence... propertyNames) {

@@ -355,7 +355,7 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
      * 配列に変換します。
      * 
      * @param array
-     *            配列
+     *            要素の格納先の配列。配列のサイズが十分でない場合は、同じ実行時の型で新しい配列が格納用として割り当てられる
      * @return 配列
      */
     @SuppressWarnings("unchecked")

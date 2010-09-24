@@ -35,7 +35,9 @@ public class Indexed<T> {
      * コンストラクタ
      * 
      * @param element
+     *            要素
      * @param index
+     *            要素のインデックス
      */
     public Indexed(final T element, final int index) {
         this.element = element;
@@ -45,7 +47,7 @@ public class Indexed<T> {
     /**
      * 要素を返します。
      * 
-     * @return the element
+     * @return 要素
      */
     public T getElement() {
         return element;
@@ -54,7 +56,7 @@ public class Indexed<T> {
     /**
      * インデックスを返します。
      * 
-     * @return the index
+     * @return インデックス
      */
     public int getIndex() {
         return index;

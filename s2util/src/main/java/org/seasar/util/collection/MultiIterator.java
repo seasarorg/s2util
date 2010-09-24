@@ -22,6 +22,20 @@ import org.seasar.util.exception.SUnsupportedOperationException;
 
 /**
  * 複数の{@link Iterator}を一つの{@link Iterator}のように反復するための{@link Iterator}です。
+ * <p>
+ * 次のように使います．
+ * </p>
+ * 
+ * <pre>
+ * import static org.seasar.util.collection.MultiIterator.*;
+ * 
+ * List<String> list = ...;
+ * Set<String> set = ...;
+ * Map<String, Object> map = ...;
+ * for (String element : iterable(list, set, map.keySet())) {
+ *     ...
+ * }
+ * </pre>
  * 
  * @author koichik
  * @param <E>
@@ -34,6 +48,24 @@ public class MultiIterator<E> implements Iterator<E> {
 
     /** 現在反復中の{@link Iterator}のインデックス */
     protected int index;
+
+    /**
+     * for each構文で使用するために{@link MultiIterator}をラップした{@link Iterable}を返します。
+     * 
+     * @param <E>
+     *            要素の型
+     * @param iterables
+     *            {@link Iterable}の並び
+     * @return {@link MultiIterator}をラップした{@link Iterable}
+     */
+    public static <E> Iterable<E> iterable(final Iterable<E>... iterables) {
+        @SuppressWarnings("unchecked")
+        final Iterator<E>[] iterators = new Iterator[iterables.length];
+        for (int i = 0; i < iterables.length; ++i) {
+            iterators[i] = iterables[i].iterator();
+        }
+        return iterable(iterators);
+    }
 
     /**
      * for each構文で使用するために{@link MultiIterator}をラップした{@link Iterable}を返します。

@@ -22,6 +22,18 @@ import org.seasar.util.exception.SUnsupportedOperationException;
 
 /**
  * 配列を{@link Iterator}にするAdaptorです。
+ * <p>
+ * 次のように使います．
+ * </p>
+ * 
+ * <pre>
+ * import static org.seasar.util.collection.ArrayIterator.*;
+ * 
+ * String[] array = ...;
+ * for (String element : iterable(array)) {
+ *     ...
+ * }
+ * </pre>
  * 
  * @author shot
  * @param <T>

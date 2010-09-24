@@ -22,6 +22,10 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
+import org.seasar.util.beans.BeanDesc;
+import org.seasar.util.beans.ConstructorDesc;
+import org.seasar.util.beans.FieldDesc;
+import org.seasar.util.beans.MethodDesc;
 import org.seasar.util.beans.ParameterizedClassDesc;
 import org.seasar.util.beans.PropertyDesc;
 import org.seasar.util.beans.impl.ParameterizedClassDescImpl;
@@ -34,9 +38,18 @@ import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * フィールの型やメソッドの引数型、戻り値型を表現する{@link ParameterizedClassDesc}を作成するファクトリです。
+ * <p>
+ * このクラスでは{@link ParameterizedClassDesc}のインスタンスをキャッシュしません。 {@link BeanDesc}経由で
+ * {@link ParameterizedClassDesc}を取得するようにしてください。
+ * </p>
  * 
  * @author koichik
+ * @see BeanDesc#getTypeVariables()
  * @see PropertyDesc#getParameterizedClassDesc()
+ * @see FieldDesc#getParameterizedClassDesc()
+ * @see ConstructorDesc#getParameterizedClassDescs()
+ * @see MethodDesc#getParameterizedClassDesc()
+ * @see MethodDesc#getParameterizedClassDescs()
  */
 public abstract class ParameterizedClassDescFactory {
 

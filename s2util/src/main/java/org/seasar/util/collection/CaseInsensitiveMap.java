@@ -47,6 +47,7 @@ public class CaseInsensitiveMap<V> extends ArrayMap<String, V> {
      * キーが含まれているかどうかを返します。
      * 
      * @param key
+     *            キー
      * @return キーが含まれているかどうか
      */
     public boolean containsKey(final String key) {

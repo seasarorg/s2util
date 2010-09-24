@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * LRU用の {@link HashMap}です。
+ * エントリ数の上限を持ち、新しいエントリが追加されるとLRUで古いエントリを破棄する{@link HashMap}です。
  * 
  * @author koichik
  * @param <K>
@@ -51,6 +51,7 @@ public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
      * {@link LruHashMap}を作成します。
      * 
      * @param limitSize
+     *            エントリ数の上限
      */
     public LruHashMap(final int limitSize) {
         this(limitSize, DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
@@ -60,8 +61,11 @@ public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
      * {@link LruHashMap}を作成します。
      * 
      * @param limitSize
+     *            エントリ数の上限
      * @param initialCapacity
+     *            初期容量
      * @param loadFactor
+     *            負荷係数
      */
     public LruHashMap(final int limitSize, final int initialCapacity,
             final float loadFactor) {
@@ -70,9 +74,9 @@ public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
     }
 
     /**
-     * 上限サイズを返します。
+     * エントリ数の上限を返します。
      * 
-     * @return 上限サイズ
+     * @return エントリ数の上限
      */
     public int getLimitSize() {
         return limitSize;

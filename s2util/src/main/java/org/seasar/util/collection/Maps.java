@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * </p>
  * 
  * <pre>
+ * import static org.seasar.util.collection.Maps.*;
+ * 
  * Map<String, Integer> map = map("a", 1).$("b", 2).$("c", 3).$();
  * </pre>
  * 

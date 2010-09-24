@@ -28,6 +28,7 @@ import org.seasar.util.exception.SUnsupportedOperationException;
  * 
  * <pre>
  * import static org.seasar.util.collection.IndexedIterator.*;
+ * 
  * List&lt;String&gt; list = ...;
  * for (Indexed<String> indexed : indexed(list)) {
  *     System.out.println(indexed.getIndex());
@@ -38,6 +39,7 @@ import org.seasar.util.exception.SUnsupportedOperationException;
  * <pre>
  * import static org.seasar.util.collection.IndexedIterator.*;
  * import static org.seasar.util.io.LineIterator.*;
+ * 
  * BufferedReader reader = ...;
  * for (Indexed<String> indexed : indexed(iterable(reader))) {
  *     System.out.println(indexed.getIndex());
@@ -63,10 +65,8 @@ public class IndexedIterator<T> implements Iterator<Indexed<T>> {
      * 
      * @param <T>
      *            {@link Iterable}の要素型
-     * 
      * @param Iterable
      *            {@link Iterable}
-     * 
      * @return {@link IndexedIterator}をラップした{@link Iterable}
      */
     public static <T> Iterable<Indexed<T>> indexed(final Iterable<T> Iterable) {
@@ -83,6 +83,7 @@ public class IndexedIterator<T> implements Iterator<Indexed<T>> {
      * インスタンスを構築します。
      * 
      * @param iterator
+     *            イテレータ
      */
     public IndexedIterator(final Iterator<T> iterator) {
         this.iterator = iterator;

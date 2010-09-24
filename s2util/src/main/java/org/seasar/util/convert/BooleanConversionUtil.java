@@ -26,7 +26,8 @@ public abstract class BooleanConversionUtil {
      * {@link Boolean}に変換します。
      * 
      * @param o
-     * @return {@link Boolean}
+     *            変換元のオブジェクト
+     * @return 変換された{@link Boolean}
      */
     public static Boolean toBoolean(final Object o) {
         if (o == null) {
@@ -53,10 +54,11 @@ public abstract class BooleanConversionUtil {
     }
 
     /**
-     * booleanに変換します。
+     * {@literal boolean}に変換します。
      * 
      * @param o
-     * @return boolean
+     *            変換元のオブジェクト
+     * @return 変換された{@literal boolean}
      */
     public static boolean toPrimitiveBoolean(final Object o) {
         final Boolean b = toBoolean(o);
@@ -65,4 +67,5 @@ public abstract class BooleanConversionUtil {
         }
         return false;
     }
+
 }
