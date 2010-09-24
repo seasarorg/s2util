@@ -25,29 +25,31 @@ public class StringConversionUtilTest extends TestCase {
     /**
      * @throws Exception
      */
-    public void testFromWaveDashToFullwidthTilde() throws Exception {
+    public void testFromWindowsMapping() throws Exception {
+        assertNull(StringConversionUtil.fromWindowsMapping(null));
+        assertEquals("", StringConversionUtil.fromWindowsMapping(""));
         assertEquals(
             "abc 123",
-            StringConversionUtil.fromWaveDashToFullwidthTilde("abc 123"));
+            StringConversionUtil.fromWindowsMapping("abc 123"));
         assertEquals(
-            "abc" + String.valueOf((char) StringConversionUtil.FULLWIDTH_TILDE)
-                + "123",
-            StringConversionUtil.fromWaveDashToFullwidthTilde("abc"
-                + String.valueOf((char) StringConversionUtil.WAVE_DASH) + "123"));
+            "abc\uFF5E\u2225\uFF0D\uFFE0\uFFE1\uFFE2",
+            StringConversionUtil
+                .fromWindowsMapping("abc\u301C\u2016\u2212\u00A2\u00A3\u00AC"));
     }
 
     /**
      * @throws Exception
      */
-    public void testFromWaveDashToFullwidthTildeForNull() throws Exception {
-        assertNull(StringConversionUtil.fromWaveDashToFullwidthTilde(null));
+    public void testToWindowsMapping() throws Exception {
+        assertNull(StringConversionUtil.toWindowsMapping(null));
+        assertEquals("", StringConversionUtil.toWindowsMapping(""));
+        assertEquals(
+            "abc 123",
+            StringConversionUtil.toWindowsMapping("abc 123"));
+        assertEquals(
+            "abc\u301C\u2016\u2212\u00A2\u00A3\u00AC",
+            StringConversionUtil
+                .toWindowsMapping("abc\uFF5E\u2225\uFF0D\uFFE0\uFFE1\uFFE2"));
     }
 
-    /**
-     * @throws Exception
-     */
-    public void testFromWaveDashToFullwidthTildeForEmptyString()
-            throws Exception {
-        assertEquals("", StringConversionUtil.fromWaveDashToFullwidthTilde(""));
-    }
 }

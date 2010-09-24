@@ -27,15 +27,41 @@ import org.seasar.util.misc.Base64Util;
  */
 public abstract class StringConversionUtil {
 
-    /**
-     * WAVE DASHです。
-     */
-    public static final int WAVE_DASH = 0x301c;
+    /** WAVE DASH */
+    public static final char WAVE_DASH = '\u301C';
 
-    /**
-     * FULLWIDTH TILDEです。
-     */
-    public static final int FULLWIDTH_TILDE = 0xff5e;
+    /** FULLWIDTH TILDE */
+    public static final char FULLWIDTH_TILDE = '\uFF5E';
+
+    /** DOUBLE VERTICAL LINE */
+    public static final char DOUBLE_VERTICAL_LINE = '\u2016';
+
+    /** PARALLEL TO */
+    public static final char PARALLEL_TO = '\u2225';
+
+    /** MINUS SIGN */
+    public static final char MINUS_SIGN = '\u2212';
+
+    /** FULLWIDTH HYPHEN-MINUS */
+    public static final char FULLWIDTH_HYPHEN_MINUS = '\uFF0D';
+
+    /** CENT SIGN */
+    public static final char CENT_SIGN = '\u00A2';
+
+    /** FULLWIDTH CENT SIGN */
+    public static final char FULLWIDTH_CENT_SIGN = '\uFFE0';
+
+    /** POUND SIGN */
+    public static final char POUND_SIGN = '\u00A3';
+
+    /** FULLWIDTH POUND SIGN */
+    public static final char FULLWIDTH_POUND_SIGN = '\uFFE1';
+
+    /** NOT SIGN */
+    public static final char NOT_SIGN = '\u00AC';
+
+    /** FULLWIDTH NOT SIGN */
+    public static final char FULLWIDTH_NOT_SIGN = '\uFFE2';
 
     /**
      * 文字列に変換します。
@@ -113,26 +139,81 @@ public abstract class StringConversionUtil {
     }
 
     /**
-     * WAVE DASH(U+301C)をFULLWIDTH TILDE(U+FF5E)に変換します。
+     * Windows固有のマッピングルールで作成された文字列を修正します。
      * 
      * @param source
-     *            ソース
-     * @return 変換結果
+     *            Windows固有のマッピングルールで作成された文字列
+     * @return 修正された文字列
      */
-    public static String fromWaveDashToFullwidthTilde(final String source) {
+    public static String fromWindowsMapping(final String source) {
         if (source == null) {
             return null;
         }
-        final StringBuffer result = new StringBuffer(source.length());
-        char ch;
-        for (int i = 0; i < source.length(); i++) {
-            ch = source.charAt(i);
-            if (ch == WAVE_DASH) {
-                ch = FULLWIDTH_TILDE;
+        final char[] array = source.toCharArray();
+        for (int i = 0; i < array.length; ++i) {
+            switch (array[i]) {
+            case WAVE_DASH:
+                array[i] = FULLWIDTH_TILDE;
+                break;
+            case DOUBLE_VERTICAL_LINE:
+                array[i] = PARALLEL_TO;
+                break;
+            case MINUS_SIGN:
+                array[i] = FULLWIDTH_HYPHEN_MINUS;
+                break;
+            case CENT_SIGN:
+                array[i] = FULLWIDTH_CENT_SIGN;
+                break;
+            case POUND_SIGN:
+                array[i] = FULLWIDTH_POUND_SIGN;
+                break;
+            case NOT_SIGN:
+                array[i] = FULLWIDTH_NOT_SIGN;
+                break;
+            default:
+                break;
             }
-            result.append(ch);
         }
-        return result.toString();
+        return new String(array);
+    }
+
+    /**
+     * 文字列をWindows固有のマッピングルールに合わせて修正します。
+     * 
+     * @param source
+     *            文字列
+     * @return Windows固有のマッピングルールに修正された文字列
+     */
+    public static String toWindowsMapping(final String source) {
+        if (source == null) {
+            return null;
+        }
+        final char[] array = source.toCharArray();
+        for (int i = 0; i < array.length; ++i) {
+            switch (array[i]) {
+            case FULLWIDTH_TILDE:
+                array[i] = WAVE_DASH;
+                break;
+            case PARALLEL_TO:
+                array[i] = DOUBLE_VERTICAL_LINE;
+                break;
+            case FULLWIDTH_HYPHEN_MINUS:
+                array[i] = MINUS_SIGN;
+                break;
+            case FULLWIDTH_CENT_SIGN:
+                array[i] = CENT_SIGN;
+                break;
+            case FULLWIDTH_POUND_SIGN:
+                array[i] = POUND_SIGN;
+                break;
+            case FULLWIDTH_NOT_SIGN:
+                array[i] = NOT_SIGN;
+                break;
+            default:
+                break;
+            }
+        }
+        return new String(array);
     }
 
 }
