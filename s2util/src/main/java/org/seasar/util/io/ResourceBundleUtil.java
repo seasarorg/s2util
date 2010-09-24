@@ -28,7 +28,6 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * {@link ResourceBundle}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
 public abstract class ResourceBundleUtil {
 

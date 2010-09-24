@@ -33,24 +33,26 @@ import org.seasar.util.misc.Base64Util;
 
 /**
  * CipherContextの標準実装です。
- *
+ * 
  * @author shinsuke
  * 
  */
 public class CipherContextImpl implements CipherContext {
-    private String algorithm;
+    private final String algorithm;
 
-    private String key;
+    private final String key;
 
-    private String id;
+    private final String id;
 
     /**
      * コンストラクタ
      * 
      * @param algorithm
+     *            アルゴリズム
      * @param key
+     *            キー
      */
-    public CipherContextImpl(String algorithm, String key) {
+    public CipherContextImpl(final String algorithm, final String key) {
         if (algorithm == null) {
             throw new NullArgumentException("algorithm");
         }
@@ -68,23 +70,24 @@ public class CipherContextImpl implements CipherContext {
                     .append(key)
                     .toString()
                     .getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             throw new SIllegalStateException(e);
         }
     }
 
     @Override
-    public Cipher getCipher(int opmode) {
-        SecretKeySpec sksSpec = new SecretKeySpec(key.getBytes(), algorithm);
+    public Cipher getCipher(final int opmode) {
+        final SecretKeySpec sksSpec =
+            new SecretKeySpec(key.getBytes(), algorithm);
         try {
-            Cipher cipher = Cipher.getInstance(algorithm);
+            final Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(opmode, sksSpec);
             return cipher;
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new InvalidKeyRuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             throw new NoSuchAlgorithmRuntimeException(e);
-        } catch (NoSuchPaddingException e) {
+        } catch (final NoSuchPaddingException e) {
             throw new NoSuchPaddingRuntimeException(e);
         }
     }

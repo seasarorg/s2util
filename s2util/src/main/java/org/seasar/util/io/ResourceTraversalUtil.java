@@ -34,6 +34,7 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * リソースをトラバースするためのクラスです。
  * 
  * @author taedium
+ * @see ResourceHandler
  * @see TraversalUtil
  */
 public abstract class ResourceTraversalUtil {

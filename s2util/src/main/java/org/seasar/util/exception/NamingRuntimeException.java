@@ -32,6 +32,7 @@ public class NamingRuntimeException extends SRuntimeException {
      * {@link NamingRuntimeException}を作成します。
      * 
      * @param cause
+     *            原因となった例外
      */
     public NamingRuntimeException(final NamingException cause) {
         super("EUTL0066", asArray(cause), cause);

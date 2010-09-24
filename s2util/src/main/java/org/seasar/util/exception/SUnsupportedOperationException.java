@@ -29,7 +29,6 @@ public class SUnsupportedOperationException extends
      * {@link SUnsupportedOperationException}を作成します。
      */
     public SUnsupportedOperationException() {
-        super();
     }
 
     /**
@@ -50,7 +49,8 @@ public class SUnsupportedOperationException extends
      * @param cause
      *            元の例外
      */
-    public SUnsupportedOperationException(final String message, final Throwable cause) {
+    public SUnsupportedOperationException(final String message,
+            final Throwable cause) {
         super(message, cause);
     }
 

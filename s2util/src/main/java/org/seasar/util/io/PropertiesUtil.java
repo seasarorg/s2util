@@ -32,7 +32,6 @@ import static org.seasar.util.misc.AssertionUtil.*;
  * {@link Properties}用のユーティリティクラスです。
  * 
  * @author higa
- * 
  */
 public abstract class PropertiesUtil {
 

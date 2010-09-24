@@ -4,6 +4,7 @@ package org.seasar.util.io;
  * クラスやリソースの集まりを表すオブジェクトです。
  * 
  * @author koichik
+ * @see TraversalUtil
  */
 public interface Traverser {
 

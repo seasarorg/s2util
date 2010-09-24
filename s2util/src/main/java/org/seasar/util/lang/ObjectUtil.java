@@ -20,14 +20,11 @@ package org.seasar.util.lang;
  * {@link Object}用のユーティリティクラスです。
  * 
  * @author wyukawa
- * 
  */
 public abstract class ObjectUtil {
 
     /**
-     * 
      * オブジェクトが等しいかどうか返します。どちらも<code>null</code>の場合は、<code>true</code>を返します。
-     * 
      * <p>
      * 次のように使います．
      * </p>
@@ -48,9 +45,8 @@ public abstract class ObjectUtil {
      * @param object2
      *            オブジェクト(<code>null</code>可)
      * @return 引数の2つのオブジェクトが等しい場合は<code>true</code>を返します。
-     * 
      */
-    public static boolean equals(Object object1, Object object2) {
+    public static boolean equals(final Object object1, final Object object2) {
         if (object1 == object2) {
             return true;
         }
@@ -62,7 +58,6 @@ public abstract class ObjectUtil {
 
     /**
      * オブジェクトを返します。オブジェクトが<code>null</code>だったら<code>defaultValue</code>を返します。
-     * 
      * <p>
      * 次のように使います．
      * </p>
@@ -76,16 +71,14 @@ public abstract class ObjectUtil {
      * 
      * @param <T>
      *            オブジェクトの型
-     * 
      * @param t
      *            オブジェクト(<code>null</code>可)
      * @param defaultValue
      *            引数のオブジェクトが<code>null</code>だったら返すオブジェクト(<code>null</code>可)
      * @return オブジェクトを返します。オブジェクトが<code>null</code>だったら<code>defaultValue</code>
      *         を返します。
-     * 
      */
-    public static <T> T defaultValue(T t, T defaultValue) {
+    public static <T> T defaultValue(final T t, final T defaultValue) {
         return t == null ? defaultValue : t;
     }
 

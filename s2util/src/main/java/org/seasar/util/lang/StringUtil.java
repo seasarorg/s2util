@@ -32,7 +32,7 @@ public abstract class StringUtil {
     public static final String EMPTY = "";
 
     /**
-     * 空の文字列の配列です。
+     * 文字列型の空の配列です。
      */
     public static final String[] EMPTY_STRINGS = new String[0];
 
@@ -92,7 +92,7 @@ public abstract class StringUtil {
                 break;
             }
         }
-        return buf.toString();
+        return new String(buf);
     }
 
     /**
@@ -273,7 +273,7 @@ public abstract class StringUtil {
      * 
      * @param str
      *            文字列
-     * @return ブランクかどうか
+     * @return ブランクなら{@literal true}
      */
     public static boolean isBlank(final String str) {
         if (str == null || str.length() == 0) {
@@ -292,7 +292,7 @@ public abstract class StringUtil {
      * 
      * @param str
      *            文字列
-     * @return ブランクではないかどうか
+     * @return ブランクではなければ{@literal true}
      * @see #isBlank(String)
      */
     public static boolean isNotBlank(final String str) {
@@ -345,13 +345,13 @@ public abstract class StringUtil {
     }
 
     /**
-     * ケースインセンシティブで文字列同士が等しいかどうか返します。どちらもnullの場合は、<code>true</code>を返します。
+     * 大文字小文字を無視して文字列同士が等しいかどうか返します。どちらもnullの場合は、<code>true</code>を返します。
      * 
      * @param target1
      *            文字列1
      * @param target2
      *            文字列2
-     * @return ケースインセンシティブで文字列同士が等しいか
+     * @return 大文字小文字を無視して文字列同士が等しければ{@literal true}
      */
     public static boolean equalsIgnoreCase(final String target1,
             final String target2) {
@@ -360,13 +360,13 @@ public abstract class StringUtil {
     }
 
     /**
-     * ケースインセンシティブで特定の文字で終わっているのかどうかを返します。
+     * 大文字小文字を無視して特定の文字で終わっているのかどうかを返します。
      * 
      * @param target1
      *            テキスト
      * @param target2
      *            比較する文字列
-     * @return ケースインセンシティブで特定の文字で終わっているのかどうか
+     * @return 大文字小文字を無視して特定の文字で終わっていれば{@literal true}
      */
     public static boolean endsWithIgnoreCase(final String target1,
             final String target2) {
@@ -383,13 +383,13 @@ public abstract class StringUtil {
     }
 
     /**
-     * ケースインセンシティブで特定の文字ではじまっているのかどうかを返します。
+     * 大文字小文字を無視して特定の文字で始まっているのかどうかを返します。
      * 
      * @param target1
      *            テキスト
      * @param target2
      *            比較する文字列
-     * @return ケースインセンシティブで特定の文字ではじまっているのかどうか
+     * @return 大文字小文字を無視して特定の文字で始まっていれば{@literal true}
      */
     public static boolean startsWithIgnoreCase(final String target1,
             final String target2) {
@@ -466,10 +466,10 @@ public abstract class StringUtil {
     }
 
     /**
-     * 16進数の文字列に変換します。
+     * {@literal int}の値を16進数の文字列に変換します。
      * 
      * @param i
-     *            int
+     *            {@literal int}の値
      * @return 16進数の文字列
      */
     public static String toHex(final int i) {
@@ -614,7 +614,6 @@ public abstract class StringUtil {
 
     /**
      * 引数の文字列を返します。引数の文字列が<code>null</code>だったら空文字を返します。
-     * 
      * <p>
      * 次のように使います．
      * </p>
@@ -628,15 +627,13 @@ public abstract class StringUtil {
      * @param str
      *            文字列(<code>null</code>可)
      * @return 引数の文字列を返します。引数の文字列が<code>null</code>だったら空文字を返します。
-     * 
      */
-    public static String defaultString(String str) {
+    public static String defaultString(final String str) {
         return str == null ? EMPTY : str;
     }
 
     /**
      * 引数の文字列を返します。引数の文字列が<code>null</code>だったら<code>defaultStr</code>を返します。
-     * 
      * <p>
      * 次のように使います．
      * </p>
@@ -655,9 +652,9 @@ public abstract class StringUtil {
      *            引数の文字列が<code>null</code>だったら返す文字列(<code>null</code>可)
      * @return 引数の文字列を返します。引数の文字列が<code>null</code>だったら<code>defaultStr</code>
      *         を返します。
-     * 
      */
-    public static String defaultString(String str, String defaultStr) {
+    public static String defaultString(final String str, final String defaultStr) {
         return str == null ? defaultStr : str;
     }
+
 }

@@ -53,9 +53,9 @@ public abstract class CipherPoolUtil {
      * @param size
      *            生成するCipherインスタンス数
      */
-    public static void create(CipherContext context, int size) {
-        Queue<Cipher> encryptoCipherQueue = getEncryptoCipherQueue(context);
-        Queue<Cipher> decryptoCipherQueue = getDecryptoCipherQueue(context);
+    public static void create(final CipherContext context, final int size) {
+        final Queue<Cipher> encryptoCipherQueue = getEncryptoCipherQueue(context);
+        final Queue<Cipher> decryptoCipherQueue = getDecryptoCipherQueue(context);
         for (int i = 0; i < size; i++) {
             encryptoCipherQueue.add(context.getCipher(Cipher.ENCRYPT_MODE));
             decryptoCipherQueue.add(context.getCipher(Cipher.DECRYPT_MODE));
@@ -71,13 +71,13 @@ public abstract class CipherPoolUtil {
      *            暗号化するバイト配列
      * @return 暗号化されたバイト配列
      */
-    public static byte[] encrypto(CipherContext context, byte[] data) {
-        Cipher cipher = getEncryptoCipher(context);
+    public static byte[] encrypto(final CipherContext context, final byte[] data) {
+        final Cipher cipher = getEncryptoCipher(context);
         try {
-            byte[] encrypted = cipher.doFinal(data);
+            final byte[] encrypted = cipher.doFinal(data);
             putEncryptoCipher(context, cipher);
             return encrypted;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new SIllegalStateException(e);
         }
     }
@@ -93,13 +93,13 @@ public abstract class CipherPoolUtil {
      *            エンコーディング名
      * @return 暗号化された文字列
      */
-    public static String encryptoText(CipherContext context, String text,
-            String charsetName) {
+    public static String encryptoText(final CipherContext context, final String text,
+            final String charsetName) {
         try {
             return Base64Util.encode(encrypto(
                 context,
                 text.getBytes(charsetName)));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new SIllegalStateException(e);
         }
     }
@@ -113,13 +113,13 @@ public abstract class CipherPoolUtil {
      *            復号化するバイト配列
      * @return 復号化されたバイト配列
      */
-    public static byte[] decrypto(CipherContext context, byte[] data) {
-        Cipher cipher = getDecryptoCipher(context);
+    public static byte[] decrypto(final CipherContext context, final byte[] data) {
+        final Cipher cipher = getDecryptoCipher(context);
         try {
-            byte[] decrypted = cipher.doFinal(data);
+            final byte[] decrypted = cipher.doFinal(data);
             putDecryptoCipher(context, cipher);
             return decrypted;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new SIllegalStateException(e);
         }
     }
@@ -135,30 +135,30 @@ public abstract class CipherPoolUtil {
      *            エンコーディング名
      * @return 復号化された文字列
      */
-    public static String decryptoText(CipherContext context, String text,
-            String charsetName) {
+    public static String decryptoText(final CipherContext context, final String text,
+            final String charsetName) {
         try {
             return new String(
                 decrypto(context, Base64Util.decode(text)),
                 charsetName);
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             throw new SIllegalStateException(e);
         }
     }
 
-    private static Cipher getEncryptoCipher(CipherContext context) {
-        Cipher cipher = getEncryptoCipherQueue(context).poll();
+    private static Cipher getEncryptoCipher(final CipherContext context) {
+        final Cipher cipher = getEncryptoCipherQueue(context).poll();
         if (cipher == null) {
             return context.getCipher(Cipher.ENCRYPT_MODE);
         }
         return cipher;
     }
 
-    private static void putEncryptoCipher(CipherContext context, Cipher cipher) {
+    private static void putEncryptoCipher(final CipherContext context, final Cipher cipher) {
         getEncryptoCipherQueue(context).offer(cipher);
     }
 
-    private static Queue<Cipher> getEncryptoCipherQueue(CipherContext context) {
+    private static Queue<Cipher> getEncryptoCipherQueue(final CipherContext context) {
         Queue<Cipher> queue = encryptoQueueMap.get(context.getId());
         if (queue == null) {
             queue = new ConcurrentLinkedQueue<Cipher>();
@@ -167,19 +167,19 @@ public abstract class CipherPoolUtil {
         return queue;
     }
 
-    private static Cipher getDecryptoCipher(CipherContext context) {
-        Cipher cipher = getDecryptoCipherQueue(context).poll();
+    private static Cipher getDecryptoCipher(final CipherContext context) {
+        final Cipher cipher = getDecryptoCipherQueue(context).poll();
         if (cipher == null) {
             return context.getCipher(Cipher.DECRYPT_MODE);
         }
         return cipher;
     }
 
-    private static void putDecryptoCipher(CipherContext context, Cipher cipher) {
+    private static void putDecryptoCipher(final CipherContext context, final Cipher cipher) {
         getDecryptoCipherQueue(context).offer(cipher);
     }
 
-    private static Queue<Cipher> getDecryptoCipherQueue(CipherContext context) {
+    private static Queue<Cipher> getDecryptoCipherQueue(final CipherContext context) {
         Queue<Cipher> queue = decryptoQueueMap.get(context.getId());
         if (queue == null) {
             queue = new ConcurrentLinkedQueue<Cipher>();

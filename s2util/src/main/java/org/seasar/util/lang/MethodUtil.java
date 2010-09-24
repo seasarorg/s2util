@@ -188,10 +188,11 @@ public abstract class MethodUtil {
     }
 
     /**
-     * equalsメソッドかどうかを返します。
+     * {@literal equals(Object)}メソッドかどうかを返します。
      * 
      * @param method
-     * @return equalsメソッドかどうか
+     *            メソッド
+     * @return {@literal equals(Object)}メソッドなら{@literal true}
      */
     public static boolean isEqualsMethod(final Method method) {
         return method != null && method.getName().equals("equals")
@@ -201,10 +202,11 @@ public abstract class MethodUtil {
     }
 
     /**
-     * hashCodeメソッドかどうか返します。
+     * {@literal hashCode()}メソッドかどうか返します。
      * 
      * @param method
-     * @return hashCodeメソッドかどうか
+     *            メソッド
+     * @return {@literal hashCode()}メソッドなら{@literal true}
      */
     public static boolean isHashCodeMethod(final Method method) {
         return method != null && method.getName().equals("hashCode")
@@ -213,10 +215,11 @@ public abstract class MethodUtil {
     }
 
     /**
-     * toStringメソッドかどうか返します。
+     * {@literal toString()}メソッドかどうか返します。
      * 
      * @param method
-     * @return toStringメソッドかどうか
+     *            メソッド
+     * @return {@literal toString()}メソッドなら{@literal true}
      */
     public static boolean isToStringMethod(final Method method) {
         return method != null && method.getName().equals("toString")

@@ -23,13 +23,8 @@ import java.lang.reflect.Modifier;
  * {@link Modifier}用のユーティリティクラスです。
  * 
  * @author shot
- * 
  */
 public abstract class ModifierUtil {
-
-    static final int BRIDGE = 0x00000040;
-
-    static final int SYNTHETIC = 0x00001000;
 
     /**
      * <code>public</code>かどうか返します。
