@@ -38,6 +38,7 @@ public class CaseInsensitiveMap<V> extends ArrayMap<String, V> {
      * {@link CaseInsensitiveMap}を作成します。
      * 
      * @param capacity
+     *            初期容量
      */
     public CaseInsensitiveMap(final int capacity) {
         super(capacity);

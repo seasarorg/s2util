@@ -336,9 +336,10 @@ public abstract class ClassUtil {
     }
 
     /**
-     * プリミティブの場合はラッパークラス、そうでない場合はもとのクラスを返します。
+     * クラスがプリミティブの場合はラッパークラス、そうでない場合はもとのクラスを返します。
      * 
      * @param clazz
+     *            クラス
      * @return 引数がプリミティブクラスならラッパークラス、それ以外の場合は引数で渡されたクラス
      */
     public static Class<?> getWrapperClassIfPrimitive(final Class<?> clazz) {

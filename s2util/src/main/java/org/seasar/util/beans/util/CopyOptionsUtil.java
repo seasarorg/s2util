@@ -179,7 +179,9 @@ public abstract class CopyOptionsUtil {
      * コンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param converter
+     *            コンバータ
      * @param propertyNames
+     *            このコンバータを適用するプロパティ名の並び
      * @return コンバータを設定した{@link CopyOptions}
      * @see CopyOptions#converter(Converter, CharSequence...)
      */

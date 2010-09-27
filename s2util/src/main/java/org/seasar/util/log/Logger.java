@@ -65,6 +65,7 @@ public class Logger {
      * {@link Logger}を返します。
      * 
      * @param clazz
+     *            ロガーのカテゴリとなるクラス
      * @return {@link Logger}
      */
     public static synchronized Logger getLogger(final Class<?> clazz) {
@@ -168,7 +169,9 @@ public class Logger {
      * DEBUG情報を出力します。
      * 
      * @param message
+     *            メッセージ
      * @param throwable
+     *            例外
      */
     public void debug(final Object message, final Throwable throwable) {
         if (isDebugEnabled()) {
@@ -180,6 +183,7 @@ public class Logger {
      * DEBUG情報を出力します。
      * 
      * @param message
+     *            メッセージ
      */
     public void debug(final Object message) {
         if (isDebugEnabled()) {
@@ -200,7 +204,9 @@ public class Logger {
      * INFO情報を出力します。
      * 
      * @param message
+     *            メッセージ
      * @param throwable
+     *            例外
      */
     public void info(final Object message, final Throwable throwable) {
         if (isInfoEnabled()) {
@@ -212,6 +218,7 @@ public class Logger {
      * INFO情報を出力します。
      * 
      * @param message
+     *            メッセージ
      */
     public void info(final Object message) {
         if (isInfoEnabled()) {
@@ -223,7 +230,9 @@ public class Logger {
      * WARN情報を出力します。
      * 
      * @param message
+     *            メッセージ
      * @param throwable
+     *            例外
      */
     public void warn(final Object message, final Throwable throwable) {
         log.warn(toString(message), throwable);
@@ -233,6 +242,7 @@ public class Logger {
      * WARN情報を出力します。
      * 
      * @param message
+     *            メッセージ
      */
     public void warn(final Object message) {
         log.warn(message.toString());
@@ -242,7 +252,9 @@ public class Logger {
      * ERROR情報を出力します。
      * 
      * @param message
+     *            メッセージ
      * @param throwable
+     *            例外
      */
     public void error(final Object message, final Throwable throwable) {
         log.error(message.toString(), throwable);
@@ -252,6 +264,7 @@ public class Logger {
      * ERROR情報を出力します。
      * 
      * @param message
+     *            メッセージ
      */
     public void error(final Object message) {
         log.error(message.toString());
@@ -261,7 +274,9 @@ public class Logger {
      * FATAL情報を出力します。
      * 
      * @param message
+     *            メッセージ
      * @param throwable
+     *            例外
      */
     public void fatal(final Object message, final Throwable throwable) {
         log.fatal(message.toString(), throwable);
@@ -271,6 +286,7 @@ public class Logger {
      * FATAL情報を出力します。
      * 
      * @param message
+     *            メッセージ
      */
     public void fatal(final Object message) {
         log.fatal(message.toString());
@@ -280,6 +296,7 @@ public class Logger {
      * ログを出力します。
      * 
      * @param throwable
+     *            例外
      */
     public void log(final Throwable throwable) {
         error(throwable.getMessage(), throwable);
@@ -431,14 +448,18 @@ public class Logger {
         }
 
         /**
-         * @return the level
+         * 出力レベルを返します。
+         * 
+         * @return 出力レベル
          */
         public LogLevel getLevel() {
             return level;
         }
 
         /**
-         * @return the message
+         * メッセージを返します。
+         * 
+         * @return メッセージ
          */
         public String getMessage() {
             return message;

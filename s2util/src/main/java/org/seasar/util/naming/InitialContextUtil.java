@@ -33,8 +33,6 @@ public abstract class InitialContextUtil {
      * 初期コンテキストを作成して返します。
      * 
      * @return 初期コンテキスト
-     * @throws org.seasar.util.exception.NamingRuntimeException
-     *             初期コンテキストを作成できなかった場合にスローされます
      */
     public static InitialContext create() {
         try {
@@ -50,8 +48,6 @@ public abstract class InitialContextUtil {
      * @param env
      *            初期コンテキストの作成に使用される環境。<code>mull</code>は空の環境を示す
      * @return 初期コンテキスト
-     * @throws NamingRuntimeException
-     *             初期コンテキストを作成できなかった場合にスローされます
      */
     public static InitialContext create(final Hashtable<?, ?> env) {
         try {

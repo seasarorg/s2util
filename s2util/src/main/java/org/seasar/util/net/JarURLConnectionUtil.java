@@ -32,16 +32,15 @@ public abstract class JarURLConnectionUtil {
      * {@link JarURLConnection#getJarFile()}の例外処理をラップするメソッドです。
      * 
      * @param conn
+     *            {@link JarURLConnection}
      * @return {@link JarFile}
-     * @throws IORuntimeException
-     *             {@link IOException}が発生した場合
      */
-    public static JarFile getJarFile(final JarURLConnection conn)
-            throws IORuntimeException {
+    public static JarFile getJarFile(final JarURLConnection conn) {
         try {
             return conn.getJarFile();
         } catch (final IOException e) {
             throw new IORuntimeException(e);
         }
     }
+
 }

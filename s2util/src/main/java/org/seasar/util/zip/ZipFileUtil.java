@@ -44,8 +44,6 @@ public abstract class ZipFileUtil {
      * @param file
      *            ファイルパス
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static ZipFile create(final String file) {
         try {
@@ -61,8 +59,6 @@ public abstract class ZipFileUtil {
      * @param file
      *            ファイル
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static ZipFile create(final File file) {
         try {
@@ -80,8 +76,6 @@ public abstract class ZipFileUtil {
      * @param entry
      *            Zipファイルエントリ
      * @return 指定されたZipファイルエントリの内容を読み込むための入力ストリーム
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static InputStream getInputStream(final ZipFile file,
             final ZipEntry entry) {
@@ -98,8 +92,6 @@ public abstract class ZipFileUtil {
      * @param zipUrl
      *            Zipファイルを示すURL
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static ZipFile toZipFile(final URL zipUrl) {
         return create(new File(toZipFilePath(zipUrl)));
@@ -111,8 +103,6 @@ public abstract class ZipFileUtil {
      * @param zipUrl
      *            Zipファイルを示すURL
      * @return URLで指定されたZipファイルのパス
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static String toZipFilePath(final URL zipUrl) {
         final String urlString = zipUrl.getPath();

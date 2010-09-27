@@ -53,6 +53,7 @@ public abstract class OutputStreamUtil {
      * {@link OutputStream}をflushします。
      * 
      * @param out
+     *            出力ストリーム
      */
     public static void flush(final OutputStream out) {
         if (out == null) {

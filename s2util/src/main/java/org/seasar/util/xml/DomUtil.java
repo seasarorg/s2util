@@ -41,6 +41,7 @@ public abstract class DomUtil {
      * XMLの内容を {@link InputStream}として取得します。
      * 
      * @param contents
+     *            コンテンツ
      * @return {@link InputStream}
      */
     public static InputStream getContentsAsStream(final String contents) {
@@ -51,7 +52,9 @@ public abstract class DomUtil {
      * XMLの内容を {@link InputStream}として取得します。
      * 
      * @param contents
+     *            コンテンツ
      * @param encoding
+     *            エンコーディング
      * @return {@link InputStream}
      */
     public static InputStream getContentsAsStream(final String contents,
@@ -71,7 +74,8 @@ public abstract class DomUtil {
      * 属性の値をエンコードします。
      * 
      * @param s
-     * @return エンコードされた値
+     *            属性値
+     * @return エンコードされた属性値
      */
     public static String encodeAttrQuot(final String s) {
         if (s == null) {
@@ -104,7 +108,8 @@ public abstract class DomUtil {
      * テキストをエンコードします。
      * 
      * @param s
-     * @return エンコードされた値
+     *            テキスト
+     * @return エンコードされたテキスト
      */
     public static String encodeText(final String s) {
         if (s == null) {
@@ -134,10 +139,11 @@ public abstract class DomUtil {
      * {@link Document}を文字列に変換します。
      * 
      * @param document
+     *            ドキュメント
      * @return 変換された文字列
      */
     public static String toString(final Document document) {
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         appendElement(document.getDocumentElement(), buf);
         return buf.toString();
     }
@@ -146,10 +152,11 @@ public abstract class DomUtil {
      * {@link Element}を文字列に変換します。
      * 
      * @param element
+     *            要素
      * @return 変換された文字列
      */
     public static String toString(final Element element) {
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         appendElement(element, buf);
         return buf.toString();
     }
@@ -158,10 +165,12 @@ public abstract class DomUtil {
      * {@link Element}の文字列表現を追加します。
      * 
      * @param element
+     *            要素
      * @param buf
+     *            文字列バッファ
      */
     public static void appendElement(final Element element,
-            final StringBuffer buf) {
+            final StringBuilder buf) {
         final String tag = element.getTagName();
         buf.append('<');
         buf.append(tag);
@@ -177,10 +186,12 @@ public abstract class DomUtil {
      * {@link NodeList}の文字列表現を追加します。
      * 
      * @param children
+     *            子要素
      * @param buf
+     *            文字列バッファ
      */
     public static void appendChildren(final NodeList children,
-            final StringBuffer buf) {
+            final StringBuilder buf) {
         final int length = children.getLength();
         for (int i = 0; i < length; ++i) {
             appendNode(children.item(i), buf);
@@ -191,10 +202,12 @@ public abstract class DomUtil {
      * {@link NamedNodeMap}の文字列表現を追加します。
      * 
      * @param attrs
+     *            属性
      * @param buf
+     *            文字列バッファ
      */
     public static void appendAttrs(final NamedNodeMap attrs,
-            final StringBuffer buf) {
+            final StringBuilder buf) {
         final int length = attrs.getLength();
         for (int i = 0; i < length; ++i) {
             final Attr attr = (Attr) attrs.item(i);
@@ -207,9 +220,11 @@ public abstract class DomUtil {
      * {@link Attr}の文字列表現を追加します。
      * 
      * @param attr
+     *            属性
      * @param buf
+     *            文字列バッファ
      */
-    public static void appendAttr(final Attr attr, final StringBuffer buf) {
+    public static void appendAttr(final Attr attr, final StringBuilder buf) {
         buf.append(attr.getName());
         buf.append("=\"");
         buf.append(encodeAttrQuot(attr.getValue()));
@@ -220,9 +235,11 @@ public abstract class DomUtil {
      * {@link Text}の文字列表現を追加します。
      * 
      * @param text
+     *            テキストノード
      * @param buf
+     *            文字列バッファ
      */
-    public static void appendText(final Text text, final StringBuffer buf) {
+    public static void appendText(final Text text, final StringBuilder buf) {
         buf.append(encodeText(text.getData()));
     }
 
@@ -230,10 +247,12 @@ public abstract class DomUtil {
      * {@link CDATASection}の文字列表現を追加します。
      * 
      * @param cdataSection
+     *            CDATAセクション
      * @param buf
+     *            文字列バッファ
      */
     public static void appendCDATASection(final CDATASection cdataSection,
-            final StringBuffer buf) {
+            final StringBuilder buf) {
         buf.append("<![CDATA[");
         buf.append(cdataSection.getData());
         buf.append("]]>");
@@ -243,10 +262,12 @@ public abstract class DomUtil {
      * {@link EntityReference}を追加します。
      * 
      * @param entityReference
+     *            実体参照
      * @param buf
+     *            文字列バッファ
      */
     public static void appendEntityReference(
-            final EntityReference entityReference, final StringBuffer buf) {
+            final EntityReference entityReference, final StringBuilder buf) {
         buf.append('&');
         buf.append(entityReference.getNodeName());
         buf.append(';');
@@ -256,9 +277,11 @@ public abstract class DomUtil {
      * {@link Node}の文字列表現を追加します。
      * 
      * @param node
+     *            ノード
      * @param buf
+     *            文字列バッファ
      */
-    public static void appendNode(final Node node, final StringBuffer buf) {
+    public static void appendNode(final Node node, final StringBuilder buf) {
         switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:
             appendElement((Element) node, buf);
@@ -274,4 +297,5 @@ public abstract class DomUtil {
             break;
         }
     }
+
 }

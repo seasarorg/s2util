@@ -55,7 +55,9 @@ public abstract class MessageDigestUtil {
      * 指定されたアルゴリズムでテキストをハッシュ化して文字列にします。
      * 
      * @param algorithm
+     *            アルゴリズム
      * @param text
+     *            ハッシュ化する文字列
      * @return ハッシュ化された文字列
      */
     public static String digest(final String algorithm, String text) {

@@ -47,8 +47,6 @@ public abstract class SAXParserFactoryUtil {
      * デフォルト構成の{@link SAXParserFactory}を使って{@link SAXParser}の新しいインスタンスを作成します。
      * 
      * @return {@link SAXParser}の新しいインスタンス
-     * @throws SAXRuntimeException
-     *             {@link SAXParser}の作成中に{@link SAXException}がスローされた場合
      */
     public static SAXParser newSAXParser() {
         return newSAXParser(newInstance());
@@ -60,8 +58,6 @@ public abstract class SAXParserFactoryUtil {
      * @param factory
      *            {@link SAXParserFactory}
      * @return {@link SAXParser}の新しいインスタンス
-     * @throws SAXRuntimeException
-     *             {@link SAXParser}の作成中に{@link SAXException}がスローされた場合
      */
     public static SAXParser newSAXParser(final SAXParserFactory factory) {
         try {

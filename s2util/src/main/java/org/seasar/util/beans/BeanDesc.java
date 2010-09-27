@@ -257,6 +257,7 @@ public interface BeanDesc {
      * {@link MethodDesc}の配列を返します。
      * 
      * @param methodName
+     *            メソッド名
      * @return {@link MethodDesc}の配列
      */
     MethodDesc[] getMethodDescs(String methodName);

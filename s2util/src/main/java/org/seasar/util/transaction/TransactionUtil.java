@@ -50,7 +50,9 @@ public abstract class TransactionUtil {
      * トランザクションに参加します。
      * 
      * @param tx
+     *            {@link Transaction}
      * @param xaResource
+     *            {@link XAResource}
      */
     public static void enlistResource(final Transaction tx,
             final XAResource xaResource) {
@@ -67,7 +69,9 @@ public abstract class TransactionUtil {
      * {@link Synchronization}を登録します。
      * 
      * @param tx
+     *            {@link Transaction}
      * @param sync
+     *            {@link Synchronization}
      */
     public static void registerSynchronization(final Transaction tx,
             final Synchronization sync) {
@@ -80,4 +84,5 @@ public abstract class TransactionUtil {
             throw new RollbackRuntimeException(e);
         }
     }
+
 }

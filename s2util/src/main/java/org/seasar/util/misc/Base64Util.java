@@ -45,6 +45,7 @@ public abstract class Base64Util {
      * Base64でエンコードします。
      * 
      * @param inData
+     *            エンコードするデータ
      * @return エンコードされたデータ
      */
     public static String encode(final byte[] inData) {
@@ -62,13 +63,10 @@ public abstract class Base64Util {
         for (int i = 0; i < num; i++) {
             encode(inData, i * 3, outData, i * 4);
         }
-        switch (mod) {
-        case 1:
+        if (mod == 1) {
             encode2pad(inData, num * 3, outData, num * 4);
-            break;
-        case 2:
+        } else if (mod == 2) {
             encode1pad(inData, num * 3, outData, num * 4);
-            break;
         }
         return new String(outData);
     }
@@ -77,6 +75,7 @@ public abstract class Base64Util {
      * Base64でエンコードされたデータをデコードします。
      * 
      * @param inData
+     *            デコードするデータ
      * @return デコードされたデータ
      */
     public static byte[] decode(final String inData) {

@@ -37,14 +37,13 @@ public abstract class StatementUtil {
      * SQLを実行します。
      * 
      * @param statement
+     *            {@link Statement}
      * @param sql
+     *            SQL文字列
      * @return 実行した結果
-     * @throws SQLRuntimeException
-     *             {@link SQLException}が発生した場合
      * @see Statement#execute(String)
      */
-    public static boolean execute(final Statement statement, final String sql)
-            throws SQLRuntimeException {
+    public static boolean execute(final Statement statement, final String sql) {
         try {
             return statement.execute(sql);
         } catch (final SQLException ex) {
@@ -56,13 +55,13 @@ public abstract class StatementUtil {
      * フェッチサイズを設定します。
      * 
      * @param statement
+     *            {@link Statement}
      * @param fetchSize
-     * @throws SQLRuntimeException
-     *             {@link SQLException}が発生した場合
+     *            フェッチサイズ
      * @see Statement#setFetchSize(int)
      */
     public static void setFetchSize(final Statement statement,
-            final int fetchSize) throws SQLRuntimeException {
+            final int fetchSize) {
         try {
             statement.setFetchSize(fetchSize);
         } catch (final SQLException ex) {
@@ -74,13 +73,12 @@ public abstract class StatementUtil {
      * 最大行数を設定します。
      * 
      * @param statement
+     *            {@link Statement}
      * @param maxRows
-     * @throws SQLRuntimeException
-     *             {@link SQLException}が発生した場合
+     *            最大の行数
      * @see Statement#setMaxRows(int)
      */
-    public static void setMaxRows(final Statement statement, final int maxRows)
-            throws SQLRuntimeException {
+    public static void setMaxRows(final Statement statement, final int maxRows) {
         try {
             statement.setMaxRows(maxRows);
         } catch (final SQLException ex) {
@@ -92,13 +90,13 @@ public abstract class StatementUtil {
      * クエリタイムアウトを設定します。
      * 
      * @param statement
+     *            {@link Statement}
      * @param queryTimeout
-     * @throws SQLRuntimeException
-     *             {@link SQLException}が発生した場合
+     *            クエリタイムアウト
      * @see Statement#setQueryTimeout(int)
      */
     public static void setQueryTimeout(final Statement statement,
-            final int queryTimeout) throws SQLRuntimeException {
+            final int queryTimeout) {
         try {
             statement.setQueryTimeout(queryTimeout);
         } catch (final SQLException ex) {
@@ -131,11 +129,10 @@ public abstract class StatementUtil {
      * 結果セットを返します。
      * 
      * @param statement
+     *            {@link Statement}
      * @return 結果セット
-     * @throws SQLRuntimeException
      */
-    public static ResultSet getResultSet(final Statement statement)
-            throws SQLRuntimeException {
+    public static ResultSet getResultSet(final Statement statement) {
         try {
             return statement.getResultSet();
         } catch (final SQLException ex) {
@@ -147,9 +144,8 @@ public abstract class StatementUtil {
      * 更新カウントを返します。
      * 
      * @param statement
-     *            ステートメント
+     *            {@link Statement}
      * @return 更新カウント
-     * @see Statement#getUpdateCount()
      */
     public static int getUpdateCount(final Statement statement) {
         try {
@@ -158,4 +154,5 @@ public abstract class StatementUtil {
             throw new SQLRuntimeException(ex);
         }
     }
+
 }

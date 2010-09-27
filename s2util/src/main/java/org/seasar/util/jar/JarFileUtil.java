@@ -47,8 +47,6 @@ public abstract class JarFileUtil {
      * @param file
      *            ファイルパス
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static JarFile create(final String file) {
         try {
@@ -64,8 +62,6 @@ public abstract class JarFileUtil {
      * @param file
      *            ファイル
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static JarFile create(final File file) {
         try {
@@ -83,8 +79,6 @@ public abstract class JarFileUtil {
      * @param entry
      *            Jarファイルエントリ
      * @return 指定されたJarファイルエントリの内容を読み込むための入力ストリーム
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static InputStream getInputStream(final JarFile file,
             final ZipEntry entry) {
@@ -101,8 +95,6 @@ public abstract class JarFileUtil {
      * @param jarUrl
      *            Jarファイルを示すURL
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static JarFile toJarFile(final URL jarUrl) {
         final URLConnection con = URLUtil.openConnection(jarUrl);
@@ -118,8 +110,6 @@ public abstract class JarFileUtil {
      * @param jarUrl
      *            Jarファイルを示すURL
      * @return URLで指定されたJarファイルのパス
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static String toJarFilePath(final URL jarUrl) {
         final URL nestedUrl = URLUtil.create(jarUrl.getPath());

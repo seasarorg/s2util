@@ -190,6 +190,7 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
      * 要素を削除します。
      * 
      * @param element
+     *            要素
      * @return 削除されたかどうか
      */
     public boolean remove(final E element) {
@@ -234,9 +235,10 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
     }
 
     /**
-     * エントリを返します。
+     * インデックスで指定された位置のエントリを返します。
      * 
      * @param index
+     *            インデックス
      * @return エントリ
      */
     public Entry getEntry(final int index) {
@@ -256,10 +258,10 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
     }
 
     /**
-     * 要素を返します。
+     * インデックスで指定された位置の要素を返します。
      * 
      * @param index
-     *            位置
+     *            インデックス
      * @return 要素
      */
     public E get(final int index) {
@@ -267,10 +269,12 @@ public class SLinkedList<E> implements Cloneable, Externalizable {
     }
 
     /**
-     * 要素を設定します。
+     * インデックスで指定された位置に要素を設定します。
      * 
      * @param index
+     *            インデックス
      * @param element
+     *            要素
      * @return 元の要素
      */
     public E set(final int index, final E element) {

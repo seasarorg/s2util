@@ -291,9 +291,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * クラスファイルが置かれているルートディレクトリを返します。
+     * 指定されたクラスのクラスファイルが置かれているルートディレクトリを返します。
      * 
      * @param clazz
+     *            クラス
      * @return ルートディレクトリ
      * @see #getBuildDir(String)
      */
@@ -307,6 +308,7 @@ public abstract class ResourceUtil {
      * クラスファイルが置かれているルートディレクトリを返します。
      * 
      * @param path
+     *            クラスファイルのパス
      * @return ルートディレクトリ
      */
     public static File getBuildDir(final String path) {
@@ -327,9 +329,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * 外部形式に変換します。
+     * リソースのURLを外部形式に変換します。
      * 
      * @param url
+     *            リソースのURL
      * @return 外部形式
      */
     public static String toExternalForm(final URL url) {
@@ -340,9 +343,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * ファイル名を返します。
+     * リソースのファイル名を返します。
      * 
      * @param url
+     *            リソースのURL
      * @return ファイル名
      */
     public static String getFileName(final URL url) {
@@ -356,6 +360,7 @@ public abstract class ResourceUtil {
      * ファイルを返します。
      * 
      * @param url
+     *            リソースのURL
      * @return ファイル
      */
     public static File getFile(final URL url) {
@@ -372,6 +377,7 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。
      * 
      * @param path
+     *            リソースのパス
      * @return ファイル
      * @see #getResourceAsFile(String, String)
      */
@@ -385,7 +391,9 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。
      * 
      * @param path
+     *            リソースのパス
      * @param extension
+     *            リソースの拡張子
      * @return ファイル
      * @see #getFile(URL)
      */
@@ -397,9 +405,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースをファイルとして返します。リソースが見つからない場合は<code>null</code>を返します。
+     * クラスファイルを表すリソースをファイルとして返します。リソースが見つからない場合は<code>null</code>を返します。
      * 
      * @param clazz
+     *            クラス
      * @return ファイル
      * @see #getResourceAsFileNoException(String)
      */
@@ -413,6 +422,7 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。リソースが見つからない場合は<code>null</code>を返します。
      * 
      * @param path
+     *            リソースのパス
      * @return ファイル
      * @see #getResourceNoException(String)
      */
@@ -430,7 +440,9 @@ public abstract class ResourceUtil {
      * パスを変換します。
      * 
      * @param path
+     *            リソースのパス
      * @param clazz
+     *            クラス
      * @return 変換された結果
      */
     public static String convertPath(final String path, final Class<?> clazz) {

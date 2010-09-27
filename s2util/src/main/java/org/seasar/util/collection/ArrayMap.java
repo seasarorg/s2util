@@ -246,10 +246,12 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
     }
 
     /**
-     * indexに対応する値を設定します。
+     * インデックスで指定された位置に値を設定します。
      * 
      * @param index
+     *            インデックス
      * @param value
+     *            値
      */
     public void setAt(final int index, final V value) {
         getEntryAt(index).setValue(value);

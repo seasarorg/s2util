@@ -313,6 +313,7 @@ public abstract class CollectionsUtil {
      * @param <V>
      *            {@link ConcurrentSkipListMap}の値の型
      * @param c
+     *            {@link Comparator}
      * @return {@link ConcurrentSkipListMap}の新しいインスタンス
      * @see ConcurrentSkipListMap#ConcurrentSkipListMap(Comparator)
      */
@@ -1242,6 +1243,7 @@ public abstract class CollectionsUtil {
      * @param <V>
      *            {@link TreeMap}の値の型
      * @param c
+     *            {@link Comparator}
      * @return {@link TreeMap}の新しいインスタンス
      * @see TreeMap#TreeMap(Comparator)
      */

@@ -28,6 +28,7 @@ public abstract class LocaleUtil {
      * {@link Locale}を返します。
      * 
      * @param localeStr
+     *            ロケールを表す文字列
      * @return {@link Locale}
      */
     public static Locale getLocale(final String localeStr) {

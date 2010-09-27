@@ -58,8 +58,6 @@ public abstract class ResultSetUtil {
      * @param resultSet
      *            結果セット
      * @return 次に進めたかどうか
-     * @throws SQLRuntimeException
-     *             SQL例外が起こった場合。
      */
     public static boolean next(final ResultSet resultSet) {
         try {

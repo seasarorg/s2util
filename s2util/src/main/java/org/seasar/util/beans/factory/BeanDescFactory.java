@@ -45,8 +45,10 @@ import static org.seasar.util.misc.AssertionUtil.*;
  */
 public abstract class BeanDescFactory {
 
+    /** 初期化済みなら{@literal true} */
     private static volatile boolean initialized;
 
+    /** {@link BeanDesc}のキャッシュ */
     private static final ConcurrentMap<Class<?>, BeanDesc> beanDescCache =
         newConcurrentHashMap(1024);
 
