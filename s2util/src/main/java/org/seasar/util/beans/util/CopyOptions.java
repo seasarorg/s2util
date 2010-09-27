@@ -31,6 +31,7 @@ import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.ConverterRuntimeException;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.lang.ClassIterator.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -479,8 +480,7 @@ public class CopyOptions {
             if (targetClass == null) {
                 return value;
             }
-            for (Class<?> clazz = targetClass; clazz != Object.class
-                && clazz != null; clazz = clazz.getSuperclass()) {
+            for (Class<?> clazz : iterable(targetClass, false)) {
                 converter = findConverter(clazz);
                 if (converter != null) {
                     break;

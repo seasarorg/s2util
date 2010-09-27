@@ -20,6 +20,8 @@ import java.util.Iterator;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * クラスローダの階層を親クラスローダに向かって反復する{@link Iterator}です。
  * <p>
@@ -64,7 +66,9 @@ public class ClassLoaderIterator implements Iterator<ClassLoader> {
      * @param classLoader
      *            クラスローダ
      */
-    public ClassLoaderIterator(ClassLoader classLoader) {
+    public ClassLoaderIterator(final ClassLoader classLoader) {
+        assertArgumentNotNull("classLoader", classLoader);
+
         this.classLoader = classLoader;
     }
 

@@ -15,42 +15,57 @@
  */
 package org.seasar.util.lang;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
 import org.junit.Test;
+import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.seasar.util.TestUtil.*;
 
 /**
  * @author koichik
+ * 
  */
-public class ClassLoaderIteratorTest {
+public class ClassIteratorTest {
 
     /**
      * @throws Exception
      */
     @Test
     public void test() throws Exception {
-        ClassLoader cl1 =
-            new URLClassLoader(new URL[] { new URL("file:/foo") }, null);
-        ClassLoader cl2 =
-            new URLClassLoader(new URL[] { new URL("file:/bar") }, cl1);
-        ClassLoader cl3 =
-            new URLClassLoader(new URL[] { new URL("file:/baz") }, cl2);
-
-        ClassLoaderIterator it = new ClassLoaderIterator(cl3);
+        ClassIterator it = new ClassIterator(Integer.class);
         assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(sameInstance(cl3)));
+        assertThat(it.next(), is(sameClass(Integer.class)));
 
         assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(sameInstance(cl2)));
+        assertThat(it.next(), is(sameClass(Number.class)));
 
         assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(sameInstance(cl1)));
+        assertThat(it.next(), is(sameClass(Object.class)));
 
         assertThat(it.hasNext(), is(not(true)));
     }
 
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testExcludeObject() throws Exception {
+        ClassIterator it = new ClassIterator(Integer.class, false);
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(sameClass(Integer.class)));
+
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(sameClass(Number.class)));
+
+        assertThat(it.hasNext(), is(not(true)));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test(expected = SIllegalArgumentException.class)
+    public void testInterface() throws Exception {
+        new ClassIterator(Iterable.class);
+    }
 }
