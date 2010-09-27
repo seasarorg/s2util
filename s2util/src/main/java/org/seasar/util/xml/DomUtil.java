@@ -117,8 +117,8 @@ public abstract class DomUtil {
         }
         final char[] content = s.toCharArray();
         final StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < content.length; i++) {
-            switch (content[i]) {
+        for (final char ch : content) {
+            switch (ch) {
             case '<':
                 buf.append("&lt;");
                 break;
@@ -129,10 +129,10 @@ public abstract class DomUtil {
                 buf.append("&amp;");
                 break;
             default:
-                buf.append(content[i]);
+                buf.append(ch);
             }
         }
-        return buf.toString();
+        return new String(buf);
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class DomUtil {
     public static String toString(final Document document) {
         final StringBuilder buf = new StringBuilder();
         appendElement(document.getDocumentElement(), buf);
-        return buf.toString();
+        return new String(buf);
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class DomUtil {
     public static String toString(final Element element) {
         final StringBuilder buf = new StringBuilder();
         appendElement(element, buf);
-        return buf.toString();
+        return new String(buf);
     }
 
     /**

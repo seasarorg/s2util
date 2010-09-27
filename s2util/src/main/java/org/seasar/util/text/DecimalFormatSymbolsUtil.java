@@ -18,7 +18,8 @@ package org.seasar.util.text;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * {@link DecimalFormatSymbols}用のユーティリティクラスです。
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class DecimalFormatSymbolsUtil {
 
     private static final Map<Locale, DecimalFormatSymbols> CACHE =
-        new ConcurrentHashMap<Locale, DecimalFormatSymbols>();
+        newConcurrentHashMap();
 
     /**
      * {@link DecimalFormatSymbols}を返します。

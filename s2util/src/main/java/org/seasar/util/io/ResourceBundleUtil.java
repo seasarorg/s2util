@@ -16,12 +16,12 @@
 package org.seasar.util.io;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -125,7 +125,7 @@ public abstract class ResourceBundleUtil {
             final ResourceBundle bundle) {
         assertArgumentNotNull("bundle", bundle);
 
-        final Map<String, String> ret = new HashMap<String, String>();
+        final Map<String, String> ret = newHashMap();
         for (final Enumeration<String> e = bundle.getKeys(); e
             .hasMoreElements();) {
             final String key = e.nextElement();

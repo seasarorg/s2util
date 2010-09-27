@@ -15,9 +15,10 @@
  */
 package org.seasar.util.lang;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * {@link String}用のユーティリティクラスです。
@@ -108,7 +109,7 @@ public abstract class StringUtil {
         if (isEmpty(str)) {
             return EMPTY_STRINGS;
         }
-        final List<String> list = new ArrayList<String>();
+        final List<String> list = newArrayList();
         final StringTokenizer st = new StringTokenizer(str, delim);
         while (st.hasMoreElements()) {
             list.add(st.nextElement().toString());

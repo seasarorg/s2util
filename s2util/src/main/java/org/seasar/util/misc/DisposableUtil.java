@@ -17,7 +17,8 @@ package org.seasar.util.misc;
 
 import java.beans.Introspector;
 import java.util.Deque;
-import java.util.LinkedList;
+
+import static org.seasar.util.collection.CollectionsUtil.*;
 
 /**
  * アプリケーションの終了時にリソースを破棄するためのユーティリティクラスです。
@@ -31,8 +32,7 @@ import java.util.LinkedList;
 public abstract class DisposableUtil {
 
     /** 登録済みの{@link Disposable} */
-    protected static final Deque<Disposable> disposables =
-        new LinkedList<Disposable>();
+    protected static final Deque<Disposable> disposables = newLinkedList();
 
     /**
      * 破棄可能なリソースを登録します。

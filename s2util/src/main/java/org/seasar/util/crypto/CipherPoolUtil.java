@@ -18,7 +18,6 @@ package org.seasar.util.crypto;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.crypto.Cipher;
@@ -27,6 +26,7 @@ import org.seasar.util.crypto.impl.CipherContextImpl;
 import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.misc.Base64Util;
 
+import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -78,13 +78,13 @@ public abstract class CipherPoolUtil {
      * encrypto用のCipherプール
      */
     protected static final Map<String, Queue<Cipher>> encryptoQueueMap =
-        new ConcurrentHashMap<String, Queue<Cipher>>();
+        newConcurrentHashMap();
 
     /**
      * decrypto用のCipherプール
      */
     protected static final Map<String, Queue<Cipher>> decryptoQueueMap =
-        new ConcurrentHashMap<String, Queue<Cipher>>();
+        newConcurrentHashMap();
 
     /**
      * {@link CipherContext}の{@link Cipher}インスタンスを事前にプールします。

@@ -18,10 +18,10 @@ package org.seasar.util.collection;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -1104,7 +1104,7 @@ public abstract class ArrayUtil {
     @SuppressWarnings("unchecked")
     public static <T> List<T> toList(final Object obj) {
         final int length = Array.getLength(obj);
-        final List<Object> list = new ArrayList<Object>(length);
+        final List<Object> list = newArrayList(length);
         for (int i = 0; i < length; i++) {
             list.add(Array.get(obj, i));
         }

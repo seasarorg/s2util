@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -628,7 +627,7 @@ public class BeanDescImpl implements BeanDesc {
             final String methodName = method.getName();
             List<MethodDesc> list = methodDescListMap.get(methodName);
             if (list == null) {
-                list = new ArrayList<MethodDesc>();
+                list = newArrayList();
                 methodDescListMap.put(methodName, list);
             }
             list.add(new MethodDescImpl(this, method));

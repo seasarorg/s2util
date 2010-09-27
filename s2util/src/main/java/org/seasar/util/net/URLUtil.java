@@ -23,7 +23,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.util.beans.BeanDesc;
@@ -33,6 +32,7 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SRuntimeException;
 
 import static org.seasar.util.collection.ArrayUtil.*;
+import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -44,7 +44,7 @@ public abstract class URLUtil {
 
     /** プロトコルを正規化するためのマップ */
     protected static final Map<String, String> CANONICAL_PROTOCOLS =
-        new HashMap<String, String>();
+        newHashMap();
     static {
         CANONICAL_PROTOCOLS.put("wsjar", "jar"); // WebSphereがJarファイルのために使用する固有のプロトコル
         CANONICAL_PROTOCOLS.put("vfsfile", "file"); // JBossAS5がファイルシステムのために使用する固有のプロトコル

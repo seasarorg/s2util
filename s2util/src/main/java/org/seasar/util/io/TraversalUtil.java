@@ -18,8 +18,6 @@ package org.seasar.util.io;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -189,7 +187,7 @@ public abstract class TraversalUtil {
         }
 
         final String baseName = toDirectoryName(rootPackage);
-        final List<Traverser> list = new ArrayList<Traverser>();
+        final List<Traverser> list = newArrayList();
         for (final Iterator<URL> it = ClassLoaderUtil.getResources(baseName); it
             .hasNext();) {
             final URL url = it.next();
@@ -487,7 +485,7 @@ public abstract class TraversalUtil {
         protected final String prefix;
 
         /** Zip内のエントリ名の{@link Set}です。 */
-        protected final Set<String> entryNames = new HashSet<String>();
+        protected final Set<String> entryNames = newHashSet();
 
         /**
          * インスタンスを構築します。
