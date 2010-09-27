@@ -16,9 +16,9 @@
 package org.seasar.util.crypto;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.crypto.Cipher;
 
@@ -77,13 +77,13 @@ public abstract class CipherPoolUtil {
     /**
      * encrypto用のCipherプール
      */
-    protected static final Map<String, Queue<Cipher>> encryptoQueueMap =
+    protected static final ConcurrentMap<String, Queue<Cipher>> encryptoQueueMap =
         newConcurrentHashMap();
 
     /**
      * decrypto用のCipherプール
      */
-    protected static final Map<String, Queue<Cipher>> decryptoQueueMap =
+    protected static final ConcurrentMap<String, Queue<Cipher>> decryptoQueueMap =
         newConcurrentHashMap();
 
     /**
@@ -122,11 +122,11 @@ public abstract class CipherPoolUtil {
 
         final Cipher cipher = getEncryptoCipher(context);
         try {
-            final byte[] encrypted = cipher.doFinal(data);
-            putEncryptoCipher(context, cipher);
-            return encrypted;
+            return cipher.doFinal(data);
         } catch (final Exception e) {
             throw new SIllegalStateException(e);
+        } finally {
+            putEncryptoCipher(context, cipher);
         }
     }
 
@@ -171,11 +171,11 @@ public abstract class CipherPoolUtil {
 
         final Cipher cipher = getDecryptoCipher(context);
         try {
-            final byte[] decrypted = cipher.doFinal(data);
-            putDecryptoCipher(context, cipher);
-            return decrypted;
+            return cipher.doFinal(data);
         } catch (final Exception e) {
             throw new SIllegalStateException(e);
+        } finally {
+            putDecryptoCipher(context, cipher);
         }
     }
 
@@ -220,12 +220,14 @@ public abstract class CipherPoolUtil {
 
     private static Queue<Cipher> getEncryptoCipherQueue(
             final CipherContext context) {
-        Queue<Cipher> queue = encryptoQueueMap.get(context.getId());
-        if (queue == null) {
-            queue = new ConcurrentLinkedQueue<Cipher>();
-            encryptoQueueMap.put(context.getId(), queue);
+        final Queue<Cipher> queue = encryptoQueueMap.get(context.getId());
+        if (queue != null) {
+            return queue;
         }
-        return queue;
+        return putIfAbsent(
+            encryptoQueueMap,
+            context.getId(),
+            new ConcurrentLinkedQueue<Cipher>());
     }
 
     private static Cipher getDecryptoCipher(final CipherContext context) {
@@ -243,12 +245,14 @@ public abstract class CipherPoolUtil {
 
     private static Queue<Cipher> getDecryptoCipherQueue(
             final CipherContext context) {
-        Queue<Cipher> queue = decryptoQueueMap.get(context.getId());
-        if (queue == null) {
-            queue = new ConcurrentLinkedQueue<Cipher>();
-            decryptoQueueMap.put(context.getId(), queue);
+        final Queue<Cipher> queue = decryptoQueueMap.get(context.getId());
+        if (queue != null) {
+            return queue;
         }
-        return queue;
+        return putIfAbsent(
+            decryptoQueueMap,
+            context.getId(),
+            new ConcurrentLinkedQueue<Cipher>());
     }
 
 }
