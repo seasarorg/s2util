@@ -81,4 +81,24 @@ public class ClassLoaderUtilTest {
         assertThat(url, is(notNullValue()));
     }
 
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testIsAncestor() throws Exception {
+        ClassLoader cl1 =
+            new URLClassLoader(new URL[] { new URL("file:/foo") }, null);
+        ClassLoader cl2 =
+            new URLClassLoader(new URL[] { new URL("file:/bar") }, cl1);
+        ClassLoader cl3 =
+            new URLClassLoader(new URL[] { new URL("file:/baz") }, cl2);
+
+        assertThat(ClassLoaderUtil.isAncestor(cl3, cl2), is(true));
+        assertThat(ClassLoaderUtil.isAncestor(cl3, cl1), is(true));
+        assertThat(ClassLoaderUtil.isAncestor(cl2, cl1), is(true));
+
+        assertThat(ClassLoaderUtil.isAncestor(cl1, cl2), is(not(true)));
+        assertThat(ClassLoaderUtil.isAncestor(cl1, cl3), is(not(true)));
+    }
+
 }

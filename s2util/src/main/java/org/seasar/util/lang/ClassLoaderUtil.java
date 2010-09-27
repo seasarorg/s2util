@@ -27,6 +27,8 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.message.MessageFormatter;
 
+import static org.seasar.util.lang.ClassLoaderIterator.*;
+
 /**
  * {@link ClassLoader}を扱うためのユーティリティ・クラスです。
  * 
@@ -150,11 +152,10 @@ public abstract class ClassLoaderUtil {
      *         <code>true</code>
      */
     protected static boolean isAncestor(ClassLoader cl, final ClassLoader other) {
-        while (cl != null) {
-            if (cl == other) {
+        for (final ClassLoader loader : iterable(cl)) {
+            if (loader == other) {
                 return true;
             }
-            cl = cl.getParent();
         }
         return false;
     }
@@ -224,8 +225,7 @@ public abstract class ClassLoaderUtil {
      */
     public static Class<?> findLoadedClass(final ClassLoader classLoader,
             final String className) {
-        for (ClassLoader loader = classLoader; loader != null; loader =
-            loader.getParent()) {
+        for (final ClassLoader loader : iterable(classLoader)) {
             final Class<?> clazz =
                 (Class<?>) MethodUtil.invoke(
                     findLoadedClassMethod,
