@@ -23,14 +23,55 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.crypto.Cipher;
 
+import org.seasar.util.crypto.impl.CipherContextImpl;
 import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.misc.Base64Util;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
- * {@link Cipher}を扱うユーティリティです。 Cipher のインスタンスをプールします。
+ * {@link Cipher}を扱うユーティリティです。
+ * <p>
+ * Cipher のインスタンスをプールします。基本的な使い方は次のようになります。
+ * </p>
+ * <p>
+ * 暗号化や複合化の情報を保持する{@link CipherContext}のインスタンスを定数として定義します。 {@link CipherContext}
+ * の標準的な実装クラスとして {@link CipherContextImpl}が用意されています (利用可能なアルゴリズムは{@link Cipher}
+ * のJavadoc等を参照してください)。
+ * </p>
+ * 
+ * <pre>
+ * public static final CipherContext BLOWFISH_CONTEXT =
+ *     new CipherContextImpl("Blowfish", "hogefuga");
+ * </pre>
+ * <p>
+ * {@link Cipher}は初期化にコストがかかるので、{@link CipherPoolUtil}は{@link CipherContext}
+ * のインスタンスをプールします。 あらかじめインスタンスをプールしておくには{@link #create(CipherContext, int)}
+ * メソッドを使います。
+ * </p>
+ * 
+ * <pre>
+ * CipherPoolUtil.create(BLOWFISH_CONTEXT, 5);
+ * </pre>
+ * <p>
+ * 文字列を暗号化するには{@link #encryptoText(CipherContext, String, String)}を使います。
+ * </p>
+ * 
+ * <pre>
+ * String encryptoText =
+ *     CipherPoolUtil.encryptoText(BLOWFISH_CONTEXT, "パスワード", "UTF-8");
+ * </pre>
+ * <p>
+ * 文字列を復号化するには{@link #decryptoText(CipherContext, String, String)}を使います。
+ * </p>
+ * 
+ * <pre>
+ * String decryptoText1 =
+ *     CipherPoolUtil
+ *         .decryptoText(BLOWFISH_CONTEXT, encryptoText1, "UTF-8");
+ * </pre>
  * 
  * @author shinsuke
- * 
  */
 public abstract class CipherPoolUtil {
     /**
@@ -54,8 +95,12 @@ public abstract class CipherPoolUtil {
      *            生成するCipherインスタンス数
      */
     public static void create(final CipherContext context, final int size) {
-        final Queue<Cipher> encryptoCipherQueue = getEncryptoCipherQueue(context);
-        final Queue<Cipher> decryptoCipherQueue = getDecryptoCipherQueue(context);
+        assertArgumentNotNull("context", context);
+
+        final Queue<Cipher> encryptoCipherQueue =
+            getEncryptoCipherQueue(context);
+        final Queue<Cipher> decryptoCipherQueue =
+            getDecryptoCipherQueue(context);
         for (int i = 0; i < size; i++) {
             encryptoCipherQueue.add(context.getCipher(Cipher.ENCRYPT_MODE));
             decryptoCipherQueue.add(context.getCipher(Cipher.DECRYPT_MODE));
@@ -72,6 +117,9 @@ public abstract class CipherPoolUtil {
      * @return 暗号化されたバイト配列
      */
     public static byte[] encrypto(final CipherContext context, final byte[] data) {
+        assertArgumentNotNull("context", context);
+        assertArgumentNotNull("data", data);
+
         final Cipher cipher = getEncryptoCipher(context);
         try {
             final byte[] encrypted = cipher.doFinal(data);
@@ -93,8 +141,12 @@ public abstract class CipherPoolUtil {
      *            エンコーディング名
      * @return 暗号化された文字列
      */
-    public static String encryptoText(final CipherContext context, final String text,
-            final String charsetName) {
+    public static String encryptoText(final CipherContext context,
+            final String text, final String charsetName) {
+        assertArgumentNotNull("context", context);
+        assertArgumentNotNull("text", text);
+        assertArgumentNotEmpty("charsetName", charsetName);
+
         try {
             return Base64Util.encode(encrypto(
                 context,
@@ -114,6 +166,9 @@ public abstract class CipherPoolUtil {
      * @return 復号化されたバイト配列
      */
     public static byte[] decrypto(final CipherContext context, final byte[] data) {
+        assertArgumentNotNull("context", context);
+        assertArgumentNotNull("data", data);
+
         final Cipher cipher = getDecryptoCipher(context);
         try {
             final byte[] decrypted = cipher.doFinal(data);
@@ -135,8 +190,12 @@ public abstract class CipherPoolUtil {
      *            エンコーディング名
      * @return 復号化された文字列
      */
-    public static String decryptoText(final CipherContext context, final String text,
-            final String charsetName) {
+    public static String decryptoText(final CipherContext context,
+            final String text, final String charsetName) {
+        assertArgumentNotNull("context", context);
+        assertArgumentNotNull("text", text);
+        assertArgumentNotEmpty("charsetName", charsetName);
+
         try {
             return new String(
                 decrypto(context, Base64Util.decode(text)),
@@ -154,11 +213,13 @@ public abstract class CipherPoolUtil {
         return cipher;
     }
 
-    private static void putEncryptoCipher(final CipherContext context, final Cipher cipher) {
+    private static void putEncryptoCipher(final CipherContext context,
+            final Cipher cipher) {
         getEncryptoCipherQueue(context).offer(cipher);
     }
 
-    private static Queue<Cipher> getEncryptoCipherQueue(final CipherContext context) {
+    private static Queue<Cipher> getEncryptoCipherQueue(
+            final CipherContext context) {
         Queue<Cipher> queue = encryptoQueueMap.get(context.getId());
         if (queue == null) {
             queue = new ConcurrentLinkedQueue<Cipher>();
@@ -175,11 +236,13 @@ public abstract class CipherPoolUtil {
         return cipher;
     }
 
-    private static void putDecryptoCipher(final CipherContext context, final Cipher cipher) {
+    private static void putDecryptoCipher(final CipherContext context,
+            final Cipher cipher) {
         getDecryptoCipherQueue(context).offer(cipher);
     }
 
-    private static Queue<Cipher> getDecryptoCipherQueue(final CipherContext context) {
+    private static Queue<Cipher> getDecryptoCipherQueue(
+            final CipherContext context) {
         Queue<Cipher> queue = decryptoQueueMap.get(context.getId());
         if (queue == null) {
             queue = new ConcurrentLinkedQueue<Cipher>();
@@ -187,4 +250,5 @@ public abstract class CipherPoolUtil {
         }
         return queue;
     }
+
 }

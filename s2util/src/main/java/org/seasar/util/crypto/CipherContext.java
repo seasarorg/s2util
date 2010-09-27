@@ -21,7 +21,6 @@ import javax.crypto.Cipher;
  * {@link Cipher}の情報を管理するクラスです。
  * 
  * @author shinsuke
- * 
  */
 public interface CipherContext {
 
@@ -29,8 +28,9 @@ public interface CipherContext {
      * {@link Cipher}のインスタンスを取得します。
      * 
      * @param opmode
-     *            暗号の操作モード (ENCRYPT_MODE、DECRYPT_MODE、WRAP_MODE、または UNWRAP_MODE
-     *            のどれか)
+     *            暗号の操作モード ({@link Cipher#ENCRYPT_MODE}、
+     *            {@link Cipher#DECRYPT_MODE}、{@link Cipher#WRAP_MODE}、または
+     *            {@link Cipher#UNWRAP_MODE} のどれか)
      * @return {@link Cipher}のインスタンス
      */
     public abstract Cipher getCipher(int opmode);

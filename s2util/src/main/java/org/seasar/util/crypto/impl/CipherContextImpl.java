@@ -27,9 +27,10 @@ import org.seasar.util.crypto.CipherContext;
 import org.seasar.util.exception.InvalidKeyRuntimeException;
 import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
 import org.seasar.util.exception.NoSuchPaddingRuntimeException;
-import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.misc.Base64Util;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * CipherContextの標準実装です。
@@ -53,12 +54,8 @@ public class CipherContextImpl implements CipherContext {
      *            キー
      */
     public CipherContextImpl(final String algorithm, final String key) {
-        if (algorithm == null) {
-            throw new NullArgumentException("algorithm");
-        }
-        if (key == null) {
-            throw new NullArgumentException("key");
-        }
+        assertArgumentNotNull("algorithm", algorithm);
+        assertArgumentNotNull("key", key);
 
         this.algorithm = algorithm;
         this.key = key;

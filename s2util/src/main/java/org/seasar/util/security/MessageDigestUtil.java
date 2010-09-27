@@ -20,8 +20,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
-import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.exception.SIllegalStateException;
+
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link MessageDigest}を扱うユーティリティです。
@@ -35,14 +36,14 @@ public abstract class MessageDigestUtil {
      * {@link MessageDigest#getInstance(String)}の例外処理をラップします。
      * 
      * @param algorithm
+     *            アルゴリズム (利用可能なアルゴリズムは{@link MessageDigest}のJavadoc等を参照してください)
      * @return {@link MessageDigest}
      * @throws RuntimeException
      *             {@link NoSuchAlgorithmException}が発生した場合
      */
     public static MessageDigest getInstance(final String algorithm) {
-        if (algorithm == null) {
-            throw new NullArgumentException("algorithm");
-        }
+        assertArgumentNotNull("algorithm", algorithm);
+
         try {
             return MessageDigest.getInstance(algorithm);
         } catch (final NoSuchAlgorithmException e) {
@@ -81,4 +82,5 @@ public abstract class MessageDigestUtil {
         }
         return buffer.toString();
     }
+
 }
