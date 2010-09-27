@@ -207,7 +207,9 @@
 										<include name="s2util-${version}.jar" />
 										<include name="s2util-${version}-sources.jar" />
 									</zipfileset>
-									<zipfileset prefix="s2util/doc" dir="target/site" />
+									<zipfileset prefix="s2util/doc" dir="target/site">
+										<exclude name="downloads/**" />
+									</zipfileset>
 								</zip>
 							</tasks>
 						</configuration>
