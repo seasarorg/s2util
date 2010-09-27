@@ -26,8 +26,11 @@ import java.util.zip.ZipEntry;
 
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.FileUtil;
+import org.seasar.util.log.Logger;
 import org.seasar.util.net.JarURLConnectionUtil;
 import org.seasar.util.net.URLUtil;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
  * {@link java.util.jar.JarFile}を扱うユーティリティクラスです。
@@ -35,6 +38,8 @@ import org.seasar.util.net.URLUtil;
  * @author higa
  */
 public abstract class JarFileUtil {
+
+    private static final Logger logger = Logger.getLogger(JarFileUtil.class);
 
     /**
      * 指定されたJarファイルを読み取るための<code>JarFile</code>を作成して返します。
@@ -127,17 +132,18 @@ public abstract class JarFileUtil {
 
     /**
      * Jarファイルをクローズします。
+     * <p>
+     * {@link JarFile#close()}が例外をスローした場合はログにエラーメッセージを出力します。 例外は再スローされません。
+     * </p>
      * 
      * @param jarFile
      *            Jarファイル
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static void close(final JarFile jarFile) {
         try {
             jarFile.close();
         } catch (final IOException e) {
-            throw new IORuntimeException(e);
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

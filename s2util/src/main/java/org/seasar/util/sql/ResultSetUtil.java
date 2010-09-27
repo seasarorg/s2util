@@ -19,6 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.seasar.util.exception.SQLRuntimeException;
+import org.seasar.util.log.Logger;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
  * {@link ResultSet}のためのユーティリティクラスです。
@@ -27,23 +30,25 @@ import org.seasar.util.exception.SQLRuntimeException;
  */
 public abstract class ResultSetUtil {
 
+    private static final Logger logger = Logger.getLogger(ResultSetUtil.class);
+
     /**
      * 結果セットを閉じます。
+     * <p>
+     * {@link ResultSet#close()}が例外をスローした場合はログにエラーメッセージを出力します。 例外は再スローされません。
+     * </p>
      * 
      * @param resultSet
      *            結果セット
-     * @throws SQLRuntimeException
-     *             SQL例外が起こった場合。
      */
-    public static void close(final ResultSet resultSet)
-            throws SQLRuntimeException {
+    public static void close(final ResultSet resultSet) {
         if (resultSet == null) {
             return;
         }
         try {
             resultSet.close();
-        } catch (final SQLException ex) {
-            throw new SQLRuntimeException(ex);
+        } catch (final SQLException e) {
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

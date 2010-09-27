@@ -20,6 +20,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.log.Logger;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
  * {@link java.util.zip.ZipInputStream}を扱うユーティリティクラスです。
@@ -28,10 +31,14 @@ import org.seasar.util.exception.IORuntimeException;
  */
 public abstract class ZipInputStreamUtil {
 
+    private static final Logger logger = Logger
+        .getLogger(ZipInputStreamUtil.class);
+
     /**
      * {@link ZipInputStream#getNextEntry()}の例外処理をラップするメソッドです。
      * 
      * @param zis
+     *            {@link ZipInputStream}
      * @return {@link ZipEntry}
      * @see ZipInputStream#getNextEntry()
      */
@@ -47,6 +54,7 @@ public abstract class ZipInputStreamUtil {
      * {@link ZipInputStream#reset()}の例外処理をラップするメソッドです。
      * 
      * @param zis
+     *            {@link ZipInputStream}
      * @see ZipInputStream#reset()
      */
     public static void reset(final ZipInputStream zis) {
@@ -58,16 +66,21 @@ public abstract class ZipInputStreamUtil {
     }
 
     /**
-     * {@link ZipInputStream#closeEntry()}の例外処理をラップするメソッドです。
+     * {@link ZipInputStream}をクローズします。
+     * <p>
+     * {@link ZipInputStream#closeEntry()}が例外をスローした場合はログにエラーメッセージを出力します。
+     * 例外は再スローされません。
+     * </p>
      * 
      * @param zis
+     *            {@link ZipInputStream}
      * @see ZipInputStream#closeEntry()
      */
     public static void closeEntry(final ZipInputStream zis) {
         try {
             zis.closeEntry();
         } catch (final IOException e) {
-            throw new IORuntimeException(e);
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

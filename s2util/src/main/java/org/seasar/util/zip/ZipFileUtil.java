@@ -24,7 +24,10 @@ import java.util.zip.ZipFile;
 
 import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.io.FileUtil;
+import org.seasar.util.log.Logger;
 import org.seasar.util.net.URLUtil;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
  * {@link java.util.zip.ZipFile}を扱うユーティリティクラスです。
@@ -32,6 +35,8 @@ import org.seasar.util.net.URLUtil;
  * @author higa
  */
 public abstract class ZipFileUtil {
+
+    private static final Logger logger = Logger.getLogger(ZipFileUtil.class);
 
     /**
      * 指定されたZipファイルを読み取るための<code>ZipFile</code>を作成して返します。
@@ -119,17 +124,18 @@ public abstract class ZipFileUtil {
 
     /**
      * Zipファイルをクローズします。
+     * <p>
+     * {@link ZipFile#close()}が例外をスローした場合はログにエラーメッセージを出力します。 例外は再スローされません。
+     * </p>
      * 
      * @param zipFile
      *            Zipファイル
-     * @throws IORuntimeException
-     *             入出力エラーが発生した場合にスローされます
      */
     public static void close(final ZipFile zipFile) {
         try {
             zipFile.close();
         } catch (final IOException e) {
-            throw new IORuntimeException(e);
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

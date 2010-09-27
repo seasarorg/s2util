@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.seasar.util.exception.SQLRuntimeException;
+import org.seasar.util.log.Logger;
+
+import static org.seasar.util.log.Logger.*;
 
 /**
  * {@link Statement}用のユーティリティクラスです。
@@ -27,6 +30,8 @@ import org.seasar.util.exception.SQLRuntimeException;
  * @author higa
  */
 public abstract class StatementUtil {
+
+    private static final Logger logger = Logger.getLogger(StatementUtil.class);
 
     /**
      * SQLを実行します。
@@ -103,21 +108,22 @@ public abstract class StatementUtil {
 
     /**
      * {@link Statement}を閉じます。
+     * <p>
+     * {@link Statement#close()}が例外をスローした場合はログにエラーメッセージを出力します。 例外は再スローされません。
+     * </p>
      * 
      * @param statement
-     * @throws SQLRuntimeException
-     *             {@link SQLException}が発生した場合
+     *            {@link Statement}
      * @see Statement#close()
      */
-    public static void close(final Statement statement)
-            throws SQLRuntimeException {
+    public static void close(final Statement statement) {
         if (statement == null) {
             return;
         }
         try {
             statement.close();
-        } catch (final SQLException ex) {
-            throw new SQLRuntimeException(ex);
+        } catch (final SQLException e) {
+            logger.log(format("EUTL0017", e.getMessage()), e);
         }
     }
 

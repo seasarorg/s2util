@@ -32,7 +32,25 @@ public abstract class CloseableUtil {
     private static final Logger logger = Logger.getLogger(CloseableUtil.class);
 
     /**
-     * {@link Closeable}を閉じます。
+     * {@link Closeable}をクローズします。
+     * <p>
+     * {@link Closeable#close()}が例外をスローした場合はログにエラーメッセージを出力します。
+     * 例外は再スローされません。これは、次のような状況で元の例外が失われるのを防ぐためです。
+     * </p>
+     * 
+     * <pre>
+     * InputStream is = ...;
+     * try {
+     *   is.read(...);
+     * } finaly {
+     *   close(is);
+     * }
+     * </pre>
+     * <p>
+     * {@literal try}ブロックで例外が発生した場合、{@literal finally}ブロックの
+     * {@link #close(Closeable)}でも 例外が発生する可能性があります。その場合に{@literal finally}
+     * ブロックから例外をスローすると、 {@literal try}ブロックで発生した元の例外が失われてしまいます。
+     * </p>
      * 
      * @param closeable
      *            クローズ可能なオブジェクト
