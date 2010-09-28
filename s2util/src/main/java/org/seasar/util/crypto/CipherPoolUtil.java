@@ -122,11 +122,11 @@ public abstract class CipherPoolUtil {
 
         final Cipher cipher = getEncryptoCipher(context);
         try {
-            return cipher.doFinal(data);
+            final byte[] encrypted = cipher.doFinal(data);
+            putEncryptoCipher(context, cipher);
+            return encrypted;
         } catch (final Exception e) {
             throw new SIllegalStateException(e);
-        } finally {
-            putEncryptoCipher(context, cipher);
         }
     }
 
@@ -171,11 +171,11 @@ public abstract class CipherPoolUtil {
 
         final Cipher cipher = getDecryptoCipher(context);
         try {
-            return cipher.doFinal(data);
+            final byte[] decrypted = cipher.doFinal(data);
+            putDecryptoCipher(context, cipher);
+            return decrypted;
         } catch (final Exception e) {
             throw new SIllegalStateException(e);
-        } finally {
-            putDecryptoCipher(context, cipher);
         }
     }
 
