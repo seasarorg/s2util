@@ -49,7 +49,7 @@ public abstract class CopyOptionsUtil {
      * 操作の対象に含めるプロパティ名を指定した{@link CopyOptions}を返します。
      * 
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。{@literal null}や空配列であってはいけません
      * @return 操作の対象に含めるプロパティ名を指定した{@link CopyOptions}
      * @see CopyOptions#include(CharSequence...)
      */
@@ -61,7 +61,7 @@ public abstract class CopyOptionsUtil {
      * 操作の対象に含めないプロパティ名を指定した{@link CopyOptions}を返します。
      * 
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。{@literal null}や空配列であってはいけません
      * @return 操作の対象に含めないプロパティ名を指定した{@link CopyOptions}
      * @see CopyOptions#exclude(CharSequence...)
      */
@@ -97,7 +97,7 @@ public abstract class CopyOptionsUtil {
      * </p>
      * 
      * @param prefix
-     *            プレフィックス
+     *            プレフィックス。{@literal null}や空文字列であってはいけません
      * @return プレフィックスを指定した{@link CopyOptions}
      * @see CopyOptions#prefix(CharSequence)
      */
@@ -179,9 +179,9 @@ public abstract class CopyOptionsUtil {
      * コンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param converter
-     *            コンバータ
+     *            コンバータ。{@literal null}であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return コンバータを設定した{@link CopyOptions}
      * @see CopyOptions#converter(Converter, CharSequence...)
      */
@@ -194,9 +194,9 @@ public abstract class CopyOptionsUtil {
      * 日付のコンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param pattern
-     *            日付のパターン
+     *            日付のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。各要素は{@literal null}や空文字列であってはいけません
      * @return 日付のコンバータを設定した{@link CopyOptions}
      * @see CopyOptions#dateConverter(String, CharSequence...)
      * @see DateConverter
@@ -210,9 +210,9 @@ public abstract class CopyOptionsUtil {
      * SQL用日付のコンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param pattern
-     *            日付のパターン
+     *            日付のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。各要素は{@literal null}や空文字列であってはいけません
      * @return SQL用日付のコンバータを設定した{@link CopyOptions}
      * @see CopyOptions#sqlDateConverter(String, CharSequence...)
      * @see SqlDateConverter
@@ -226,9 +226,9 @@ public abstract class CopyOptionsUtil {
      * 時間のコンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param pattern
-     *            時間のパターン
+     *            時間のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。各要素は{@literal null}や空文字列であってはいけません
      * @return 時間のコンバータを設定した{@link CopyOptions}
      * @see CopyOptions#timeConverter(String, CharSequence...)
      * @see TimeConverter
@@ -242,9 +242,9 @@ public abstract class CopyOptionsUtil {
      * 日時のコンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param pattern
-     *            日時のパターン
+     *            日時のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。各要素は{@literal null}や空文字列であってはいけません
      * @return 日時のコンバータを設定した{@link CopyOptions}
      * @see CopyOptions#timestampConverter(String, CharSequence...)
      * @see TimestampConverter
@@ -258,9 +258,9 @@ public abstract class CopyOptionsUtil {
      * 数値のコンバータを設定した{@link CopyOptions}を返します。
      * 
      * @param pattern
-     *            数値のパターン
+     *            数値のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            プロパティ名の配列
+     *            プロパティ名の配列。各要素は{@literal null}や空文字列であってはいけません
      * @return 数値のコンバータを設定した{@link CopyOptions}
      * @see CopyOptions#numberConverter(String, CharSequence...)
      * @see NumberConverter

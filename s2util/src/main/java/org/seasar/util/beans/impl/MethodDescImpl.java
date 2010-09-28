@@ -60,9 +60,9 @@ public class MethodDescImpl implements MethodDesc {
      * インスタンスを構築します。
      * 
      * @param beanDesc
-     *            このメソッドを所有するクラスの{@link BeanDesc}
+     *            このメソッドを所有するクラスの{@link BeanDesc}。{@literal null}であってはいけません
      * @param method
-     *            メソッド
+     *            メソッド。{@literal null}であってはいけません
      */
     public MethodDescImpl(final BeanDesc beanDesc, final Method method) {
         assertArgumentNotNull("beanDesc", beanDesc);

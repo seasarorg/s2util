@@ -54,9 +54,9 @@ public class FieldDescImpl implements FieldDesc {
      * インスタンスを構築します。
      * 
      * @param beanDesc
-     *            このフィールドを所有するクラスの{@link BeanDesc}
+     *            このフィールドを所有するクラスの{@link BeanDesc}。{@literal null}であってはいけません
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      */
     public FieldDescImpl(final BeanDesc beanDesc, final Field field) {
         assertArgumentNotNull("beanDesc", beanDesc);

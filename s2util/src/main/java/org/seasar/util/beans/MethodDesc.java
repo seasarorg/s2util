@@ -177,7 +177,7 @@ public interface MethodDesc {
      * @param <T>
      *            メソッドの戻り値の型
      * @param target
-     *            対象のオブジェクト
+     *            対象のオブジェクト。{@literal null}であってはいけません
      * @param args
      *            メソッドの引数
      * @return メソッドの戻り値

@@ -38,15 +38,17 @@ public class EnumerationIterator<T> implements Iterator<T> {
      * 
      * @param <T>
      *            列挙する要素の型
-     * @param e
-     *            {@link Enumeration}
+     * @param enumeration
+     *            {@link Enumeration}。{@literal null}であってはいけません
      * @return {@link Enumeration}をラップした{@link Iterable}
      */
-    public static <T> Iterable<T> iterable(final Enumeration<T> e) {
+    public static <T> Iterable<T> iterable(final Enumeration<T> enumeration) {
+        assertArgumentNotNull("enumeration", enumeration);
+
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new EnumerationIterator<T>(e);
+                return new EnumerationIterator<T>(enumeration);
             }
         };
     }
@@ -55,7 +57,7 @@ public class EnumerationIterator<T> implements Iterator<T> {
      * {@link Enumeration}をラップした{@link Iterator}のインスタンスを構築します。
      * 
      * @param enumeration
-     *            {@link Enumeration}
+     *            {@link Enumeration}。{@literal null}であってはいけません
      */
     public EnumerationIterator(final Enumeration<T> enumeration) {
         assertArgumentNotNull("enumeration", enumeration);

@@ -44,7 +44,7 @@ public interface Converter {
      * このコンバータの変換対象なら{@literal true}を返します。
      * 
      * @param clazz
-     *            型
+     *            型。{@literal null}であってはいけません
      * @return このコンバータの変換対象なら{@literal true}
      */
     boolean isTarget(Class<?> clazz);

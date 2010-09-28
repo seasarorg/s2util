@@ -18,6 +18,8 @@ package org.seasar.util.collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Iterator}を {@link Enumeration}にするためのアダブタです。
  * 
@@ -34,9 +36,10 @@ public class IteratorEnumeration<T> implements Enumeration<T> {
      * {@link IteratorEnumeration}を作成します。
      * 
      * @param iterator
-     *            反復子
+     *            反復子。{@literal null}であってはいけません
      */
     public IteratorEnumeration(final Iterator<T> iterator) {
+        assertArgumentNotNull("iterator", iterator);
         this.iterator = iterator;
     }
 
@@ -44,10 +47,11 @@ public class IteratorEnumeration<T> implements Enumeration<T> {
      * {@link IteratorEnumeration}を作成します。
      * 
      * @param iterable
-     *            反復可能なオブジェクト
+     *            反復可能なオブジェクト。{@literal null}であってはいけません
      */
     public IteratorEnumeration(final Iterable<T> iterable) {
-        this(iterable.iterator());
+        assertArgumentNotNull("iterable", iterable);
+        this.iterator = iterable.iterator();
     }
 
     @Override

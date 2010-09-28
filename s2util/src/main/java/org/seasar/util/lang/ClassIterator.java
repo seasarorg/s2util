@@ -106,7 +106,7 @@ public class ClassIterator implements Iterator<Class<?>> {
         assertArgument(
             "clazz",
             !clazz.isInterface(),
-            MessageFormatter.getSimpleMessage("EUTL0102", clazz));
+            MessageFormatter.getSimpleMessage("EUTL0103", clazz));
 
         this.clazz = clazz;
         this.includeObject = includeObject;

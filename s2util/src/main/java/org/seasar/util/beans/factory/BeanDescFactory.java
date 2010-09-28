@@ -60,7 +60,7 @@ public abstract class BeanDescFactory {
      * {@link BeanDesc}を返します。
      * 
      * @param clazz
-     *            Beanクラス
+     *            Beanクラス。{@literal null}であってはいけません
      * @return {@link BeanDesc}
      */
     public static BeanDesc getBeanDesc(final Class<?> clazz) {

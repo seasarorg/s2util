@@ -19,6 +19,8 @@ import java.util.Iterator;
 
 import org.seasar.util.exception.SUnsupportedOperationException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * インデックス付きの{@link Iterator}です。インデックスは{@literal 0}から始まります。
  * 
@@ -65,15 +67,31 @@ public class IndexedIterator<T> implements Iterator<Indexed<T>> {
      * 
      * @param <T>
      *            {@link Iterable}の要素型
-     * @param Iterable
-     *            {@link Iterable}
+     * @param iterable
+     *            {@link Iterable}。{@literal null}であってはいけません
      * @return {@link IndexedIterator}をラップした{@link Iterable}
      */
-    public static <T> Iterable<Indexed<T>> indexed(final Iterable<T> Iterable) {
+    public static <T> Iterable<Indexed<T>> indexed(final Iterable<T> iterable) {
+        assertArgumentNotNull("iterable", iterable);
+        return indexed(iterable.iterator());
+    }
+
+    /**
+     * for each構文で使用するために{@link IndexedIterator}をラップした{@link Iterable}を返します。
+     * 
+     * @param <T>
+     *            {@link Iterable}の要素型
+     * @param iterator
+     *            {@link Iterator}。{@literal null}であってはいけません
+     * @return {@link IndexedIterator}をラップした{@link Iterable}
+     */
+    public static <T> Iterable<Indexed<T>> indexed(final Iterator<T> iterator) {
+        assertArgumentNotNull("iterator", iterator);
+
         return new Iterable<Indexed<T>>() {
             @Override
             public Iterator<Indexed<T>> iterator() {
-                return new IndexedIterator<T>(Iterable.iterator());
+                return new IndexedIterator<T>(iterator);
             }
         };
     }
@@ -83,9 +101,11 @@ public class IndexedIterator<T> implements Iterator<Indexed<T>> {
      * インスタンスを構築します。
      * 
      * @param iterator
-     *            イテレータ
+     *            イテレータ。{@literal null}であってはいけません
      */
     public IndexedIterator(final Iterator<T> iterator) {
+        assertArgumentNotNull("iterator", iterator);
+
         this.iterator = iterator;
         this.index = 0;
     }

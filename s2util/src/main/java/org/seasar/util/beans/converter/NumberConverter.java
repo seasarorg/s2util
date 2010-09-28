@@ -62,11 +62,15 @@ public class NumberConverter implements Converter {
 
     @Override
     public String getAsString(final Object value) {
+        if (value == null) {
+            return null;
+        }
         return new DecimalFormat(pattern).format(value);
     }
 
     @Override
     public boolean isTarget(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
         return Number.class.isAssignableFrom(clazz);
     }
 

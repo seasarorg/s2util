@@ -36,7 +36,7 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * インスタンスを構築します。
      * 
      * @param rawClass
-     *            原型となるクラス
+     *            原型となるクラス。{@literal null}であってはいけません
      */
     public ParameterizedClassDescImpl(final Class<?> rawClass) {
         assertArgumentNotNull("rawClass", rawClass);
@@ -48,7 +48,7 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * インスタンスを構築します。
      * 
      * @param rawClass
-     *            原型となるクラス
+     *            原型となるクラス。{@literal null}であってはいけません
      * @param arguments
      *            型引数を表す{@link ParameterizedClassDesc}の配列
      */
@@ -75,7 +75,7 @@ public class ParameterizedClassDescImpl implements ParameterizedClassDesc {
      * 原型となるクラスを設定します。
      * 
      * @param rawClass
-     *            原型となるクラス
+     *            原型となるクラス。{@literal null}であってはいけません
      */
     public void setRawClass(final Class<?> rawClass) {
         assertArgumentNotNull("rawClass", rawClass);

@@ -119,7 +119,7 @@ public interface FieldDesc {
      * @param <T>
      *            フィールドの型
      * @param target
-     *            対象のオブジェクト
+     *            対象のオブジェクト。{@literal null}であってはいけません
      * @return {@link Field}の値
      */
     <T> T getFieldValue(Object target);
@@ -137,7 +137,7 @@ public interface FieldDesc {
      * {@link Field}の値を設定します。
      * 
      * @param target
-     *            対象のオブジェクト
+     *            対象のオブジェクト。{@literal null}であってはいけません
      * @param value
      *            {@link Field}の値
      */

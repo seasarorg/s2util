@@ -21,6 +21,7 @@ import org.seasar.util.beans.Converter;
 import org.seasar.util.convert.DateConversionUtil;
 import org.seasar.util.convert.StringConversionUtil;
 
+import static org.seasar.util.lang.StringUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
@@ -48,17 +49,23 @@ public class DateConverter implements Converter {
 
     @Override
     public Object getAsObject(final String value) {
-        assertArgumentNotEmpty("value", value);
+        if (isEmpty(value)) {
+            return null;
+        }
         return DateConversionUtil.toDate(value, pattern);
     }
 
     @Override
     public String getAsString(final Object value) {
+        if (value == null) {
+            return null;
+        }
         return StringConversionUtil.toString((Date) value, pattern);
     }
 
     @Override
     public boolean isTarget(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
         return clazz == Date.class;
     }
 

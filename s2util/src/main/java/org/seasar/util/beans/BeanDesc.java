@@ -80,7 +80,7 @@ public interface BeanDesc {
      * {@link PropertyDesc}を持っているかどうかを返します。
      * 
      * @param propertyName
-     *            プロパティ名
+     *            プロパティ名。{@literal null}や空文字列であってはいけません
      * @return {@link PropertyDesc}を持っているかどうか
      */
     boolean hasPropertyDesc(String propertyName);
@@ -89,7 +89,7 @@ public interface BeanDesc {
      * {@link PropertyDesc}を返します。
      * 
      * @param propertyName
-     *            プロパティ名
+     *            プロパティ名。{@literal null}や空文字列であってはいけません
      * @return {@link PropertyDesc}
      */
     PropertyDesc getPropertyDesc(String propertyName);
@@ -121,7 +121,7 @@ public interface BeanDesc {
      * {@link FieldDesc}を持っているかどうかを返します。
      * 
      * @param fieldName
-     *            フィールド名
+     *            フィールド名。{@literal null}や空文字列であってはいけません
      * @return {@link FieldDesc}を持っているかどうか
      */
     boolean hasFieldDesc(String fieldName);
@@ -130,7 +130,7 @@ public interface BeanDesc {
      * {@link FieldDesc}を返します。
      * 
      * @param fieldName
-     *            フィールド名
+     *            フィールド名。{@literal null}や空文字列であってはいけません
      * @return {@link FieldDesc}
      */
     FieldDesc getFieldDesc(String fieldName);
@@ -214,7 +214,7 @@ public interface BeanDesc {
      * 引数の型に応じた{@link MethodDesc}を返します。
      * 
      * @param methodName
-     *            メソッド名
+     *            メソッド名。{@literal null}や空文字列であってはいけません
      * @param paramTypes
      *            メソッドの引数型の並び
      * @return 引数の型に応じた{@link MethodDesc} メソッド
@@ -225,7 +225,7 @@ public interface BeanDesc {
      * 引数の型に応じた{@link MethodDesc}を返します。見つからない場合は、{@literal null}を返します。
      * 
      * @param methodName
-     *            メソッド
+     *            メソッド名。{@literal null}や空文字列であってはいけません
      * @param paramTypes
      *            メソッドの引数型の並び
      * @return 引数の型に応じた{@link MethodDesc}
@@ -237,7 +237,7 @@ public interface BeanDesc {
      * 引数に適合する{@link MethodDesc}を返します。
      * 
      * @param methodName
-     *            メソッド名
+     *            メソッド名。{@literal null}や空文字列であってはいけません
      * @param args
      *            メソッドの引数の並び
      * @return 引数に適合する{@link MethodDesc} メソッド
@@ -248,7 +248,7 @@ public interface BeanDesc {
      * {@link MethodDesc}があるかどうか返します。
      * 
      * @param methodName
-     *            メソッド名
+     *            メソッド名。{@literal null}や空文字列であってはいけません
      * @return {@link MethodDesc}があるかどうか
      */
     boolean hasMethodDesc(String methodName);
@@ -257,7 +257,7 @@ public interface BeanDesc {
      * {@link MethodDesc}の配列を返します。
      * 
      * @param methodName
-     *            メソッド名
+     *            メソッド名。{@literal null}や空文字列であってはいけません
      * @return {@link MethodDesc}の配列
      */
     MethodDesc[] getMethodDescs(String methodName);

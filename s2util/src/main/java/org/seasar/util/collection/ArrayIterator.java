@@ -20,6 +20,8 @@ import java.util.Iterator;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * 配列を{@link Iterator}にするAdaptorです。
  * <p>
@@ -52,15 +54,17 @@ public class ArrayIterator<T> implements Iterator<T> {
      * 
      * @param <T>
      *            列挙する要素の型
-     * @param array
-     *            配列
+     * @param items
+     *            イテレートする要素の並び。{@literal null}であってはいけません
      * @return 配列をラップした{@link Iterable}
      */
-    public static <T> Iterable<T> iterable(final T[] array) {
+    public static <T> Iterable<T> iterable(final T... items) {
+        assertArgumentNotNull("items", items);
+
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new ArrayIterator<T>(array);
+                return new ArrayIterator<T>(items);
             }
         };
     }
@@ -69,7 +73,7 @@ public class ArrayIterator<T> implements Iterator<T> {
      * {@link ArrayIterator}を作成します。
      * 
      * @param items
-     *            イテレートする要素の配列
+     *            イテレートする要素の並び。{@literal null}であってはいけません
      */
     public ArrayIterator(final T... items) {
         this.items = items;

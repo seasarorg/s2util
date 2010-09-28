@@ -57,11 +57,15 @@ public class SqlDateConverter implements Converter {
 
     @Override
     public String getAsString(final Object value) {
+        if (value == null) {
+            return null;
+        }
         return StringConversionUtil.toString((Date) value, pattern);
     }
 
     @Override
     public boolean isTarget(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
         return clazz == java.sql.Date.class;
     }
 

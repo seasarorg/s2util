@@ -20,6 +20,8 @@ import java.util.Iterator;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * 複数の{@link Iterator}を一つの{@link Iterator}のように反復するための{@link Iterator}です。
  * <p>
@@ -55,10 +57,12 @@ public class MultiIterator<E> implements Iterator<E> {
      * @param <E>
      *            要素の型
      * @param iterables
-     *            {@link Iterable}の並び
+     *            {@link Iterable}の並び。{@literal null}であってはいけません
      * @return {@link MultiIterator}をラップした{@link Iterable}
      */
     public static <E> Iterable<E> iterable(final Iterable<E>... iterables) {
+        assertArgumentNotNull("iterables", iterables);
+
         @SuppressWarnings("unchecked")
         final Iterator<E>[] iterators = new Iterator[iterables.length];
         for (int i = 0; i < iterables.length; ++i) {
@@ -73,10 +77,12 @@ public class MultiIterator<E> implements Iterator<E> {
      * @param <E>
      *            要素の型
      * @param iterators
-     *            {@link Iterator}の並び
+     *            {@link Iterator}の並び。{@literal null}であってはいけません
      * @return {@link MultiIterator}をラップした{@link Iterable}
      */
     public static <E> Iterable<E> iterable(final Iterator<E>... iterators) {
+        assertArgumentNotNull("iterators", iterators);
+
         return new Iterable<E>() {
             @Override
             public Iterator<E> iterator() {
@@ -89,9 +95,10 @@ public class MultiIterator<E> implements Iterator<E> {
      * インスタンスを構築します。
      * 
      * @param iterators
-     *            {@link Iterator}の並び
+     *            {@link Iterator}の並び。{@literal null}であってはいけません
      */
     public MultiIterator(final Iterator<E>... iterators) {
+        assertArgumentNotNull("iterators", iterators);
         this.iterators = iterators;
     }
 

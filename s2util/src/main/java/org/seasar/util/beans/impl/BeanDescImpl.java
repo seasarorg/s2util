@@ -93,7 +93,7 @@ public class BeanDescImpl implements BeanDesc {
      * {@link BeanDescImpl}を作成します。
      * 
      * @param beanClass
-     *            ビーンのクラス
+     *            ビーンのクラス。{@literal null}であってはいけません
      */
     public BeanDescImpl(final Class<?> beanClass) {
         assertArgumentNotNull("beanClass", beanClass);

@@ -21,6 +21,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
+import org.seasar.util.message.MessageFormatter;
+
 import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -257,13 +259,14 @@ public abstract class ArrayUtil {
      * @param <T>
      *            配列の要素型
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param obj
      *            オブジェクト
      * @return オブジェクトが追加された結果の配列
      */
     public static <T> T[] add(final T[] array, final T obj) {
         assertArgumentNotNull("array", array);
+
         final int length = array.length;
         @SuppressWarnings("unchecked")
         final T[] newArray =
@@ -279,7 +282,7 @@ public abstract class ArrayUtil {
      * {@literal boolean}配列の末尾に{@literal boolean}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
@@ -304,6 +307,7 @@ public abstract class ArrayUtil {
      */
     public static byte[] add(final byte[] array, final byte value) {
         assertArgumentNotNull("array", array);
+
         final byte[] newArray =
             (byte[]) Array.newInstance(byte.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -315,13 +319,14 @@ public abstract class ArrayUtil {
      * {@literal short}配列の末尾に{@literal short}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
      */
     public static short[] add(final short[] array, final short value) {
         assertArgumentNotNull("array", array);
+
         final short[] newArray =
             (short[]) Array.newInstance(short.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -333,13 +338,14 @@ public abstract class ArrayUtil {
      * {@literal int}配列の末尾に{@literal int}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
      */
     public static int[] add(final int[] array, final int value) {
         assertArgumentNotNull("array", array);
+
         final int[] newArray =
             (int[]) Array.newInstance(int.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -351,13 +357,14 @@ public abstract class ArrayUtil {
      * {@literal long}配列の末尾に{@literal long}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
      */
     public static long[] add(final long[] array, final long value) {
         assertArgumentNotNull("array", array);
+
         final long[] newArray =
             (long[]) Array.newInstance(long.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -369,13 +376,14 @@ public abstract class ArrayUtil {
      * {@literal float}配列の末尾に{@literal float}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
      */
     public static float[] add(final float[] array, final float value) {
         assertArgumentNotNull("array", array);
+
         final float[] newArray =
             (float[]) Array.newInstance(float.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -387,13 +395,14 @@ public abstract class ArrayUtil {
      * {@literal double}配列の末尾に{@literal double}の値を追加した配列を返します。
      * 
      * @param array
-     *            配列
+     *            配列。{@literal null}であってはいけません
      * @param value
      *            値
      * @return 値が追加された結果の配列
      */
     public static double[] add(final double[] array, final double value) {
         assertArgumentNotNull("array", array);
+
         final double[] newArray =
             (double[]) Array.newInstance(double.class, array.length + 1);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -749,19 +758,158 @@ public abstract class ArrayUtil {
     }
 
     /**
-     * 配列中から文字が最初に見つかったインデックスを返します。
+     * 配列中から値が最初に見つかったインデックスを返します。
      * 
      * @param array
      *            配列
-     * @param ch
-     *            文字
-     * @return 配列中から文字が最初に見つかったインデックス
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
      */
-    public static int indexOf(final char[] array, final char ch) {
+    public static int indexOf(final boolean[] array, final boolean value) {
         if (array != null) {
             for (int i = 0; i < array.length; ++i) {
-                final char c = array[i];
-                if (ch == c) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final byte[] array, final byte value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final short[] array, final short value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final int[] array, final int value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final long[] array, final long value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final float[] array, final float value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final double[] array, final double value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 配列中から値が最初に見つかったインデックスを返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列中から値が最初に見つかったインデックス
+     */
+    public static int indexOf(final char[] array, final char value) {
+        if (array != null) {
+            for (int i = 0; i < array.length; ++i) {
+                if (array[i] == value) {
                     return i;
                 }
             }
@@ -1017,20 +1165,111 @@ public abstract class ArrayUtil {
      * @return 配列にオブジェクトが含まれていれば{@literal true}
      */
     public static <T> boolean contains(final T[] array, final T obj) {
-        return -1 < indexOf(array, obj);
+        return indexOf(array, obj) > -1;
     }
 
     /**
-     * 配列に文字が含まれていれば{@literal true}を返します。
+     * 配列に値が含まれていれば{@literal true}を返します。
      * 
      * @param array
      *            配列
-     * @param ch
-     *            文字
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final boolean[] array, final boolean value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final byte[] array, final byte value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final short[] array, final short value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final int[] array, final int value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final long[] array, final long value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final float[] array, final float value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
+     * @return 配列に値が含まれていれば{@literal true}
+     */
+    public static boolean contains(final double[] array, final double value) {
+        return indexOf(array, value) > -1;
+    }
+
+    /**
+     * 配列に値が含まれていれば{@literal true}を返します。
+     * 
+     * @param array
+     *            配列
+     * @param value
+     *            値
      * @return 配列に文字が含まれていれば{@literal true}
      */
-    public static boolean contains(final char[] array, final char ch) {
-        return -1 < indexOf(array, ch);
+    public static boolean contains(final char[] array, final char value) {
+        return indexOf(array, value) > -1;
     }
 
     /**
@@ -1071,22 +1310,28 @@ public abstract class ArrayUtil {
     }
 
     /**
-     * 配列をオブジェクトの配列に変換します。
+     * 配列をオブジェクトの配列({@literal Object[]})に変換します。
      * <p>
      * 変換元の配列にはプリミティブ型の配列を渡すことができます。 その場合、変換された配列の要素型はプリミティブ型に対応するラッパー型の配列となります。
      * </p>
      * 
-     * @param obj
+     * @param array
      *            配列
      * @return オブジェクトの配列
      */
-    public static Object[] toObjectArray(final Object obj) {
-        final int length = Array.getLength(obj);
-        final Object[] array = new Object[length];
+    public static Object[] toObjectArray(final Object array) {
+        assertArgumentNotNull("array", array);
+        assertArgument(
+            "array",
+            array.getClass().isArray(),
+            MessageFormatter.getSimpleMessage("EUTL0104", array));
+
+        final int length = Array.getLength(array);
+        final Object[] objectArray = new Object[length];
         for (int i = 0; i < length; i++) {
-            array[i] = Array.get(obj, i);
+            objectArray[i] = Array.get(array, i);
         }
-        return array;
+        return objectArray;
     }
 
     /**
@@ -1097,16 +1342,22 @@ public abstract class ArrayUtil {
      * 
      * @param <T>
      *            配列の要素の型
-     * @param obj
+     * @param array
      *            配列
      * @return リスト
      */
     @SuppressWarnings("unchecked")
-    public static <T> List<T> toList(final Object obj) {
-        final int length = Array.getLength(obj);
+    public static <T> List<T> toList(final Object array) {
+        assertArgumentNotNull("array", array);
+        assertArgument(
+            "array",
+            array.getClass().isArray(),
+            MessageFormatter.getSimpleMessage("EUTL0104", array));
+
+        final int length = Array.getLength(array);
         final List<Object> list = newArrayList(length);
         for (int i = 0; i < length; i++) {
-            list.add(Array.get(obj, i));
+            list.add(Array.get(array, i));
         }
         return (List<T>) list;
     }

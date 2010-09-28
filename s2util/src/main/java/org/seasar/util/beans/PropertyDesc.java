@@ -98,7 +98,7 @@ public interface PropertyDesc {
      * @param <T>
      *            プロパティの型
      * @param target
-     *            ターゲットオブジェクト
+     *            ターゲットオブジェクト。{@literal null}であってはいけません
      * @return プロパティの値
      */
     <T> T getValue(Object target);
@@ -107,7 +107,7 @@ public interface PropertyDesc {
      * プロパティに値を設定します。
      * 
      * @param target
-     *            ターゲットオブジェクト
+     *            ターゲットオブジェクト。{@literal null}であってはいけません
      * @param value
      *            プロパティに設定する値
      */

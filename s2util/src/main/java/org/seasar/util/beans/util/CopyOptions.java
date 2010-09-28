@@ -30,6 +30,7 @@ import org.seasar.util.convert.TimeConversionUtil;
 import org.seasar.util.convert.TimestampConversionUtil;
 import org.seasar.util.exception.ConverterRuntimeException;
 
+import static org.seasar.util.collection.ArrayUtil.*;
 import static org.seasar.util.collection.CollectionsUtil.*;
 import static org.seasar.util.lang.ClassIterator.*;
 import static org.seasar.util.misc.AssertionUtil.*;
@@ -108,7 +109,7 @@ public class CopyOptions {
      * 操作の対象に含めるプロパティ名を追加します。
      * 
      * @param propertyNames
-     *            プロパティ名の並び
+     *            プロパティ名の並び。{@literal null}や空配列であってはいけません
      * @return このインスタンス自身
      */
     public CopyOptions include(final CharSequence... propertyNames) {
@@ -122,7 +123,7 @@ public class CopyOptions {
      * 操作の対象に含めないプロパティ名を追加します。
      * 
      * @param propertyNames
-     *            プロパティ名の並び
+     *            プロパティ名の並び。{@literal null}や空配列であってはいけません
      * @return このインスタンス自身
      */
     public CopyOptions exclude(final CharSequence... propertyNames) {
@@ -160,7 +161,7 @@ public class CopyOptions {
      * </p>
      * 
      * @param prefix
-     *            プレフィックス
+     *            プレフィックス。{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      */
     public CopyOptions prefix(final CharSequence prefix) {
@@ -244,19 +245,20 @@ public class CopyOptions {
      * コンバータを設定します。
      * 
      * @param converter
-     *            コンバータ
+     *            コンバータ。{@literal null}であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      */
     public CopyOptions converter(final Converter converter,
             final CharSequence... propertyNames) {
         assertArgumentNotNull("converter", converter);
 
-        if (propertyNames == null || propertyNames.length == 0) {
+        if (isEmpty(propertyNames)) {
             converters.add(converter);
         } else {
             for (final CharSequence name : propertyNames) {
+                assertArgumentNotEmpty("element of propertyNames", name);
                 converterMap.put(name.toString(), converter);
             }
         }
@@ -267,9 +269,9 @@ public class CopyOptions {
      * 日付のコンバータを設定します。
      * 
      * @param pattern
-     *            日付のパターン
+     *            日付のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      * @see DateConverter
      */
@@ -284,9 +286,9 @@ public class CopyOptions {
      * SQL用日付のコンバータを設定します。
      * 
      * @param pattern
-     *            日付のパターン
+     *            日付のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      * @see SqlDateConverter
      */
@@ -301,9 +303,9 @@ public class CopyOptions {
      * 時間のコンバータを設定します。
      * 
      * @param pattern
-     *            時間のパターン
+     *            時間のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      * @see TimeConverter
      */
@@ -318,9 +320,9 @@ public class CopyOptions {
      * 日時のコンバータを設定します。
      * 
      * @param pattern
-     *            日時のパターン
+     *            日時のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      * @see TimestampConverter
      */
@@ -335,9 +337,9 @@ public class CopyOptions {
      * 数値のコンバータを設定します。
      * 
      * @param pattern
-     *            数値のパターン
+     *            数値のパターン。{@literal null}や空文字列であってはいけません
      * @param propertyNames
-     *            このコンバータを適用するプロパティ名の並び
+     *            このコンバータを適用するプロパティ名の並び。各要素は{@literal null}や空文字列であってはいけません
      * @return このインスタンス自身
      * @see NumberConverter
      */

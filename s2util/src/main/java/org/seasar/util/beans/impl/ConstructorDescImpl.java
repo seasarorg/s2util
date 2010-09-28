@@ -52,9 +52,9 @@ public class ConstructorDescImpl implements ConstructorDesc {
      * インスタンスを構築します。
      * 
      * @param beanDesc
-     *            このメソッドを所有するクラスの{@link BeanDesc}
+     *            このメソッドを所有するクラスの{@link BeanDesc}。{@literal null}であってはいけません
      * @param constructor
-     *            メソッド
+     *            コンストラクタ。{@literal null}であってはいけません
      */
     public ConstructorDescImpl(final BeanDesc beanDesc,
             final Constructor<?> constructor) {

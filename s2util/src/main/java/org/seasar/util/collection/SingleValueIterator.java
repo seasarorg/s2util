@@ -73,6 +73,7 @@ public class SingleValueIterator<E> implements Iterator<E> {
         if (!hasNext) {
             throw new SNoSuchElementException();
         }
+        hasNext = false;
         return value;
     }
 

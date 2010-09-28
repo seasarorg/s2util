@@ -80,15 +80,15 @@ public class PropertyDescImpl implements PropertyDesc {
      * {@link PropertyDescImpl}を作成します。
      * 
      * @param propertyName
-     *            プロパティ名
+     *            プロパティ名。{@literal null}や空文字列であってはいけません
      * @param propertyType
-     *            プロパティの型
+     *            プロパティの型。{@literal null}であってはいけません
      * @param readMethod
      *            getterメソッド
      * @param writeMethod
      *            setterメソッド
      * @param beanDesc
-     *            {@link BeanDesc}
+     *            {@link BeanDesc}。{@literal null}であってはいけません
      */
     public PropertyDescImpl(final String propertyName,
             final Class<?> propertyType, final Method readMethod,
@@ -106,9 +106,9 @@ public class PropertyDescImpl implements PropertyDesc {
      * {@link PropertyDescImpl}を作成します。
      * 
      * @param propertyName
-     *            プロパティ名
+     *            プロパティ名。{@literal null}や空文字列であってはいけません
      * @param propertyType
-     *            プロパティの型
+     *            プロパティの型。{@literal null}であってはいけません
      * @param readMethod
      *            getterメソッド
      * @param writeMethod
@@ -116,7 +116,7 @@ public class PropertyDescImpl implements PropertyDesc {
      * @param field
      *            フィールド
      * @param beanDesc
-     *            {@link BeanDesc}
+     *            {@link BeanDesc}。{@literal null}であってはいけません
      */
     public PropertyDescImpl(final String propertyName,
             final Class<?> propertyType, final Method readMethod,
