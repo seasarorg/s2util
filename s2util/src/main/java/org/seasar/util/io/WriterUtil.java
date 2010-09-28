@@ -25,6 +25,8 @@ import java.io.Writer;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Writer}用のユーティリティクラスです。
  * 
@@ -36,12 +38,15 @@ public abstract class WriterUtil {
      * 指定のエンコーディングでストリームへ出力する{@link Writer}を作成します。
      * 
      * @param os
-     *            ストリーム
+     *            ストリーム。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @return ストリームへ出力する{@link Writer}
      */
     public static Writer create(final OutputStream os, final String encoding) {
+        assertArgumentNotNull("os", os);
+        assertArgumentNotEmpty("encoding", encoding);
+
         try {
             return new OutputStreamWriter(os, encoding);
         } catch (final IOException e) {
@@ -53,10 +58,12 @@ public abstract class WriterUtil {
      * プラットフォームデフォルトエンコーディングでファイルへ出力する{@link Writer}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルへ出力する{@link Writer}
      */
     public static Writer create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new FileWriter(file);
         } catch (final IOException e) {
@@ -68,12 +75,15 @@ public abstract class WriterUtil {
      * 指定のエンコーディングでファイルへ出力する{@link Writer}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @return ファイルへ出力する{@link Writer}
      */
     public static Writer create(final File file, final String encoding) {
+        assertArgumentNotNull("file", file);
+        assertArgumentNotEmpty("encoding", encoding);
+
         try {
             return new OutputStreamWriter(new FileOutputStream(file), encoding);
         } catch (final IOException e) {

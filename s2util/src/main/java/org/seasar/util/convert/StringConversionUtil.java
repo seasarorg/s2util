@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 
 import org.seasar.util.misc.Base64Util;
 
+import static org.seasar.util.lang.StringUtil.*;
+
 /**
  * {@link String}用の変換ユーティリティです。
  * 
@@ -146,8 +148,8 @@ public abstract class StringConversionUtil {
      * @return 修正された文字列
      */
     public static String fromWindowsMapping(final String source) {
-        if (source == null) {
-            return null;
+        if (isEmpty(source)) {
+            return source;
         }
         final char[] array = source.toCharArray();
         for (int i = 0; i < array.length; ++i) {
@@ -185,8 +187,8 @@ public abstract class StringConversionUtil {
      * @return Windows固有のマッピングルールに修正された文字列
      */
     public static String toWindowsMapping(final String source) {
-        if (source == null) {
-            return null;
+        if (isEmpty(source)) {
+            return source;
         }
         final char[] array = source.toCharArray();
         for (int i = 0; i < array.length; ++i) {

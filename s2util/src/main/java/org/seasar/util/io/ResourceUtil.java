@@ -39,7 +39,9 @@ public abstract class ResourceUtil {
      * リソースパスを返します。
      * 
      * @param path
+     *            パス。{@literal null}であってはいけません
      * @param extension
+     *            拡張子
      * @return リソースパス
      */
     public static String getResourcePath(final String path,
@@ -60,6 +62,7 @@ public abstract class ResourceUtil {
      * リソースパスを返します。
      * 
      * @param clazz
+     *            クラス。{@literal null}であってはいけません
      * @return リソースパス
      */
     public static String getResourcePath(final Class<?> clazz) {
@@ -69,19 +72,20 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * クラスローダを返します。
+     * コンテキストクラスローダを返します。
      * 
-     * @return クラスローダ
+     * @return コンテキストクラスローダ
      */
     public static ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
 
     /**
-     * リソースを返します。
+     * コンテキストクラスローダからリソースを返します。
      * 
      * @param path
-     * @return リソース
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
+     * @return リソースの{@link URL}
      * @see #getResource(String, String)
      */
     public static URL getResource(final String path) {
@@ -91,11 +95,13 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースを返します。
+     * コンテキストクラスローダからリソースを返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
-     * @return リソース
+     *            リソースの拡張子
+     * @return リソースの{@link URL}
      */
     public static URL getResource(final String path, final String extension) {
         assertArgumentNotEmpty("path", path);
@@ -110,10 +116,11 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースを返します。見つからなかった場合は<code>null</code>を返します。
+     * コンテキストクラスローダからリソースを返します。見つからなかった場合は<code>null</code>を返します。
      * 
      * @param path
-     * @return リソース
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
+     * @return リソースの{@link URL}
      * @see #getResourceNoException(String, String)
      */
     public static URL getResourceNoException(final String path) {
@@ -123,11 +130,13 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースを返します。見つからなかった場合は<code>null</code>を返します。
+     * コンテキストクラスローダからリソースを返します。見つからなかった場合は<code>null</code>を返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
-     * @return リソース
+     *            拡張子
+     * @return リソースの{@link URL}
      * @see #getResourceNoException(String, String, ClassLoader)
      */
     public static URL getResourceNoException(final String path,
@@ -140,11 +149,14 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースを返します。見つからなかった場合は<code>null</code>を返します。
+     * 指定のクラスローダからリソースを返します。見つからなかった場合は<code>null</code>を返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
+     *            リソースの拡張子
      * @param loader
+     *            リソースを検索するクラスローダ。{@literal null}であってはいけません
      * @return リソース
      * @see #getResourcePath(String, String)
      */
@@ -160,9 +172,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースをストリームとして返します。
+     * コンテキストクラスローダからリソースを検索してストリームとして返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @return ストリーム
      * @see #getResourceAsStream(String, String)
      */
@@ -173,10 +186,12 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースをストリームとして返します。
+     * コンテキストクラスローダからリソースを検索してストリームとして返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
+     *            リソースの拡張子
      * @return ストリーム
      * @see #getResource(String, String)
      */
@@ -189,9 +204,11 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースをストリームとして返します。リソースが見つからなかった場合は<code>null</code>を返します。
+     * コンテキストクラスローダからリソースを検索してストリームとして返します。 リソースが見つからなかった場合は<code>null</code>
+     * を返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @return ストリーム
      * @see #getResourceAsStreamNoException(String, String)
      */
@@ -202,10 +219,13 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースをストリームとして返します。リソースが見つからなかった場合は<code>null</code>を返します。
+     * コンテキストクラスローダからリソースを検索してストリームとして返します。 リソースが見つからなかった場合は<code>null</code>
+     * を返します。
      * 
      * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
+     *            リソースの拡張子
      * @return ストリーム
      * @see #getResourceNoException(String, String)
      */
@@ -225,10 +245,11 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * リソースが存在するかどうかを返します。
+     * コンテキストクラスローダにリソースが存在するかどうかを返します。
      * 
      * @param path
-     * @return リソースが存在するかどうか
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
+     * @return リソースが存在すれば{@literal true}
      * @see #getResourceNoException(String)
      */
     public static boolean isExist(final String path) {
@@ -238,9 +259,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * プロパティファイルを返します。
+     * コンテキストクラスローダからプロパティファイルをロードして返します。
      * 
      * @param path
+     *            プロパティファイルのパス。{@literal null}や空文字列であってはいけません
      * @return プロパティファイル
      */
     public static Properties getProperties(final String path) {
@@ -259,9 +281,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * 拡張子を返します。
+     * パスの拡張子を返します。
      * 
      * @param path
+     *            パス。{@literal null}であってはいけません
      * @return 拡張子
      */
     public static String getExtension(final String path) {
@@ -275,10 +298,11 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * 拡張子を取り除きます。
+     * パスから拡張子を取り除きます。
      * 
      * @param path
-     * @return 取り除いた後の結果
+     *            パス。{@literal null}であってはいけません
+     * @return 拡張子を取り除いたパス
      */
     public static String removeExtension(final String path) {
         assertArgumentNotNull("path", path);
@@ -294,7 +318,7 @@ public abstract class ResourceUtil {
      * 指定されたクラスのクラスファイルが置かれているルートディレクトリを返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return ルートディレクトリ
      * @see #getBuildDir(String)
      */
@@ -308,7 +332,7 @@ public abstract class ResourceUtil {
      * クラスファイルが置かれているルートディレクトリを返します。
      * 
      * @param path
-     *            クラスファイルのパス
+     *            クラスファイルのパス。{@literal null}や空文字列であってはいけません
      * @return ルートディレクトリ
      */
     public static File getBuildDir(final String path) {
@@ -332,7 +356,7 @@ public abstract class ResourceUtil {
      * リソースのURLを外部形式に変換します。
      * 
      * @param url
-     *            リソースのURL
+     *            リソースのURL。{@literal null}であってはいけません
      * @return 外部形式
      */
     public static String toExternalForm(final URL url) {
@@ -346,7 +370,7 @@ public abstract class ResourceUtil {
      * リソースのファイル名を返します。
      * 
      * @param url
-     *            リソースのURL
+     *            リソースのURL。{@literal null}であってはいけません
      * @return ファイル名
      */
     public static String getFileName(final URL url) {
@@ -357,10 +381,10 @@ public abstract class ResourceUtil {
     }
 
     /**
-     * ファイルを返します。
+     * リソースのファイルを返します。
      * 
      * @param url
-     *            リソースのURL
+     *            リソースのURL。{@literal null}であってはいけません
      * @return ファイル
      */
     public static File getFile(final URL url) {
@@ -377,7 +401,7 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。
      * 
      * @param path
-     *            リソースのパス
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @return ファイル
      * @see #getResourceAsFile(String, String)
      */
@@ -391,7 +415,7 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。
      * 
      * @param path
-     *            リソースのパス
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @param extension
      *            リソースの拡張子
      * @return ファイル
@@ -408,7 +432,7 @@ public abstract class ResourceUtil {
      * クラスファイルを表すリソースをファイルとして返します。リソースが見つからない場合は<code>null</code>を返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return ファイル
      * @see #getResourceAsFileNoException(String)
      */
@@ -422,7 +446,7 @@ public abstract class ResourceUtil {
      * リソースをファイルとして返します。リソースが見つからない場合は<code>null</code>を返します。
      * 
      * @param path
-     *            リソースのパス
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
      * @return ファイル
      * @see #getResourceNoException(String)
      */
@@ -447,6 +471,7 @@ public abstract class ResourceUtil {
      */
     public static String convertPath(final String path, final Class<?> clazz) {
         assertArgumentNotEmpty("path", path);
+        assertArgumentNotNull("clazz", clazz);
 
         if (isExist(path)) {
             return path;

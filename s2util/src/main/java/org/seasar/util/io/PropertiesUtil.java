@@ -42,9 +42,9 @@ public abstract class PropertiesUtil {
      * </p>
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param in
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      */
     public static void load(final Properties props, final InputStream in) {
         assertArgumentNotNull("props", props);
@@ -64,9 +64,9 @@ public abstract class PropertiesUtil {
      * </p>
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param reader
-     *            入力リーダ
+     *            入力リーダ。{@literal null}であってはいけません
      */
     public static void load(final Properties props, final Reader reader) {
         assertArgumentNotNull("props", props);
@@ -83,11 +83,11 @@ public abstract class PropertiesUtil {
      * 指定のエンコーディングでファイルを読み込んで{@link Properties}にロードします（例外処理はラップします）。
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      */
     public static void load(final Properties props, final File file,
             final String encoding) {
@@ -110,9 +110,9 @@ public abstract class PropertiesUtil {
      * プラットフォームデフォルトエンコーディングでファイルを読み込んで{@link Properties}にロードします（例外処理はラップします）。
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      */
     public static void load(final Properties props, final File file) {
         load(props, file, Charset.defaultCharset().name());
@@ -126,9 +126,9 @@ public abstract class PropertiesUtil {
      * </p>
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param out
-     *            出力ストリーム
+     *            出力ストリーム。{@literal null}であってはいけません
      * @param comments
      *            コメント
      */
@@ -152,9 +152,9 @@ public abstract class PropertiesUtil {
      * </p>
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param writer
-     *            出力ライタ
+     *            出力ライタ。{@literal null}であってはいけません
      * @param comments
      *            コメント
      */
@@ -174,11 +174,11 @@ public abstract class PropertiesUtil {
      * 指定のエンコーディングでファイルを書き出して{@link Properties}をストアします（例外処理はラップします）。
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @param comments
      *            コメント
      */
@@ -202,9 +202,9 @@ public abstract class PropertiesUtil {
      * プラットフォームデフォルトエンコーディングでファイルを書き出して{@link Properties}をストアします（例外処理はラップします）。
      * 
      * @param props
-     *            プロパティセット
+     *            プロパティセット。{@literal null}であってはいけません
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param comments
      *            コメント
      */

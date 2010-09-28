@@ -23,14 +23,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import org.seasar.util.collection.MultiIterator;
 import org.seasar.util.exception.ParseRuntimeException;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
 import static java.text.DateFormat.*;
 
+import static org.seasar.util.collection.MultiIterator.*;
 import static org.seasar.util.lang.StringUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 日付だけを表現するオブジェクトから{@link Date}、{@link Calendar}、{@link java.sql.Date}
@@ -117,10 +118,11 @@ public abstract class DateConversionUtil {
      * 指定されたロケールで{@link DateFormat#SHORT}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#SHORT}スタイルのパターン文字列
      */
     public static String getShortPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateInstance(SHORT, locale)).toPattern();
     }
 
@@ -137,10 +139,11 @@ public abstract class DateConversionUtil {
      * 指定されたロケールで{@link DateFormat#MEDIUM}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#MEDIUM}スタイルのパターン文字列
      */
     public static String getMediumPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateInstance(MEDIUM, locale)).toPattern();
     }
 
@@ -157,10 +160,11 @@ public abstract class DateConversionUtil {
      * 指定されたロケールで{@link DateFormat#LONG}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#LONG}スタイルのパターン文字列
      */
     public static String getLongPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateInstance(LONG, locale)).toPattern();
     }
 
@@ -177,10 +181,11 @@ public abstract class DateConversionUtil {
      * 指定されたロケールで{@link DateFormat#FULL}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#FULL}スタイルのパターン文字列
      */
     public static String getFullPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateInstance(FULL, locale)).toPattern();
     }
 
@@ -214,10 +219,11 @@ public abstract class DateConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link Date}
      */
     public static Date toDate(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toDate(src, null, locale);
     }
 
@@ -299,10 +305,11 @@ public abstract class DateConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link Date}
      */
     public static Calendar toCalendar(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toCalendar(src, null, locale);
     }
 
@@ -381,10 +388,11 @@ public abstract class DateConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link java.sql.Date}
      */
     public static java.sql.Date toSqlDate(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toSqlDate(src, null, locale);
     }
 
@@ -447,7 +455,7 @@ public abstract class DateConversionUtil {
      */
     @SuppressWarnings("unchecked")
     protected static Date toDate(final String str, final Locale locale) {
-        for (final DateFormat format : MultiIterator.iterable(
+        for (final DateFormat format : iterable(
             new DateFormatIterator(locale),
             new PlainDateFormatIterator(str, locale))) {
             if (format == null) {

@@ -49,9 +49,9 @@ public abstract class ClassTraversalUtil {
      * ルートディレクトリ配下を処理します。
      * 
      * @param rootDir
-     *            ルートディレクトリ
+     *            ルートディレクトリ。{@literal null}であってはいけません
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final File rootDir, final ClassHandler handler) {
         assertArgumentNotNull("rootDir", rootDir);
@@ -64,11 +64,11 @@ public abstract class ClassTraversalUtil {
      * ファイルシステムに含まれるクラスをトラバースします。
      * 
      * @param rootDir
-     *            ルートディレクトリ
+     *            ルートディレクトリ。{@literal null}であってはいけません
      * @param rootPackage
      *            ルートパッケージ
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final File rootDir, final String rootPackage,
             final ClassHandler handler) {
@@ -92,9 +92,9 @@ public abstract class ClassTraversalUtil {
      * </p>
      * 
      * @param jarFile
-     *            Jarファイル
+     *            Jarファイル。{@literal null}であってはいけません
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final JarFile jarFile, final ClassHandler handler) {
         assertArgumentNotNull("jarFile", jarFile);
@@ -117,11 +117,12 @@ public abstract class ClassTraversalUtil {
      * </p>
      * 
      * @param jarFile
-     *            Jarファイル
+     *            Jarファイル。{@literal null}であってはいけません
      * @param prefix
-     *            トラバースするリソースの名前が含む接頭辞。スラッシュ('/')で終了していなければなりません。
+     *            トラバースするリソースの名前が含む接頭辞。{@literal null}であってはいけません。
+     *            空文字列でない場合はスラッシュ('/')で終了していなければなりません
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final JarFile jarFile, final String prefix,
             final ClassHandler handler) {
@@ -154,9 +155,9 @@ public abstract class ClassTraversalUtil {
      * ZIPファイル形式の入力ストリームに含まれるクラスをトラバースします。
      * 
      * @param zipInputStream
-     *            ZIPファイル形式の入力ストリーム
+     *            ZIPファイル形式の入力ストリーム。{@literal null}であってはいけません
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final ClassHandler handler) {
@@ -176,11 +177,13 @@ public abstract class ClassTraversalUtil {
      * </p>
      * 
      * @param zipInputStream
-     *            ZIPファイル形式の入力ストリーム
+     *            ZIPファイル形式の入力ストリーム。{@literal null}であってはいけません
      * @param prefix
-     *            トラバースするリソースの名前が含む接頭辞。スラッシュ('/')で終了していなければなりません。
+     *            トラバースするリソースの名前が含む接頭辞。{@literal null}であってはいけません。
+     *            空文字列でない場合はスラッシュ('/')で終了していなければなりません
+     * 
      * @param handler
-     *            クラスを処理するハンドラ
+     *            クラスを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final String prefix, final ClassHandler handler) {
@@ -226,9 +229,6 @@ public abstract class ClassTraversalUtil {
      */
     protected static void traverseFileSystem(final File dir,
             final String packageName, final ClassHandler handler) {
-        assertArgumentNotNull("dir", dir);
-        assertArgumentNotNull("handler", handler);
-
         for (final File file : dir.listFiles()) {
             final String fileName = file.getName();
             if (file.isDirectory()) {
@@ -257,8 +257,6 @@ public abstract class ClassTraversalUtil {
      */
     protected static File getPackageDir(final File rootDir,
             final String rootPackage) {
-        assertArgumentNotNull("rootDir", rootDir);
-
         File packageDir = rootDir;
         if (rootPackage != null) {
             for (final String name : rootPackage.split("\\.")) {

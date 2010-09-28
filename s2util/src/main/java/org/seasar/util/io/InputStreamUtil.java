@@ -39,7 +39,7 @@ public abstract class InputStreamUtil {
      * {@link FileInputStream}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルから入力する{@link FileInputStream}
      * @see FileInputStream#FileInputStream(File)
      */
@@ -60,7 +60,7 @@ public abstract class InputStreamUtil {
      * </p>
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @return byteの配列
      */
     public static final byte[] getBytes(final InputStream is) {
@@ -75,7 +75,7 @@ public abstract class InputStreamUtil {
      * {@link InputStream#available()}の例外処理をラップしたメソッドです。
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @return 可能なサイズ
      */
     public static int available(final InputStream is) {
@@ -92,7 +92,7 @@ public abstract class InputStreamUtil {
      * {@link InputStream}をリセットします。
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @see InputStream#reset()
      */
     public static void reset(final InputStream is) {

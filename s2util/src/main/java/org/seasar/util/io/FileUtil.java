@@ -52,7 +52,7 @@ public abstract class FileUtil {
      * この抽象パス名の正規の形式を返します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return この抽象パス名と同じファイルまたはディレクトリを示す正規パス名文字列
      */
     public static String getCanonicalPath(final File file) {
@@ -69,7 +69,7 @@ public abstract class FileUtil {
      * この抽象パス名を<code>file:</code> URLに変換します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルURLを表すURLオブジェクト
      */
     public static URL toURL(final File file) {
@@ -86,7 +86,7 @@ public abstract class FileUtil {
      * ファイルの内容をバイト配列に読み込んで返します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルの内容を読み込んだバイト配列
      */
     public static byte[] readBytes(final File file) {
@@ -108,10 +108,11 @@ public abstract class FileUtil {
      * デフォルトエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param path
-     *            ファイルのパス
+     *            ファイルのパス。{@literal null}や空文字列であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readText(final String path) {
+        assertArgumentNotEmpty("path", path);
         return readText(path, Charset.defaultCharset().name());
     }
 
@@ -119,10 +120,11 @@ public abstract class FileUtil {
      * デフォルトエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readText(final File file) {
+        assertArgumentNotNull("file", file);
         return readText(file, Charset.defaultCharset().name());
     }
 
@@ -130,9 +132,9 @@ public abstract class FileUtil {
      * 指定のエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param path
-     *            パス
+     *            パス。{@literal null}や空文字列であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readText(final String path, final String encoding) {
@@ -159,9 +161,9 @@ public abstract class FileUtil {
      * 指定のエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readText(final File file, final String encoding) {
@@ -184,10 +186,11 @@ public abstract class FileUtil {
      * 日本語のエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param path
-     *            パス
+     *            パス。{@literal null}や空文字列であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readJisAutoDetect(final String path) {
+        assertArgumentNotEmpty("path", path);
         return readText(path, JIS_AUTO_DETECT);
     }
 
@@ -195,10 +198,11 @@ public abstract class FileUtil {
      * 日本語のエンコーディングでファイルからテキストを読み込みます。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readJisAutoDetect(final File file) {
+        assertArgumentNotNull("file", file);
         return readText(file, JIS_AUTO_DETECT);
     }
 
@@ -206,10 +210,11 @@ public abstract class FileUtil {
      * UTF8でファイルからテキストを読み込みます。
      * 
      * @param path
-     *            パス
+     *            パス。{@literal null}や空文字列であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readUTF8(final String path) {
+        assertArgumentNotEmpty("path", path);
         return readText(path, UTF8);
     }
 
@@ -217,10 +222,11 @@ public abstract class FileUtil {
      * UTF8でファイルからテキストを読み込みます。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return 読み込んだテキスト
      */
     public static String readUTF8(final File file) {
+        assertArgumentNotNull("file", file);
         return readText(file, UTF8);
     }
 

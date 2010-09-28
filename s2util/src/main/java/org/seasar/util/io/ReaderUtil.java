@@ -42,9 +42,9 @@ public abstract class ReaderUtil {
      * 指定のエンコーディングでファイルから入力する{@link Reader}を作成します。
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @param encoding
-     *            入力ストリームのエンコーディング
+     *            入力ストリームのエンコーディング。{@literal null}や空文字列であってはいけません
      * @return ファイルかへ出力する{@link Reader}
      */
     public static InputStreamReader create(final InputStream is,
@@ -63,10 +63,12 @@ public abstract class ReaderUtil {
      * プラットフォームデフォルトエンコーディングでファイルから入力する{@link Reader}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルから入力する{@link Reader}
      */
     public static Reader create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new FileReader(file);
         } catch (final IOException e) {
@@ -78,12 +80,15 @@ public abstract class ReaderUtil {
      * 指定のエンコーディングでファイルから入力する{@link Reader}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
      * @return ファイルから入力する{@link Reader}
      */
     public static Reader create(final File file, final String encoding) {
+        assertArgumentNotNull("file", file);
+        assertArgumentNotEmpty("encoding", encoding);
+
         try {
             return new InputStreamReader(new FileInputStream(file), encoding);
         } catch (final IOException e) {
@@ -95,11 +100,13 @@ public abstract class ReaderUtil {
      * {@link BufferedReader}から一行読み込んで返します。
      * 
      * @param reader
-     *            {@link BufferedReader}
+     *            {@link BufferedReader}。{@literal null}であってはいけません
      * @return 一行の文字列。終端に達した場合は{@literal null}
      * @see BufferedReader#readLine()
      */
     public static String readLine(final BufferedReader reader) {
+        assertArgumentNotNull("reader", reader);
+
         try {
             return reader.readLine();
         } catch (final IOException e) {
@@ -114,7 +121,7 @@ public abstract class ReaderUtil {
      * </p>
      * 
      * @param reader
-     *            読み込み文字ストリーム
+     *            読み込み文字ストリーム。{@literal null}であってはいけません
      * @return テキスト
      */
     public static String readText(final Reader reader) {

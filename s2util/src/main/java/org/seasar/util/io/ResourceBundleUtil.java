@@ -35,7 +35,7 @@ public abstract class ResourceBundleUtil {
      * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
      * 
      * @param name
-     *            リソースバンドの名前
+     *            リソースバンドの名前。{@literal null}や空文字列であってはいけません
      * @return {@link ResourceBundle}
      * @see ResourceBundle#getBundle(String)
      */
@@ -53,7 +53,7 @@ public abstract class ResourceBundleUtil {
      * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
      * 
      * @param name
-     *            リソースバンドの名前
+     *            リソースバンドの名前。{@literal null}や空文字列であってはいけません
      * @param locale
      *            ロケール
      * @return {@link ResourceBundle}
@@ -64,8 +64,7 @@ public abstract class ResourceBundleUtil {
         assertArgumentNotEmpty("name", name);
 
         try {
-            return ResourceBundle.getBundle(name, locale != null ? locale
-                : Locale.getDefault());
+            return ResourceBundle.getBundle(name, getLocale(locale));
         } catch (final MissingResourceException ignore) {
             return null;
         }
@@ -75,11 +74,11 @@ public abstract class ResourceBundleUtil {
      * バンドルを返します。 見つからない場合は、<code>null</code>を返します。
      * 
      * @param name
-     *            リソースバンドルの名前
+     *            リソースバンドルの名前。{@literal null}や空文字列であってはいけません
      * @param locale
      *            ロケール
      * @param classLoader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}や空文字列であってはいけません
      * @return {@link ResourceBundle}
      * @see ResourceBundle#getBundle(String, Locale, ClassLoader)
      */
@@ -89,8 +88,10 @@ public abstract class ResourceBundleUtil {
         assertArgumentNotNull("classLoader", classLoader);
 
         try {
-            return ResourceBundle.getBundle(name, locale != null ? locale
-                : Locale.getDefault(), classLoader);
+            return ResourceBundle.getBundle(
+                name,
+                getLocale(locale),
+                classLoader);
         } catch (final MissingResourceException ignore) {
             return null;
         }
@@ -100,13 +101,16 @@ public abstract class ResourceBundleUtil {
      * リソースバンドルから指定されたキーの文字列を返します。
      * 
      * @param bundle
-     *            リソースバンドル
+     *            リソースバンドル。{@literal null}や空文字列であってはいけません
      * @param key
      *            キー
-     * @return 指定されたキーの文字列
+     * @return 指定されたキーの文字列。{@literal null}や空文字列であってはいけません
      * @see ResourceBundle#getString(String)
      */
     public static String getString(final ResourceBundle bundle, final String key) {
+        assertArgumentNotNull("bundle", bundle);
+        assertArgumentNotEmpty("key", key);
+
         try {
             return bundle.getString(key);
         } catch (final Throwable t) {
@@ -118,7 +122,7 @@ public abstract class ResourceBundleUtil {
      * リソースバンドルを{@link Map}に変換します。
      * 
      * @param bundle
-     *            リソースバンドル
+     *            リソースバンドル。{@literal null}であってはいけません
      * @return {@link Map}
      */
     public static final Map<String, String> convertMap(
@@ -139,17 +143,33 @@ public abstract class ResourceBundleUtil {
      * リソースバンドルを{@link Map}に変換して返します。
      * 
      * @param name
-     *            リソースバンドルの名前
+     *            リソースバンドルの名前。{@literal null}や空文字列であってはいけません
      * @param locale
      *            ロケール
      * @return {@link Map}
      */
     public static final Map<String, String> convertMap(final String name,
             final Locale locale) {
-        assertArgumentNotNull("name", name);
+        assertArgumentNotEmpty("name", name);
 
         final ResourceBundle bundle = getBundle(name, locale);
         return convertMap(bundle);
+    }
+
+    /**
+     * {@literal locale}が{@literal null}でなければ{@literal locale}を、{@literal null}
+     * ならデフォルトのロケールを返します。
+     * 
+     * @param locale
+     *            ロケール
+     * @return {@literal locale}が{@literal null}でなければ{@literal locale}を、
+     *         {@literal null}ならデフォルトのロケールを返します。
+     */
+    protected static Locale getLocale(Locale locale) {
+        if (locale != null) {
+            return locale;
+        }
+        return Locale.getDefault();
     }
 
 }

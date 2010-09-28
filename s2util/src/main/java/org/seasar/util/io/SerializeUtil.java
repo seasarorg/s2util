@@ -39,7 +39,7 @@ public abstract class SerializeUtil {
      * オブジェクトをシリアライズできるかテストします。
      * 
      * @param obj
-     *            シリアライズ対象のオブジェクト
+     *            シリアライズ対象のオブジェクト。{@literal null}であってはいけません
      * @return シリアライズして復元したオブジェクト
      */
     public static Object serialize(final Object obj) {
@@ -53,7 +53,7 @@ public abstract class SerializeUtil {
      * オブジェクトをbyteの配列に変換します。
      * 
      * @param obj
-     *            シリアライズするオブジェクト
+     *            シリアライズするオブジェクト。{@literal null}であってはいけません
      * @return オブジェクトのbyte配列
      */
     public static byte[] fromObjectToBinary(final Object obj) {
@@ -78,7 +78,7 @@ public abstract class SerializeUtil {
      * {@literal byte}の配列をオブジェクトに変換します。
      * 
      * @param bytes
-     *            デシリアライズする配列
+     *            デシリアライズする配列。{@literal null}や空配列であってはいけません
      * @return 復元したオブジェクト
      */
     public static Object fromBinaryToObject(final byte[] bytes) {

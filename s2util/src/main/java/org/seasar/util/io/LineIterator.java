@@ -22,6 +22,8 @@ import java.util.Iterator;
 import org.seasar.util.exception.SNoSuchElementException;
 import org.seasar.util.exception.SUnsupportedOperationException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link BufferedReader}から読み込んだ行単位の文字列を反復する{@link Iterator}です。
  * <p>
@@ -54,10 +56,11 @@ public class LineIterator implements Iterator<String> {
      * for each構文で使用するために{@link LineIterator}をラップした{@link Iterable}を返します。
      * 
      * @param reader
-     *            文字列を読み込む{@link Reader}
+     *            文字列を読み込む{@link Reader}。{@literal null}であってはいけません
      * @return {@link LineIterator}をラップした{@link Iterable}
      */
     public static Iterable<String> iterable(final Reader reader) {
+        assertArgumentNotNull("reader", reader);
         return iterable(new BufferedReader(reader));
     }
 
@@ -65,10 +68,12 @@ public class LineIterator implements Iterator<String> {
      * for each構文で使用するために{@link LineIterator}をラップした{@link Iterable}を返します。
      * 
      * @param reader
-     *            文字列を読み込む{@link BufferedReader}
+     *            文字列を読み込む{@link BufferedReader}。{@literal null}であってはいけません
      * @return {@link LineIterator}をラップした{@link Iterable}
      */
     public static Iterable<String> iterable(final BufferedReader reader) {
+        assertArgumentNotNull("reader", reader);
+
         return new Iterable<String>() {
             @Override
             public Iterator<String> iterator() {
@@ -81,19 +86,21 @@ public class LineIterator implements Iterator<String> {
      * インスタンスを構築します。
      * 
      * @param reader
-     *            文字列を読み込む{@link Reader}
+     *            文字列を読み込む{@link Reader}。{@literal null}であってはいけません
      */
     public LineIterator(final Reader reader) {
-        this(new BufferedReader(reader));
+        assertArgumentNotNull("reader", reader);
+        this.reader = new BufferedReader(reader);
     }
 
     /**
      * インスタンスを構築します。
      * 
      * @param reader
-     *            文字列を読み込む{@link BufferedReader}
+     *            文字列を読み込む{@link BufferedReader}。{@literal null}であってはいけません
      */
     public LineIterator(final BufferedReader reader) {
+        assertArgumentNotNull("reader", reader);
         this.reader = reader;
     }
 

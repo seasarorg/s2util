@@ -32,6 +32,7 @@ import org.seasar.util.exception.SUnsupportedOperationException;
 import static java.text.DateFormat.*;
 
 import static org.seasar.util.lang.StringUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * 日付と時刻を表現するオブジェクトから{@link Date}、{@link Calendar}、{@link Timestamp}
@@ -118,10 +119,11 @@ public abstract class TimestampConversionUtil {
      * 指定されたロケールで{@link DateFormat#SHORT}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#SHORT}スタイルのパターン文字列
      */
     public static String getShortPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateTimeInstance(SHORT, SHORT, locale))
             .toPattern();
     }
@@ -139,10 +141,11 @@ public abstract class TimestampConversionUtil {
      * 指定されたロケールで{@link DateFormat#MEDIUM}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#MEDIUM}スタイルのパターン文字列
      */
     public static String getMediumPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateTimeInstance(MEDIUM, MEDIUM, locale))
             .toPattern();
     }
@@ -160,7 +163,7 @@ public abstract class TimestampConversionUtil {
      * 指定されたロケールで{@link DateFormat#LONG}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#LONG}スタイルのパターン文字列
      */
     public static String getLongPattern(final Locale locale) {
@@ -181,10 +184,11 @@ public abstract class TimestampConversionUtil {
      * 指定されたロケールで{@link DateFormat#FULL}スタイルのパターン文字列を返します。
      * 
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DateFormat#FULL}スタイルのパターン文字列
      */
     public static String getFullPattern(final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return ((SimpleDateFormat) getDateTimeInstance(FULL, FULL, locale))
             .toPattern();
     }
@@ -219,10 +223,11 @@ public abstract class TimestampConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link Date}
      */
     public static Date toDate(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toDate(src, null, locale);
     }
 
@@ -304,10 +309,11 @@ public abstract class TimestampConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link Date}
      */
     public static Calendar toCalendar(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toCalendar(src, null, locale);
     }
 
@@ -386,10 +392,11 @@ public abstract class TimestampConversionUtil {
      * @param src
      *            変換元のオブジェクト
      * @param locale
-     *            ロケール
+     *            ロケール。{@literal null}であってはいけません
      * @return 変換された{@link Timestamp}
      */
     public static Timestamp toSqlTimestamp(final Object src, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
         return toSqlTimestamp(src, null, locale);
     }
 

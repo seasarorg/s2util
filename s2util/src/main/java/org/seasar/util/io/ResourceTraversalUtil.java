@@ -43,9 +43,9 @@ public abstract class ResourceTraversalUtil {
      * ファイルシステムに含まれるリソースをトラバースします。
      * 
      * @param rootDir
-     *            ルートディレクトリ
+     *            ルートディレクトリ。{@literal null}であってはいけません
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final File rootDir, final ResourceHandler handler) {
         assertArgumentNotNull("rootDir", rootDir);
@@ -65,11 +65,11 @@ public abstract class ResourceTraversalUtil {
      * </p>
      * 
      * @param rootDir
-     *            ルートディレクトリ
+     *            ルートディレクトリ。{@literal null}であってはいけません
      * @param baseDirectory
      *            ベースディレクトリ
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final File rootDir, final String baseDirectory,
             final ResourceHandler handler) {
@@ -86,9 +86,9 @@ public abstract class ResourceTraversalUtil {
      * Jarファイル形式のファイルに含まれるリソースをトラバースします。
      * 
      * @param jarFile
-     *            jarファイル形式のファイル
+     *            jarファイル形式のファイル。{@literal null}であってはいけません
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final JarFile jarFile,
             final ResourceHandler handler) {
@@ -108,11 +108,12 @@ public abstract class ResourceTraversalUtil {
      * </p>
      * 
      * @param jarFile
-     *            jarファイル形式のファイル
+     *            jarファイル形式のファイル。{@literal null}であってはいけません
      * @param prefix
-     *            トラバースするリソースの名前が含む接頭辞。スラッシュ('/')で終了していなければなりません。
+     *            トラバースするリソースの名前が含む接頭辞。{@literal null}であってはいけません。
+     *            空文字列でない場合はスラッシュ('/')で終了していなければなりません
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final JarFile jarFile, final String prefix,
             final ResourceHandler handler) {
@@ -142,9 +143,9 @@ public abstract class ResourceTraversalUtil {
      * ZIPファイル形式の入力ストリームに含まれるリソースをトラバースします。
      * 
      * @param zipInputStream
-     *            ZIPファイル形式の入力ストリーム
+     *            ZIPファイル形式の入力ストリーム。{@literal null}であってはいけません
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final ResourceHandler handler) {
@@ -164,11 +165,12 @@ public abstract class ResourceTraversalUtil {
      * </p>
      * 
      * @param zipInputStream
-     *            ZIPファイル形式の入力ストリーム
+     *            ZIPファイル形式の入力ストリーム。{@literal null}であってはいけません
      * @param prefix
-     *            トラバースするリソースの名前が含む接頭辞。スラッシュ('/')で終了していなければなりません。
+     *            トラバースするリソースの名前が含む接頭辞。{@literal null}であってはいけません。
+     *            空文字列でない場合はスラッシュ('/')で終了していなければなりません
      * @param handler
-     *            リソースを処理するハンドラ
+     *            リソースを処理するハンドラ。{@literal null}であってはいけません
      */
     public static void forEach(final ZipInputStream zipInputStream,
             final String prefix, final ResourceHandler handler) {
@@ -208,10 +210,6 @@ public abstract class ResourceTraversalUtil {
      */
     protected static void traverseFileSystem(final File rootDir,
             final File baseDir, final ResourceHandler handler) {
-        assertArgumentNotNull("rootDir", rootDir);
-        assertArgumentNotNull("baseDir", baseDir);
-        assertArgumentNotNull("handler", handler);
-
         for (final File file : baseDir.listFiles()) {
             if (file.isDirectory()) {
                 traverseFileSystem(rootDir, file, handler);
@@ -242,7 +240,6 @@ public abstract class ResourceTraversalUtil {
     protected static File getBaseDir(final File rootDir,
             final String baseDirectory) {
         assertArgumentNotNull("rootDir", rootDir);
-        assertArgumentNotNull("baseDirectory", baseDirectory);
 
         File baseDir = rootDir;
         if (baseDirectory != null) {

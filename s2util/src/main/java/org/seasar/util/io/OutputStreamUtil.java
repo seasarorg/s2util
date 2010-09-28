@@ -35,7 +35,7 @@ public abstract class OutputStreamUtil {
      * {@link FileOutputStream}を作成します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return ファイルへ出力する{@link FileOutputStream}
      * @see FileOutputStream#FileOutputStream(File)
      */

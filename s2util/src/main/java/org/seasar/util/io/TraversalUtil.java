@@ -120,9 +120,9 @@ public abstract class TraversalUtil {
      * {@link TraverserFactory}を追加します。
      * 
      * @param protocol
-     *            URLのプロトコル
+     *            URLのプロトコル。{@literal null}や空文字列であってはいけません
      * @param factory
-     *            プロトコルに対応する{@link Traverser}のファクトリ
+     *            プロトコルに対応する{@link Traverser}のファクトリ。{@literal null}であってはいけません
      */
     public static void addTraverserFactory(final String protocol,
             final TraverserFactory factory) {
@@ -141,7 +141,7 @@ public abstract class TraversalUtil {
      * </p>
      * 
      * @param referenceClass
-     *            基点となるクラス
+     *            基点となるクラス。{@literal null}であってはいけません
      * @return 指定のクラスを基点とする、クラスやリソースの集まりを扱う{@link Traverser}
      */
     public static Traverser getTraverser(final Class<?> referenceClass) {
@@ -162,7 +162,7 @@ public abstract class TraversalUtil {
      * 指定のディレクトリを基点とする、クラスやリソースの集まりを扱う{@link Traverser}を返します。
      * 
      * @param rootDir
-     *            ルートディレクトリ
+     *            ルートディレクトリ。{@literal null}や空文字列であってはいけません
      * @return 指定のディレクトリを基点とする、クラスやリソースの集まりを扱う{@link Traverser}
      */
     public static Traverser getTraverser(final String rootDir) {
@@ -220,8 +220,6 @@ public abstract class TraversalUtil {
      */
     protected static Traverser getTraverser(final URL url,
             final String rootPackage, final String rootDir) {
-        assertArgumentNotNull("url", url);
-
         final TraverserFactory factory =
             traverserFactories.get(URLUtil.toCanonicalProtocol(url
                 .getProtocol()));
