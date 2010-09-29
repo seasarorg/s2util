@@ -21,10 +21,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
 import org.seasar.util.exception.IORuntimeException;
+import org.seasar.util.net.URLUtil;
 
 import static org.seasar.util.misc.AssertionUtil.*;
 
@@ -116,6 +118,29 @@ public abstract class PropertiesUtil {
      */
     public static void load(final Properties props, final File file) {
         load(props, file, Charset.defaultCharset().name());
+    }
+
+    /**
+     * {@link URL}を読み込んで{@link Properties}にロードします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット。{@literal null}であってはいけません
+     * @param url
+     *            URL。{@literal null}であってはいけません
+     */
+    public static void load(final Properties props, final URL url) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("url", url);
+
+        final InputStream in = URLUtil.openStream(url);
+
+        try {
+            props.load(in);
+        } catch (final IOException e) {
+            throw new IORuntimeException(e);
+        } finally {
+            CloseableUtil.close(in);
+        }
     }
 
     /**

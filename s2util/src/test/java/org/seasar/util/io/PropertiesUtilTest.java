@@ -28,6 +28,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.exception.NullArgumentException;
 import org.seasar.util.net.URLUtil;
 
@@ -246,6 +247,37 @@ public class PropertiesUtilTest {
         Properties properties = new Properties();
         PropertiesUtil.load(properties, file);
         assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, URL)}
+     */
+    @Test
+    public void testLoadPropertiesUrl() {
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, url);
+        assertThat(properties.getProperty("a"), is("A"));
+    }
+
+    /**
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, URL)}
+     */
+    @Test
+    public void testLoadPropertiesUrlThrowIOException() {
+        exception.expect(IORuntimeException.class);
+        exception
+            .expectMessage(is("[EUTL0040]IO例外が発生しました。理由はjava.io.IOException: load"));
+        Properties properties = new IOExceptionOccurProperties();
+        PropertiesUtil.load(properties, url);
+    }
+
+    private static class IOExceptionOccurProperties extends Properties {
+
+        @Override
+        public synchronized void load(InputStream inStream) throws IOException {
+            throw new IOException("load");
+        }
+
     }
 
 }
