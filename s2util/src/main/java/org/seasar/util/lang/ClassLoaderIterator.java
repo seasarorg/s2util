@@ -48,7 +48,7 @@ public class ClassLoaderIterator implements Iterator<ClassLoader> {
      * for each構文で使用するために{@link ClassLoaderIterator}をラップした{@link Iterable}を返します。
      * 
      * @param classLoader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}であってはいけません
      * @return {@link ClassLoaderIterator}をラップした{@link Iterable}
      */
     public static Iterable<ClassLoader> iterable(final ClassLoader classLoader) {
@@ -64,11 +64,10 @@ public class ClassLoaderIterator implements Iterator<ClassLoader> {
      * インスタンスを構築します。
      * 
      * @param classLoader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}であってはいけません
      */
     public ClassLoaderIterator(final ClassLoader classLoader) {
         assertArgumentNotNull("classLoader", classLoader);
-
         this.classLoader = classLoader;
     }
 

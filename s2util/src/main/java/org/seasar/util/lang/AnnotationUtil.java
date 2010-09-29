@@ -23,6 +23,7 @@ import org.seasar.util.beans.MethodDesc;
 import org.seasar.util.beans.factory.BeanDescFactory;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * アノテーションのためのユーティリティクラスです。
@@ -35,10 +36,12 @@ public abstract class AnnotationUtil {
      * アノテーションの要素を名前と値の{@link Map}として返します。
      * 
      * @param annotation
-     *            アノテーション
+     *            アノテーション。{@literal null}であってはいけません
      * @return アノテーションの要素の名前と値からなる{@link Map}
      */
     public static Map<String, Object> getProperties(final Annotation annotation) {
+        assertArgumentNotNull("annotation", annotation);
+
         final Map<String, Object> map = newHashMap();
         final BeanDesc beanDesc =
             BeanDescFactory.getBeanDesc(annotation.annotationType());

@@ -57,7 +57,7 @@ public class ClassIterator implements Iterator<Class<?>> {
      * for each構文で使用するために{@link ClassIterator}をラップした{@link Iterable}を返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return {@link ClassIterator}をラップした{@link Iterable}
      */
     public static Iterable<Class<?>> iterable(final Class<?> clazz) {
@@ -68,7 +68,7 @@ public class ClassIterator implements Iterator<Class<?>> {
      * for each構文で使用するために{@link ClassIterator}をラップした{@link Iterable}を返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @param includeObject
      *            {@link Object}クラスも反復する場合は {@literal true}
      * @return {@link ClassIterator}をラップした{@link Iterable}
@@ -87,7 +87,7 @@ public class ClassIterator implements Iterator<Class<?>> {
      * インスタンスを構築します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      */
     public ClassIterator(final Class<?> clazz) {
         this(clazz, true);
@@ -97,7 +97,7 @@ public class ClassIterator implements Iterator<Class<?>> {
      * インスタンスを構築します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @param includeObject
      *            {@link Object}クラスも反復する場合は {@literal true}
      */

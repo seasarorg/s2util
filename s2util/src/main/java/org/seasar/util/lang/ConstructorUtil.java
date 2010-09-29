@@ -23,6 +23,8 @@ import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.InstantiationRuntimeException;
 import org.seasar.util.exception.InvocationTargetRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Constructor}用のユーティリティクラスです。
  * 
@@ -36,7 +38,7 @@ public abstract class ConstructorUtil {
      * @param <T>
      *            コンストラクタの宣言クラス
      * @param constructor
-     *            コンストラクタ
+     *            コンストラクタ。{@literal null}であってはいけません
      * @param args
      *            コンストラクタ呼び出しに引数として渡すオブジェクトの配列
      * @return コンストラクタを呼び出すことで作成される新規オブジェクト
@@ -51,6 +53,8 @@ public abstract class ConstructorUtil {
     public static <T> T newInstance(final Constructor<T> constructor,
             final Object... args) throws InstantiationRuntimeException,
             IllegalAccessRuntimeException {
+        assertArgumentNotNull("constructor", constructor);
+
         try {
             return constructor.newInstance(args);
         } catch (final InstantiationException e) {
@@ -72,10 +76,12 @@ public abstract class ConstructorUtil {
      * <code>public</code>かどうかを返します。
      * 
      * @param constructor
-     *            コンストラクタ
+     *            コンストラクタ。{@literal null}や空文字列であってはいけません
      * @return <code>public</code>かどうか
      */
     public static boolean isPublic(final Constructor<?> constructor) {
+        assertArgumentNotNull("constructor", constructor);
+
         return Modifier.isPublic(constructor.getModifiers());
     }
 

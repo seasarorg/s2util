@@ -22,6 +22,8 @@ import java.util.jar.JarInputStream;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link JarInputStream}用のユーティリティクラスです。
  * 
@@ -33,7 +35,7 @@ public abstract class JarInputStreamUtil {
      * {@link JarInputStream}を作成します。
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @return {@link JarInputStream}
      * @throws IORuntimeException
      *             {@link IOException}が発生した場合
@@ -41,6 +43,8 @@ public abstract class JarInputStreamUtil {
      */
     public static JarInputStream create(final InputStream is)
             throws IORuntimeException {
+        assertArgumentNotNull("is", is);
+
         try {
             return new JarInputStream(is);
         } catch (final IOException e) {
@@ -52,7 +56,7 @@ public abstract class JarInputStreamUtil {
      * {@link JarInputStream#getNextJarEntry()}の例外処理をラップするメソッドです。
      * 
      * @param is
-     *            入力ストリーム
+     *            入力ストリーム。{@literal null}であってはいけません
      * @return {@link JarEntry}
      * @throws IORuntimeException
      *             {@link IOException}が発生した場合
@@ -60,6 +64,8 @@ public abstract class JarInputStreamUtil {
      */
     public static JarEntry getNextJarEntry(final JarInputStream is)
             throws IORuntimeException {
+        assertArgumentNotNull("is", is);
+
         try {
             return is.getNextJarEntry();
         } catch (final IOException e) {

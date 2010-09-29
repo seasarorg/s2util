@@ -86,7 +86,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            {@link Class}オブジェクトが表すクラス
      * @param className
-     *            要求するクラスの完全修飾名
+     *            要求するクラスの完全修飾名。{@literal null}や空文字列であってはいけません
      * @return 指定された名前を持つクラスの{@link Class}オブジェクト
      * @throws ClassNotFoundRuntimeException
      *             クラスが見つからなかった場合
@@ -94,6 +94,8 @@ public abstract class ClassUtil {
      */
     public static <T> Class<T> forName(final String className)
             throws ClassNotFoundRuntimeException {
+        assertArgumentNotEmpty("className", className);
+
         return forName(className, Thread
             .currentThread()
             .getContextClassLoader());
@@ -106,7 +108,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            {@link Class}オブジェクトが表すクラス
      * @param className
-     *            要求するクラスの完全修飾名
+     *            要求するクラスの完全修飾名。{@literal null}や空文字列であってはいけません
      * @param loader
      *            クラスのロード元である必要があるクラスローダ
      * @return 指定された名前を持つクラスの{@link Class}オブジェクト
@@ -180,7 +182,7 @@ public abstract class ClassUtil {
      * プリミティブクラスの場合は、ラッパークラスに変換して返します。
      * 
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @return {@link Class}
      * @throws EmptyArgumentException
      *             クラス名が{@literal null}または空文字列だった場合
@@ -204,7 +206,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラスを表す{@link Class}オブジェクト
+     *            クラスを表す{@link Class}オブジェクト。{@literal null}であってはいけません
      * @return デフォルトコンストラクタを呼び出すことで作成される新規オブジェクト
      * @throws InstantiationRuntimeException
      *             基本となるコンストラクタを宣言するクラスが{@code abstract}クラスを表す場合
@@ -216,6 +218,8 @@ public abstract class ClassUtil {
      */
     public static <T> T newInstance(final Class<T> clazz)
             throws InstantiationRuntimeException, IllegalAccessRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
+
         try {
             return clazz.newInstance();
         } catch (final InstantiationException e) {
@@ -231,7 +235,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            生成するインスタンスの型
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @return デフォルトコンストラクタを呼び出すことで作成される新規オブジェクト
      * @throws ClassNotFoundRuntimeException
      *             クラスが見つからなかった場合
@@ -248,6 +252,8 @@ public abstract class ClassUtil {
     public static <T> T newInstance(final String className)
             throws ClassNotFoundRuntimeException,
             InstantiationRuntimeException, IllegalAccessRuntimeException {
+        assertArgumentNotNull("className", className);
+
         return (T) newInstance(forName(className));
     }
 
@@ -257,7 +263,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            生成するインスタンスの型
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @param loader
      *            クラスローダ
      * @return 新しいインスタンス
@@ -274,6 +280,8 @@ public abstract class ClassUtil {
     public static <T> T newInstance(final String className,
             final ClassLoader loader) throws ClassNotFoundRuntimeException,
             InstantiationRuntimeException, IllegalAccessRuntimeException {
+        assertArgumentNotEmpty("className", className);
+
         return (T) newInstance(forName(className, loader));
     }
 
@@ -281,14 +289,17 @@ public abstract class ClassUtil {
      * 代入可能かどうかを返します。
      * 
      * @param toClass
-     *            代入先のクラス
+     *            代入先のクラス。{@literal null}であってはいけません
      * @param fromClass
-     *            代入元のクラス
+     *            代入元のクラス。{@literal null}であってはいけません
      * @return 代入可能かどうか
      * @see Class#isAssignableFrom(Class)
      */
     public static boolean isAssignableFrom(final Class<?> toClass,
             Class<?> fromClass) {
+        assertArgumentNotNull("toClass", toClass);
+        assertArgumentNotNull("fromClass", fromClass);
+
         if (toClass == Object.class && !fromClass.isPrimitive()) {
             return true;
         }
@@ -302,10 +313,12 @@ public abstract class ClassUtil {
      * ラッパークラスをプリミティブクラスに変換します。
      * 
      * @param clazz
-     *            ラッパークラス
+     *            ラッパークラス。{@literal null}であってはいけません
      * @return 引数がラッパークラスならプリミティブクラス、それ以外の場合は{@literal null}
      */
     public static Class<?> getPrimitiveClass(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return wrapperToPrimitiveMap.get(clazz);
     }
 
@@ -313,10 +326,12 @@ public abstract class ClassUtil {
      * ラッパークラスならプリミティブクラスに、 そうでなければそのままクラスを返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return 引数がラッパークラスならプリミティブクラス、それ以外の場合は引数で渡されたクラス
      */
     public static Class<?> getPrimitiveClassIfWrapper(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         final Class<?> ret = getPrimitiveClass(clazz);
         if (ret != null) {
             return ret;
@@ -328,10 +343,12 @@ public abstract class ClassUtil {
      * プリミティブクラスをラッパークラスに変換します。
      * 
      * @param clazz
-     *            プリミティブクラス
+     *            プリミティブクラス。{@literal null}であってはいけません
      * @return 引数がプリミティブクラスならラッパークラス、それ以外の場合は{@literal null}
      */
     public static Class<?> getWrapperClass(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return primitiveToWrapperMap.get(clazz);
     }
 
@@ -339,10 +356,12 @@ public abstract class ClassUtil {
      * クラスがプリミティブの場合はラッパークラス、そうでない場合はもとのクラスを返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return 引数がプリミティブクラスならラッパークラス、それ以外の場合は引数で渡されたクラス
      */
     public static Class<?> getWrapperClassIfPrimitive(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         final Class<?> ret = getWrapperClass(clazz);
         if (ret != null) {
             return ret;
@@ -357,7 +376,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param argTypes
      *            パラメータ配列
      * @return 指定された{@code argTypes}と一致する{@code public}コンストラクタの
@@ -369,6 +388,8 @@ public abstract class ClassUtil {
     public static <T> Constructor<T> getConstructor(final Class<T> clazz,
             final Class<?>... argTypes)
             throws NoSuchConstructorRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
+
         try {
             return clazz.getConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
@@ -383,7 +404,7 @@ public abstract class ClassUtil {
      * @param <T>
      *            {@link Class}オブジェクトが表すクラス
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param argTypes
      *            パラメータ配列
      * @return 指定された{@code argTypes}と一致するコンストラクタの{@link Constructor}オブジェクト
@@ -394,6 +415,8 @@ public abstract class ClassUtil {
     public static <T> Constructor<T> getDeclaredConstructor(
             final Class<T> clazz, final Class<?>... argTypes)
             throws NoSuchConstructorRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
+
         try {
             return clazz.getDeclaredConstructor(argTypes);
         } catch (final NoSuchMethodException e) {
@@ -406,9 +429,9 @@ public abstract class ClassUtil {
      * {@link Field}オブジェクトを返します。
      * 
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param name
-     *            フィールド名
+     *            フィールド名。{@literal null}や空文字列であってはいけません
      * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
      * @throws EmptyArgumentException
      *             フィールド名が{@literal null}または空文字列だった場合
@@ -418,7 +441,9 @@ public abstract class ClassUtil {
      */
     public static Field getField(final Class<?> clazz, final String name)
             throws NoSuchFieldRuntimeException {
-        assertArgumentNotEmpty("names", name);
+        assertArgumentNotNull("clazz", clazz);
+        assertArgumentNotEmpty("name", name);
+
         try {
             return clazz.getField(name);
         } catch (final NoSuchFieldException e) {
@@ -431,9 +456,9 @@ public abstract class ClassUtil {
      * オブジェクトを返します。
      * 
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param name
-     *            フィールド名
+     *            フィールド名。{@literal null}や空文字列であってはいけません
      * @return {@code name}で指定されたこのクラスの{@link Field}オブジェクト
      * @throws NoSuchFieldRuntimeException
      *             指定された名前のフィールドが見つからない場合
@@ -441,6 +466,9 @@ public abstract class ClassUtil {
      */
     public static Field getDeclaredField(final Class<?> clazz, final String name)
             throws NoSuchFieldRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
+        assertArgumentNotEmpty("name", name);
+
         try {
             return clazz.getDeclaredField(name);
         } catch (final NoSuchFieldException e) {
@@ -453,9 +481,9 @@ public abstract class ClassUtil {
      * {@link Method}オブジェクトを返します。
      * 
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param name
-     *            メソッドの名前
+     *            メソッドの名前。{@literal null}や空文字列であってはいけません
      * @param argTypes
      *            パラメータのリスト
      * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
@@ -467,7 +495,9 @@ public abstract class ClassUtil {
      */
     public static Method getMethod(final Class<?> clazz, final String name,
             final Class<?>... argTypes) throws NoSuchMethodRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
         assertArgumentNotEmpty("name", name);
+
         try {
             return clazz.getMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
@@ -480,9 +510,9 @@ public abstract class ClassUtil {
      * オブジェクトを返します。
      * 
      * @param clazz
-     *            クラスの{@link Class}オブジェクト
+     *            クラスの{@link Class}オブジェクト。{@literal null}であってはいけません
      * @param name
-     *            メソッドの名前
+     *            メソッドの名前。{@literal null}や空文字列であってはいけません
      * @param argTypes
      *            パラメータのリスト
      * @return 指定された{@code name}および{@code argTypes}と一致する{@link Method}オブジェクト
@@ -493,6 +523,9 @@ public abstract class ClassUtil {
     public static Method getDeclaredMethod(final Class<?> clazz,
             final String name, final Class<?>... argTypes)
             throws NoSuchMethodRuntimeException {
+        assertArgumentNotNull("clazz", clazz);
+        assertArgumentNotEmpty("name", name);
+
         try {
             return clazz.getDeclaredMethod(name, argTypes);
         } catch (final NoSuchMethodException e) {
@@ -504,10 +537,12 @@ public abstract class ClassUtil {
      * パッケージ名を返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return パッケージ名
      */
     public static String getPackageName(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         final String fqcn = clazz.getName();
         final int pos = fqcn.lastIndexOf('.');
         if (pos > 0) {
@@ -520,10 +555,12 @@ public abstract class ClassUtil {
      * FQCNからパッケージ名を除いた名前を返します。
      * 
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @return FQCNからパッケージ名を除いた名前
      */
     public static String getShortClassName(final String className) {
+        assertArgumentNotEmpty("className", className);
+
         final int i = className.lastIndexOf('.');
         if (i > 0) {
             return className.substring(i + 1);
@@ -535,10 +572,12 @@ public abstract class ClassUtil {
      * FQCNをパッケージ名とFQCNからパッケージ名を除いた名前に分けます。
      * 
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @return パッケージ名とFQCNからパッケージ名を除いた名前
      */
     public static String[] splitPackageAndShortClassName(final String className) {
+        assertArgumentNotEmpty("className", className);
+
         final String[] ret = new String[2];
         final int i = className.lastIndexOf('.');
         if (i > 0) {
@@ -554,10 +593,12 @@ public abstract class ClassUtil {
      * 配列の場合は要素のクラス名に{@literal []}を加えた文字列、それ以外はクラス名そのものを返します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return クラス名
      */
     public static String getSimpleClassName(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         if (clazz.isArray()) {
             return getSimpleClassName(clazz.getComponentType()) + "[]";
         }
@@ -568,11 +609,13 @@ public abstract class ClassUtil {
      * クラス名をリソースパスとして表現します。
      * 
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return リソースパス
      * @see #getResourcePath(String)
      */
     public static String getResourcePath(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return getResourcePath(clazz.getName());
     }
 
@@ -580,10 +623,12 @@ public abstract class ClassUtil {
      * クラス名をリソースパスとして表現します。
      * 
      * @param className
-     *            クラス名
+     *            クラス名。{@literal null}や空文字列であってはいけません
      * @return リソースパス
      */
     public static String getResourcePath(final String className) {
+        assertArgumentNotEmpty("className", className);
+
         return StringUtil.replace(className, ".", "/") + ".class";
     }
 

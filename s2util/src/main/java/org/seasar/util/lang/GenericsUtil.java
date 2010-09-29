@@ -29,6 +29,8 @@ import java.util.Set;
 
 import org.seasar.util.collection.CollectionsUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * genericsを扱うためのユーティリティ・クラスです。
  * 
@@ -41,16 +43,19 @@ public abstract class GenericsUtil {
      * それ以外の場合は<code>false</code>を返します。
      * 
      * @param type
-     *            タイプ
+     *            タイプ。{@literal null}であってはいけません
      * @param clazz
-     *            クラス
+     *            クラス。{@literal null}であってはいけません
      * @return <code>type</code>の原型が<code>clazz</code>に代入可能であれば<code>true</code>
      */
     public static boolean isTypeOf(final Type type, final Class<?> clazz) {
-        if (Class.class.isInstance(type)) {
-            return clazz.isAssignableFrom(Class.class.cast(type));
+        assertArgumentNotNull("type", type);
+        assertArgumentNotNull("clazz", clazz);
+
+        if (type instanceof Class) {
+            return clazz.isAssignableFrom((Class<?>) type);
         }
-        if (ParameterizedType.class.isInstance(type)) {
+        if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType =
                 ParameterizedType.class.cast(type);
             return isTypeOf(parameterizedType.getRawType(), clazz);
@@ -73,20 +78,20 @@ public abstract class GenericsUtil {
      * @return <code>type</code>の原型
      */
     public static Class<?> getRawClass(final Type type) {
-        if (Class.class.isInstance(type)) {
+        if (type instanceof Class) {
             return Class.class.cast(type);
         }
-        if (ParameterizedType.class.isInstance(type)) {
+        if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType =
                 ParameterizedType.class.cast(type);
             return getRawClass(parameterizedType.getRawType());
         }
-        if (WildcardType.class.isInstance(type)) {
+        if (type instanceof WildcardType) {
             final WildcardType wildcardType = WildcardType.class.cast(type);
             final Type[] types = wildcardType.getUpperBounds();
             return getRawClass(types[0]);
         }
-        if (GenericArrayType.class.isInstance(type)) {
+        if (type instanceof GenericArrayType) {
             final GenericArrayType genericArrayType =
                 GenericArrayType.class.cast(type);
             final Class<?> rawClass =
@@ -115,10 +120,10 @@ public abstract class GenericsUtil {
      * @see ParameterizedType#getActualTypeArguments()
      */
     public static Type[] getGenericParameters(final Type type) {
-        if (ParameterizedType.class.isInstance(type)) {
+        if (type instanceof ParameterizedType) {
             return ParameterizedType.class.cast(type).getActualTypeArguments();
         }
-        if (GenericArrayType.class.isInstance(type)) {
+        if (type instanceof GenericArrayType) {
             return getGenericParameters(GenericArrayType.class
                 .cast(type)
                 .getGenericComponentType());
@@ -139,13 +144,14 @@ public abstract class GenericsUtil {
      * @return 指定された位置の<code>type</code>の型引数
      */
     public static Type getGenericParameter(final Type type, final int index) {
-        if (!ParameterizedType.class.isInstance(type)) {
+        if (!(type instanceof ParameterizedType)) {
             return null;
         }
         final Type[] genericParameter = getGenericParameters(type);
         if (genericParameter == null) {
             return null;
         }
+        assertArgumentArrayIndex("index", index, genericParameter.length);
         return genericParameter[index];
     }
 
@@ -160,7 +166,7 @@ public abstract class GenericsUtil {
      * @return パラメータ化された型を要素とする配列の要素型
      */
     public static Type getElementTypeOfArray(final Type type) {
-        if (!GenericArrayType.class.isInstance(type)) {
+        if (!(type instanceof GenericArrayType)) {
             return null;
         }
         return GenericArrayType.class.cast(type).getGenericComponentType();
@@ -255,11 +261,13 @@ public abstract class GenericsUtil {
      * パラメータ化された型(クラスまたはインタフェース)が持つ型変数をキー、型引数を値とする{@link Map}を返します。
      * 
      * @param clazz
-     *            パラメータ化された型(クラスまたはインタフェース)
+     *            パラメータ化された型(クラスまたはインタフェース)。{@literal null}であってはいけません
      * @return パラメータ化された型が持つ型変数をキー、型引数を値とする{@link Map}
      */
     public static Map<TypeVariable<?>, Type> getTypeVariableMap(
             final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         final Map<TypeVariable<?>, Type> map =
             CollectionsUtil.newLinkedHashMap();
 
@@ -325,7 +333,7 @@ public abstract class GenericsUtil {
      */
     protected static void gatherTypeVariables(final Type type,
             final Map<TypeVariable<?>, Type> map) {
-        if (ParameterizedType.class.isInstance(type)) {
+        if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType =
                 ParameterizedType.class.cast(type);
             final TypeVariable<?>[] typeVariables =
@@ -360,27 +368,27 @@ public abstract class GenericsUtil {
      */
     public static Class<?> getActualClass(final Type type,
             final Map<TypeVariable<?>, Type> map) {
-        if (Class.class.isInstance(type)) {
+        if (type instanceof Class) {
             return Class.class.cast(type);
         }
-        if (ParameterizedType.class.isInstance(type)) {
+        if (type instanceof ParameterizedType) {
             return getActualClass(ParameterizedType.class
                 .cast(type)
                 .getRawType(), map);
         }
-        if (WildcardType.class.isInstance(type)) {
+        if (type instanceof WildcardType) {
             return getActualClass(WildcardType.class
                 .cast(type)
                 .getUpperBounds()[0], map);
         }
-        if (TypeVariable.class.isInstance(type)) {
+        if (type instanceof TypeVariable) {
             final TypeVariable<?> typeVariable = TypeVariable.class.cast(type);
             if (map.containsKey(typeVariable)) {
                 return getActualClass(map.get(typeVariable), map);
             }
             return getActualClass(typeVariable.getBounds()[0], map);
         }
-        if (GenericArrayType.class.isInstance(type)) {
+        if (type instanceof GenericArrayType) {
             final GenericArrayType genericArrayType =
                 GenericArrayType.class.cast(type);
             final Class<?> componentClass =
@@ -410,7 +418,7 @@ public abstract class GenericsUtil {
      */
     public static Class<?> getActualElementClassOfArray(final Type type,
             final Map<TypeVariable<?>, Type> map) {
-        if (!GenericArrayType.class.isInstance(type)) {
+        if (!(type instanceof GenericArrayType)) {
             return null;
         }
         return getActualClass(GenericArrayType.class

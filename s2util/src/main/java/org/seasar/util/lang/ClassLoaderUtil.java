@@ -28,6 +28,7 @@ import org.seasar.util.exception.SIllegalStateException;
 import org.seasar.util.message.MessageFormatter;
 
 import static org.seasar.util.lang.ClassLoaderIterator.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link ClassLoader}を扱うためのユーティリティ・クラスです。
@@ -101,12 +102,14 @@ public abstract class ClassLoaderUtil {
      * </p>
      * 
      * @param targetClass
-     *            ターゲット・クラス
+     *            ターゲット・クラス。{@literal null}であってはいけません
      * @return クラスローダ
      * @throws IllegalStateException
      *             クラスローダを取得できなかった場合
      */
     public static ClassLoader getClassLoader(final Class<?> targetClass) {
+        assertArgumentNotNull("targetClass", targetClass);
+
         final ClassLoader contextClassLoader =
             Thread.currentThread().getContextClassLoader();
         if (contextClassLoader != null) {
@@ -164,12 +167,14 @@ public abstract class ClassLoaderUtil {
      * コンテキストクラスローダから指定された名前を持つすべてのリソースを探します。
      * 
      * @param name
-     *            リソース名
+     *            リソース名。{@literal null}や空文字列であってはいけません
      * @return リソースに対する URL
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
     public static Iterator<URL> getResources(final String name) {
+        assertArgumentNotEmpty("name", name);
+
         return getResources(
             Thread.currentThread().getContextClassLoader(),
             name);
@@ -179,15 +184,18 @@ public abstract class ClassLoaderUtil {
      * {@link #getClassLoader(Class)}が返すクラスローダから指定された名前を持つすべてのリソースを探します。
      * 
      * @param targetClass
-     *            ターゲット・クラス
+     *            ターゲット・クラス。{@literal null}であってはいけません
      * @param name
-     *            リソース名
+     *            リソース名。{@literal null}や空文字列であってはいけません
      * @return リソースに対する URL
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
     public static Iterator<URL> getResources(final Class<?> targetClass,
             final String name) {
+        assertArgumentNotNull("targetClass", targetClass);
+        assertArgumentNotNull("name", name);
+
         return getResources(getClassLoader(targetClass), name);
     }
 
@@ -195,15 +203,18 @@ public abstract class ClassLoaderUtil {
      * 指定のクラスローダから指定された名前を持つすべてのリソースを探します。
      * 
      * @param loader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}であってはいけません
      * @param name
-     *            リソース名
+     *            リソース名。{@literal null}や空文字列であってはいけません
      * @return リソースに対する URL
      *         オブジェクトの列挙。リソースが見つからなかった場合、列挙は空になる。クラスローダがアクセスを持たないリソースは列挙に入らない
      * @see java.lang.ClassLoader#getResources(String)
      */
     public static Iterator<URL> getResources(final ClassLoader loader,
             final String name) {
+        assertArgumentNotNull("loader", loader);
+        assertArgumentNotEmpty("name", name);
+
         try {
             final Enumeration<URL> e = loader.getResources(name);
             return new EnumerationIterator<URL>(e);
@@ -217,14 +228,17 @@ public abstract class ClassLoaderUtil {
      * 指定されたバイナリ名を持つクラスを返します。 記録されていなかった場合は<code>null</code>を返します。
      * 
      * @param classLoader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}であってはいけません
      * @param className
-     *            クラスのバイナリ名
+     *            クラスのバイナリ名。{@literal null}や空文字列であってはいけません
      * @return <code>Class</code>オブジェクト。クラスがロードされていない場合は<code>null</code>
      * @see java.lang.ClassLoader#findLoadedClass(String)
      */
     public static Class<?> findLoadedClass(final ClassLoader classLoader,
             final String className) {
+        assertArgumentNotNull("classLoader", classLoader);
+        assertArgumentNotEmpty("className", className);
+
         for (final ClassLoader loader : iterable(classLoader)) {
             final Class<?> clazz =
                 (Class<?>) MethodUtil.invoke(
@@ -242,11 +256,12 @@ public abstract class ClassLoaderUtil {
      * バイトの配列を<code>Class</code>クラスのインスタンスに変換します。
      * 
      * @param classLoader
-     *            バイナリデータから<code>Class</code>クラスのインスタンスに変換するクラスローダ
+     *            バイナリデータから<code>Class</code>クラスのインスタンスに変換するクラスローダ。
+     *            {@literal null}であってはいけません
      * @param className
-     *            クラスのバイナリ名
+     *            クラスのバイナリ名。{@literal null}や空文字列であってはいけません
      * @param bytes
-     *            クラスデータを構成するバイト列
+     *            クラスデータを構成するバイト列。{@literal null}や空配列であってはいけません
      * @param offset
      *            クラスデータ<code>bytes</code>の開始オフセット
      * @param length
@@ -257,6 +272,10 @@ public abstract class ClassLoaderUtil {
     public static Class<?> defineClass(final ClassLoader classLoader,
             final String className, final byte[] bytes, final int offset,
             final int length) {
+        assertArgumentNotNull("classLoader", classLoader);
+        assertArgumentNotEmpty("className", className);
+        assertArgumentNotEmpty("bytes", bytes);
+
         return (Class<?>) MethodUtil.invoke(
             defineClassMethod,
             classLoader,
@@ -270,9 +289,9 @@ public abstract class ClassLoaderUtil {
      * 指定の<code>ClassLoader</code>で名前を使ってパッケージを定義します。
      * 
      * @param classLoader
-     *            パッケージを定義するクラスローダ
+     *            パッケージを定義するクラスローダ。{@literal null}であってはいけません
      * @param name
-     *            パッケージ名
+     *            パッケージ名。{@literal null}や空文字列であってはいけません
      * @param specTitle
      *            仕様のタイトル
      * @param specVersion
@@ -297,6 +316,9 @@ public abstract class ClassLoaderUtil {
             final String specVersion, final String specVendor,
             final String implTitle, final String implVersion,
             final String implVendor, final URL sealBase) {
+        assertArgumentNotNull("classLoader", classLoader);
+        assertArgumentNotEmpty("name", name);
+
         return (Package) MethodUtil.invoke(
             definePackageMethod,
             classLoader,
@@ -314,9 +336,9 @@ public abstract class ClassLoaderUtil {
      * 指定されたバイナリ名を持つクラスをロードします。
      * 
      * @param loader
-     *            クラスローダ
+     *            クラスローダ。{@literal null}であってはいけません
      * @param className
-     *            クラスのバイナリ名
+     *            クラスのバイナリ名。{@literal null}や空文字列であってはいけません
      * @return 結果の<code>Class</code>オブジェクト
      * @throws ClassNotFoundRuntimeException
      *             クラスが見つからなかった場合
@@ -324,6 +346,9 @@ public abstract class ClassLoaderUtil {
      */
     public static Class<?> loadClass(final ClassLoader loader,
             final String className) {
+        assertArgumentNotNull("loader", loader);
+        assertArgumentNotEmpty("className", className);
+
         try {
             return loader.loadClass(className);
         } catch (final ClassNotFoundException e) {

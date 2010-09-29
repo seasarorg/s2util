@@ -23,6 +23,7 @@ import org.seasar.util.exception.IllegalAccessRuntimeException;
 import org.seasar.util.exception.SIllegalArgumentException;
 
 import static org.seasar.util.collection.ArrayUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link Field}用のユーティリティクラスです。
@@ -37,7 +38,7 @@ public abstract class FieldUtil {
      * @param <T>
      *            フィールドの型
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @return {@code static}フィールドで表現される値
      * @throws IllegalAccessRuntimeException
      *             基本となるフィールドにアクセスできない場合
@@ -46,6 +47,8 @@ public abstract class FieldUtil {
     @SuppressWarnings("unchecked")
     public static <T> T get(final Field field)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         return (T) get(field, null);
     }
 
@@ -55,9 +58,10 @@ public abstract class FieldUtil {
      * @param <T>
      *            フィールドの型
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @param target
-     *            表現されるフィールド値の抽出元オブジェクト
+     *            表現されるフィールド値の抽出元オブジェクト。フィールドが{@literal static}の場合は
+     *            {@literal null}
      * @return オブジェクト{@code obj}内で表現される値
      * @throws IllegalAccessRuntimeException
      *             基本となるフィールドにアクセスできない場合
@@ -66,6 +70,8 @@ public abstract class FieldUtil {
     @SuppressWarnings("unchecked")
     public static <T> T get(final Field field, final Object target)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         try {
             return (T) field.get(target);
         } catch (final IllegalAccessException ex) {
@@ -76,10 +82,10 @@ public abstract class FieldUtil {
     }
 
     /**
-     * staticな {@link Field}の値をintとして取得します。
+     * {@literal static}な {@link Field}の値をintとして取得します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @return フィールドの値
      * @throws IllegalAccessRuntimeException
      *             {@link IllegalAccessException}が発生した場合
@@ -87,6 +93,8 @@ public abstract class FieldUtil {
      */
     public static int getInt(final Field field)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         return getInt(field, null);
     }
 
@@ -94,9 +102,9 @@ public abstract class FieldUtil {
      * {@link Field}の値をintとして取得します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @param target
-     *            ターゲットオブジェクト
+     *            ターゲットオブジェクト。フィールドが{@literal static}の場合は{@literal null}
      * @return フィールドの値
      * @throws IllegalAccessRuntimeException
      *             {@link IllegalAccessException}が発生した場合
@@ -104,6 +112,8 @@ public abstract class FieldUtil {
      */
     public static int getInt(final Field field, final Object target)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         try {
             return field.getInt(target);
         } catch (final IllegalAccessException ex) {
@@ -114,10 +124,10 @@ public abstract class FieldUtil {
     }
 
     /**
-     * staticな {@link Field}の値を {@link String}として取得します。
+     * {@literal static}な {@link Field}の値を {@link String}として取得します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @return フィールドの値
      * @throws IllegalAccessRuntimeException
      *             {@link IllegalAccessException}が発生した場合
@@ -125,6 +135,8 @@ public abstract class FieldUtil {
      */
     public static String getString(final Field field)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         return getString(field, null);
     }
 
@@ -132,9 +144,9 @@ public abstract class FieldUtil {
      * {@link Field}の値を {@link String}として取得します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @param target
-     *            ターゲットオブジェクト
+     *            ターゲットオブジェクト。フィールドが{@literal static}の場合は{@literal null}
      * @return フィールドの値
      * @throws IllegalAccessRuntimeException
      *             {@link IllegalAccessException}が発生した場合
@@ -142,6 +154,8 @@ public abstract class FieldUtil {
      */
     public static String getString(final Field field, final Object target)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         try {
             return (String) field.get(target);
         } catch (final IllegalAccessException ex) {
@@ -155,15 +169,17 @@ public abstract class FieldUtil {
      * {@link Field}オブジェクトによって表される{@code static}フィールドを、指定された新しい値に設定します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @param value
-     *            {@code static}フィールドの新しい値
+     *            {@literal static}フィールドの新しい値
      * @throws IllegalAccessRuntimeException
      *             基本となるフィールドにアクセスできない場合
      * @see Field#set(Object, Object)
      */
     public static void set(final Field field, final Object value)
             throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         set(field, null, value);
     }
 
@@ -171,9 +187,9 @@ public abstract class FieldUtil {
      * {@link Field}オブジェクトによって表される指定されたオブジェクト引数のフィールドを、指定された新しい値に設定します。
      * 
      * @param field
-     *            フィールド
+     *            フィールド。{@literal null}であってはいけません
      * @param target
-     *            フィールドを変更するオブジェクト
+     *            フィールドを変更するオブジェクト。フィールドが{@literal static}の場合は{@literal null}
      * @param value
      *            変更中の{@code target}の新しいフィールド値
      * @throws IllegalAccessRuntimeException
@@ -182,6 +198,8 @@ public abstract class FieldUtil {
      */
     public static void set(final Field field, final Object target,
             final Object value) throws IllegalAccessRuntimeException {
+        assertArgumentNotNull("field", field);
+
         try {
             field.set(target, value);
         } catch (final IllegalAccessException e) {
@@ -212,10 +230,12 @@ public abstract class FieldUtil {
      * インスタンスフィールドかどうか返します。
      * 
      * @param field
-     *            フィールド
-     * @return インスタンスフィールドかどうか
+     *            フィールド。{@literal null}であってはいけません
+     * @return インスタンスフィールドなら{@literal true}
      */
     public static boolean isInstanceField(final Field field) {
+        assertArgumentNotNull("field", field);
+
         return !Modifier.isStatic(field.getModifiers());
     }
 
@@ -223,10 +243,12 @@ public abstract class FieldUtil {
      * パブリックフィールドかどうか返します。
      * 
      * @param field
-     *            フィールド
-     * @return パブリックフィールドかどうか
+     *            フィールド。{@literal null}であってはいけません
+     * @return パブリックフィールドなら{@literal true}
      */
     public static boolean isPublicField(final Field field) {
+        assertArgumentNotNull("field", field);
+
         return Modifier.isPublic(field.getModifiers());
     }
 
@@ -234,10 +256,12 @@ public abstract class FieldUtil {
      * ファイナルフィールドかどうか返します。
      * 
      * @param field
-     *            フィールド
-     * @return ファイナルフィールドかどうか
+     *            フィールド。{@literal null}であってはいけません
+     * @return ファイナルフィールドなら{@literal true}
      */
     public static boolean isFinalField(final Field field) {
+        assertArgumentNotNull("field", field);
+
         return Modifier.isFinal(field.getModifiers());
     }
 
@@ -245,10 +269,12 @@ public abstract class FieldUtil {
      * パラメタ化されたコレクション型のフィールドの要素型を返します。
      * 
      * @param field
-     *            パラメタ化されたコレクション型のフィールド
+     *            パラメタ化されたコレクション型のフィールド。{@literal null}であってはいけません
      * @return コレクションの要素型
      */
     public static Class<?> getElementTypeOfCollection(final Field field) {
+        assertArgumentNotNull("field", field);
+
         final Type type = field.getGenericType();
         return GenericsUtil.getRawClass(GenericsUtil
             .getElementTypeOfCollection(type));
@@ -258,10 +284,12 @@ public abstract class FieldUtil {
      * パラメタ化されたマップ型のフィールドのキー型を返します。
      * 
      * @param field
-     *            パラメタ化されたマップ型のフィールド
+     *            パラメタ化されたマップ型のフィールド。{@literal null}であってはいけません
      * @return マップのキー型
      */
     public static Class<?> getKeyTypeOfMap(final Field field) {
+        assertArgumentNotNull("field", field);
+
         final Type type = field.getGenericType();
         return GenericsUtil.getRawClass(GenericsUtil.getKeyTypeOfMap(type));
     }
@@ -270,10 +298,12 @@ public abstract class FieldUtil {
      * パラメタ化されたマップ型のフィールドの値型を返します。
      * 
      * @param field
-     *            パラメタ化されたマップ型のフィールド
+     *            パラメタ化されたマップ型のフィールド。{@literal null}であってはいけません
      * @return マップの値型
      */
     public static Class<?> getValueTypeOfMap(final Field field) {
+        assertArgumentNotNull("field", field);
+
         final Type type = field.getGenericType();
         return GenericsUtil.getRawClass(GenericsUtil.getValueTypeOfMap(type));
     }

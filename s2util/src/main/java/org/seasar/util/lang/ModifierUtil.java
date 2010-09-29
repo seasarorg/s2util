@@ -19,6 +19,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Modifier}用のユーティリティクラスです。
  * 
@@ -29,34 +31,40 @@ public abstract class ModifierUtil {
     /**
      * <code>public</code>かどうか返します。
      * 
-     * @param m
-     *            メソッド
+     * @param method
+     *            メソッド。{@literal null}であってはいけません
      * @return パブリックかどうか
      */
-    public static boolean isPublic(final Method m) {
-        return isPublic(m.getModifiers());
+    public static boolean isPublic(final Method method) {
+        assertArgumentNotNull("method", method);
+
+        return isPublic(method.getModifiers());
     }
 
     /**
      * <code>public</code>かどうか返します。
      * 
-     * @param f
-     *            フィールド
+     * @param field
+     *            フィールド。{@literal null}であってはいけません
      * @return パブリックかどうか
      */
-    public static boolean isPublic(final Field f) {
-        return isPublic(f.getModifiers());
+    public static boolean isPublic(final Field field) {
+        assertArgumentNotNull("field", field);
+
+        return isPublic(field.getModifiers());
     }
 
     /**
      * <code>public</code>,<code>static</code>,<code>final</code>かどうか返します。
      * 
-     * @param f
-     *            フィールド
+     * @param field
+     *            フィールド。{@literal null}であってはいけません
      * @return <code>public</code>,<code>static</code>,<code>final</code>かどうか
      */
-    public static boolean isPublicStaticFinalField(final Field f) {
-        return isPublicStaticFinal(f.getModifiers());
+    public static boolean isPublicStaticFinalField(final Field field) {
+        assertArgumentNotNull("field", field);
+
+        return isPublicStaticFinal(field.getModifiers());
     }
 
     /**
@@ -85,10 +93,12 @@ public abstract class ModifierUtil {
      * <code>abstract</code>かどうか返します。
      * 
      * @param clazz
-     *            クラス
-     * @return <code>abstract</code>かどうか
+     *            クラス。{@literal null}であってはいけません
+     * @return <code>abstract</code>なら{@literal true}
      */
     public static boolean isAbstract(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         return isAbstract(clazz.getModifiers());
     }
 
@@ -97,7 +107,7 @@ public abstract class ModifierUtil {
      * 
      * @param modifier
      *            モディファイヤ
-     * @return <code>abstract</code>かどうか
+     * @return <code>abstract</code>なら{@literal true}
      */
     public static boolean isAbstract(final int modifier) {
         return Modifier.isAbstract(modifier);
@@ -108,7 +118,7 @@ public abstract class ModifierUtil {
      * 
      * @param modifier
      *            モディファイヤ
-     * @return <code>static</code>かどうか
+     * @return <code>static</code>なら{@literal true}
      */
     public static boolean isStatic(final int modifier) {
         return Modifier.isStatic(modifier);
@@ -119,7 +129,7 @@ public abstract class ModifierUtil {
      * 
      * @param modifier
      *            モディファイヤ
-     * @return <code>final</code>かどうか
+     * @return <code>final</code>なら{@literal true}
      */
     public static boolean isFinal(final int modifier) {
         return Modifier.isFinal(modifier);
@@ -130,7 +140,7 @@ public abstract class ModifierUtil {
      * 
      * @param method
      *            メソッド
-     * @return <code>final</code>かどうか
+     * @return <code>final</code>なら{@literal true}
      */
     public static boolean isFinal(final Method method) {
         return isFinal(method.getModifiers());
@@ -141,7 +151,7 @@ public abstract class ModifierUtil {
      * 
      * @param field
      *            フィールド
-     * @return <code>transient</code>かどうか
+     * @return <code>transient</code>なら{@literal true}
      * @see #isTransient(int)
      */
     public static boolean isTransient(final Field field) {
@@ -153,7 +163,7 @@ public abstract class ModifierUtil {
      * 
      * @param modifier
      *            モディファイヤ
-     * @return <code>transient</code>かどうか
+     * @return <code>transient</code>なら{@literal true}
      */
     public static boolean isTransient(final int modifier) {
         return Modifier.isTransient(modifier);
@@ -163,11 +173,14 @@ public abstract class ModifierUtil {
      * インスタンスフィールドかどうかを返します。
      * 
      * @param field
-     *            フィールド
-     * @return インスタンスフィールドかどうか
+     *            フィールド。{@literal null}であってはいけません
+     * @return インスタンスフィールドなら{@literal true}
      */
     public static boolean isInstanceField(final Field field) {
+        assertArgumentNotNull("field", field);
+
         final int m = field.getModifiers();
         return !isStatic(m) && !isFinal(m);
     }
+
 }

@@ -72,7 +72,6 @@ public abstract class StringUtil {
      */
     public static final String replace(final String text,
             final String fromText, final String toText) {
-
         if (text == null || fromText == null || toText == null) {
             return null;
         }
@@ -459,11 +458,11 @@ public abstract class StringUtil {
         if (bytes == null) {
             return "";
         }
-        final StringBuffer sb = new StringBuffer(bytes.length * 2);
+        final StringBuilder sb = new StringBuilder(bytes.length * 2);
         for (int i = 0; i < bytes.length; ++i) {
             appendHex(sb, bytes[i]);
         }
-        return sb.toString();
+        return new String(sb);
     }
 
     /**
@@ -474,22 +473,9 @@ public abstract class StringUtil {
      * @return 16進数の文字列
      */
     public static String toHex(final int i) {
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
         appendHex(buf, i);
-        return buf.toString();
-    }
-
-    /**
-     * 文字列に、数値を16進数に変換した文字列を追加します。
-     * 
-     * @param buf
-     *            追加先の文字列
-     * @param i
-     *            数値
-     */
-    public static void appendHex(final StringBuffer buf, final byte i) {
-        buf.append(Character.forDigit((i & 0xf0) >> 4, 16));
-        buf.append(Character.forDigit((i & 0x0f), 16));
+        return new String(buf);
     }
 
     /**
@@ -503,21 +489,6 @@ public abstract class StringUtil {
     public static void appendHex(final StringBuilder buf, final byte i) {
         buf.append(Character.forDigit((i & 0xf0) >> 4, 16));
         buf.append(Character.forDigit((i & 0x0f), 16));
-    }
-
-    /**
-     * 文字列に、数値を16進数に変換した文字列を追加します。
-     * 
-     * @param buf
-     *            追加先の文字列
-     * @param i
-     *            数値
-     */
-    public static void appendHex(final StringBuffer buf, final int i) {
-        buf.append(Integer.toHexString((i >> 24) & 0xff));
-        buf.append(Integer.toHexString((i >> 16) & 0xff));
-        buf.append(Integer.toHexString((i >> 8) & 0xff));
-        buf.append(Integer.toHexString(i & 0xff));
     }
 
     /**
@@ -598,7 +569,7 @@ public abstract class StringUtil {
      * @return 数値のみで構成されている場合、<code>true</code>
      */
     public static boolean isNumber(final String s) {
-        if (s == null || s.length() == 0) {
+        if (isEmpty(s)) {
             return false;
         }
 

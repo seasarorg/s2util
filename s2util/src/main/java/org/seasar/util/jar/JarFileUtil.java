@@ -31,6 +31,7 @@ import org.seasar.util.net.JarURLConnectionUtil;
 import org.seasar.util.net.URLUtil;
 
 import static org.seasar.util.log.Logger.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link java.util.jar.JarFile}を扱うユーティリティクラスです。
@@ -45,10 +46,12 @@ public abstract class JarFileUtil {
      * 指定されたJarファイルを読み取るための<code>JarFile</code>を作成して返します。
      * 
      * @param file
-     *            ファイルパス
+     *            ファイルパス。{@literal null}であってはいけません
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
      */
     public static JarFile create(final String file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new JarFile(file);
         } catch (final IOException e) {
@@ -60,10 +63,12 @@ public abstract class JarFileUtil {
      * 指定されたJarファイルを読み取るための<code>JarFile</code>を作成して返します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
      */
     public static JarFile create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new JarFile(file);
         } catch (final IOException e) {
@@ -75,13 +80,16 @@ public abstract class JarFileUtil {
      * 指定されたJarファイルエントリの内容を読み込むための入力ストリームを返します。
      * 
      * @param file
-     *            Jarファイル
+     *            Jarファイル。{@literal null}であってはいけません
      * @param entry
-     *            Jarファイルエントリ
+     *            Jarファイルエントリ。{@literal null}であってはいけません
      * @return 指定されたJarファイルエントリの内容を読み込むための入力ストリーム
      */
     public static InputStream getInputStream(final JarFile file,
             final ZipEntry entry) {
+        assertArgumentNotNull("file", file);
+        assertArgumentNotNull("entry", entry);
+
         try {
             return file.getInputStream(entry);
         } catch (final IOException e) {
@@ -93,10 +101,12 @@ public abstract class JarFileUtil {
      * URLで指定されたJarファイルを読み取るための<code>JarFile</code>を作成して返します。
      * 
      * @param jarUrl
-     *            Jarファイルを示すURL
+     *            Jarファイルを示すURL。{@literal null}であってはいけません
      * @return 指定されたJarファイルを読み取るための<code>JarFile</code>
      */
     public static JarFile toJarFile(final URL jarUrl) {
+        assertArgumentNotNull("jarUrl", jarUrl);
+
         final URLConnection con = URLUtil.openConnection(jarUrl);
         if (con instanceof JarURLConnection) {
             return JarURLConnectionUtil.getJarFile((JarURLConnection) con);
@@ -108,10 +118,12 @@ public abstract class JarFileUtil {
      * URLで指定されたJarファイルのパスを返します。
      * 
      * @param jarUrl
-     *            Jarファイルを示すURL
+     *            Jarファイルを示すURL。{@literal null}であってはいけません
      * @return URLで指定されたJarファイルのパス
      */
     public static String toJarFilePath(final URL jarUrl) {
+        assertArgumentNotNull("jarUrl", jarUrl);
+
         final URL nestedUrl = URLUtil.create(jarUrl.getPath());
         final String nestedUrlPath = nestedUrl.getPath();
         final int pos = nestedUrlPath.lastIndexOf('!');
@@ -127,9 +139,11 @@ public abstract class JarFileUtil {
      * </p>
      * 
      * @param jarFile
-     *            Jarファイル
+     *            Jarファイル。{@literal null}であってはいけません
      */
     public static void close(final JarFile jarFile) {
+        assertArgumentNotNull("jarFile", jarFile);
+
         try {
             jarFile.close();
         } catch (final IOException e) {

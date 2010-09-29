@@ -247,7 +247,7 @@ public class StringUtilTest {
      */
     @Test
     public void testAppendHex() throws Exception {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         StringUtil.appendHex(buf, (byte) 1);
         assertEquals("01", buf.toString());
     }
