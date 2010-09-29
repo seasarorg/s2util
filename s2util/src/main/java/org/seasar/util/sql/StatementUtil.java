@@ -23,6 +23,7 @@ import org.seasar.util.exception.SQLRuntimeException;
 import org.seasar.util.log.Logger;
 
 import static org.seasar.util.log.Logger.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link Statement}用のユーティリティクラスです。
@@ -37,13 +38,16 @@ public abstract class StatementUtil {
      * SQLを実行します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @param sql
-     *            SQL文字列
+     *            SQL文字列。{@literal null}や空文字列であってはいけません
      * @return 実行した結果
      * @see Statement#execute(String)
      */
     public static boolean execute(final Statement statement, final String sql) {
+        assertArgumentNotNull("statement", statement);
+        assertArgumentNotEmpty("sql", sql);
+
         try {
             return statement.execute(sql);
         } catch (final SQLException ex) {
@@ -55,13 +59,15 @@ public abstract class StatementUtil {
      * フェッチサイズを設定します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @param fetchSize
      *            フェッチサイズ
      * @see Statement#setFetchSize(int)
      */
     public static void setFetchSize(final Statement statement,
             final int fetchSize) {
+        assertArgumentNotNull("statement", statement);
+
         try {
             statement.setFetchSize(fetchSize);
         } catch (final SQLException ex) {
@@ -73,12 +79,14 @@ public abstract class StatementUtil {
      * 最大行数を設定します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @param maxRows
      *            最大の行数
      * @see Statement#setMaxRows(int)
      */
     public static void setMaxRows(final Statement statement, final int maxRows) {
+        assertArgumentNotNull("statement", statement);
+
         try {
             statement.setMaxRows(maxRows);
         } catch (final SQLException ex) {
@@ -90,13 +98,15 @@ public abstract class StatementUtil {
      * クエリタイムアウトを設定します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @param queryTimeout
      *            クエリタイムアウト
      * @see Statement#setQueryTimeout(int)
      */
     public static void setQueryTimeout(final Statement statement,
             final int queryTimeout) {
+        assertArgumentNotNull("statement", statement);
+
         try {
             statement.setQueryTimeout(queryTimeout);
         } catch (final SQLException ex) {
@@ -129,10 +139,12 @@ public abstract class StatementUtil {
      * 結果セットを返します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @return 結果セット
      */
     public static ResultSet getResultSet(final Statement statement) {
+        assertArgumentNotNull("statement", statement);
+
         try {
             return statement.getResultSet();
         } catch (final SQLException ex) {
@@ -144,10 +156,12 @@ public abstract class StatementUtil {
      * 更新カウントを返します。
      * 
      * @param statement
-     *            {@link Statement}
+     *            {@link Statement}。{@literal null}であってはいけません
      * @return 更新カウント
      */
     public static int getUpdateCount(final Statement statement) {
+        assertArgumentNotNull("statement", statement);
+
         try {
             return statement.getUpdateCount();
         } catch (final SQLException ex) {

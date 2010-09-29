@@ -27,6 +27,8 @@ import org.seasar.util.lang.ClassUtil;
 import org.seasar.util.lang.MethodUtil;
 import org.xml.sax.SAXException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link SAXParser}用のユーティリティクラスです。
  * 
@@ -56,10 +58,12 @@ public abstract class SAXParserFactoryUtil {
      * 指定の{@link SAXParserFactory}を使って{@link SAXParser}の新しいインスタンスを作成します。
      * 
      * @param factory
-     *            {@link SAXParserFactory}
+     *            {@link SAXParserFactory}。{@literal null}であってはいけません
      * @return {@link SAXParser}の新しいインスタンス
      */
     public static SAXParser newSAXParser(final SAXParserFactory factory) {
+        assertArgumentNotNull("factory", factory);
+
         try {
             return factory.newSAXParser();
         } catch (final ParserConfigurationException e) {
@@ -73,13 +77,15 @@ public abstract class SAXParserFactoryUtil {
      * XIncludeの有効／無効を設定します。
      * 
      * @param spf
-     *            {@link SAXParserFactory}
+     *            {@link SAXParserFactory}。{@literal null}であってはいけません
      * @param state
      *            XIncludeを有効にするなら<code>true</code>
      * @return XIncludeの有効／無効を設定できた場合は<code>true</code>
      */
     public static boolean setXIncludeAware(final SAXParserFactory spf,
             final boolean state) {
+        assertArgumentNotNull("spf", spf);
+
         try {
             final Method method =
                 ClassUtil.getMethod(

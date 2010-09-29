@@ -21,6 +21,8 @@ import java.util.jar.JarFile;
 
 import org.seasar.util.exception.IORuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link JarURLConnection}用のユーティリティクラスです。
  * 
@@ -32,10 +34,12 @@ public abstract class JarURLConnectionUtil {
      * {@link JarURLConnection#getJarFile()}の例外処理をラップするメソッドです。
      * 
      * @param conn
-     *            {@link JarURLConnection}
+     *            {@link JarURLConnection}。{@literal null}であってはいけません
      * @return {@link JarFile}
      */
     public static JarFile getJarFile(final JarURLConnection conn) {
+        assertArgumentNotNull("conn", conn);
+
         try {
             return conn.getJarFile();
         } catch (final IOException e) {

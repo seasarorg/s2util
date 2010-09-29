@@ -21,6 +21,8 @@ import java.sql.SQLException;
 
 import org.seasar.util.exception.SQLRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link PreparedStatement}用のユーティリティクラスです。
  * 
@@ -32,12 +34,15 @@ public abstract class PreparedStatementUtil {
      * クエリを実行します。
      * 
      * @param ps
+     *            {@link PreparedStatement}。{@literal null}であってはいけません
      * @return {@link ResultSet}
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
     public static ResultSet executeQuery(final PreparedStatement ps)
             throws SQLRuntimeException {
+        assertArgumentNotNull("ps", ps);
+
         try {
             return ps.executeQuery();
         } catch (final SQLException ex) {
@@ -49,12 +54,15 @@ public abstract class PreparedStatementUtil {
      * 更新を実行します。
      * 
      * @param ps
+     *            {@link PreparedStatement}。{@literal null}であってはいけません
      * @return 更新した結果の行数
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
     public static int executeUpdate(final PreparedStatement ps)
             throws SQLRuntimeException {
+        assertArgumentNotNull("ps", ps);
+
         try {
             return ps.executeUpdate();
         } catch (final SQLException ex) {
@@ -66,6 +74,7 @@ public abstract class PreparedStatementUtil {
      * 実行します。
      * 
      * @param ps
+     *            {@link PreparedStatement}。{@literal null}であってはいけません
      * @return 結果セットを返すかどうか
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
@@ -73,6 +82,8 @@ public abstract class PreparedStatementUtil {
      */
     public static boolean execute(final PreparedStatement ps)
             throws SQLRuntimeException {
+        assertArgumentNotNull("ps", ps);
+
         try {
             return ps.execute();
         } catch (final SQLException ex) {
@@ -84,12 +95,15 @@ public abstract class PreparedStatementUtil {
      * バッチ更新を行ないます。
      * 
      * @param ps
+     *            {@link PreparedStatement}。{@literal null}であってはいけません
      * @return 更新した結果の行数の配列
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
     public static int[] executeBatch(final PreparedStatement ps)
             throws SQLRuntimeException {
+        assertArgumentNotNull("ps", ps);
+
         try {
             return ps.executeBatch();
         } catch (final SQLException ex) {
@@ -101,15 +115,19 @@ public abstract class PreparedStatementUtil {
      * バッチを追加します。
      * 
      * @param ps
+     *            {@link PreparedStatement}。{@literal null}であってはいけません
      * @throws SQLRuntimeException
      *             {@link SQLException}が発生した場合
      */
     public static void addBatch(final PreparedStatement ps)
             throws SQLRuntimeException {
+        assertArgumentNotNull("ps", ps);
+
         try {
             ps.addBatch();
         } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
+
 }

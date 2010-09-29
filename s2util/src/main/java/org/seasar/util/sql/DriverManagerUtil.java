@@ -23,6 +23,8 @@ import java.util.Enumeration;
 import org.seasar.util.exception.SQLRuntimeException;
 import org.seasar.util.lang.ClassUtil;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link java.sql.DriverManager}のためのユーティリティクラスです。
  * 
@@ -34,9 +36,11 @@ public abstract class DriverManagerUtil {
      * JDBCドライバを登録します。
      * 
      * @param driverClassName
-     *            登録するJDBCドライバのクラス名
+     *            登録するJDBCドライバのクラス名。{@literal null}や空文字列であってはいけません
      */
     public static void registerDriver(final String driverClassName) {
+        assertArgumentNotEmpty("driverClassName", driverClassName);
+
         final Class<Driver> clazz = ClassUtil.forName(driverClassName);
         registerDriver(clazz);
     }
@@ -45,9 +49,10 @@ public abstract class DriverManagerUtil {
      * JDBCドライバを登録します。
      * 
      * @param driverClass
-     *            登録するJDBCドライバのクラス
+     *            登録するJDBCドライバのクラス。{@literal null}であってはいけません
      */
     public static void registerDriver(final Class<Driver> driverClass) {
+        assertArgumentNotNull("driverClass", driverClass);
         registerDriver(ClassUtil.newInstance(driverClass));
     }
 
@@ -55,9 +60,11 @@ public abstract class DriverManagerUtil {
      * JDBCドライバを登録します。
      * 
      * @param driver
-     *            登録するJDBCドライバ
+     *            登録するJDBCドライバ。{@literal null}であってはいけません
      */
     public static void registerDriver(final Driver driver) {
+        assertArgumentNotNull("driver", driver);
+
         try {
             DriverManager.registerDriver(driver);
         } catch (final SQLException e) {
@@ -69,9 +76,11 @@ public abstract class DriverManagerUtil {
      * JDBCドライバを登録解除します。
      * 
      * @param driver
-     *            登録解除するJDBCドライバ
+     *            登録解除するJDBCドライバ。{@literal null}であってはいけません
      */
     public static void deregisterDriver(final Driver driver) {
+        assertArgumentNotNull("driver", driver);
+
         try {
             DriverManager.deregisterDriver(driver);
         } catch (final SQLException e) {

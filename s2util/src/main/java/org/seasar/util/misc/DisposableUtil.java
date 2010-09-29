@@ -19,6 +19,7 @@ import java.beans.Introspector;
 import java.util.Deque;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * アプリケーションの終了時にリソースを破棄するためのユーティリティクラスです。
@@ -38,9 +39,10 @@ public abstract class DisposableUtil {
      * 破棄可能なリソースを登録します。
      * 
      * @param disposable
-     *            破棄可能なリソース
+     *            破棄可能なリソース。{@literal null}であってはいけません
      */
     public static synchronized void add(final Disposable disposable) {
+        assertArgumentNotNull("disposable", disposable);
         disposables.addLast(disposable);
     }
 
@@ -51,9 +53,10 @@ public abstract class DisposableUtil {
      * </p>
      * 
      * @param disposable
-     *            破棄可能なリソース
+     *            破棄可能なリソース。{@literal null}であってはいけません
      */
     public static synchronized void addFirst(final Disposable disposable) {
+        assertArgumentNotNull("disposable", disposable);
         disposables.addFirst(disposable);
     }
 
@@ -61,9 +64,10 @@ public abstract class DisposableUtil {
      * 破棄可能なリソースを登録解除します。
      * 
      * @param disposable
-     *            破棄可能なリソース
+     *            破棄可能なリソース。{@literal null}であってはいけません
      */
     public static synchronized void remove(final Disposable disposable) {
+        assertArgumentNotNull("disposable", disposable);
         disposables.remove(disposable);
     }
 

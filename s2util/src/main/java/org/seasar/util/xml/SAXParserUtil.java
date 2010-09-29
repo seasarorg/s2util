@@ -26,6 +26,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link SAXParser}用のユーティリティ・クラスです。
  * 
@@ -38,14 +40,18 @@ public abstract class SAXParserUtil {
      * を使用してXMLとして構文解析します。
      * 
      * @param parser
-     *            使用する{@link SAXParser}
+     *            使用する{@link SAXParser}。{@literal null}であってはいけません
      * @param inputSource
-     *            構文解析されるコンテンツを含む{@link InputSource}
+     *            構文解析されるコンテンツを含む{@link InputSource}。{@literal null}であってはいけません
      * @param handler
-     *            使用するSAX {@link DefaultHandler}
+     *            使用するSAX {@link DefaultHandler}。{@literal null}であってはいけません
      */
     public static void parse(final SAXParser parser,
             final InputSource inputSource, final DefaultHandler handler) {
+        assertArgumentNotNull("parser", parser);
+        assertArgumentNotNull("inputSource", inputSource);
+        assertArgumentNotNull("handler", handler);
+
         try {
             parser.parse(inputSource, handler);
         } catch (final SAXException e) {
@@ -59,14 +65,17 @@ public abstract class SAXParserUtil {
      * {@link XMLReader}の基本となる実装に特定のプロパティを設定します。
      * 
      * @param parser
-     *            プロパティを設定する{@link SAXParser}
+     *            プロパティを設定する{@link SAXParser}。{@literal null}であってはいけません
      * @param name
-     *            設定されるプロパティの名前
+     *            設定されるプロパティの名前。{@literal null}や空文字列であってはいけません
      * @param value
      *            設定されるプロパティの値
      */
     public static void setProperty(final SAXParser parser, final String name,
             final String value) {
+        assertArgumentNotNull("parser", parser);
+        assertArgumentNotEmpty("name", name);
+
         try {
             parser.setProperty(name, value);
         } catch (final SAXException e) {

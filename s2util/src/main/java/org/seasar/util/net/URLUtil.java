@@ -54,7 +54,7 @@ public abstract class URLUtil {
      * URLをオープンして{@link InputStream}を返します。
      * 
      * @param url
-     *            URL
+     *            URL。{@literal null}であってはいけません
      * @return URLが表すリソースを読み込むための{@link InputStream}
      */
     public static InputStream openStream(final URL url) {
@@ -73,7 +73,7 @@ public abstract class URLUtil {
      * URLが参照するリモートオブジェクトへの接続を表す{@link URLConnection}オブジェクトを返します。
      * 
      * @param url
-     *            URL
+     *            URL。{@literal null}であってはいけません
      * @return URLへの{@link URLConnection}オブジェクト
      */
     public static URLConnection openConnection(final URL url) {
@@ -89,10 +89,10 @@ public abstract class URLUtil {
     }
 
     /**
-     * <code>String</code>表現から<code>URL</code>オブジェクトを作成します。
+     * 文字列表現から<code>URL</code>オブジェクトを作成します。
      * 
      * @param spec
-     *            <code>URL</code>として構文解析される<code>String</code>
+     *            <code>URL</code>として構文解析される文字列。{@literal null}や空文字列であってはいけません
      * @return <code>URL</code>
      */
     public static URL create(final String spec) {
@@ -109,9 +109,9 @@ public abstract class URLUtil {
      * 指定されたコンテキスト内の指定された仕様で構文解析することによって、<code>URL</code>を生成します。
      * 
      * @param context
-     *            仕様を構文解析するコンテキスト
+     *            仕様を構文解析するコンテキスト。{@literal null}であってはいけません
      * @param spec
-     *            <code>URL</code>として構文解析される<code>String</code>
+     *            <code>URL</code>として構文解析される文字列。{@literal null}や空文字列であってはいけません
      * @return <code>URL</code>
      */
     public static URL create(final URL context, final String spec) {
@@ -126,13 +126,14 @@ public abstract class URLUtil {
     }
 
     /**
-     * 特定の符号化方式を使用して文字列を<code>application/x-www-form-urlencoded</code>形式に変換します。
+     * 指定のエンコーディング方式を使用して文字列を<code>application/x-www-form-urlencoded</code>
+     * 形式に変換します。
      * 
      * @param s
-     *            変換対象の String
+     *            変換対象の文字列。{@literal null}や空文字列であってはいけません
      * @param enc
-     *            サポートされる文字エンコーディングの名前
-     * @return 変換後の<code>String</code>
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
+     * @return <code>application/x-www-form-urlencoded</code>でエンコード文字列
      */
     public static String encode(final String s, final String enc) {
         assertArgumentNotEmpty("s", s);
@@ -146,13 +147,14 @@ public abstract class URLUtil {
     }
 
     /**
-     * 特別な符号化方式を使用して<code>application/x-www-form-urlencoded</code>文字列をデコードします。
+     * 指定のエンコーディング方式で<code>application/x-www-form-urlencoded</code>文字列をデコードします。
      * 
      * @param s
-     *            デコード対象の<code>String</code>
+     *            <code>application/x-www-form-urlencoded</code>でエンコードされた文字列。
+     *            {@literal null}や空文字列であってはいけません
      * @param enc
-     *            サポートされる文字エンコーディングの名前
-     * @return 新しくデコードされた String
+     *            エンコーディング。{@literal null}や空文字列であってはいけません
+     * @return デコードされた文字列
      */
     public static String decode(final String s, final String enc) {
         assertArgumentNotEmpty("s", s);
@@ -169,7 +171,7 @@ public abstract class URLUtil {
      * プロトコルを正規化して返します。
      * 
      * @param protocol
-     *            プロトコル
+     *            プロトコル。{@literal null}や空文字列であってはいけません
      * @return 正規化されたプロトコル
      */
     public static String toCanonicalProtocol(final String protocol) {
@@ -186,7 +188,7 @@ public abstract class URLUtil {
      * URLが示すJarファイルの{@link File}オブジェクトを返します。
      * 
      * @param fileUrl
-     *            JarファイルのURL
+     *            JarファイルのURL。{@literal null}であってはいけません
      * @return Jarファイルの{@link File}
      */
     public static File toFile(final URL fileUrl) {

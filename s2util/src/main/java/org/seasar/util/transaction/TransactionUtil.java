@@ -24,6 +24,8 @@ import javax.transaction.xa.XAResource;
 import org.seasar.util.exception.RollbackRuntimeException;
 import org.seasar.util.exception.SystemRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Transaction}用のユーティリティクラスです。
  * 
@@ -35,10 +37,12 @@ public abstract class TransactionUtil {
      * トランザクションのステータスを返します。
      * 
      * @param tx
-     *            トランザクション
+     *            トランザクション。{@literal null}であってはいけません
      * @return トランザクションのステータス
      */
     public static int getStatus(final Transaction tx) {
+        assertArgumentNotNull("tx", tx);
+
         try {
             return tx.getStatus();
         } catch (final SystemException e) {
@@ -50,12 +54,15 @@ public abstract class TransactionUtil {
      * トランザクションに参加します。
      * 
      * @param tx
-     *            {@link Transaction}
+     *            トランザクション。{@literal null}であってはいけません
      * @param xaResource
-     *            {@link XAResource}
+     *            XAリソース。{@literal null}であってはいけません
      */
     public static void enlistResource(final Transaction tx,
             final XAResource xaResource) {
+        assertArgumentNotNull("tx", tx);
+        assertArgumentNotNull("xaResource", xaResource);
+
         try {
             tx.enlistResource(xaResource);
         } catch (final SystemException e) {
@@ -69,12 +76,14 @@ public abstract class TransactionUtil {
      * {@link Synchronization}を登録します。
      * 
      * @param tx
-     *            {@link Transaction}
+     *            トランザクション。{@literal null}であってはいけません
      * @param sync
-     *            {@link Synchronization}
+     *            {@link Synchronization}。{@literal null}であってはいけません
      */
     public static void registerSynchronization(final Transaction tx,
             final Synchronization sync) {
+        assertArgumentNotNull("tx", tx);
+        assertArgumentNotNull("sync", sync);
 
         try {
             tx.registerSynchronization(sync);

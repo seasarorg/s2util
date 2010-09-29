@@ -25,6 +25,8 @@ import org.seasar.util.exception.SAXRuntimeException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link DocumentBuilder}用のユーティリティクラスです。
  * 
@@ -36,11 +38,16 @@ public abstract class DocumentBuilderUtil {
      * XMLを解析します。
      * 
      * @param builder
+     *            {@link DocumentBuilder}。{@literal null}であってはいけません
      * @param is
+     *            入力ストリーム。{@literal null}であってはいけません
      * @return {@link Document}
      */
     public static Document parse(final DocumentBuilder builder,
             final InputStream is) {
+        assertArgumentNotNull("builder", builder);
+        assertArgumentNotNull("is", is);
+
         try {
             return builder.parse(is);
         } catch (final SAXException e) {
@@ -49,4 +56,5 @@ public abstract class DocumentBuilderUtil {
             throw new IORuntimeException(e);
         }
     }
+
 }

@@ -20,7 +20,7 @@ import java.net.URLConnection;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.seasar.util.exception.NullArgumentException;
+import org.seasar.util.exception.EmptyArgumentException;
 import org.seasar.util.io.ResourceUtil;
 import org.seasar.util.lang.ClassUtil;
 
@@ -84,8 +84,8 @@ public class MimeTypeUtilTest {
      */
     @Test
     public void testGuessContentType() {
-        exception.expect(NullArgumentException.class);
-        exception.expectMessage(is("[EUTL0008]引数[path]がnullです。"));
+        exception.expect(EmptyArgumentException.class);
+        exception.expectMessage(is("[EUTL0010]引数[path]がnullあるいは空文字列です。"));
         MimeTypeUtil.guessContentType(null);
     }
 

@@ -15,6 +15,8 @@
  */
 package org.seasar.util.text;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * トークンを認識するクラスです。
  * 
@@ -74,7 +76,7 @@ public class Tokenizer {
      * {@link Tokenizer}を作成します。
      * 
      * @param str
-     *            文字列
+     *            文字列。{@literal null}であってはいけません
      */
     public Tokenizer(final String str) {
         this(str, defaultCtype);
@@ -84,11 +86,14 @@ public class Tokenizer {
      * {@link Tokenizer}を作成します。
      * 
      * @param str
-     *            文字列
+     *            文字列。{@literal null}であってはいけません
      * @param ctype
-     *            文字のタイプの配列
+     *            文字のタイプの配列。{@literal null}や空配列であってはいけません
      */
     public Tokenizer(final String str, final byte[] ctype) {
+        assertArgumentNotNull("str", str);
+        assertArgumentNotEmpty("ctype", ctype);
+
         this.str = str;
         this.ctype = ctype;
     }

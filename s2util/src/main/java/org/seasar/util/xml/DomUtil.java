@@ -30,6 +30,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * DOM用のユーティリティクラスです。
  * 
@@ -38,27 +40,29 @@ import org.w3c.dom.Text;
 public abstract class DomUtil {
 
     /**
-     * XMLの内容を {@link InputStream}として取得します。
+     * プラットフォームのデフォルトエンコーディングでXMLの内容を {@link InputStream}として取得します。
      * 
      * @param contents
-     *            コンテンツ
+     *            コンテンツ。{@literal null}であってはいけません
      * @return {@link InputStream}
      */
     public static InputStream getContentsAsStream(final String contents) {
+        assertArgumentNotNull("contents", contents);
         return getContentsAsStream(contents, null);
     }
 
     /**
-     * XMLの内容を {@link InputStream}として取得します。
+     * 指定のエンコーディングでXMLの内容を {@link InputStream}として取得します。
      * 
      * @param contents
-     *            コンテンツ
+     *            コンテンツ。{@literal null}であってはいけません
      * @param encoding
-     *            エンコーディング
+     *            エンコーディング。{@literal null}の場合はプラットフォームのデフォルトエンコーディングが使われます
      * @return {@link InputStream}
      */
     public static InputStream getContentsAsStream(final String contents,
             final String encoding) {
+        assertArgumentNotNull("contents", contents);
 
         if (encoding == null) {
             return new ByteArrayInputStream(contents.getBytes());
@@ -139,10 +143,12 @@ public abstract class DomUtil {
      * {@link Document}を文字列に変換します。
      * 
      * @param document
-     *            ドキュメント
+     *            ドキュメント。{@literal null}であってはいけません
      * @return 変換された文字列
      */
     public static String toString(final Document document) {
+        assertArgumentNotNull("document", document);
+
         final StringBuilder buf = new StringBuilder();
         appendElement(document.getDocumentElement(), buf);
         return new String(buf);
@@ -152,10 +158,12 @@ public abstract class DomUtil {
      * {@link Element}を文字列に変換します。
      * 
      * @param element
-     *            要素
+     *            要素。{@literal null}であってはいけません
      * @return 変換された文字列
      */
     public static String toString(final Element element) {
+        assertArgumentNotNull("element", element);
+
         final StringBuilder buf = new StringBuilder();
         appendElement(element, buf);
         return new String(buf);
@@ -165,12 +173,15 @@ public abstract class DomUtil {
      * {@link Element}の文字列表現を追加します。
      * 
      * @param element
-     *            要素
+     *            要素。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendElement(final Element element,
             final StringBuilder buf) {
+        assertArgumentNotNull("element", element);
+        assertArgumentNotNull("buf", buf);
+
         final String tag = element.getTagName();
         buf.append('<');
         buf.append(tag);
@@ -186,12 +197,15 @@ public abstract class DomUtil {
      * {@link NodeList}の文字列表現を追加します。
      * 
      * @param children
-     *            子要素
+     *            子要素。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendChildren(final NodeList children,
             final StringBuilder buf) {
+        assertArgumentNotNull("children", children);
+        assertArgumentNotNull("buf", buf);
+
         final int length = children.getLength();
         for (int i = 0; i < length; ++i) {
             appendNode(children.item(i), buf);
@@ -202,12 +216,15 @@ public abstract class DomUtil {
      * {@link NamedNodeMap}の文字列表現を追加します。
      * 
      * @param attrs
-     *            属性
+     *            属性。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendAttrs(final NamedNodeMap attrs,
             final StringBuilder buf) {
+        assertArgumentNotNull("attrs", attrs);
+        assertArgumentNotNull("buf", buf);
+
         final int length = attrs.getLength();
         for (int i = 0; i < length; ++i) {
             final Attr attr = (Attr) attrs.item(i);
@@ -220,11 +237,14 @@ public abstract class DomUtil {
      * {@link Attr}の文字列表現を追加します。
      * 
      * @param attr
-     *            属性
+     *            属性。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendAttr(final Attr attr, final StringBuilder buf) {
+        assertArgumentNotNull("attr", attr);
+        assertArgumentNotNull("buf", buf);
+
         buf.append(attr.getName());
         buf.append("=\"");
         buf.append(encodeAttrQuot(attr.getValue()));
@@ -235,11 +255,14 @@ public abstract class DomUtil {
      * {@link Text}の文字列表現を追加します。
      * 
      * @param text
-     *            テキストノード
+     *            テキストノード。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendText(final Text text, final StringBuilder buf) {
+        assertArgumentNotNull("text", text);
+        assertArgumentNotNull("buf", buf);
+
         buf.append(encodeText(text.getData()));
     }
 
@@ -247,12 +270,15 @@ public abstract class DomUtil {
      * {@link CDATASection}の文字列表現を追加します。
      * 
      * @param cdataSection
-     *            CDATAセクション
+     *            CDATAセクション。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendCDATASection(final CDATASection cdataSection,
             final StringBuilder buf) {
+        assertArgumentNotNull("cdataSection", cdataSection);
+        assertArgumentNotNull("buf", buf);
+
         buf.append("<![CDATA[");
         buf.append(cdataSection.getData());
         buf.append("]]>");
@@ -262,12 +288,15 @@ public abstract class DomUtil {
      * {@link EntityReference}を追加します。
      * 
      * @param entityReference
-     *            実体参照
+     *            実体参照。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendEntityReference(
             final EntityReference entityReference, final StringBuilder buf) {
+        assertArgumentNotNull("entityReference", entityReference);
+        assertArgumentNotNull("buf", buf);
+
         buf.append('&');
         buf.append(entityReference.getNodeName());
         buf.append(';');
@@ -277,11 +306,14 @@ public abstract class DomUtil {
      * {@link Node}の文字列表現を追加します。
      * 
      * @param node
-     *            ノード
+     *            ノード。{@literal null}であってはいけません
      * @param buf
-     *            文字列バッファ
+     *            文字列バッファ。{@literal null}であってはいけません
      */
     public static void appendNode(final Node node, final StringBuilder buf) {
+        assertArgumentNotNull("node", node);
+        assertArgumentNotNull("buf", buf);
+
         switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:
             appendElement((Element) node, buf);

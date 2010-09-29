@@ -28,6 +28,7 @@ import org.seasar.util.log.Logger;
 import org.seasar.util.net.URLUtil;
 
 import static org.seasar.util.log.Logger.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link java.util.zip.ZipFile}を扱うユーティリティクラスです。
@@ -42,10 +43,12 @@ public abstract class ZipFileUtil {
      * 指定されたZipファイルを読み取るための<code>ZipFile</code>を作成して返します。
      * 
      * @param file
-     *            ファイルパス
+     *            ファイルパス。{@literal null}や空文字列であってはいけません
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
      */
     public static ZipFile create(final String file) {
+        assertArgumentNotEmpty("file", file);
+
         try {
             return new ZipFile(file);
         } catch (final IOException e) {
@@ -57,10 +60,12 @@ public abstract class ZipFileUtil {
      * 指定されたZipファイルを読み取るための<code>ZipFile</code>を作成して返します。
      * 
      * @param file
-     *            ファイル
+     *            ファイル。{@literal null}であってはいけません
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
      */
     public static ZipFile create(final File file) {
+        assertArgumentNotNull("file", file);
+
         try {
             return new ZipFile(file);
         } catch (final IOException e) {
@@ -72,13 +77,16 @@ public abstract class ZipFileUtil {
      * 指定されたZipファイルエントリの内容を読み込むための入力ストリームを返します。
      * 
      * @param file
-     *            Zipファイル
+     *            Zipファイル。{@literal null}であってはいけません
      * @param entry
-     *            Zipファイルエントリ
+     *            Zipファイルエントリ。{@literal null}であってはいけません
      * @return 指定されたZipファイルエントリの内容を読み込むための入力ストリーム
      */
     public static InputStream getInputStream(final ZipFile file,
             final ZipEntry entry) {
+        assertArgumentNotNull("file", file);
+        assertArgumentNotNull("entry", entry);
+
         try {
             return file.getInputStream(entry);
         } catch (final IOException e) {
@@ -90,10 +98,12 @@ public abstract class ZipFileUtil {
      * URLで指定されたZipファイルを読み取るための<code>ZipFile</code>を作成して返します。
      * 
      * @param zipUrl
-     *            Zipファイルを示すURL
+     *            Zipファイルを示すURL。{@literal null}であってはいけません
      * @return 指定されたZipファイルを読み取るための<code>ZipFile</code>
      */
     public static ZipFile toZipFile(final URL zipUrl) {
+        assertArgumentNotNull("zipUrl", zipUrl);
+
         return create(new File(toZipFilePath(zipUrl)));
     }
 
@@ -101,10 +111,12 @@ public abstract class ZipFileUtil {
      * URLで指定されたZipファイルのパスを返します。
      * 
      * @param zipUrl
-     *            Zipファイルを示すURL
+     *            Zipファイルを示すURL。{@literal null}であってはいけません
      * @return URLで指定されたZipファイルのパス
      */
     public static String toZipFilePath(final URL zipUrl) {
+        assertArgumentNotNull("zipUrl", zipUrl);
+
         final String urlString = zipUrl.getPath();
         final int pos = urlString.lastIndexOf('!');
         final String zipFilePath = urlString.substring(0, pos);
@@ -119,9 +131,11 @@ public abstract class ZipFileUtil {
      * </p>
      * 
      * @param zipFile
-     *            Zipファイル
+     *            Zipファイル。{@literal null}であってはいけません
      */
     public static void close(final ZipFile zipFile) {
+        assertArgumentNotNull("zipFile", zipFile);
+
         try {
             zipFile.close();
         } catch (final IOException e) {

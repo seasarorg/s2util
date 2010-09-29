@@ -22,6 +22,8 @@ import org.seasar.util.io.ResourceBundleUtil;
 import org.seasar.util.misc.Disposable;
 import org.seasar.util.misc.DisposableUtil;
 
+import static org.seasar.util.lang.StringUtil.*;
+
 /**
  * メッセージコードと引数からメッセージを組み立てるクラスです。
  * 
@@ -98,6 +100,9 @@ public abstract class MessageFormatter {
      * @return パターン文字列
      */
     protected static String getPattern(final String messageCode) {
+        if (isEmpty(messageCode)) {
+            return null;
+        }
         final ResourceBundle resourceBundle =
             getResourceBundle(getSystemName(messageCode));
         if (resourceBundle == null) {

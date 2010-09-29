@@ -15,6 +15,9 @@
  */
 package org.seasar.util.misc;
 
+import static org.seasar.util.collection.ArrayUtil.*;
+import static org.seasar.util.lang.StringUtil.*;
+
 /**
  * Base64を扱うためのユーティリティクラスです。
  * 
@@ -49,7 +52,7 @@ public abstract class Base64Util {
      * @return エンコードされたデータ
      */
     public static String encode(final byte[] inData) {
-        if (inData == null || inData.length == 0) {
+        if (isEmpty(inData)) {
             return "";
         }
         final int mod = inData.length % 3;
@@ -79,6 +82,9 @@ public abstract class Base64Util {
      * @return デコードされたデータ
      */
     public static byte[] decode(final String inData) {
+        if (isEmpty(inData)) {
+            return null;
+        }
         final int num = (inData.length() / 4) - 1;
         final int lastBytes = getLastBytes(inData);
         final byte[] outData = new byte[num * 3 + lastBytes];

@@ -16,8 +16,8 @@
 package org.seasar.util.security;
 
 import org.junit.Test;
+import org.seasar.util.exception.EmptyArgumentException;
 import org.seasar.util.exception.NoSuchAlgorithmRuntimeException;
-import org.seasar.util.exception.NullArgumentException;
 
 import static org.junit.Assert.*;
 
@@ -46,7 +46,7 @@ public class MessageDigestUtilTest {
         try {
             MessageDigestUtil.digest(null, text);
             assertTrue(false);
-        } catch (NullArgumentException e) {
+        } catch (EmptyArgumentException e) {
             assertTrue(true);
         }
         try {

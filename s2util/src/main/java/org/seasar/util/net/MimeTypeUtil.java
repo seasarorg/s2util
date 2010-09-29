@@ -36,11 +36,12 @@ public abstract class MimeTypeUtil {
      * コンテントタイプを予想します。
      * 
      * @param path
-     *            パス
+     *            パス。{@literal null}や空文字列であってはいけません
      * @return コンテントタイプ
      */
     public static String guessContentType(final String path) {
-        assertArgumentNotNull("path", path);
+        assertArgumentNotEmpty("path", path);
+
         final InputStream is = ResourceUtil.getResourceAsStream(path);
         try {
             final String mimetype =

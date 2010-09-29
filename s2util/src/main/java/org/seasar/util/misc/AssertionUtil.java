@@ -68,7 +68,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0010",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0010",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -108,7 +108,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -128,7 +128,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -188,7 +188,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -208,7 +208,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -228,7 +228,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -248,7 +248,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -268,7 +268,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0011",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -288,7 +288,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0012",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 
@@ -308,7 +308,7 @@ public abstract class AssertionUtil {
             throw new EmptyArgumentException(
                 argName,
                 "EUTL0013",
-                asArray(argValue));
+                asArray(argName));
         }
     }
 

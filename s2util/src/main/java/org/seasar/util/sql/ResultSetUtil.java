@@ -22,6 +22,7 @@ import org.seasar.util.exception.SQLRuntimeException;
 import org.seasar.util.log.Logger;
 
 import static org.seasar.util.log.Logger.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link ResultSet}のためのユーティリティクラスです。
@@ -56,10 +57,12 @@ public abstract class ResultSetUtil {
      * 結果セットを次に進めます。
      * 
      * @param resultSet
-     *            結果セット
+     *            結果セット。{@literal null}であってはいけません
      * @return 次に進めたかどうか
      */
     public static boolean next(final ResultSet resultSet) {
+        assertArgumentNotNull("resultSet", resultSet);
+
         try {
             return resultSet.next();
         } catch (final SQLException ex) {
@@ -71,7 +74,7 @@ public abstract class ResultSetUtil {
      * カーソルを指定した位置まで進めます。
      * 
      * @param resultSet
-     *            結果セット
+     *            結果セット。{@literal null}であってはいけません
      * @param index
      *            位置
      * @return 指定した位置まで進めたかどうか
@@ -80,10 +83,13 @@ public abstract class ResultSetUtil {
      */
     public static boolean absolute(final ResultSet resultSet, final int index)
             throws SQLRuntimeException {
+        assertArgumentNotNull("resultSet", resultSet);
+
         try {
             return resultSet.absolute(index);
         } catch (final SQLException ex) {
             throw new SQLRuntimeException(ex);
         }
     }
+
 }

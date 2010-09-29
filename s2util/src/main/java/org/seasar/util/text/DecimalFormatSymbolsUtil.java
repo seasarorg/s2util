@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link DecimalFormatSymbols}用のユーティリティクラスです。
@@ -44,10 +45,13 @@ public abstract class DecimalFormatSymbolsUtil {
      * {@link DecimalFormatSymbols}を返します。
      * 
      * @param locale
+     *            ロケール。{@literal null}であってはいけません
      * @return {@link DecimalFormatSymbols}
      */
     public static DecimalFormatSymbols getDecimalFormatSymbols(
             final Locale locale) {
+        assertArgumentNotNull("locale", locale);
+
         DecimalFormatSymbols symbols = CACHE.get(locale);
         if (symbols == null) {
             symbols = new DecimalFormatSymbols(locale);
@@ -55,4 +59,5 @@ public abstract class DecimalFormatSymbolsUtil {
         }
         return symbols;
     }
+
 }

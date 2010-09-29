@@ -22,6 +22,8 @@ import javax.transaction.TransactionManager;
 
 import org.seasar.util.exception.SystemRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link TransactionManager}用のユーティリティクラスです。
  * 
@@ -33,13 +35,15 @@ public abstract class TransactionManagerUtil {
      * トランザクションを返します。
      * 
      * @param tm
-     *            トランザクションマネージャ
+     *            トランザクションマネージャ。{@literal null}であってはいけません
      * @return トランザクション
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
     public static Transaction getTransaction(final TransactionManager tm)
             throws SystemRuntimeException {
+        assertArgumentNotNull("tm", tm);
+
         try {
             return tm.getTransaction();
         } catch (final SystemException e) {
@@ -51,10 +55,11 @@ public abstract class TransactionManagerUtil {
      * トランザクションがアクティブかどうか返します。
      * 
      * @param tm
-     *            トランザクションマネージャ
+     *            トランザクションマネージャ。{@literal null}であってはいけません
      * @return トランザクションがアクティブかどうか
      */
     public static boolean isActive(final TransactionManager tm) {
+        assertArgumentNotNull("tm", tm);
         return getStatus(tm) != Status.STATUS_NO_TRANSACTION;
     }
 
@@ -62,13 +67,15 @@ public abstract class TransactionManagerUtil {
      * ステータスを返します。
      * 
      * @param tm
-     *            トランザクションマネージャ
+     *            トランザクションマネージャ。{@literal null}であってはいけません
      * @return ステータス
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
     public static int getStatus(final TransactionManager tm)
             throws SystemRuntimeException {
+        assertArgumentNotNull("tm", tm);
+
         try {
             return tm.getStatus();
         } catch (final SystemException e) {
@@ -80,16 +87,19 @@ public abstract class TransactionManagerUtil {
      * ロールバックオンリーに設定します。
      * 
      * @param tm
-     *            トランザクションマネージャ
+     *            トランザクションマネージャ。{@literal null}であってはいけません
      * @throws SystemRuntimeException
      *             {@link SystemException}が発生した場合
      */
     public static void setRollbackOnly(final TransactionManager tm)
             throws SystemRuntimeException {
+        assertArgumentNotNull("tm", tm);
+
         try {
             tm.setRollbackOnly();
         } catch (final SystemException e) {
             throw new SystemRuntimeException(e);
         }
     }
+
 }

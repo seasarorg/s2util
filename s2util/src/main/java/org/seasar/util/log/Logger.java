@@ -24,6 +24,7 @@ import org.seasar.util.misc.DisposableUtil;
 
 import static org.seasar.util.collection.ArrayUtil.*;
 import static org.seasar.util.collection.CollectionsUtil.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * ログ出力を提供するクラスです。
@@ -65,10 +66,12 @@ public class Logger {
      * {@link Logger}を返します。
      * 
      * @param clazz
-     *            ロガーのカテゴリとなるクラス
+     *            ロガーのカテゴリとなるクラス。{@literal null}であってはいけません
      * @return {@link Logger}
      */
     public static synchronized Logger getLogger(final Class<?> clazz) {
+        assertArgumentNotNull("clazz", clazz);
+
         if (!initialized) {
             initialize();
         }
@@ -84,13 +87,15 @@ public class Logger {
      * フォーマットされたメッセージ文字列を返します。
      * 
      * @param messageCode
-     *            メッセージコード
+     *            メッセージコード。{@literal null}や空文字列であってはいけません
      * @param args
      *            引数
      * @return フォーマットされたメッセージ文字列
      */
     public static LogMessage format(final String messageCode,
             final Object... args) {
+        assertArgumentNotEmpty("messageCode", messageCode);
+
         final char messageType = messageCode.charAt(0);
         final String message =
             MessageFormatter.getSimpleMessage(messageCode, args);
@@ -296,9 +301,11 @@ public class Logger {
      * ログを出力します。
      * 
      * @param throwable
-     *            例外
+     *            例外。{@literal null}であってはいけません
      */
     public void log(final Throwable throwable) {
+        assertArgumentNotNull("throwable", throwable);
+
         error(throwable.getMessage(), throwable);
     }
 
@@ -306,11 +313,13 @@ public class Logger {
      * ログを出力します。
      * 
      * @param messageCode
-     *            メッセージコード
+     *            メッセージコード。{@literal null}や空文字列であってはいけません
      * @param args
      *            引数
      */
     public void log(final String messageCode, final Object... args) {
+        assertArgumentNotEmpty("messageCode", messageCode);
+
         log(format(messageCode, args));
     }
 
@@ -329,9 +338,11 @@ public class Logger {
      * </pre>
      * 
      * @param logMessage
-     *            ログメッセージ
+     *            ログメッセージ。{@literal null}であってはいけません
      */
     public void log(final LogMessage logMessage) {
+        assertArgumentNotNull("logMessage", logMessage);
+
         log(logMessage, null);
     }
 
@@ -350,11 +361,13 @@ public class Logger {
      * </pre>
      * 
      * @param logMessage
-     *            ログメッセージ
+     *            ログメッセージ。{@literal null}であってはいけません
      * @param throwable
      *            例外
      */
     public void log(final LogMessage logMessage, final Throwable throwable) {
+        assertArgumentNotNull("logMessage", logMessage);
+
         final LogLevel level = logMessage.getLevel();
         if (isEnabledFor(level)) {
             final String message = logMessage.getMessage();
@@ -438,11 +451,13 @@ public class Logger {
          * インスタンスを構築します。
          * 
          * @param level
-         *            ログレベル
+         *            ログレベル。{@literal null}であってはいけません
          * @param message
          *            ログメッセージ
          */
         public LogMessage(final LogLevel level, final String message) {
+            assertArgumentNotNull("level", level);
+
             this.level = level;
             this.message = message;
         }

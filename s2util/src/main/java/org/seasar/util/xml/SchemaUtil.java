@@ -25,6 +25,8 @@ import javax.xml.validation.SchemaFactory;
 import org.seasar.util.exception.SAXRuntimeException;
 import org.xml.sax.SAXException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link Schema}のためのユーティリティ・クラスです。
  * 
@@ -36,10 +38,11 @@ public abstract class SchemaUtil {
      * ファイルからW3C XML Schemaのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            W3C XML Schemaファイル
+     *            W3C XML Schemaファイル。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newW3cXmlSchema(final File schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newW3cXmlSchemaFactory(), schema);
     }
 
@@ -47,10 +50,11 @@ public abstract class SchemaUtil {
      * {@link Source}からW3C XML Schemaのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            W3C XML Schemaを読み込むための{@link Source}
+     *            W3C XML Schemaを読み込むための{@link Source}。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newW3cXmlSchema(final Source schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newW3cXmlSchemaFactory(), schema);
     }
 
@@ -58,10 +62,11 @@ public abstract class SchemaUtil {
      * URLからW3C XML Schemaのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            W3C XML SchemaのURL
+     *            W3C XML SchemaのURL。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newW3cXmlSchema(final URL schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newW3cXmlSchemaFactory(), schema);
     }
 
@@ -69,10 +74,11 @@ public abstract class SchemaUtil {
      * ファイルからRELAX NGのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            RELAX NGファイル
+     *            RELAX NGファイル。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newRelaxNgSchema(final File schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newRelaxNgSchemaFactory(), schema);
     }
 
@@ -80,10 +86,11 @@ public abstract class SchemaUtil {
      * {@link Source}からRELAX NGのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            RELAX NGを読み込むための{@link Source}
+     *            RELAX NGを読み込むための{@link Source}。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newRelaxNgSchema(final Source schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newRelaxNgSchemaFactory(), schema);
     }
 
@@ -91,10 +98,11 @@ public abstract class SchemaUtil {
      * URLからRELAX NGのための{@link Schema}を生成します。
      * 
      * @param schema
-     *            RELAX NGのURL
+     *            RELAX NGのURL。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newRelaxNgSchema(final URL schema) {
+        assertArgumentNotNull("schema", schema);
         return newSchema(SchemaFactoryUtil.newRelaxNgSchemaFactory(), schema);
     }
 
@@ -102,13 +110,16 @@ public abstract class SchemaUtil {
      * 指定の{@link SchemaFactory}を使用して{@link Schema}を作成します。
      * 
      * @param factory
-     *            {@link SchemaFactory}
+     *            {@link SchemaFactory}。{@literal null}であってはいけません
      * @param schema
-     *            スキーマファイル
+     *            スキーマファイル。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newSchema(final SchemaFactory factory,
             final File schema) {
+        assertArgumentNotNull("factory", factory);
+        assertArgumentNotNull("schema", schema);
+
         try {
             return factory.newSchema(schema);
         } catch (final SAXException e) {
@@ -120,13 +131,16 @@ public abstract class SchemaUtil {
      * 指定の{@link SchemaFactory}を使用して{@link Schema}を作成します。
      * 
      * @param factory
-     *            {@link SchemaFactory}
+     *            {@link SchemaFactory}。{@literal null}であってはいけません
      * @param schema
-     *            スキーマを読み込むための{@link Source}
+     *            スキーマを読み込むための{@link Source}。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newSchema(final SchemaFactory factory,
             final Source schema) {
+        assertArgumentNotNull("factory", factory);
+        assertArgumentNotNull("schema", schema);
+
         try {
             return factory.newSchema(schema);
         } catch (final SAXException e) {
@@ -138,12 +152,15 @@ public abstract class SchemaUtil {
      * 指定の{@link SchemaFactory}を使用して{@link Schema}を作成します。
      * 
      * @param factory
-     *            {@link SchemaFactory}
+     *            {@link SchemaFactory}。{@literal null}であってはいけません
      * @param schema
-     *            スキーマのURL
+     *            スキーマのURL。{@literal null}であってはいけません
      * @return {@link Schema}
      */
     public static Schema newSchema(final SchemaFactory factory, final URL schema) {
+        assertArgumentNotNull("factory", factory);
+        assertArgumentNotNull("schema", schema);
+
         try {
             return factory.newSchema(schema);
         } catch (final SAXException e) {

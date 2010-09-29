@@ -36,13 +36,14 @@ public abstract class MessageDigestUtil {
      * {@link MessageDigest#getInstance(String)}の例外処理をラップします。
      * 
      * @param algorithm
-     *            アルゴリズム (利用可能なアルゴリズムは{@link MessageDigest}のJavadoc等を参照してください)
+     *            アルゴリズム (利用可能なアルゴリズムは{@link MessageDigest}のJavadoc等を参照してください)。
+     *            {@literal null}や空文字列であってはいけません
      * @return {@link MessageDigest}
      * @throws RuntimeException
      *             {@link NoSuchAlgorithmException}が発生した場合
      */
     public static MessageDigest getInstance(final String algorithm) {
-        assertArgumentNotNull("algorithm", algorithm);
+        assertArgumentNotEmpty("algorithm", algorithm);
 
         try {
             return MessageDigest.getInstance(algorithm);
@@ -55,12 +56,14 @@ public abstract class MessageDigestUtil {
      * 指定されたアルゴリズムでテキストをハッシュ化して文字列にします。
      * 
      * @param algorithm
-     *            アルゴリズム
+     *            アルゴリズム。{@literal null}や空文字列であってはいけません
      * @param text
      *            ハッシュ化する文字列
      * @return ハッシュ化された文字列
      */
     public static String digest(final String algorithm, String text) {
+        assertArgumentNotEmpty("algorithm", algorithm);
+
         if (text == null) {
             return null;
         }

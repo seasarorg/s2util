@@ -22,6 +22,8 @@ import javax.naming.NamingException;
 
 import org.seasar.util.exception.NamingRuntimeException;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link javax.naming.InitialContext 初期コンテキスト}を扱うためのユーティリティ・クラスです。
  * 
@@ -61,15 +63,18 @@ public abstract class InitialContextUtil {
      * 指定した初期コンテキストから指定されたオブジェクトを取得して返します。
      * 
      * @param ctx
-     *            初期コンテキスト
+     *            初期コンテキスト。{@literal null}であってはいけません
      * @param jndiName
-     *            検索するオブジェクトの名前
+     *            検索するオブジェクトの名前。{@literal null}や空文字列であってはいけません
      * @return <code>jndiName</code>にバインドされているオブジェクト
      * @throws NamingRuntimeException
      *             初期コンテキストを作成できなかった場合にスローされます
      */
     public static Object lookup(final InitialContext ctx, final String jndiName)
             throws NamingRuntimeException {
+        assertArgumentNotNull("ctx", ctx);
+        assertArgumentNotEmpty("jndiName", jndiName);
+
         try {
             return ctx.lookup(jndiName);
         } catch (final NamingException ex) {

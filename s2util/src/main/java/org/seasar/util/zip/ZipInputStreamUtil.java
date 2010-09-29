@@ -23,6 +23,7 @@ import org.seasar.util.exception.IORuntimeException;
 import org.seasar.util.log.Logger;
 
 import static org.seasar.util.log.Logger.*;
+import static org.seasar.util.misc.AssertionUtil.*;
 
 /**
  * {@link java.util.zip.ZipInputStream}を扱うユーティリティクラスです。
@@ -38,11 +39,13 @@ public abstract class ZipInputStreamUtil {
      * {@link ZipInputStream#getNextEntry()}の例外処理をラップするメソッドです。
      * 
      * @param zis
-     *            {@link ZipInputStream}
+     *            {@link ZipInputStream}。{@literal null}であってはいけません
      * @return {@link ZipEntry}
      * @see ZipInputStream#getNextEntry()
      */
     public static ZipEntry getNextEntry(final ZipInputStream zis) {
+        assertArgumentNotNull("zis", zis);
+
         try {
             return zis.getNextEntry();
         } catch (final IOException e) {
@@ -54,10 +57,12 @@ public abstract class ZipInputStreamUtil {
      * {@link ZipInputStream#reset()}の例外処理をラップするメソッドです。
      * 
      * @param zis
-     *            {@link ZipInputStream}
+     *            {@link ZipInputStream}。{@literal null}であってはいけません
      * @see ZipInputStream#reset()
      */
     public static void reset(final ZipInputStream zis) {
+        assertArgumentNotNull("zis", zis);
+
         try {
             zis.reset();
         } catch (final IOException e) {
@@ -73,10 +78,12 @@ public abstract class ZipInputStreamUtil {
      * </p>
      * 
      * @param zis
-     *            {@link ZipInputStream}
+     *            {@link ZipInputStream}。{@literal null}であってはいけません
      * @see ZipInputStream#closeEntry()
      */
     public static void closeEntry(final ZipInputStream zis) {
+        assertArgumentNotNull("zis", zis);
+
         try {
             zis.closeEntry();
         } catch (final IOException e) {

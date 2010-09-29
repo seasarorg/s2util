@@ -19,6 +19,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import static org.seasar.util.misc.AssertionUtil.*;
+
 /**
  * {@link DecimalFormat}用のユーティリティクラスです。
  * 
@@ -30,6 +32,7 @@ public abstract class DecimalFormatUtil {
      * 数値の文字列での表記を正規化します。
      * 
      * @param s
+     *            数値を表す文字列
      * @return 正規化された文字列
      * @see #normalize(String, Locale)
      */
@@ -41,10 +44,14 @@ public abstract class DecimalFormatUtil {
      * 数値の文字列での表記をグルーピングセパレータを削除し、小数点を.であらわした標準形に正規化します。
      * 
      * @param s
+     *            数値を表す文字列
      * @param locale
+     *            ロケール。{@literal null}であってはいけません
      * @return 正規化された文字列
      */
     public static String normalize(final String s, final Locale locale) {
+        assertArgumentNotNull("locale", locale);
+
         if (s == null) {
             return null;
         }
@@ -64,4 +71,5 @@ public abstract class DecimalFormatUtil {
         }
         return buf.toString();
     }
+
 }
