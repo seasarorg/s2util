@@ -190,7 +190,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
      * @return インデックスで指定された位置の値
      */
     public V getAt(final int index) {
-        return getEntryAt(index).value;
+        return getEntryAt(index).getValue();
     }
 
     /**
@@ -201,7 +201,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
      * @return インデックスで指定された位置のキー
      */
     public K getKeyAt(final int index) {
-        return getEntryAt(index).key;
+        return getEntryAt(index).getKey();
     }
 
     /**
@@ -211,7 +211,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V>,
      *            インデックス
      * @return インデックスで指定された位置の{@link java.util.Map.Entry}
      */
-    public Entry<K, V> getEntryAt(final int index) {
+    public Map.Entry<K, V> getEntryAt(final int index) {
         assertIndex(index < size, "Index:" + index + ", Size:" + size);
         return listTable[index];
     }
