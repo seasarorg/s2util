@@ -144,6 +144,21 @@ public abstract class PropertiesUtil {
     }
 
     /**
+     * コンテキストクラスローダからリソースを読み込んで{@link Properties}にロードします（例外処理はラップします）。
+     * 
+     * @param props
+     *            プロパティセット。{@literal null}であってはいけません
+     * @param path
+     *            リソースのパス。{@literal null}や空文字列であってはいけません
+     */
+    public static void load(final Properties props, final String path) {
+        assertArgumentNotNull("props", props);
+        assertArgumentNotNull("path", path);
+
+        load(props, ResourceUtil.getResource(path));
+    }
+
+    /**
      * {@link Properties#store(OutputStream, String)}の例外処理をラップします。
      * 
      * <p>

@@ -280,4 +280,14 @@ public class PropertiesUtilTest {
 
     }
 
+    /**
+     * {@link org.seasar.util.io.PropertiesUtil#load(Properties, String)}
+     */
+    @Test
+    public void testLoadPropertiesPath() {
+        Properties properties = new Properties();
+        PropertiesUtil.load(properties, "org/seasar/util/io/test.properties");
+        assertThat(properties.getProperty("hoge"), is("ほげ"));
+    }
+
 }
