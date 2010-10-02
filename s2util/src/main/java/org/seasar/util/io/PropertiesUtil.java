@@ -153,7 +153,7 @@ public abstract class PropertiesUtil {
      */
     public static void load(final Properties props, final String path) {
         assertArgumentNotNull("props", props);
-        assertArgumentNotNull("path", path);
+        assertArgumentNotEmpty("path", path);
 
         load(props, ResourceUtil.getResource(path));
     }
