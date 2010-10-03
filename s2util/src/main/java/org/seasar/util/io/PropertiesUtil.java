@@ -226,7 +226,7 @@ public abstract class PropertiesUtil {
             String encoding, String comments) {
         assertArgumentNotNull("props", props);
         assertArgumentNotNull("file", file);
-        assertArgumentNotNull("encoding", encoding);
+        assertArgumentNotEmpty("encoding", encoding);
 
         final Writer writer = WriterUtil.create(file, encoding);
         try {
