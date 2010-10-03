@@ -84,7 +84,7 @@ public class CaseInsensitiveMap<V> extends ArrayMap<String, V> {
     }
 
     private static String convertKey(final Object key) {
-        return ((String) key).toLowerCase();
+        return key.toString().toLowerCase();
     }
 
 }
