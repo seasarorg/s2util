@@ -304,4 +304,28 @@ public class ArrayUtilTest {
         assertThat(list.get(1), is(Integer.valueOf(5)));
     }
 
+    /**
+     * 
+     */
+    @Test
+    public void testIsArray() {
+        assertFalse(ArrayUtil.isArray(null));
+        assertFalse(ArrayUtil.isArray("hoge"));
+        assertTrue(ArrayUtil.isArray(new Object[] {}));
+        assertTrue(ArrayUtil.isArray(new Object[] { "" }));
+        assertTrue(ArrayUtil.isArray(new Object[] { "aaa" }));
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testIsNotArray() {
+        assertTrue(ArrayUtil.isNotArray(null));
+        assertTrue(ArrayUtil.isNotArray("hoge"));
+        assertFalse(ArrayUtil.isNotArray(new Object[] {}));
+        assertFalse(ArrayUtil.isNotArray(new Object[] { "" }));
+        assertFalse(ArrayUtil.isNotArray(new Object[] { "aaa" }));
+    }
+
 }

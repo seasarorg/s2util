@@ -1362,4 +1362,28 @@ public abstract class ArrayUtil {
         return (List<T>) list;
     }
 
+    /**
+     * オブジェクトが配列の場合は{@literal true}を返します。{@literal null}の場合は{@literal false}
+     * を返します。
+     * 
+     * @param object
+     *            オブジェクト
+     * @return オブジェクトが配列の場合は{@literal true}。{@literal null}の場合は{@literal false}
+     */
+    public static boolean isArray(Object object) {
+        return (object != null && object.getClass().isArray());
+    }
+
+    /**
+     * オブジェクトが配列でない場合は{@literal true}を返します。{@literal null}の場合は{@literal true}
+     * を返します。
+     * 
+     * @param object
+     *            オブジェクト
+     * @return オブジェクトが配列でない場合は{@literal true}。{@literal null}の場合は{@literal true}
+     */
+    public static boolean isNotArray(Object object) {
+        return !isArray(object);
+    }
+
 }
