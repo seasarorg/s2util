@@ -234,6 +234,14 @@ public abstract class StringUtil {
 
     /**
      * JavaBeansの仕様にしたがってデキャピタライズを行ないます。大文字が2つ以上続く場合は、小文字にならないので注意してください。
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.capitalize("UserId")  = "userId"
+     * StringUtil.capitalize("ABC")  = "ABC"
+     * </pre>
      * 
      * @param name
      *            名前
@@ -253,7 +261,15 @@ public abstract class StringUtil {
     }
 
     /**
-     * JavaBeansの仕様にしたがってキャピタライズを行ないます。大文字が2つ以上続く場合は、大文字にならないので注意してください。
+     * JavaBeansの仕様にしたがってキャピタライズを行ないます。大文字が2つ以上続く場合は、小文字にならないので注意してください。
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.capitalize("userId")  = "UserId"
+     * StringUtil.capitalize("ABC")  = "ABC"
+     * </pre>
      * 
      * @param name
      *            名前
@@ -508,6 +524,13 @@ public abstract class StringUtil {
 
     /**
      * _記法をキャメル記法に変換します。
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.camelize("USER_ID")  = "UserId"
+     * </pre>
      * 
      * @param s
      *            テキスト
@@ -531,6 +554,13 @@ public abstract class StringUtil {
 
     /**
      * キャメル記法を_記法に変換します。
+     * <p>
+     * 次のように使います．
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.decamelize("UserId")  = "USER_ID"
+     * </pre>
      * 
      * @param s
      *            テキスト

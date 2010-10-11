@@ -171,10 +171,22 @@ public class StringUtilTest {
      * @throws Exception
      */
     @Test
+    public void testCapitalize() throws Exception {
+        assertEquals("Abc", StringUtil.capitalize("abc"));
+        assertEquals("Abc", StringUtil.capitalize("Abc"));
+        assertEquals("ABC", StringUtil.capitalize("ABC"));
+        assertEquals("UserId", StringUtil.capitalize("userId"));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
     public void testDecapitalize() throws Exception {
         assertEquals("abc", StringUtil.decapitalize("abc"));
         assertEquals("abc", StringUtil.decapitalize("Abc"));
         assertEquals("ABC", StringUtil.decapitalize("ABC"));
+        assertEquals("userId", StringUtil.decapitalize("UserId"));
     }
 
     /**
@@ -260,6 +272,7 @@ public class StringUtilTest {
         assertNull(StringUtil.camelize(null));
         assertEquals("Emp", StringUtil.camelize("EMP"));
         assertEquals("AaaBbb", StringUtil.camelize("AAA_BBB"));
+        assertEquals("UserId", StringUtil.camelize("USER_ID"));
     }
 
     /**
@@ -272,6 +285,7 @@ public class StringUtilTest {
         assertEquals("AAA_BBB", StringUtil.decamelize("aaaBbb"));
         assertEquals("AAA_BBB", StringUtil.decamelize("AaaBbb"));
         assertEquals("AAA_BBB_C", StringUtil.decamelize("aaaBbbC"));
+        assertEquals("USER_ID", StringUtil.decamelize("UserId"));
     }
 
     /**
