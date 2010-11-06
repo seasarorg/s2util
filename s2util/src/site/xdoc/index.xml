@@ -20,5 +20,18 @@
 				を参照してください．
 			</p>
 		</section>
+		<section name="News">
+			<dl>
+				<dt>2010/11/06</dt>
+				<dd>
+					<div>
+						S2Util 0.0.0 をリリースしました．
+						(
+						<a href="downloads.html">ダウンロード</a>
+						)
+					</div>
+				</dd>
+			</dl>
+		</section>
 	</body>
 </document>

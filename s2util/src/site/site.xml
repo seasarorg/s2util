@@ -23,8 +23,8 @@
 		<menu name="About" inherit="top">
 			<item name="ホーム" href="index.html" />
 			<item name="ライセンス" href="license.html" />
-			<!--
 			<item name="ダウンロード" href="downloads.html" />
+			<!--
 			<item name="変更履歴" href="changelog.html" />
 			-->
 			<item name="メーリングリスト" href="https://ml.seasar.org/mailman/listinfo/seasar-user" />
