@@ -63,7 +63,7 @@
 			<source><![CDATA[
 <dependencies>
   <dependency>
-    <groupId>org.seasar.s2util</groupId>
+    <groupId>org.seasar.util</groupId>
       <artifactId>s2util</artifactId>
       <version>x.y.z</version>
   </dependency>
