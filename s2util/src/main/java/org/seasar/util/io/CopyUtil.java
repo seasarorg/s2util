@@ -1359,6 +1359,7 @@ public abstract class CopyUtil {
             int len;
             int amount = 0;
             while ((len = in.read(buf)) != -1) {
+                buffer.limit(len);
                 channel.write(buffer, amount);
                 buffer.clear();
                 amount += len;

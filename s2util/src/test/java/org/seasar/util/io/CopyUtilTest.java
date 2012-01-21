@@ -153,4 +153,16 @@ public class CopyUtilTest {
         assertThat(writer.toString(), is(urlString));
     }
 
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testUrlToFile() throws Exception {
+        int result = copy(url, outputFile);
+        assertThat(result, is(urlString.getBytes("UTF-8").length));
+
+        result = copy(outputFile, "UTF-8", writer);
+        assertThat(writer.toString(), is(urlString));
+    }
+
 }
