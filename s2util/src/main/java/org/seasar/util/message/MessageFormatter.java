@@ -178,8 +178,10 @@ public abstract class MessageFormatter {
                 @Override
                 public void dispose() {
                     ResourceBundle.clearCache();
+                    initialized = false;
                 }
             });
+            initialized = true;
         }
     }
 

@@ -16,6 +16,7 @@
 package org.seasar.util.message;
 
 import org.junit.Test;
+import org.seasar.util.misc.DisposableUtil;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -94,6 +95,21 @@ public class MessageFormatterTest {
         System.out.println(s);
         assertThat(s, is(notNullValue()));
         assertThat(s, is(equalTo("[EMsgLongSystemName0001]Hoge Hoge")));
+    }
+
+    /**
+     * @throws Exception
+     */
+    @Test
+    public void testDispose() throws Exception {
+        DisposableUtil.dispose();
+        assertThat(MessageFormatter.initialized, is(not(true)));
+
+        MessageFormatter.getMessage("EMSG0000");
+        assertThat(MessageFormatter.initialized, is(true));
+
+        DisposableUtil.dispose();
+        assertThat(MessageFormatter.initialized, is(not(true)));
     }
 
 }
