@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+	<properties>
+		<title>変更履歴</title>
+	</properties>
+	<body>
+		<section name="0.0.1">
+			<subsection name="変更内容">
+				<p>
+					0.0.0からの変更点は以下の通りです．
+				</p>
+				<ul>
+					<li>
+						Bug
+						<ul>
+							<li>
+								[
+								<a href='https://www.seasar.org/issues/browse/UTIL-1'>UTIL-1</a>
+								] - CopyUtil#copy() で，ファイル以外の入力ストリームからファイル出力ストリームへコピーすると，出力ファイルが
+								4KB の整数倍にパディングされてしまう問題を修正しました．[Seasar-user:21260]
+							</li>
+							<li>
+								[
+								<a href='https://www.seasar.org/issues/browse/UTIL-2'>UTIL-2</a>
+								] - MessageFormatter を繰り返し使用すると，そのたびに DisposableUtil に
+								Disposable オブジェクトが登録されてしまう問題を修正しました．[Seasar-user:21338]
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</subsection>
+		</section>
+	</body>
+</document>
